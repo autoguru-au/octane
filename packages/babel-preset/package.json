@@ -2,7 +2,7 @@
   "name": "@autoguru/babel-preset",
   "version": "1.0.9",
   "description": "AutoGuru's org-wide Babel preset",
-  "homepage": "https://autoguru.io",
+  "homepage": "https://github.com/autoguru-au/octane/tree/master/packages/babel-preset#readme",
   "repository": "https://github.com/autoguru-au/octane/tree/master/packages/babel-preset",
   "license": "MIT",
   "main": "index.js",

@@ -2,7 +2,7 @@
   "name": "@autoguru/jest-preset",
   "version": "1.0.9",
   "description": "AutoGuru's generic Jest preset",
-  "homepage": "https://autoguru.io",
+  "homepage": "https://github.com/autoguru-au/octane/tree/master/packages/jest-preset#readme",
   "repository": "https://github.com/autoguru-au/octane/tree/master/packages/jest-preset",
   "license": "MIT",
   "main": "jest-preset.js",
