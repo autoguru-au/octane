@@ -1,0 +1,48 @@
+{
+  "name": "octane",
+  "private": true,
+  "license": "unlicenced",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "format": "prettier --write \"{*,packages/**/*}.+(js|jsx|ts|tsx|css|scss|json|yml|md|mdx|html)\"",
+    "test": "jest"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "linters": {
+      "package.json": [
+        "npx sort-package-json",
+        "git add"
+      ],
+      "*.{js,jsx,ts,tsx,css,scss,json,yml,md,mdx,html}": [
+        "prettier --write",
+        "git add"
+      ],
+      "*.{js,tsx,ts,tsx}": [
+        "jest --bail --findRelatedTests",
+        "git add"
+      ]
+    },
+    "relative": true
+  },
+  "devDependencies": {
+    "@types/node": "^11.9.5",
+    "husky": "^1.3.1",
+    "jest": "^24.0.0",
+    "jest-junit": "^6.3.0",
+    "lerna": "^3.13.0",
+    "lint-staged": "^8.1.4",
+    "prettier": "^1.16.4",
+    "tslib": "^1.9.3",
+    "tslint": "^5.13.0",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-react": "^3.6.0",
+    "typescript": "3.4.0-dev.20190207"
+  }
+}
