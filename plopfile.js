@@ -27,8 +27,13 @@ function getPackages() {
 	return workspaces
 		.map(item => `${item}/package.json`)
 		.reduce((results, item) => [...results, ...glob.sync(item)], [])
-		.map(item => ({
-			folder: path.parse(item).dir,
-			name: require(`./${item}`).name,
-		}));
+		.map(item => {
+			const pkg = require(`./${item}`);
+
+			return {
+				folder: path.parse(item).dir,
+				name: pkg.name,
+				description: pkg.description,
+			};
+		});
 }

@@ -8,18 +8,18 @@ A collection of packages for TypeScript projects at AutoGuru.
 
 ## Usage
 
-The project is maintained as a monorepo which compose a wide array of npm packages, each package has it's own readme that document its own usage.
+The project is maintained as a monorepo which composes a wide array of npm packages, each package has it's own readme that document its own usage.
 
 ### Index
 
-| package |     |
-| ------- | --- |
+| package |     |     |
+| ------- | --- | --- |
 {{#each packages}}
-| [{{this.name}}]({{this.folder}}) | [![npm version](http://img.shields.io/npm/v/{{this.name}}.svg?style=flat-square)](https://npmjs.org/package/{{this.name}} 'View {{this.name}} on npm') |
+| [{{this.name}}]({{this.folder}}) | [![npm version](http://img.shields.io/npm/v/{{this.name}}.svg?style=flat-square)](https://npmjs.org/package/{{this.name}} 'View {{this.name}} on npm') | {{this.description}} |
 {{/each}}
 
 ## License
 
-MIT &copy; [AutoGuru](https://www.autoguru.com.au/), see [LICENSE](LICENSE) for details.
+MIT &copy; [AutoGuru](https://www.autoguru.com.au/)
 
 <a href="http://www.autoguru.com.au/"><img src="https://cdn.autoguru.com.au/images/logos/autoguru.svg" alt="AutoGuru" width="150" /></a>

@@ -8,17 +8,17 @@ A collection of packages for TypeScript projects at AutoGuru.
 
 ## Usage
 
-The project is maintained as a monorepo which compose a wide array of npm packages, each package has it's own readme that document its own usage.
+The project is maintained as a monorepo which composes a wide array of npm packages, each package has it's own readme that document its own usage.
 
 ### Index
 
-| package                                         |                                                                                                                                                                                   |
-| ----------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [@autoguru/babel-preset](packages/babel-preset) | [![npm version](http://img.shields.io/npm/v/@autoguru/babel-preset.svg?style=flat-square)](https://npmjs.org/package/@autoguru/babel-preset 'View @autoguru/babel-preset on npm') |
-| [@autoguru/jest-preset](packages/jest-preset)   | [![npm version](http://img.shields.io/npm/v/@autoguru/jest-preset.svg?style=flat-square)](https://npmjs.org/package/@autoguru/jest-preset 'View @autoguru/jest-preset on npm')    |
+| package                                         |                                                                                                                                                                                   |                                       |
+| ----------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- |
+| [@autoguru/babel-preset](packages/babel-preset) | [![npm version](http://img.shields.io/npm/v/@autoguru/babel-preset.svg?style=flat-square)](https://npmjs.org/package/@autoguru/babel-preset 'View @autoguru/babel-preset on npm') | AutoGuru&#x27;s org-wide Babel preset |
+| [@autoguru/jest-preset](packages/jest-preset)   | [![npm version](http://img.shields.io/npm/v/@autoguru/jest-preset.svg?style=flat-square)](https://npmjs.org/package/@autoguru/jest-preset 'View @autoguru/jest-preset on npm')    | AutoGuru&#x27;s generic Jest preset   |
 
 ## License
 
-MIT &copy; [AutoGuru](https://www.autoguru.com.au/), see [LICENSE](LICENSE) for details.
+MIT &copy; [AutoGuru](https://www.autoguru.com.au/)
 
 <a href="http://www.autoguru.com.au/"><img src="https://cdn.autoguru.com.au/images/logos/autoguru.svg" alt="AutoGuru" width="150" /></a>
