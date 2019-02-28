@@ -1,6 +1,6 @@
 {
   "name": "@autoguru/babel-preset",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "AutoGuru's org-wide Babel preset",
   "license": "MIT",
   "main": "index.js",

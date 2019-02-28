@@ -1,11 +1,11 @@
 {
   "name": "@autoguru/jest-preset",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "AutoGuru's generic Jest preset",
   "license": "MIT",
   "main": "jest-preset.js",
   "dependencies": {
-    "@autoguru/babel-preset": "^1.0.6",
+    "@autoguru/babel-preset": "^1.0.7",
     "@babel/core": "^7.3.3",
     "@babel/preset-typescript": "^7.3.3",
     "babel-jest": "^24.1.0"
