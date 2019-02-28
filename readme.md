@@ -1,6 +1,5 @@
 # Octane
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg?style=flat-square)](LICENSE)
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg?style=flat-square)](https://lernajs.io/)
 [![Styled with Prettier](https://img.shields.io/badge/styled%20with-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)
@@ -13,10 +12,10 @@ The project is maintained as a monorepo which compose a wide array of npm packag
 
 ### Index
 
-| package                                         |                                                                                                                              |
-| ----------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| [@autoguru/babel-preset](packages/babel-preset) | [![npm version](https://badge.fury.io/js/%40autoguru%2Fbabel-preset.svg)](https://badge.fury.io/js/%autoguru%2Fbabel-preset) |
-| [@autoguru/jest-preset](packages/jest-preset)   | [![npm version](https://badge.fury.io/js/%40autoguru%2Fjest-preset.svg)](https://badge.fury.io/js/%autoguru%2Fjest-preset)   |
+| package                                         |                                                                                                                                                                                 |
+| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [@autoguru/babel-preset](packages/babel-preset) | [![npm version](http://img.shields.io/npm/v/%40autoguru%2Fbabel-preset.svg?style=flat-square)](https://npmjs.org/package/%40autoguru%2Fbabel-preset 'View this project on npm') |
+| [@autoguru/jest-preset](packages/jest-preset)   | [![npm version](http://img.shields.io/npm/v/%40autoguru%2Fjest-preset.svg?style=flat-square)](https://npmjs.org/package/%40autoguru%2Fjest-preset 'View this project on npm')   |
 
 ## License
 
