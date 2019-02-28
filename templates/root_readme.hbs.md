@@ -12,10 +12,10 @@ The project is maintained as a monorepo which composes a wide array of npm packa
 
 ### Index
 
-| package |     |     |
-| ------- | --- | --- |
+| package |       |      |
+| :------ | :---: | :--- |
 {{#each packages}}
-| [{{this.name}}]({{this.folder}}) | [![npm version](http://img.shields.io/npm/v/{{this.name}}.svg?style=flat-square)](https://npmjs.org/package/{{this.name}} 'View {{this.name}} on npm') | {{this.description}} |
+| [`{{this.name}}`]({{this.folder}}) | [![npm version](http://img.shields.io/npm/v/{{this.name}}.svg?style=flat-square)](https://npmjs.org/package/{{this.name}} 'View {{this.name}} on npm') | {{this.description}} |
 {{/each}}
 
 ## License

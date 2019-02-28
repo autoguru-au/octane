@@ -12,10 +12,10 @@ The project is maintained as a monorepo which composes a wide array of npm packa
 
 ### Index
 
-| package                                         |                                                                                                                                                                                   |                                       |
-| ----------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- |
-| [@autoguru/babel-preset](packages/babel-preset) | [![npm version](http://img.shields.io/npm/v/@autoguru/babel-preset.svg?style=flat-square)](https://npmjs.org/package/@autoguru/babel-preset 'View @autoguru/babel-preset on npm') | AutoGuru&#x27;s org-wide Babel preset |
-| [@autoguru/jest-preset](packages/jest-preset)   | [![npm version](http://img.shields.io/npm/v/@autoguru/jest-preset.svg?style=flat-square)](https://npmjs.org/package/@autoguru/jest-preset 'View @autoguru/jest-preset on npm')    | AutoGuru&#x27;s generic Jest preset   |
+| package                                           |                                                                                                                                                                                   |                                       |
+| :------------------------------------------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :------------------------------------ |
+| [`@autoguru/babel-preset`](packages/babel-preset) | [![npm version](http://img.shields.io/npm/v/@autoguru/babel-preset.svg?style=flat-square)](https://npmjs.org/package/@autoguru/babel-preset 'View @autoguru/babel-preset on npm') | AutoGuru&#x27;s org-wide Babel preset |
+| [`@autoguru/jest-preset`](packages/jest-preset)   |  [![npm version](http://img.shields.io/npm/v/@autoguru/jest-preset.svg?style=flat-square)](https://npmjs.org/package/@autoguru/jest-preset 'View @autoguru/jest-preset on npm')   | AutoGuru&#x27;s generic Jest preset   |
 
 ## License
 
