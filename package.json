@@ -7,6 +7,7 @@
   ],
   "scripts": {
     "format": "prettier --write \"{*,packages/**/*}.+(js|jsx|ts|tsx|css|scss|json|yml|md|mdx|html)\"",
+    "publish": "lerna publish",
     "test": "jest"
   },
   "husky": {
