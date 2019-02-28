@@ -14,8 +14,6 @@ The project is maintained as a monorepo which compose a wide array of npm packag
 
 | package |     |
 | ------- | --- |
-
-
 {{#each packages}}
 | [{{this.name}}]({{this.folder}}) | [![npm version](http://img.shields.io/npm/v/{{this.name}}.svg?style=flat-square)](https://npmjs.org/package/{{this.name}} 'View {{this.name}} on npm') |
 {{/each}}
