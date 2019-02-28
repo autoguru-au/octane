@@ -1,4 +1,4 @@
-# @autoguru/babel-preset
+# `@autoguru/babel-preset`
 
 [AutoGuru](https://www.autoguru.com.au/)'s org-wide Babel set of presets and plugins.
 
