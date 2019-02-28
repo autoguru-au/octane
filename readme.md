@@ -12,13 +12,13 @@ The project is maintained as a monorepo which compose a wide array of npm packag
 
 ### Index
 
-| package                                         |                                                                                                                                                                                 |
-| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [@autoguru/babel-preset](packages/babel-preset) | [![npm version](http://img.shields.io/npm/v/%40autoguru%2Fbabel-preset.svg?style=flat-square)](https://npmjs.org/package/%40autoguru%2Fbabel-preset 'View this project on npm') |
-| [@autoguru/jest-preset](packages/jest-preset)   | [![npm version](http://img.shields.io/npm/v/%40autoguru%2Fjest-preset.svg?style=flat-square)](https://npmjs.org/package/%40autoguru%2Fjest-preset 'View this project on npm')   |
+| package                                         |                                                                                                                                                                                   |
+| ----------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [@autoguru/babel-preset](packages/babel-preset) | [![npm version](http://img.shields.io/npm/v/@autoguru/babel-preset.svg?style=flat-square)](https://npmjs.org/package/@autoguru/babel-preset 'View @autoguru/babel-preset on npm') |
+| [@autoguru/jest-preset](packages/jest-preset)   | [![npm version](http://img.shields.io/npm/v/@autoguru/jest-preset.svg?style=flat-square)](https://npmjs.org/package/@autoguru/jest-preset 'View @autoguru/jest-preset on npm')    |
 
 ## License
 
 MIT &copy; [AutoGuru](https://www.autoguru.com.au/), see [LICENSE](LICENSE) for details.
 
-<a href="http://www.autoguru.com.au/"><img src="https://cdn.autoguru.com.au/images/logos/autoguru-muted.svg" alt="AutoGuru" width="200" /></a>
+<a href="http://www.autoguru.com.au/"><img src="https://cdn.autoguru.com.au/images/logos/autoguru.svg" alt="AutoGuru" width="150" /></a>
