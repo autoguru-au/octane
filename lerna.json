@@ -2,5 +2,10 @@
 	"version": "1.0.10",
 	"npmClient": "yarn",
 	"useWorkspaces": true,
-	"packages": ["packages/*"]
+	"packages": ["packages/*"],
+	"command": {
+		"publish": {
+			"message": "chore(release): :rocket: publish %v"
+		}
+	}
 }
