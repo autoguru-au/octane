@@ -17,6 +17,7 @@ The project is maintained as a monorepo which composes a wide array of npm packa
 | [`@autoguru/babel-preset`](packages/babel-preset) | [![npm version](http://img.shields.io/npm/v/@autoguru/babel-preset.svg?style=flat-square)](https://npmjs.org/package/@autoguru/babel-preset 'View @autoguru/babel-preset on npm') |
 | [`@autoguru/jest-preset`](packages/jest-preset)   | [![npm version](http://img.shields.io/npm/v/@autoguru/jest-preset.svg?style=flat-square)](https://npmjs.org/package/@autoguru/jest-preset 'View @autoguru/jest-preset on npm')    |
 | [`@autoguru/tsconfig`](packages/tsconfig)         | [![npm version](http://img.shields.io/npm/v/@autoguru/tsconfig.svg?style=flat-square)](https://npmjs.org/package/@autoguru/tsconfig 'View @autoguru/tsconfig on npm')             |
+| [`@autoguru/utilities`](packages/utilities)       | [![npm version](http://img.shields.io/npm/v/@autoguru/utilities.svg?style=flat-square)](https://npmjs.org/package/@autoguru/utilities 'View @autoguru/utilities on npm')          |
 
 ## License
 
