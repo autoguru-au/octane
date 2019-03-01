@@ -5,7 +5,6 @@
 		"allowSyntheticDefaultImports": true,
 		"allowUnreachableCode": false,
 		"alwaysStrict": true,
-		"baseUrl": "./",
 		"checkJs": false,
 		"declaration": false,
 		"downlevelIteration": true,
@@ -15,30 +14,23 @@
 		"forceConsistentCasingInFileNames": true,
 		"importHelpers": true,
 		"jsx": "preserve",
-		"lib": ["dom", "esnext"],
 		"module": "esnext",
 		"moduleResolution": "node",
 		"noEmit": false,
 		"noEmitHelpers": true,
 		"noFallthroughCasesInSwitch": true,
+		"noImplicitAny": false,
 		"noImplicitReturns": true,
 		"noImplicitThis": true,
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
-		"outDir": "./dist",
 		"pretty": true,
 		"removeComments": true,
-		"sourceMap": true,
+		"sourceMap": false,
 		"strict": true,
 		"strictBindCallApply": true,
-		"suppressImplicitAnyIndexErrors": true,
-		"target": "esnext",
-		"paths": {
-			"@autoguru/*": ["./packages/*"],
-			"@app/*": ["./apps/*"]
-		},
 		"strictNullChecks": false,
-		"noImplicitAny": false
-	},
-	"files": ["./global.d.ts"]
+		"suppressImplicitAnyIndexErrors": true,
+		"target": "esnext"
+	}
 }
