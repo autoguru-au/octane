@@ -19,8 +19,8 @@
   "devDependencies": {
     "@autoguru/jest-preset": "^1.0.12",
     "@autoguru/tsconfig": "^1.0.12",
-    "rollup": "^1.4.1",
-    "rollup-plugin-typescript2": "^0.19.3",
+    "rollup": "^1.6.0",
+    "rollup-plugin-typescript2": "^0.20.0",
     "typescript": "^3.3.0"
   },
   "publishConfig": {
