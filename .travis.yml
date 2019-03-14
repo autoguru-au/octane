@@ -1,0 +1,19 @@
+language: node_js
+cache: yarn
+
+notifications:
+  email: false
+
+env:
+  - TZ=Australia/Brisbane
+
+branches:
+  except:
+    - /^v\d+\.\d+\.\d+$/
+
+jobs:
+  include:
+    - stage: test
+      script: yarn test --no-cache --ci --coverage
+      after_success:
+        - curl -s https://codecov.io/bash | bash
