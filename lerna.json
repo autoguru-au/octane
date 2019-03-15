@@ -5,7 +5,7 @@
 	"packages": ["packages/*"],
 	"command": {
 		"publish": {
-			"message": "chore(release): :rocket: publish %v"
+			"message": "chore(release): :rocket: Published %v"
 		}
 	}
 }
