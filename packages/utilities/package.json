@@ -21,7 +21,7 @@
     "@autoguru/tsconfig": "^1.0.12",
     "rollup": "^1.6.0",
     "rollup-plugin-typescript2": "^0.20.1",
-    "typescript": "^3.3.0"
+    "typescript": "~3.3.0"
   },
   "publishConfig": {
     "access": "public"
