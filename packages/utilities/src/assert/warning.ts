@@ -3,10 +3,7 @@ export const warning = (
 	message: string,
 	...args: Array<any>
 ): void => {
-	if (
-		process.env.NODE_ENV === 'development' ||
-		process.env.NODE_ENV === 'test'
-	) {
+	if (process.env.NODE_ENV !== 'production') {
 		if (condition === true) {
 			if (message === void 0) {
 				throw new Error(
