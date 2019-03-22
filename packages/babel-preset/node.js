@@ -21,7 +21,7 @@ module.exports = function autoGuruNodePreset(api, options = {}) {
 					spec: false,
 					targets: { node: version },
 					useBuiltIns: 'entry',
-					corejs: 3,
+					corejs: 2,
 				},
 			],
 		],

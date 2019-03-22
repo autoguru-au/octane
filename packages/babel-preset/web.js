@@ -17,7 +17,7 @@ module.exports = function autoGuruWebPreset(api, options = {}) {
 					modules,
 					spec: false,
 					useBuiltIns: 'usage',
-					corejs: 3,
+					corejs: 2,
 				},
 			],
 		],

@@ -20,11 +20,11 @@
   "devDependencies": {
     "@autoguru/jest-preset": "^1.0.15",
     "@babel/core": "^7.4.0",
-    "core-js": "^3.0.0"
+    "core-js": "^2.6.5"
   },
   "peerDependencies": {
     "@babel/core": "^7.4.0",
-    "core-js": "^3.0.0"
+    "core-js": "^2.6.5"
   },
   "publishConfig": {
     "access": "public"
