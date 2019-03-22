@@ -1,6 +1,6 @@
 {
   "name": "@autoguru/babel-preset",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "description": "AutoGuru's org-wide Babel preset",
   "homepage": "https://github.com/autoguru-au/octane/tree/master/packages/babel-preset#readme",
   "repository": "https://github.com/autoguru-au/octane/tree/master/packages/babel-preset",
@@ -18,7 +18,7 @@
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24"
   },
   "devDependencies": {
-    "@autoguru/jest-preset": "^1.0.16",
+    "@autoguru/jest-preset": "^1.0.17",
     "@babel/core": "^7.4.0",
     "core-js": "^2.6.5"
   },
