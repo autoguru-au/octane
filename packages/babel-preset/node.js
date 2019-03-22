@@ -25,5 +25,8 @@ module.exports = function autoGuruNodePreset(api, options = {}) {
 				},
 			],
 		],
+		plugins: sharedPlugins(env, {
+			useESModules: false,
+		}),
 	};
 };
