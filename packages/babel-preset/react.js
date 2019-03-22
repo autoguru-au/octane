@@ -6,6 +6,8 @@ module.exports = function autoGuruReactPreset(api, options = {}) {
 
 	if (!isDevelopment) {
 		plugins.push(
+			require.resolve('@babel/plugin-transform-react-inline-elements'),
+			require.resolve('babel-plugin-transform-react-remove-prop-types'),
 			require.resolve('@babel/plugin-transform-react-constant-elements')
 		);
 	}
