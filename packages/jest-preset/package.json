@@ -1,13 +1,13 @@
 {
   "name": "@autoguru/jest-preset",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "description": "AutoGuru's generic Jest preset",
   "homepage": "https://github.com/autoguru-au/octane/tree/master/packages/jest-preset#readme",
   "repository": "https://github.com/autoguru-au/octane/tree/master/packages/jest-preset",
   "license": "MIT",
   "main": "jest-preset.js",
   "dependencies": {
-    "@autoguru/babel-preset": "^1.0.17",
+    "@autoguru/babel-preset": "^1.0.18",
     "@babel/core": "^7.4.0",
     "@babel/preset-typescript": "^7.3.3",
     "babel-jest": "^24.5.0",
