@@ -3,8 +3,7 @@
 ## Usage
 
 ```sh
-yarn add --dev browserslist-config-autoguru \
-	browserslist
+yarn add --dev browserslist-config-autoguru
 ```
 
 then in your `package.json` or `.browserslistrc` file:
