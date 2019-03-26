@@ -5,7 +5,8 @@
 ## Usage
 
 ```sh
-yarn add --dev @babel/core @autoguru/babel-preset
+yarn add --dev @autoguru/babel-preset \
+	@babel/core
 ```
 
 Then, in your `babel.config.js`, or `.babelrc` file:

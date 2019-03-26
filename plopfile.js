@@ -18,6 +18,17 @@ module.exports = function(plop) {
 						packages: getPackages(),
 					},
 				},
+				{
+					type: 'add',
+					path: 'packages/browserslist-config/readme.md',
+					templateFile: 'templates/browserslist-config_readme.hbs.md',
+					force: true,
+					data: {
+						browsers: require('browserslist')(
+							require('./packages/browserslist-config/index')
+						).join('\n'),
+					},
+				},
 			];
 		},
 	});
@@ -35,5 +46,14 @@ function getPackages() {
 				name: pkg.name,
 				description: pkg.description,
 			};
+		})
+		.sort((a, b) => {
+			if (a.name < b.name) {
+				return -1;
+			}
+			if (a.name > b.name) {
+				return 1;
+			}
+			return 0;
 		});
 }
