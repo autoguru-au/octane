@@ -12,13 +12,14 @@ The project is maintained as a monorepo which composes a wide array of npm packa
 
 ### Index
 
-| package                                                     |                                                                                                                                                                                                  |
-| ----------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| [`@autoguru/babel-preset`](packages/babel-preset)           | [![npm version](http://img.shields.io/npm/v/@autoguru/babel-preset.svg?style=flat-square)](https://npmjs.org/package/@autoguru/babel-preset 'View @autoguru/babel-preset on npm')                |
-| [`@autoguru/commitlint-config`](packages/commitlint-config) | [![npm version](http://img.shields.io/npm/v/@autoguru/commitlint-config.svg?style=flat-square)](https://npmjs.org/package/@autoguru/commitlint-config 'View @autoguru/commitlint-config on npm') |
-| [`@autoguru/jest-preset`](packages/jest-preset)             | [![npm version](http://img.shields.io/npm/v/@autoguru/jest-preset.svg?style=flat-square)](https://npmjs.org/package/@autoguru/jest-preset 'View @autoguru/jest-preset on npm')                   |
-| [`@autoguru/tsconfig`](packages/tsconfig)                   | [![npm version](http://img.shields.io/npm/v/@autoguru/tsconfig.svg?style=flat-square)](https://npmjs.org/package/@autoguru/tsconfig 'View @autoguru/tsconfig on npm')                            |
-| [`@autoguru/utilities`](packages/utilities)                 | [![npm version](http://img.shields.io/npm/v/@autoguru/utilities.svg?style=flat-square)](https://npmjs.org/package/@autoguru/utilities 'View @autoguru/utilities on npm')                         |
+| package                                                        |                                                                                                                                                                                                     |
+| -------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`@autoguru/babel-preset`](packages/babel-preset)              | [![npm version](http://img.shields.io/npm/v/@autoguru/babel-preset.svg?style=flat-square)](https://npmjs.org/package/@autoguru/babel-preset 'View @autoguru/babel-preset on npm')                   |
+| [`@autoguru/commitlint-config`](packages/commitlint-config)    | [![npm version](http://img.shields.io/npm/v/@autoguru/commitlint-config.svg?style=flat-square)](https://npmjs.org/package/@autoguru/commitlint-config 'View @autoguru/commitlint-config on npm')    |
+| [`@autoguru/jest-preset`](packages/jest-preset)                | [![npm version](http://img.shields.io/npm/v/@autoguru/jest-preset.svg?style=flat-square)](https://npmjs.org/package/@autoguru/jest-preset 'View @autoguru/jest-preset on npm')                      |
+| [`@autoguru/tsconfig`](packages/tsconfig)                      | [![npm version](http://img.shields.io/npm/v/@autoguru/tsconfig.svg?style=flat-square)](https://npmjs.org/package/@autoguru/tsconfig 'View @autoguru/tsconfig on npm')                               |
+| [`@autoguru/utilities`](packages/utilities)                    | [![npm version](http://img.shields.io/npm/v/@autoguru/utilities.svg?style=flat-square)](https://npmjs.org/package/@autoguru/utilities 'View @autoguru/utilities on npm')                            |
+| [`browserslist-config-autoguru`](packages/browserslist-config) | [![npm version](http://img.shields.io/npm/v/browserslist-config-autoguru.svg?style=flat-square)](https://npmjs.org/package/browserslist-config-autoguru 'View browserslist-config-autoguru on npm') |
 
 ## License
 

@@ -1,0 +1,18 @@
+{
+  "name": "browserslist-config-autoguru",
+  "version": "1.0.17",
+  "description": "AutoGuru's org-wide browserslist config",
+  "homepage": "https://github.com/autoguru-au/octane/tree/master/packages/browserslist-config#readme",
+  "repository": "https://github.com/autoguru-au/octane/tree/master/packages/browserslist-config",
+  "license": "MIT",
+  "main": "index.js",
+  "devDependencies": {
+    "browserslist": "^4.5.0"
+  },
+  "peerDependencies": {
+    "browserslist": "^4.5.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
