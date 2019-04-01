@@ -1,6 +1,6 @@
 {
   "name": "browserslist-config-autoguru",
-  "version": "1.0.19",
+  "version": "1.0.20",
   "description": "AutoGuru's org-wide browserslist config",
   "homepage": "https://github.com/autoguru-au/octane/tree/master/packages/browserslist-config#readme",
   "repository": "https://github.com/autoguru-au/octane/tree/master/packages/browserslist-config",
