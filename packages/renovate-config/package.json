@@ -12,39 +12,39 @@
     "default": {
       "extends": [
         "config:base"
+      ],
+      "branchPrefix": "renovate--",
+      "prHourlyLimit": "4",
+      "ignoreNpmrcFile": true,
+      "schedule": [
+        "after 4pm and before 8am every weekday",
+        "every weekend"
+      ],
+      "timezone": "Australia/Brisbane",
+      "semanticCommits": true,
+      "commitMessagePrefix": "{{semanticCommitType}}({{semanticCommitScope}}):",
+      "commitMessageAction": "{{#if isPin}}Pin{{else}}{{#if isRollback}}Roll back{{else}}Update{{/if}}{{/if}}",
+      "commitMessageExtra": "to {{#unless isRange}}v{{/unless}}{{#if isMajor}}{{newVersionMajor}}.x{{else}}{{newVersion}}{{/if}}",
+      "packageRules": [
+        {
+          "depTypeList": [
+            "dependencies"
+          ],
+          "rangeStrategy": "auto"
+        },
+        {
+          "depTypeList": [
+            "devDependencies"
+          ],
+          "rangeStrategy": "replace"
+        },
+        {
+          "depTypeList": [
+            "peerDependencies"
+          ],
+          "rangeStrategy": "widen"
+        }
       ]
-    },
-    "branchPrefix": "renovate--",
-    "prHourlyLimit": "4",
-    "ignoreNpmrcFile": true,
-    "schedule": [
-      "after 4pm and before 8am every weekday",
-      "every weekend"
-    ],
-    "timezone": "Australia/Brisbane",
-    "semanticCommits": true,
-    "commitMessagePrefix": "{{semanticCommitType}}({{semanticCommitScope}}):",
-    "commitMessageAction": "{{#if isPin}}Pin{{else}}{{#if isRollback}}Roll back{{else}}Update{{/if}}{{/if}}",
-    "commitMessageExtra": "to {{#unless isRange}}v{{/unless}}{{#if isMajor}}{{newVersionMajor}}.x{{else}}{{newVersion}}{{/if}}",
-    "packageRules": [
-      {
-        "depTypeList": [
-          "dependencies"
-        ],
-        "rangeStrategy": "auto"
-      },
-      {
-        "depTypeList": [
-          "devDependencies"
-        ],
-        "rangeStrategy": "replace"
-      },
-      {
-        "depTypeList": [
-          "peerDependencies"
-        ],
-        "rangeStrategy": "widen"
-      }
-    ]
+    }
   }
 }
