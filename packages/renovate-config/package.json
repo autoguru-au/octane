@@ -27,10 +27,17 @@
       "commitMessageExtra": "to {{#unless isRange}}v{{/unless}}{{#if isMajor}}{{newVersionMajor}}.x{{else}}{{newVersion}}{{/if}}",
       "packageRules": [
         {
+          "packagePatterns": [
+            "@autoguru/.*"
+          ],
+          "schedule": "at any time",
+          "groupName": "AutoGuru"
+        },
+        {
           "depTypeList": [
             "dependencies"
           ],
-          "rangeStrategy": "auto"
+          "rangeStrategy": "update-lockfile"
         },
         {
           "depTypeList": [
