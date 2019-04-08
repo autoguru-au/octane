@@ -22,6 +22,7 @@
       ],
       "timezone": "Australia/Brisbane",
       "semanticCommits": true,
+      "semanticCommitType": "chore",
       "commitMessagePrefix": "{{semanticCommitType}}({{semanticCommitScope}}):",
       "commitMessageAction": "{{#if isPin}}Pin{{else}}{{#if isRollback}}Roll back{{else}}Update{{/if}}{{/if}}",
       "commitMessageExtra": "to {{#unless isRange}}v{{/unless}}{{#if isMajor}}{{newVersionMajor}}.x{{else}}{{newVersion}}{{/if}}",
