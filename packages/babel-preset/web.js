@@ -23,7 +23,12 @@ module.exports = function autoGuruWebPreset(api, options = {}) {
 			],
 		],
 		plugins: [].concat(
-			sharedPlugins(env),
+			sharedPlugins({
+				isDevelopment,
+				modules,
+				debug,
+				corejs,
+			}),
 			require.resolve('babel-plugin-macros')
 		),
 	};

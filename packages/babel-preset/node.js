@@ -8,6 +8,7 @@ module.exports = function autoGuruNodePreset(api, options = {}) {
 		version = 'current',
 		modules = 'commonjs',
 		debug = isDevelopment,
+		corejs = 2,
 	} = options;
 
 	return {
@@ -15,18 +16,21 @@ module.exports = function autoGuruNodePreset(api, options = {}) {
 			[
 				require.resolve('@babel/preset-env'),
 				{
+					corejs,
 					debug,
 					loose: true,
 					modules,
 					spec: false,
+					shippedProposals: true,
 					targets: { node: version },
-					useBuiltIns: 'entry',
-					corejs: 2,
+					useBuiltIns: 'usage',
 				},
 			],
 		],
-		plugins: sharedPlugins(env, {
-			useESModules: false,
+		plugins: sharedPlugins({
+			modules,
+			debug,
+			corejs,
 		}),
 	};
 };

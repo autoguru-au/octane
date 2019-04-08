@@ -1,7 +1,4 @@
-module.exports = function autoGuruSharedPlugins(env, options = {}) {
-	const isDevelopment = env === 'development' || env === 'test';
-	const { useESModules = true } = options;
-
+module.exports = function autoGuruSharedPlugins(options) {
 	const plugins = [
 		[
 			require.resolve('@babel/plugin-proposal-class-properties'),
@@ -15,14 +12,15 @@ module.exports = function autoGuruSharedPlugins(env, options = {}) {
 		],
 	];
 
-	return !isDevelopment
+	return !options.isDevelopment
 		? [
 				...plugins,
 				require.resolve('@babel/plugin-transform-strict-mode'),
 				[
 					require.resolve('@babel/plugin-transform-runtime'),
 					{
-						useESModules,
+						useESModules: options.modules !== 'commonjs',
+						corejs: options.corejs,
 					},
 				],
 		  ]

@@ -3,17 +3,13 @@
 exports[`web preset should allow for corejs override 1`] = `
 "\\"use strict\\";
 
-import \\"core-js/modules/es.array.iterator\\";
-import \\"core-js/modules/es.map\\";
-import \\"core-js/modules/es.object.assign\\";
-import \\"core-js/modules/es.object.to-string\\";
-import \\"core-js/modules/es.string.iterator\\";
-import \\"core-js/modules/web.dom-collections.iterator\\";
-import _createClass from \\"@babel/runtime/helpers/esm/createClass\\";
+import _Object$assign from \\"@babel/runtime-corejs3/core-js-stable/object/assign\\";
+import _createClass from \\"@babel/runtime-corejs3/helpers/esm/createClass\\";
+import _Map from \\"@babel/runtime-corejs3/core-js-stable/map\\";
 
-var _Object$assign;
+var _Object$assign2;
 
-var myVar = new Map([]);
+var myVar = new _Map([]);
 
 var TestClass =
 /*#__PURE__*/
@@ -38,25 +34,22 @@ var objectA = {
   b: 'b'
 };
 var d = 'd';
-var objectB = Object.assign({}, objectA, (_Object$assign = {
+
+var objectB = _Object$assign({}, objectA, (_Object$assign2 = {
   c: 'c'
-}, _Object$assign[d] = 'd', _Object$assign));"
+}, _Object$assign2[d] = 'd', _Object$assign2));"
 `;
 
 exports[`web preset should match the snapshot 1`] = `
 "\\"use strict\\";
 
-import \\"core-js/modules/es6.object.assign\\";
-import _createClass from \\"@babel/runtime/helpers/esm/createClass\\";
-import \\"core-js/modules/web.dom.iterable\\";
-import \\"core-js/modules/es6.array.iterator\\";
-import \\"core-js/modules/es6.object.to-string\\";
-import \\"core-js/modules/es6.string.iterator\\";
-import \\"core-js/modules/es6.map\\";
+import _Object$assign from \\"@babel/runtime-corejs2/core-js/object/assign\\";
+import _createClass from \\"@babel/runtime-corejs2/helpers/esm/createClass\\";
+import _Map from \\"@babel/runtime-corejs2/core-js/map\\";
 
-var _Object$assign;
+var _Object$assign2;
 
-var myVar = new Map([]);
+var myVar = new _Map([]);
 
 var TestClass =
 /*#__PURE__*/
@@ -81,7 +74,8 @@ var objectA = {
   b: 'b'
 };
 var d = 'd';
-var objectB = Object.assign({}, objectA, (_Object$assign = {
+
+var objectB = _Object$assign({}, objectA, (_Object$assign2 = {
   c: 'c'
-}, _Object$assign[d] = 'd', _Object$assign));"
+}, _Object$assign2[d] = 'd', _Object$assign2));"
 `;
