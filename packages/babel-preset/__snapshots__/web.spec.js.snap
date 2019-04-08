@@ -1,5 +1,50 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`web preset should allow for corejs override 1`] = `
+"\\"use strict\\";
+
+import \\"core-js/modules/es.array.iterator\\";
+import \\"core-js/modules/es.map\\";
+import \\"core-js/modules/es.object.assign\\";
+import \\"core-js/modules/es.object.to-string\\";
+import \\"core-js/modules/es.string.iterator\\";
+import \\"core-js/modules/web.dom-collections.iterator\\";
+import _createClass from \\"@babel/runtime/helpers/esm/createClass\\";
+import _defineProperty from \\"@babel/runtime/helpers/esm/defineProperty\\";
+
+var _Object$assign;
+
+var myVar = new Map([]);
+
+var TestClass =
+/*#__PURE__*/
+function () {
+  function TestClass() {
+    _defineProperty(this, \\"prop\\", 'prop');
+  }
+
+  _createClass(TestClass, [{
+    key: \\"getterProp\\",
+    get: function get() {
+      return 'getter prop';
+    }
+  }]);
+
+  return TestClass;
+}();
+
+_defineProperty(TestClass, \\"staticProp\\", 'static prop');
+
+var objectA = {
+  a: 'a',
+  b: 'b'
+};
+var d = 'd';
+var objectB = Object.assign({}, objectA, (_Object$assign = {
+  c: 'c'
+}, _Object$assign[d] = 'd', _Object$assign));"
+`;
+
 exports[`web preset should match the snapshot 1`] = `
 "\\"use strict\\";
 

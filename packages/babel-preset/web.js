@@ -5,19 +5,19 @@ module.exports = function autoGuruWebPreset(api, options = {}) {
 
 	const isDevelopment = env === 'development' || env === 'test';
 
-	const { modules = false, debug = !isDevelopment } = options;
+	const { modules = false, debug = !isDevelopment, corejs = 2 } = options;
 
 	return {
 		presets: [
 			[
 				require.resolve('@babel/preset-env'),
 				{
+					corejs,
 					debug,
 					loose: true,
 					modules,
 					spec: false,
 					useBuiltIns: 'usage',
-					corejs: 2,
 				},
 			],
 		],
