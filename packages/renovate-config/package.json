@@ -32,19 +32,14 @@
             "@autoguru/.*"
           ],
           "schedule": "at any time",
-          "groupName": "AutoGuru"
+          "rangeStrategy": "replace"
         },
         {
           "depTypeList": [
-            "dependencies"
-          ],
-          "rangeStrategy": "update-lockfile"
-        },
-        {
-          "depTypeList": [
+            "dependencies",
             "devDependencies"
           ],
-          "rangeStrategy": "replace"
+          "rangeStrategy": "update-lockfile"
         },
         {
           "depTypeList": [

@@ -20,6 +20,7 @@ The project is maintained as a monorepo which composes a wide array of npm packa
 | [`@autoguru/tsconfig`](packages/tsconfig)                      | [![npm version](http://img.shields.io/npm/v/@autoguru/tsconfig.svg?style=flat-square)](https://npmjs.org/package/@autoguru/tsconfig 'View @autoguru/tsconfig on npm')                               |
 | [`@autoguru/utilities`](packages/utilities)                    | [![npm version](http://img.shields.io/npm/v/@autoguru/utilities.svg?style=flat-square)](https://npmjs.org/package/@autoguru/utilities 'View @autoguru/utilities on npm')                            |
 | [`browserslist-config-autoguru`](packages/browserslist-config) | [![npm version](http://img.shields.io/npm/v/browserslist-config-autoguru.svg?style=flat-square)](https://npmjs.org/package/browserslist-config-autoguru 'View browserslist-config-autoguru on npm') |
+| [`renovate-config-autoguru`](packages/renovate-config)         | [![npm version](http://img.shields.io/npm/v/renovate-config-autoguru.svg?style=flat-square)](https://npmjs.org/package/renovate-config-autoguru 'View renovate-config-autoguru on npm')             |
 
 ## License
 
