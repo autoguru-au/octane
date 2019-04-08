@@ -19,8 +19,7 @@
   },
   "devDependencies": {
     "@autoguru/jest-preset": "^1.0.21",
-    "@babel/core": "^7.4.3",
-    "core-js": "^2.6.5"
+    "@babel/core": "^7.4.3"
   },
   "peerDependencies": {
     "@babel/core": "^7.4.0",
