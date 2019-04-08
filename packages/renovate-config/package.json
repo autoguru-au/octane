@@ -14,7 +14,6 @@
         "config:base"
       ],
       "branchPrefix": "renovate--",
-      "prHourlyLimit": "4",
       "ignoreNpmrcFile": true,
       "schedule": [
         "after 4pm and before 8am every weekday",
@@ -32,7 +31,8 @@
             "@autoguru/.*"
           ],
           "schedule": "at any time",
-          "rangeStrategy": "replace"
+          "rangeStrategy": "replace",
+          "groupName": "AutoGuru"
         },
         {
           "depTypeList": [
