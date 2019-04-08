@@ -13,16 +13,6 @@ module.exports = function autoGuruSharedPlugins(options) {
 	];
 
 	return !options.isDevelopment
-		? [
-				...plugins,
-				require.resolve('@babel/plugin-transform-strict-mode'),
-				[
-					require.resolve('@babel/plugin-transform-runtime'),
-					{
-						useESModules: options.modules !== 'commonjs',
-						corejs: options.corejs,
-					},
-				],
-		  ]
+		? [...plugins, require.resolve('@babel/plugin-transform-strict-mode')]
 		: plugins;
 };

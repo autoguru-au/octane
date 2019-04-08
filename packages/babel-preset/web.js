@@ -22,14 +22,21 @@ module.exports = function autoGuruWebPreset(api, options = {}) {
 				},
 			],
 		],
-		plugins: [].concat(
-			sharedPlugins({
+		plugins: [
+			...sharedPlugins({
 				isDevelopment,
 				modules,
 				debug,
 				corejs,
 			}),
-			require.resolve('babel-plugin-macros')
-		),
+			require.resolve('babel-plugin-macros'),
+			[
+				require.resolve('@babel/plugin-transform-runtime'),
+				{
+					useESModules: modules === false ? false : 'auto',
+					corejs: options.corejs,
+				},
+			],
+		].filter(Boolean),
 	};
 };

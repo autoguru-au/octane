@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`node preset should allow for corejs override 1`] = `
+"\\"use strict\\";
+
+const myVar = new Map([]);
+
+class TestClass {
+  constructor() {
+    this.prop = 'prop';
+  }
+
+  get getterProp() {
+    return 'getter prop';
+  }
+
+}
+
+TestClass.staticProp = 'static prop';
+const objectA = {
+  a: 'a',
+  b: 'b'
+};
+const d = 'd';
+const objectB = Object.assign({}, objectA, {
+  c: 'c',
+  [d]: 'd'
+});"
+`;
+
+exports[`node preset should match the snapshot 1`] = `
+"\\"use strict\\";
+
+const myVar = new Map([]);
+
+class TestClass {
+  constructor() {
+    this.prop = 'prop';
+  }
+
+  get getterProp() {
+    return 'getter prop';
+  }
+
+}
+
+TestClass.staticProp = 'static prop';
+const objectA = {
+  a: 'a',
+  b: 'b'
+};
+const d = 'd';
+const objectB = Object.assign({}, objectA, {
+  c: 'c',
+  [d]: 'd'
+});"
+`;
