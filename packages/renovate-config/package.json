@@ -19,6 +19,10 @@
         "after 4pm and before 8am every weekday",
         "every weekend"
       ],
+      "lockFileMaintenance": {
+        "enabled": true,
+        "extends": "schedule:weekly"
+      },
       "timezone": "Australia/Brisbane",
       "semanticCommits": true,
       "semanticCommitType": "chore",
@@ -31,15 +35,20 @@
             "@autoguru/.*"
           ],
           "schedule": "at any time",
-          "rangeStrategy": "replace",
+          "rangeStrategy": "bump",
           "groupName": "AutoGuru"
         },
         {
           "depTypeList": [
-            "dependencies",
+            "dependencies"
+          ],
+          "rangeStrategy": "bump"
+        },
+        {
+          "depTypeList": [
             "devDependencies"
           ],
-          "rangeStrategy": "update-lockfile"
+          "rangeStrategy": "replace"
         },
         {
           "depTypeList": [
