@@ -17,10 +17,14 @@ module.exports = function autoGuruWebPreset(api, options = {}) {
 					loose: true,
 					modules,
 					spec: false,
+					shippedProposals: true,
 					useBuiltIns: 'usage',
 				},
 			],
 		],
-		plugins: sharedPlugins(env),
+		plugins: [].concat(
+			sharedPlugins(env),
+			require.resolve('babel-plugin-macros')
+		),
 	};
 };
