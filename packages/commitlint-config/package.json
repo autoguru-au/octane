@@ -6,6 +6,9 @@
   "repository": "https://github.com/autoguru-au/octane/tree/master/packages/commitlint-config",
   "license": "MIT",
   "main": "index.js",
+  "devDependencies": {
+    "@commitlint/core": "^7.5.2"
+  },
   "dependencies": {
     "@commitlint/config-conventional": "^7.5.0"
   },

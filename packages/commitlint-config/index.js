@@ -3,5 +3,20 @@ module.exports = {
 	rules: {
 		'scope-case': [0],
 		'subject-case': [2, 'always', 'sentence-case'],
+		'type-enum': [
+			2,
+			'always',
+			[
+				'chore',
+				'docs',
+				'feat',
+				'fix',
+				'perf',
+				'refactor',
+				'style',
+				'revert',
+				'test',
+			],
+		],
 	},
 };
