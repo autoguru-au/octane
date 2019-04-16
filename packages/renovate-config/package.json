@@ -13,7 +13,7 @@
       "extends": [
         "config:base"
       ],
-      "branchPrefix": "renovate--",
+      "branchPrefix": "renovate/",
       "ignoreNpmrcFile": true,
       "schedule": [
         "after 4pm and before 8am every weekday",
@@ -21,7 +21,7 @@
       ],
       "lockFileMaintenance": {
         "enabled": true,
-        "extends": "schedule:weekly"
+        "extends": "schedule:daily"
       },
       "timezone": "Australia/Brisbane",
       "semanticCommits": true,
