@@ -7,7 +7,7 @@
   "license": "MIT",
   "main": "index.js",
   "devDependencies": {
-    "browserslist": "^4.5.4"
+    "browserslist": "^4.5.5"
   },
   "publishConfig": {
     "access": "public"
