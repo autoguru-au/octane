@@ -32,7 +32,8 @@
       "packageRules": [
         {
           "packagePatterns": [
-            "@autoguru/.*"
+            "^@autoguru",
+            "-autoguru$"
           ],
           "schedule": "at any time",
           "rangeStrategy": "bump",
