@@ -24,7 +24,7 @@
         "schedule": "after 1pm and before 8am every 2nd day"
       },
       "timezone": "Australia/Brisbane",
-      "semanticCommits": true,
+      "semanticCommits": false,
       "semanticCommitType": "chore",
       "commitMessagePrefix": "{{semanticCommitType}}({{semanticCommitScope}}):",
       "commitMessageAction": "{{#if isPin}}Pin{{else}}{{#if isRollback}}Roll back{{else}}Update{{/if}}{{/if}}",
