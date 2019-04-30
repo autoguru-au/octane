@@ -2,7 +2,7 @@ const sharedPlugins = require('./sharedPlugins');
 const { isDevelopment } = require('./utils');
 
 module.exports = function autoGuruWebPreset(api, options = {}) {
-	const { modules = false, debug = isDevelopment(api), corejs = 2 } = options;
+	const { modules = false, debug = false, corejs = 2 } = options;
 
 	return {
 		presets: [
