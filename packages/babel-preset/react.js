@@ -1,10 +1,9 @@
-module.exports = function autoGuruReactPreset(api, options = {}) {
-	const env = api.env();
-	const isDevelopment = env === 'development' || env === 'test';
+const { isDevelopment } = require('./utils');
 
+module.exports = function autoGuruReactPreset(api, options = {}) {
 	const plugins = [];
 
-	if (!isDevelopment) {
+	if (!isDevelopment(api)) {
 		plugins.push(
 			require.resolve('@babel/plugin-transform-react-inline-elements'),
 			require.resolve('babel-plugin-transform-react-remove-prop-types'),
@@ -18,7 +17,7 @@ module.exports = function autoGuruReactPreset(api, options = {}) {
 				require.resolve('@babel/preset-react'),
 				{
 					useBuiltIns: true,
-					development: isDevelopment,
+					development: isDevelopment(api),
 				},
 			],
 		],

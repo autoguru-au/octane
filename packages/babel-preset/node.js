@@ -1,13 +1,11 @@
 const sharedPlugins = require('./sharedPlugins');
+const { isDevelopment } = require('./utils');
 
 module.exports = function autoGuruNodePreset(api, options = {}) {
-	const env = api.env();
-	const isDevelopment = env === 'development' || env === 'test';
-
 	const {
 		version = 'current',
 		modules = 'commonjs',
-		debug = isDevelopment,
+		debug = isDevelopment(api),
 		corejs = 2,
 	} = options;
 
