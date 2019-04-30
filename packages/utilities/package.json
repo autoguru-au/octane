@@ -20,8 +20,8 @@
     "@autoguru/jest-preset": "^1.0.25",
     "@autoguru/tsconfig": "^1.0.12",
     "rollup": "^1.10.1",
-    "rollup-plugin-typescript2": "^0.20.1",
-    "typescript": "~3.4.4"
+    "rollup-plugin-typescript2": "^0.21.0",
+    "typescript": "~3.4.5"
   },
   "publishConfig": {
     "access": "public"
