@@ -5,7 +5,7 @@ module.exports = function autoGuruWebPreset(api, options = {}) {
 
 	const isDevelopment = env === 'development' || env === 'test';
 
-	const { modules = false, debug = !isDevelopment, corejs = 2 } = options;
+	const { modules = false, debug = isDevelopment, corejs = 2 } = options;
 
 	return {
 		presets: [
