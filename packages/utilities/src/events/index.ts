@@ -1,0 +1,1 @@
+export { wrapEvent } from './wrapEvent';
