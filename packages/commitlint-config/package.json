@@ -1,6 +1,6 @@
 {
   "name": "@autoguru/commitlint-config",
-  "version": "1.0.34",
+  "version": "1.0.40",
   "description": "AutoGuru's shareable commitlint config",
   "homepage": "https://github.com/autoguru-au/octane/tree/master/packages/commitlint-config#readme",
   "repository": "https://github.com/autoguru-au/octane/tree/master/packages/commitlint-config",
