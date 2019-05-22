@@ -8,9 +8,9 @@
   "main": "jest-preset.js",
   "dependencies": {
     "@autoguru/babel-preset": "^1.0.39",
-    "@babel/core": "^7.4.4",
+    "@babel/core": "^7.4.5",
     "@babel/preset-typescript": "^7.3.3",
-    "babel-jest": "^24.7.1"
+    "babel-jest": "^24.8.0"
   },
   "publishConfig": {
     "access": "public"

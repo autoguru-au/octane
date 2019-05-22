@@ -15,10 +15,11 @@ extends browserslist-config-autoguru
 ### Support
 
 ```
-and_chr 73
+and_chr 74
 and_ff 66
 and_uc 11.8
 android 4.4.3-4.4.4
+chrome 74
 chrome 73
 chrome 72
 chrome 71
