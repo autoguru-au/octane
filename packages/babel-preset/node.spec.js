@@ -32,7 +32,7 @@ describe('node preset', function() {
 	it('should allow for corejs override', async () => {
 		const { code } = await transformAsync(fixture, {
 			babelrc: false,
-			presets: [[require('./node'), { debug: false, corejs: 3 }]],
+			presets: [[require('./node'), { debug: false, corejs: 2 }]],
 		});
 
 		return expect(code).toMatchSnapshot();

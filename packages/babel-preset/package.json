@@ -17,7 +17,8 @@
     "@babel/preset-env": "^7.4.5",
     "@babel/preset-react": "^7.0.0",
     "babel-plugin-macros": "^2.5.1",
-    "babel-plugin-transform-react-remove-prop-types": "^0.4.24"
+    "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
+    "@babel/runtime-corejs3": "^7.4.5"
   },
   "devDependencies": {
     "@autoguru/jest-preset": "^1.0.40",

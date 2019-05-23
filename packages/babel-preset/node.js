@@ -6,7 +6,7 @@ module.exports = function autoGuruNodePreset(api, options = {}) {
 		version = 'current',
 		modules = 'commonjs',
 		debug = isDevelopment(api),
-		corejs = 2,
+		corejs = 3,
 	} = options;
 
 	return {

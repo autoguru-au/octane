@@ -5,19 +5,19 @@ exports[`web preset should allow for cjs modules 1`] = `
 
 var _interopRequireDefault = require(\\"@babel/runtime/helpers/interopRequireDefault\\");
 
-require(\\"core-js/modules/es6.object.assign\\");
+require(\\"core-js/modules/es.array.iterator\\");
+
+require(\\"core-js/modules/es.map\\");
+
+require(\\"core-js/modules/es.object.assign\\");
+
+require(\\"core-js/modules/es.object.to-string\\");
+
+require(\\"core-js/modules/es.string.iterator\\");
+
+require(\\"core-js/modules/web.dom-collections.iterator\\");
 
 var _createClass2 = _interopRequireDefault(require(\\"@babel/runtime/helpers/createClass\\"));
-
-require(\\"core-js/modules/web.dom.iterable\\");
-
-require(\\"core-js/modules/es6.array.iterator\\");
-
-require(\\"core-js/modules/es6.object.to-string\\");
-
-require(\\"core-js/modules/es6.string.iterator\\");
-
-require(\\"core-js/modules/es6.map\\");
 
 var _Object$assign;
 
@@ -53,9 +53,9 @@ var objectB = Object.assign({}, objectA, (_Object$assign = {
 exports[`web preset should allow for corejs override 1`] = `
 "\\"use strict\\";
 
-import _Object$assign from \\"@babel/runtime-corejs3/core-js-stable/object/assign\\";
-import _createClass from \\"@babel/runtime-corejs3/helpers/createClass\\";
-import _Map from \\"@babel/runtime-corejs3/core-js-stable/map\\";
+import _Object$assign from \\"@babel/runtime-corejs2/core-js/object/assign\\";
+import _createClass from \\"@babel/runtime-corejs2/helpers/createClass\\";
+import _Map from \\"@babel/runtime-corejs2/core-js/map\\";
 
 var _Object$assign2;
 
@@ -93,13 +93,13 @@ var objectB = _Object$assign({}, objectA, (_Object$assign2 = {
 exports[`web preset should match the snapshot 1`] = `
 "\\"use strict\\";
 
-import \\"core-js/modules/es6.object.assign\\";
+import \\"core-js/modules/es.array.iterator\\";
+import \\"core-js/modules/es.map\\";
+import \\"core-js/modules/es.object.assign\\";
+import \\"core-js/modules/es.object.to-string\\";
+import \\"core-js/modules/es.string.iterator\\";
+import \\"core-js/modules/web.dom-collections.iterator\\";
 import _createClass from \\"@babel/runtime/helpers/createClass\\";
-import \\"core-js/modules/web.dom.iterable\\";
-import \\"core-js/modules/es6.array.iterator\\";
-import \\"core-js/modules/es6.object.to-string\\";
-import \\"core-js/modules/es6.string.iterator\\";
-import \\"core-js/modules/es6.map\\";
 
 var _Object$assign;
 

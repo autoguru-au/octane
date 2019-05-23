@@ -32,7 +32,7 @@ describe('web preset', function() {
 	it('should allow for corejs override', async () => {
 		const { code } = await transformAsync(fixture, {
 			babelrc: false,
-			presets: [[require('./web'), { debug: false, corejs: 3 }]],
+			presets: [[require('./web'), { debug: false, corejs: 2 }]],
 		});
 
 		return expect(code).toMatchSnapshot();
