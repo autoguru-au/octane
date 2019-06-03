@@ -7,10 +7,10 @@
   "license": "MIT",
   "main": "index.js",
   "devDependencies": {
-    "@commitlint/core": "^7.6.1"
+    "@commitlint/core": "^8.0.0"
   },
   "dependencies": {
-    "@commitlint/config-conventional": "^7.6.0"
+    "@commitlint/config-conventional": "^8.0.0"
   },
   "peerDependencies": {
     "@commitlint/cli": ">=7.5.0"

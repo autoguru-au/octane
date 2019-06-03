@@ -17,7 +17,7 @@
     "@babel/preset-env": "^7.4.5",
     "@babel/preset-react": "^7.0.0",
     "@babel/runtime-corejs3": "^7.4.5",
-    "babel-plugin-macros": "^2.5.1",
+    "babel-plugin-macros": "^2.6.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24"
   },
   "devDependencies": {
