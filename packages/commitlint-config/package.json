@@ -6,11 +6,11 @@
   "repository": "https://github.com/autoguru-au/octane/tree/master/packages/commitlint-config",
   "license": "MIT",
   "main": "index.js",
-  "devDependencies": {
-    "@commitlint/core": "^8.0.0"
-  },
   "dependencies": {
     "@commitlint/config-conventional": "^8.0.0"
+  },
+  "devDependencies": {
+    "@commitlint/core": "^8.0.0"
   },
   "peerDependencies": {
     "@commitlint/cli": ">=7.5.0"
