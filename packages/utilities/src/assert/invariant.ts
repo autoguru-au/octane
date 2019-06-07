@@ -1,7 +1,7 @@
 export const invariant = (
 	condition: boolean,
 	message: string,
-	...args: Array<any>
+	...args: any[]
 ): void => {
 	if (condition === true) {
 		if (typeof console !== 'undefined') {

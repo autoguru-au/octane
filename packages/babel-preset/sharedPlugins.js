@@ -12,7 +12,7 @@ module.exports = function autoGuruSharedPlugins(options) {
 		],
 	];
 
-	return !options.isDevelopment
-		? [...plugins, require.resolve('@babel/plugin-transform-strict-mode')]
-		: plugins;
+	return options.isDevelopment
+		? plugins
+		: [...plugins, require.resolve('@babel/plugin-transform-strict-mode')];
 };

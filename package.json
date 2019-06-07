@@ -9,6 +9,7 @@
     "build": "lerna run --stream --parallel build",
     "format": "prettier --write \"{*,packages/**/*}.+(js|jsx|ts|tsx|css|scss|json|yml|md|mdx|html)\"",
     "generate": "plop readmes && prettier --write \"{*,packages/**/*}.md\" ",
+    "lint": "eslint \"packages/**/*.{js,jsx,ts,tsx}\" --cache --quiet --fix",
     "release": "lerna publish",
     "sort-package-json": "npx sort-package-json; lerna exec --stream --parallel 'npx sort-package-json'",
     "test": "jest"
@@ -19,9 +20,16 @@
     }
   },
   "lint-staged": {
+    "ignore": [
+      "templates/**/*"
+    ],
     "linters": {
       "package.json": [
         "npx sort-package-json",
+        "git add"
+      ],
+      "*.{js,jsx,ts,tsx}": [
+        "eslint --cache --quiet --fix",
         "git add"
       ],
       "*.{js,jsx,ts,tsx,css,scss,json,yml,md,mdx,html}": [
@@ -38,6 +46,7 @@
   "devDependencies": {
     "@types/node": "^12.0.7",
     "browserslist-config-autoguru": "*",
+    "eslint": "^5.16.0",
     "glob": "^7.1.4",
     "husky": "^2.4.0",
     "jest": "^24.8.0",

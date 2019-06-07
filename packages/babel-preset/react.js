@@ -1,13 +1,13 @@
 const { isDevelopment } = require('./utils');
 
-module.exports = function autoGuruReactPreset(api, options = {}) {
+module.exports = function autoGuruReactPreset(api) {
 	const plugins = [];
 
 	if (!isDevelopment(api)) {
 		plugins.push(
 			require.resolve('@babel/plugin-transform-react-inline-elements'),
 			require.resolve('babel-plugin-transform-react-remove-prop-types'),
-			require.resolve('@babel/plugin-transform-react-constant-elements')
+			require.resolve('@babel/plugin-transform-react-constant-elements'),
 		);
 	}
 

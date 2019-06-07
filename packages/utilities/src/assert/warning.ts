@@ -1,13 +1,13 @@
 export const warning = (
 	condition: boolean,
 	message: string,
-	...args: Array<any>
+	...args: any[]
 ): void => {
 	if (process.env.NODE_ENV !== 'production') {
 		if (condition === true) {
 			if (message === void 0) {
 				throw new Error(
-					`warning(condition: boolean, message: string, ...args: any[]) requires a message`
+					`warning(condition: boolean, message: string, ...args: any[]) requires a message`,
 				);
 			}
 
@@ -17,9 +17,7 @@ export const warning = (
 
 			try {
 				throw new Error(message);
-			} catch (x) {
-				// @ts-ignore - we throw an error, so our React friends have a stack trace to follow for the errors
-			}
+			} catch (_) {}
 		}
 	}
 };

@@ -12,7 +12,7 @@ describe('Utils/Warning', () => {
 	});
 
 	it('should should have console logged', () => {
-		const warn = console.warn;
+		const { warn } = console;
 
 		const mockWarn = (console.warn = jest.fn());
 

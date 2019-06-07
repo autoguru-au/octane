@@ -9,9 +9,9 @@ describe('Utils/Clamp', () => {
 		${12} | ${9} | ${11} | ${11}
 		${8}  | ${9} | ${11} | ${9}
 	`(
-		`should pass for min: $min max: $max with val: $value -> $result`,
+		'should pass for min: $min max: $max with val: $value -> $result',
 		({ min, max, value, result }) => {
 			expect(clamp(min, max, value)).toEqual(result);
-		}
+		},
 	);
 });

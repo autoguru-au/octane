@@ -1,5 +1,5 @@
 const browserslist = require('browserslist');
-const config = require('./');
+const config = require('.');
 
 describe('config', () => {
 	it('should resolve a list of browsers', () => {

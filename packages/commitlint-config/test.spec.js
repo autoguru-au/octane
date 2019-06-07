@@ -4,7 +4,7 @@ describe('config', () => {
 	let config;
 
 	beforeAll(async () => {
-		config = await load(require('./index'));
+		config = await load(require('.'));
 	});
 
 	it.each`
@@ -18,7 +18,7 @@ describe('config', () => {
 	`("message '$message' should be $result", async ({ message, result }) =>
 		expect(await lint(message, config.rules)).toHaveProperty(
 			'valid',
-			result
-		)
+			result,
+		),
 	);
 });

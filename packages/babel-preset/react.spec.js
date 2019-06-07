@@ -17,7 +17,7 @@ describe('react preset', function() {
 			{
 				babelrc: false,
 				presets: [require('./react')],
-			}
+			},
 		);
 
 		expect(code).toMatchSnapshot();

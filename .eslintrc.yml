@@ -1,0 +1,9 @@
+root: true
+
+extends:
+  - ./packages/eslint-config/index.js
+  - ./packages/eslint-config/jest.js
+
+overrides:
+  - files: ['**/jest.*js', '**/*.spec.{js,jsx}']
+    env: { jest: true, node: true }
