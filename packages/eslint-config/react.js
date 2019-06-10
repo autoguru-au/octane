@@ -3,8 +3,17 @@ module.exports = {
 
 	rules: {
 		'react/button-has-type': 'off',
+		'react/jsx-tag-spacing': [
+			'error',
+			{
+				closingSlash: 'never',
+				beforeSelfClosing: 'always',
+				afterOpening: 'never',
+				beforeClosing: 'allow',
+			},
+		],
 		'react/no-array-index-key': 'off',
-		'react/no-children-prop': 'off',
+		'react/no-children-prop': 'warn',
 		'react/no-unescaped-entities': 'warn',
 		'react/prop-types': 'off',
 	},
