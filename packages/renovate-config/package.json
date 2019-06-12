@@ -1,6 +1,6 @@
 {
   "name": "renovate-config-autoguru",
-  "version": "1.0.37",
+  "version": "1.0.48",
   "description": "AutoGuru's org-wide Renovate config",
   "homepage": "https://github.com/autoguru-au/octane/tree/master/packages/renovate-config-autoguru#readme",
   "repository": "https://github.com/autoguru-au/octane/tree/master/packages/renovate-config-autoguru",
