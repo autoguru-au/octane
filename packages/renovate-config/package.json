@@ -21,7 +21,7 @@
       ],
       "lockFileMaintenance": {
         "enabled": true,
-        "schedule": "after 1pm and before 8am every 2nd day"
+        "extends": "schedule:weekly"
       },
       "timezone": "Australia/Brisbane",
       "semanticCommits": false,
