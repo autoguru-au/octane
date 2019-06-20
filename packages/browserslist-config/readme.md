@@ -18,7 +18,7 @@ extends browserslist-config-autoguru
 and_chr 74
 and_ff 66
 and_uc 11.8
-android 4.4.3-4.4.4
+chrome 75
 chrome 74
 chrome 73
 chrome 72
@@ -26,8 +26,8 @@ chrome 71
 chrome 70
 edge 18
 edge 17
+firefox 67
 firefox 66
-firefox 65
 ios_saf 12.2
 ios_saf 12.0-12.1
 ios_saf 11.3-11.4

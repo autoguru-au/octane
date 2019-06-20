@@ -19,8 +19,6 @@ require(\\"core-js/modules/web.dom-collections.iterator\\");
 
 var _createClass2 = _interopRequireDefault(require(\\"@babel/runtime/helpers/createClass\\"));
 
-var _Object$assign;
-
 var myVar = new Map([]);
 
 var TestClass =
@@ -45,9 +43,10 @@ var objectA = {
   b: 'b'
 };
 var d = 'd';
-var objectB = Object.assign({}, objectA, (_Object$assign = {
-  c: 'c'
-}, _Object$assign[d] = 'd', _Object$assign));"
+var objectB = Object.assign({}, objectA, {
+  c: 'c',
+  [d]: 'd'
+});"
 `;
 
 exports[`web preset should allow for corejs override 1`] = `
@@ -56,9 +55,6 @@ exports[`web preset should allow for corejs override 1`] = `
 import _Object$assign from \\"@babel/runtime-corejs2/core-js/object/assign\\";
 import _createClass from \\"@babel/runtime-corejs2/helpers/createClass\\";
 import _Map from \\"@babel/runtime-corejs2/core-js/map\\";
-
-var _Object$assign2;
-
 var myVar = new _Map([]);
 
 var TestClass =
@@ -85,9 +81,10 @@ var objectA = {
 };
 var d = 'd';
 
-var objectB = _Object$assign({}, objectA, (_Object$assign2 = {
-  c: 'c'
-}, _Object$assign2[d] = 'd', _Object$assign2));"
+var objectB = _Object$assign({}, objectA, {
+  c: 'c',
+  [d]: 'd'
+});"
 `;
 
 exports[`web preset should match the snapshot 1`] = `
@@ -100,9 +97,6 @@ import \\"core-js/modules/es.object.to-string\\";
 import \\"core-js/modules/es.string.iterator\\";
 import \\"core-js/modules/web.dom-collections.iterator\\";
 import _createClass from \\"@babel/runtime/helpers/createClass\\";
-
-var _Object$assign;
-
 var myVar = new Map([]);
 
 var TestClass =
@@ -128,7 +122,8 @@ var objectA = {
   b: 'b'
 };
 var d = 'd';
-var objectB = Object.assign({}, objectA, (_Object$assign = {
-  c: 'c'
-}, _Object$assign[d] = 'd', _Object$assign));"
+var objectB = Object.assign({}, objectA, {
+  c: 'c',
+  [d]: 'd'
+});"
 `;
