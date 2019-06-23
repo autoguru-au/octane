@@ -44,9 +44,9 @@
     "relative": true
   },
   "devDependencies": {
-    "@types/node": "^12.0.8",
+    "@types/node": "^12.0.10",
     "browserslist-config-autoguru": "*",
-    "eslint": "^5.16.0",
+    "eslint": "^6.0.0",
     "glob": "^7.1.4",
     "husky": "^2.4.1",
     "jest": "^24.8.0",
@@ -56,7 +56,7 @@
     "plop": "^2.4.0",
     "prettier": "^1.18.2",
     "tslib": "^1.10.0",
-    "tslint": "^5.17.0",
+    "tslint": "^5.18.0",
     "tslint-config-prettier": "^1.18.0",
     "tslint-react": "^4.0.0",
     "typescript": "~3.5.2"
