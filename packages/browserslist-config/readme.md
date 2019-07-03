@@ -15,8 +15,8 @@ extends browserslist-config-autoguru
 ### Support
 
 ```
-and_chr 74
-and_ff 66
+and_chr 75
+and_ff 67
 and_uc 11.8
 chrome 75
 chrome 74

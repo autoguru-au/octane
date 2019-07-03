@@ -46,9 +46,9 @@
   "devDependencies": {
     "@types/node": "^12.0.10",
     "browserslist-config-autoguru": "*",
-    "eslint": "^6.0.0",
+    "eslint": "^6.0.1",
     "glob": "^7.1.4",
-    "husky": "^2.4.1",
+    "husky": "^3.0.0",
     "jest": "^24.8.0",
     "jest-junit": "^6.4.0",
     "lerna": "^3.15.0",
