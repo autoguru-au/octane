@@ -1,6 +1,6 @@
 {
   "name": "@autoguru/utilities",
-  "version": "1.0.51",
+  "version": "1.0.52",
   "description": "A collection of smallish things that help AutoGuru write code.",
   "homepage": "https://github.com/autoguru-au/octane/tree/master/packages/utilities#readme",
   "repository": "https://github.com/autoguru-au/octane/tree/master/packages/utilities",
@@ -18,7 +18,7 @@
   },
   "devDependencies": {
     "@autoguru/jest-preset": "^1.0.50",
-    "@autoguru/tsconfig": "^1.0.12",
+    "@autoguru/tsconfig": "^1.0.52",
     "rollup": "^1.16.4",
     "rollup-plugin-typescript2": "^0.21.2",
     "typescript": "~3.5.2"
