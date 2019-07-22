@@ -1,5 +1,9 @@
 module.exports = {
-	extends: ['@autoguru/eslint-config', 'xo-typescript'],
+	extends: [
+		'@autoguru/eslint-config',
+		'xo-typescript',
+		'plugin:import/typescript',
+	],
 
 	rules: {
 		'@typescript-eslint/camelcase': 'off',
