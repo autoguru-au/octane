@@ -1,25 +1,37 @@
 const { basename, extname } = require('path');
 
-module.exports = function ({ types: t }) {
+module.exports = function({ types: t }) {
 	return {
 		visitor: {
 			ImportDeclaration(path, state) {
 				if (path.node.source.value === 'react') {
 					path.node.specifiers.forEach(item => {
-
-						if (t.isImportDefaultSpecifier(item) || t.isImportSpecifier(item)) {
-							const bindings = path.scope.getBinding(item.local.name).referencePaths || [];
+						if (
+							t.isImportDefaultSpecifier(item) ||
+							t.isImportSpecifier(item)
+						) {
+							const bindings =
+								path.scope.getBinding(item.local.name)
+									.referencePaths || [];
 
 							if (t.isImportDefaultSpecifier(item)) {
 								bindings
-									.filter(item => t.isMemberExpression(item.parent))
-									.filter(item => t.isIdentifier(item.parent.property, { name: 'memo' }))
+									.filter(item =>
+										t.isMemberExpression(item.parent),
+									)
+									.filter(item =>
+										t.isIdentifier(item.parent.property, {
+											name: 'memo',
+										}),
+									)
 									.forEach(assignNameFor(t, state));
-							} else if (t.isImportSpecifier(item) && item.imported.name === 'memo') {
+							} else if (
+								t.isImportSpecifier(item) &&
+								item.imported.name === 'memo'
+							) {
 								bindings.forEach(assignNameFor(t, state));
 							}
 						}
-
 					});
 				}
 			},
@@ -28,13 +40,16 @@ module.exports = function ({ types: t }) {
 };
 
 function assignNameFor(t, state) {
-
 	function getName(path) {
 		if (t.isExportDefaultDeclaration(path.parent)) {
-			return basename(state.file.opts.filename, extname(state.file.opts.filename));
+			return basename(
+				state.file.opts.filename,
+				extname(state.file.opts.filename),
+			);
 		}
 
-		return path.findParent(t.isVariableDeclaration).node.declarations[0].id.name;
+		return path.findParent(t.isVariableDeclaration).node.declarations[0].id
+			.name;
 	}
 
 	return path => {
@@ -53,7 +68,12 @@ function assignNameFor(t, state) {
 
 		const wrappedComponent = memoFnExpression.node.arguments[0];
 
-		if (!(t.isArrowFunctionExpression(wrappedComponent) || t.isFunctionExpression(wrappedComponent))) {
+		if (
+			!(
+				t.isArrowFunctionExpression(wrappedComponent) ||
+				t.isFunctionExpression(wrappedComponent)
+			)
+		) {
 			return;
 		}
 
@@ -62,7 +82,11 @@ function assignNameFor(t, state) {
 		]);
 
 		const newComponentRefDisplayNameProp = t.expressionStatement(
-			t.assignmentExpression('=', t.memberExpression(componentRef, t.identifier('displayName')), componentName),
+			t.assignmentExpression(
+				'=',
+				t.memberExpression(componentRef, t.identifier('displayName')),
+				componentName,
+			),
 		);
 
 		blockLevelStatement.insertBefore([
