@@ -1,6 +1,6 @@
 {
   "name": "@autoguru/eslint-config",
-  "version": "1.0.51",
+  "version": "1.0.53",
   "description": "AutoGuru's shareable eslint config",
   "homepage": "https://github.com/autoguru-au/octane/tree/master/packages/eslint-config#readme",
   "repository": "https://github.com/autoguru-au/octane/tree/master/packages/eslint-config",
