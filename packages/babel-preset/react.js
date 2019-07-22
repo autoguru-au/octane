@@ -1,7 +1,9 @@
 const { isDevelopment } = require('./utils');
 
 module.exports = function autoGuruReactPreset(api) {
-	const plugins = [];
+	const plugins = [
+		require.resolve('./react/named-memo.js'),
+	];
 
 	if (!isDevelopment(api)) {
 		plugins.push(
