@@ -2,6 +2,8 @@ const { basename, extname } = require('path');
 
 module.exports = function({ types: t }) {
 	return {
+		name: 'named-memo',
+
 		visitor: {
 			ImportDeclaration(path, state) {
 				if (path.node.source.value === 'react') {
