@@ -19,7 +19,7 @@ const d = 'd';
 const objectB = {...objectA, c: 'c', [d]: 'd'};
 `;
 
-describe('web preset', function() {
+describe('web preset', () => {
 	it('should match the snapshot', async () => {
 		const { code } = await transformAsync(fixture, {
 			babelrc: false,

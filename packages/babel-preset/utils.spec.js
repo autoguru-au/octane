@@ -1,6 +1,6 @@
 const { isDevelopment } = require('./utils');
 
-describe('utils', function() {
+describe('utils', () => {
 	it.each`
 		env              | result
 		${'development'} | ${true}

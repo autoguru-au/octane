@@ -9,11 +9,7 @@ require(\\"core-js/modules/es.array.iterator\\");
 
 require(\\"core-js/modules/es.map\\");
 
-require(\\"core-js/modules/es.object.assign\\");
-
 require(\\"core-js/modules/es.object.to-string\\");
-
-require(\\"core-js/modules/es.string.iterator\\");
 
 require(\\"core-js/modules/web.dom-collections.iterator\\");
 
@@ -92,9 +88,7 @@ exports[`web preset should match the snapshot 1`] = `
 
 import \\"core-js/modules/es.array.iterator\\";
 import \\"core-js/modules/es.map\\";
-import \\"core-js/modules/es.object.assign\\";
 import \\"core-js/modules/es.object.to-string\\";
-import \\"core-js/modules/es.string.iterator\\";
 import \\"core-js/modules/web.dom-collections.iterator\\";
 import _createClass from \\"@babel/runtime/helpers/createClass\\";
 var myVar = new Map([]);

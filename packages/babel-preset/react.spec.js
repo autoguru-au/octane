@@ -2,7 +2,7 @@ process.env.NODE_ENV = 'production';
 
 const { transformAsync } = require('@babel/core');
 
-describe('react preset', function() {
+describe('react preset', () => {
 	it('should match the snapshot', async () => {
 		const { code } = await transformAsync(
 			`const FunctionComponent = () => (<h1>test</h1>);
