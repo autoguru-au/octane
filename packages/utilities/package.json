@@ -17,7 +17,7 @@
     "prepublish": "yarn run build"
   },
   "devDependencies": {
-    "@autoguru/jest-preset": "^1.0.53",
+    "@autoguru/jest-preset": "^1.0.54",
     "@autoguru/tsconfig": "^1.0.52",
     "rollup": "^1.17.0",
     "rollup-plugin-typescript2": "^0.22.0",
