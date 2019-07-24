@@ -12,4 +12,10 @@ module.exports = {
 		'@typescript-eslint/indent': 'off',
 		'@typescript-eslint/no-require-imports': 'off',
 	},
+
+	settings: {
+		'import/resolver': {
+			typescript: {},
+		},
+	},
 };
