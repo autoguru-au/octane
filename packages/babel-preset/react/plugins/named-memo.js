@@ -1,4 +1,5 @@
 const { basename, extname } = require('path');
+const annotateAsPure = require('@babel/helper-annotate-as-pure').default;
 
 module.exports = function({ types: t }) {
 	return {
@@ -79,7 +80,16 @@ function assignNameFor(t, state) {
 			return;
 		}
 
-		const newComponent = t.variableDeclaration('const', [
+		if (
+			t.isFunctionExpression(wrappedComponent) &&
+			Boolean(wrappedComponent.id)
+		) {
+			return;
+		}
+
+		annotateAsPure(wrappedComponent); // Because it should be.
+
+		const newComponent = t.variableDeclaration('var', [
 			t.variableDeclarator(componentRef, wrappedComponent),
 		]);
 

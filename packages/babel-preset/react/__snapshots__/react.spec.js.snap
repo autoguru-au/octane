@@ -1,5 +1,99 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`react preset should match the snapshot for fixture asFunction.jsx 1`] = `
+"var REACT_ELEMENT_TYPE;
+
+function _jsx(type, props, key, children) { if (!REACT_ELEMENT_TYPE) { REACT_ELEMENT_TYPE = typeof Symbol === \\"function\\" && Symbol[\\"for\\"] && Symbol[\\"for\\"](\\"react.element\\") || 0xeac7; } var defaultProps = type && type.defaultProps; var childrenLength = arguments.length - 3; if (!props && childrenLength !== 0) { props = { children: void 0 }; } if (props && defaultProps) { for (var propName in defaultProps) { if (props[propName] === void 0) { props[propName] = defaultProps[propName]; } } } else if (!props) { props = defaultProps || {}; } if (childrenLength === 1) { props.children = children; } else if (childrenLength > 1) { var childArray = new Array(childrenLength); for (var i = 0; i < childrenLength; i++) { childArray[i] = arguments[i + 3]; } props.children = childArray; } return { $$typeof: REACT_ELEMENT_TYPE, type: type, key: key === undefined ? null : '' + key, ref: null, props: props, _owner: null }; }
+
+import React, { memo } from 'react';
+
+var _ref2 =
+/*#__PURE__*/
+_jsx(\\"h1\\", {}, void 0, \\"test\\");
+
+var _cmp =
+/*#__PURE__*/
+function () {
+  return _ref2;
+};
+
+_cmp.displayName = \\"Test\\";
+export const Test = memo(_cmp);
+
+var _ref =
+/*#__PURE__*/
+_jsx(\\"h1\\", {}, void 0, \\"test\\");
+
+export const Test2 = memo(function Named() {
+  return _ref;
+});"
+`;
+
+exports[`react preset should match the snapshot for fixture conditionalMemo.jsx 1`] = `
+"var REACT_ELEMENT_TYPE;
+
+function _jsx(type, props, key, children) { if (!REACT_ELEMENT_TYPE) { REACT_ELEMENT_TYPE = typeof Symbol === \\"function\\" && Symbol[\\"for\\"] && Symbol[\\"for\\"](\\"react.element\\") || 0xeac7; } var defaultProps = type && type.defaultProps; var childrenLength = arguments.length - 3; if (!props && childrenLength !== 0) { props = { children: void 0 }; } if (props && defaultProps) { for (var propName in defaultProps) { if (props[propName] === void 0) { props[propName] = defaultProps[propName]; } } } else if (!props) { props = defaultProps || {}; } if (childrenLength === 1) { props.children = children; } else if (childrenLength > 1) { var childArray = new Array(childrenLength); for (var i = 0; i < childrenLength; i++) { childArray[i] = arguments[i + 3]; } props.children = childArray; } return { $$typeof: REACT_ELEMENT_TYPE, type: type, key: key === undefined ? null : '' + key, ref: null, props: props, _owner: null }; }
+
+import React, { memo } from 'react';
+
+var _ref =
+/*#__PURE__*/
+_jsx(\\"h1\\", {}, void 0, \\"test a\\");
+
+var _cmp =
+/*#__PURE__*/
+() => _ref;
+
+_cmp.displayName = \\"Test\\";
+
+var _ref2 =
+/*#__PURE__*/
+_jsx(\\"h1\\", {}, void 0, \\"test b\\");
+
+var _cmp2 =
+/*#__PURE__*/
+() => _ref2;
+
+_cmp2.displayName = \\"Test\\";
+export const Test = something ? memo(_cmp) : memo(_cmp2);"
+`;
+
+exports[`react preset should match the snapshot for fixture deepMemo.jsx 1`] = `
+"var REACT_ELEMENT_TYPE;
+
+function _jsx(type, props, key, children) { if (!REACT_ELEMENT_TYPE) { REACT_ELEMENT_TYPE = typeof Symbol === \\"function\\" && Symbol[\\"for\\"] && Symbol[\\"for\\"](\\"react.element\\") || 0xeac7; } var defaultProps = type && type.defaultProps; var childrenLength = arguments.length - 3; if (!props && childrenLength !== 0) { props = { children: void 0 }; } if (props && defaultProps) { for (var propName in defaultProps) { if (props[propName] === void 0) { props[propName] = defaultProps[propName]; } } } else if (!props) { props = defaultProps || {}; } if (childrenLength === 1) { props.children = children; } else if (childrenLength > 1) { var childArray = new Array(childrenLength); for (var i = 0; i < childrenLength; i++) { childArray[i] = arguments[i + 3]; } props.children = childArray; } return { $$typeof: REACT_ELEMENT_TYPE, type: type, key: key === undefined ? null : '' + key, ref: null, props: props, _owner: null }; }
+
+import React, { memo } from 'react';
+
+const test = () => {
+  return factory(someProp => {
+    var _ref =
+    /*#__PURE__*/
+    _jsx(\\"h1\\", {}, void 0, someProp);
+
+    var _cmp =
+    /*#__PURE__*/
+    () => _ref;
+
+    _cmp.displayName = \\"test\\";
+    return memo(_cmp);
+  });
+};
+
+const test2 = () => {
+  return factory(someProp => {
+    var _ref2 =
+    /*#__PURE__*/
+    _jsx(\\"h1\\", {}, void 0, someProp);
+
+    const WrappedFn = () => _ref2;
+
+    WrappedFn.displayName = 'boom bang, click clak';
+    return memo(WrappedFn);
+  });
+};"
+`;
+
 exports[`react preset should match the snapshot for fixture defaultExportMemo.jsx 1`] = `
 "var REACT_ELEMENT_TYPE;
 
@@ -11,10 +105,31 @@ var _ref =
 /*#__PURE__*/
 _jsx(\\"h1\\", {}, void 0, \\"test\\");
 
-const _cmp = () => _ref;
+var _cmp =
+/*#__PURE__*/
+() => _ref;
 
 _cmp.displayName = \\"defaultExportMemo\\";
 export default memo(_cmp);"
+`;
+
+exports[`react preset should match the snapshot for fixture memoPassedIn.jsx 1`] = `
+"var REACT_ELEMENT_TYPE;
+
+function _jsx(type, props, key, children) { if (!REACT_ELEMENT_TYPE) { REACT_ELEMENT_TYPE = typeof Symbol === \\"function\\" && Symbol[\\"for\\"] && Symbol[\\"for\\"](\\"react.element\\") || 0xeac7; } var defaultProps = type && type.defaultProps; var childrenLength = arguments.length - 3; if (!props && childrenLength !== 0) { props = { children: void 0 }; } if (props && defaultProps) { for (var propName in defaultProps) { if (props[propName] === void 0) { props[propName] = defaultProps[propName]; } } } else if (!props) { props = defaultProps || {}; } if (childrenLength === 1) { props.children = children; } else if (childrenLength > 1) { var childArray = new Array(childrenLength); for (var i = 0; i < childrenLength; i++) { childArray[i] = arguments[i + 3]; } props.children = childArray; } return { $$typeof: REACT_ELEMENT_TYPE, type: type, key: key === undefined ? null : '' + key, ref: null, props: props, _owner: null }; }
+
+import React, { memo } from 'react';
+
+var _ref =
+/*#__PURE__*/
+_jsx(\\"h1\\", {}, void 0, \\"test\\");
+
+var _cmp =
+/*#__PURE__*/
+() => _ref;
+
+_cmp.displayName = \\"Test\\";
+export const Test = withData(memo(_cmp));"
 `;
 
 exports[`react preset should match the snapshot for fixture memoWithDestructure.jsx 1`] = `
@@ -28,7 +143,9 @@ var _ref =
 /*#__PURE__*/
 _jsx(\\"h1\\", {}, void 0, \\"test\\");
 
-const _cmp = () => _ref;
+var _cmp =
+/*#__PURE__*/
+() => _ref;
 
 _cmp.displayName = \\"TestMemo\\";
 const TestMemo = memo(_cmp);"
@@ -68,7 +185,9 @@ var _ref4 =
 /*#__PURE__*/
 _jsx(\\"h1\\", {}, void 0, \\"test\\");
 
-const _cmp = () => _ref4;
+var _cmp =
+/*#__PURE__*/
+() => _ref4;
 
 _cmp.displayName = \\"MemoTest\\";
 const MemoTest = memo(_cmp);"
@@ -85,7 +204,9 @@ var _ref =
 /*#__PURE__*/
 _jsx(\\"h1\\", {}, void 0, \\"test\\");
 
-const _cmp = () => _ref;
+var _cmp =
+/*#__PURE__*/
+() => _ref;
 
 _cmp.displayName = \\"TestMemo\\";
 export const TestMemo = React.memo(_cmp);"
