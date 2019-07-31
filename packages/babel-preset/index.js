@@ -1,1 +1,1 @@
-module.exports = require('./web.js');
+module.exports = require('./web');

@@ -10,8 +10,8 @@ describe('react preset', () => {
 		it(`should match the snapshot for fixture ${file}`, async () => {
 			const { code } = await transformFileAsync(join(fixtures, file), {
 				babelrc: false,
-				plugins: [join(__dirname, './react/named-memo.js')],
-				presets: [require('./react')],
+				plugins: [join(__dirname, './plugins/named-memo.js')],
+				presets: [require('.')],
 			});
 
 			expect(code).toMatchSnapshot();

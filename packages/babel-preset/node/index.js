@@ -1,5 +1,5 @@
-const sharedPlugins = require('./sharedPlugins');
-const { isDevelopment } = require('./utils');
+const sharedPlugins = require('../sharedPlugins');
+const { isDevelopment } = require('../utils');
 
 module.exports = function autoGuruNodePreset(api, options = {}) {
 	const {

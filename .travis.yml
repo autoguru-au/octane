@@ -13,6 +13,8 @@ branches:
 
 jobs:
   include:
+    - stage: build
+      script: yarn build
     - stage: test
       script: yarn test --no-cache --ci --coverage
       after_success:

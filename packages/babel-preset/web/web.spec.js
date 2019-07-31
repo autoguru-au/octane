@@ -19,11 +19,11 @@ const d = 'd';
 const objectB = {...objectA, c: 'c', [d]: 'd'};
 `;
 
-describe('node preset', () => {
+describe('web preset', () => {
 	it('should match the snapshot', async () => {
 		const { code } = await transformAsync(fixture, {
 			babelrc: false,
-			presets: [[require('./node'), { debug: false }]],
+			presets: [[require('.'), { debug: false }]],
 		});
 
 		return expect(code).toMatchSnapshot();
@@ -32,7 +32,16 @@ describe('node preset', () => {
 	it('should allow for corejs override', async () => {
 		const { code } = await transformAsync(fixture, {
 			babelrc: false,
-			presets: [[require('./node'), { debug: false, corejs: 2 }]],
+			presets: [[require('.'), { debug: false, corejs: 2 }]],
+		});
+
+		return expect(code).toMatchSnapshot();
+	});
+
+	it('should allow for cjs modules', async () => {
+		const { code } = await transformAsync(fixture, {
+			babelrc: false,
+			presets: [[require('.'), { debug: false, modules: 'commonjs' }]],
 		});
 
 		return expect(code).toMatchSnapshot();
