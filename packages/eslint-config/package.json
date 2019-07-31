@@ -16,9 +16,9 @@
     "eslint-config-xo-typescript": "^0.15.0",
     "eslint-import-resolver-typescript": "^1.1.1",
     "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-react": "^7.14.2",
+    "eslint-plugin-react": "^7.14.3",
     "eslint-plugin-react-hooks": "^1.6.1",
-    "eslint-plugin-unicorn": "^9.1.1"
+    "eslint-plugin-unicorn": "^10.0.0"
   },
   "peerDependencies": {
     "eslint": "~6.0.0 || ^5.16.0"

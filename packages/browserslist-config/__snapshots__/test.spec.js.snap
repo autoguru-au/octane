@@ -4,7 +4,7 @@ exports[`config should match snapshot 1`] = `
 Array [
   "and_chr 75",
   "and_ff 67",
-  "and_uc 11.8",
+  "and_uc 12.12",
   "chrome 75",
   "chrome 74",
   "chrome 73",
