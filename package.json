@@ -60,5 +60,9 @@
     "tslint-config-prettier": "^1.18.0",
     "tslint-react": "^4.0.0",
     "typescript": "~3.5.3"
+  },
+  "volta": {
+    "node": "12.6.0",
+    "yarn": "1.17.3"
   }
 }
