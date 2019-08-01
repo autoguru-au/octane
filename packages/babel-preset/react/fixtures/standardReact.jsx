@@ -1,16 +1,39 @@
 import React, { memo } from 'react';
-const FunctionComponent = () => <h1>test</h1>;
 
-class ClassComponent extends React.Component {
+class GreetSomeone extends React.Component {
 	render() {
-		return <h1>test</h1>;
+		return (
+			<div>
+				{this.props.greeting} {this.props.subject}!
+			</div>
+		);
 	}
 }
 
-const TestInline = () => (
-	<div>
-		<FunctionComponent />
-		<ClassComponent />
-	</div>
-);
+function App() {
+	const [greeting, setGreeting] = React.useState('HELLO');
+
+	function handleGreetingChange(event) {
+		const input = event.target;
+		const newGreeting = input.value.toUpperCase();
+		setGreeting(newGreeting);
+	}
+
+	return (
+		<form>
+			<div>
+				<label htmlFor="greeting">Greeting: </label>
+				<input
+					id="greeting"
+					onChange={handleGreetingChange}
+					value={greeting}
+				/>
+			</div>
+			<div>
+				<GreetSomeone greeting={greeting} subject="Nancy" />
+			</div>
+		</form>
+	);
+}
+
 const MemoTest = memo(() => <h1>test</h1>);

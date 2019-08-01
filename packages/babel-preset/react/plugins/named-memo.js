@@ -1,12 +1,13 @@
-const { basename, extname } = require('path');
-const annotateAsPure = require('@babel/helper-annotate-as-pure').default;
+const { default: annotateAsPure } = require('@babel/helper-annotate-as-pure');
+const { declare } = require('@babel/helper-plugin-utils');
 
-module.exports = function({ types: t }) {
+module.exports = declare(function({ types: t, assertVersion }) {
+	assertVersion(7);
+
 	return {
 		name: 'named-memo',
-
 		visitor: {
-			ImportDeclaration(path, state) {
+			ImportDeclaration(path) {
 				if (path.node.source.value === 'react') {
 					path.node.specifiers.forEach(item => {
 						if (
@@ -27,12 +28,12 @@ module.exports = function({ types: t }) {
 											name: 'memo',
 										}),
 									)
-									.forEach(assignNameFor(t, state));
+									.forEach(assignNameFor(t));
 							} else if (
 								t.isImportSpecifier(item) &&
 								item.imported.name === 'memo'
 							) {
-								bindings.forEach(assignNameFor(t, state));
+								bindings.forEach(assignNameFor(t));
 							}
 						}
 					});
@@ -40,19 +41,17 @@ module.exports = function({ types: t }) {
 			},
 		},
 	};
-};
+});
 
-function assignNameFor(t, state) {
+function assignNameFor(t) {
 	function getName(path) {
-		if (t.isExportDefaultDeclaration(path.parent)) {
-			return basename(
-				state.file.opts.filename,
-				extname(state.file.opts.filename),
-			);
+		const maybeParent = path.findParent(t.isVariableDeclaration);
+
+		if (maybeParent === null) {
+			return null;
 		}
 
-		return path.findParent(t.isVariableDeclaration).node.declarations[0].id
-			.name;
+		return maybeParent.node.declarations[0].id.name;
 	}
 
 	return path => {
@@ -67,7 +66,11 @@ function assignNameFor(t, state) {
 		const componentRef = path.scope.generateUidIdentifier('cmp');
 		const memoFnExpression = path.findParent(t.isCallExpression);
 
-		const componentName = t.stringLiteral(getName(memoFnExpression));
+		const name = getName(memoFnExpression);
+
+		if (name === null) return;
+
+		const componentName = t.stringLiteral(name);
 
 		const wrappedComponent = memoFnExpression.node.arguments[0];
 

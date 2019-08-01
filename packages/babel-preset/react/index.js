@@ -1,15 +1,9 @@
 const { isDevelopment } = require('../utils');
 
-module.exports = function autoGuruReactPreset(api) {
-	const plugins = [];
+module.exports = function autoGuruReactPreset(api, options = {}) {
+	const dev = isDevelopment(api);
 
-	if (!isDevelopment(api)) {
-		plugins.push(
-			require.resolve('@babel/plugin-transform-react-inline-elements'),
-			require.resolve('babel-plugin-transform-react-remove-prop-types'),
-			require.resolve('@babel/plugin-transform-react-constant-elements'),
-		);
-	}
+	const { experimental = false } = options;
 
 	return {
 		presets: [
@@ -17,10 +11,24 @@ module.exports = function autoGuruReactPreset(api) {
 				require.resolve('@babel/preset-react'),
 				{
 					useBuiltIns: true,
-					development: isDevelopment(api),
+					development: dev,
 				},
 			],
 		],
-		plugins,
+		plugins: [
+			!dev &&
+				require.resolve(
+					'@babel/plugin-transform-react-inline-elements',
+				),
+			!dev &&
+				require.resolve(
+					'babel-plugin-transform-react-remove-prop-types',
+				),
+			!dev &&
+				require.resolve(
+					'@babel/plugin-transform-react-constant-elements',
+				),
+			dev && experimental && require.resolve('./plugins/named-memo.js'),
+		].filter(Boolean),
 	};
 };

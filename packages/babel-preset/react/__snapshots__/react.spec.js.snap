@@ -1,35 +1,277 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`react preset should match the snapshot for fixture asFunction.jsx 1`] = `
+exports[`react preset when development should match the snapshot for fixture asFunction.jsx 1`] = `
+"var _jsxFileName = \\"/Users/marais/Sites/vnext/octane/packages/babel-preset/react/fixtures/asFunction.jsx\\";
+import React, { memo } from 'react';
+
+var _cmp =
+/*#__PURE__*/
+function () {
+  return React.createElement(\\"h1\\", {
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 4
+    },
+    __self: this
+  }, \\"test\\");
+};
+
+_cmp.displayName = \\"Test\\";
+export const Test = memo(_cmp);
+export const Test2 = memo(function Named() {
+  return React.createElement(\\"h1\\", {
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 8
+    },
+    __self: this
+  }, \\"test\\");
+});"
+`;
+
+exports[`react preset when development should match the snapshot for fixture conditionalMemo.jsx 1`] = `
+"var _jsxFileName = \\"/Users/marais/Sites/vnext/octane/packages/babel-preset/react/fixtures/conditionalMemo.jsx\\";
+import React, { memo } from 'react';
+
+var _cmp =
+/*#__PURE__*/
+() => React.createElement(\\"h1\\", {
+  __source: {
+    fileName: _jsxFileName,
+    lineNumber: 4
+  },
+  __self: this
+}, \\"test a\\");
+
+_cmp.displayName = \\"Test\\";
+
+var _cmp2 =
+/*#__PURE__*/
+() => React.createElement(\\"h1\\", {
+  __source: {
+    fileName: _jsxFileName,
+    lineNumber: 5
+  },
+  __self: this
+}, \\"test b\\");
+
+_cmp2.displayName = \\"Test\\";
+export const Test = something ? memo(_cmp) : memo(_cmp2);"
+`;
+
+exports[`react preset when development should match the snapshot for fixture deepMemo.jsx 1`] = `
+"var _jsxFileName = \\"/Users/marais/Sites/vnext/octane/packages/babel-preset/react/fixtures/deepMemo.jsx\\";
+import React, { memo } from 'react';
+
+const test = () => {
+  return factory(someProp => {
+    var _cmp =
+    /*#__PURE__*/
+    () => React.createElement(\\"h1\\", {
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 5
+      },
+      __self: this
+    }, someProp);
+
+    _cmp.displayName = \\"test\\";
+    return memo(_cmp);
+  });
+};
+
+const test2 = () => {
+  return factory(someProp => {
+    const WrappedFn = () => React.createElement(\\"h1\\", {
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 11
+      },
+      __self: this
+    }, someProp);
+
+    WrappedFn.displayName = 'boom bang, click clak';
+    return memo(WrappedFn);
+  });
+};"
+`;
+
+exports[`react preset when development should match the snapshot for fixture defaultExportMemo.jsx 1`] = `
+"var _jsxFileName = \\"/Users/marais/Sites/vnext/octane/packages/babel-preset/react/fixtures/defaultExportMemo.jsx\\";
+import React, { memo } from 'react';
+export default memo(() => React.createElement(\\"h1\\", {
+  __source: {
+    fileName: _jsxFileName,
+    lineNumber: 3
+  },
+  __self: this
+}, \\"test\\"));"
+`;
+
+exports[`react preset when development should match the snapshot for fixture memoPassedIn.jsx 1`] = `
+"var _jsxFileName = \\"/Users/marais/Sites/vnext/octane/packages/babel-preset/react/fixtures/memoPassedIn.jsx\\";
+import React, { memo } from 'react';
+
+var _cmp =
+/*#__PURE__*/
+() => React.createElement(\\"h1\\", {
+  __source: {
+    fileName: _jsxFileName,
+    lineNumber: 3
+  },
+  __self: this
+}, \\"test\\");
+
+_cmp.displayName = \\"Test\\";
+export const Test = withData(memo(_cmp));"
+`;
+
+exports[`react preset when development should match the snapshot for fixture memoWithDestructure.jsx 1`] = `
+"var _jsxFileName = \\"/Users/marais/Sites/vnext/octane/packages/babel-preset/react/fixtures/memoWithDestructure.jsx\\";
+import { memo } from 'react';
+
+var _cmp =
+/*#__PURE__*/
+() => React.createElement(\\"h1\\", {
+  __source: {
+    fileName: _jsxFileName,
+    lineNumber: 3
+  },
+  __self: this
+}, \\"test\\");
+
+_cmp.displayName = \\"TestMemo\\";
+const TestMemo = memo(_cmp);"
+`;
+
+exports[`react preset when development should match the snapshot for fixture standardReact.jsx 1`] = `
+"var _jsxFileName = \\"/Users/marais/Sites/vnext/octane/packages/babel-preset/react/fixtures/standardReact.jsx\\";
+import React, { memo } from 'react';
+
+class GreetSomeone extends React.Component {
+  render() {
+    return React.createElement(\\"div\\", {
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 6
+      },
+      __self: this
+    }, this.props.greeting, \\" \\", this.props.subject, \\"!\\");
+  }
+
+}
+
+function App() {
+  const [greeting, setGreeting] = React.useState('HELLO');
+
+  function handleGreetingChange(event) {
+    const input = event.target;
+    const newGreeting = input.value.toUpperCase();
+    setGreeting(newGreeting);
+  }
+
+  return React.createElement(\\"form\\", {
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 23
+    },
+    __self: this
+  }, React.createElement(\\"div\\", {
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 24
+    },
+    __self: this
+  }, React.createElement(\\"label\\", {
+    htmlFor: \\"greeting\\",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 25
+    },
+    __self: this
+  }, \\"Greeting: \\"), React.createElement(\\"input\\", {
+    id: \\"greeting\\",
+    onChange: handleGreetingChange,
+    value: greeting,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 26
+    },
+    __self: this
+  })), React.createElement(\\"div\\", {
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 32
+    },
+    __self: this
+  }, React.createElement(GreetSomeone, {
+    greeting: greeting,
+    subject: \\"Nancy\\",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 33
+    },
+    __self: this
+  })));
+}
+
+var _cmp =
+/*#__PURE__*/
+() => React.createElement(\\"h1\\", {
+  __source: {
+    fileName: _jsxFileName,
+    lineNumber: 39
+  },
+  __self: this
+}, \\"test\\");
+
+_cmp.displayName = \\"MemoTest\\";
+const MemoTest = memo(_cmp);"
+`;
+
+exports[`react preset when development should match the snapshot for fixture usingReactMemo.jsx 1`] = `
+"var _jsxFileName = \\"/Users/marais/Sites/vnext/octane/packages/babel-preset/react/fixtures/usingReactMemo.jsx\\";
+import React from 'react';
+
+var _cmp =
+/*#__PURE__*/
+() => React.createElement(\\"h1\\", {
+  __source: {
+    fileName: _jsxFileName,
+    lineNumber: 3
+  },
+  __self: this
+}, \\"test\\");
+
+_cmp.displayName = \\"TestMemo\\";
+export const TestMemo = React.memo(_cmp);"
+`;
+
+exports[`react preset when production should match the snapshot for fixture asFunction.jsx 1`] = `
 "var REACT_ELEMENT_TYPE;
 
 function _jsx(type, props, key, children) { if (!REACT_ELEMENT_TYPE) { REACT_ELEMENT_TYPE = typeof Symbol === \\"function\\" && Symbol[\\"for\\"] && Symbol[\\"for\\"](\\"react.element\\") || 0xeac7; } var defaultProps = type && type.defaultProps; var childrenLength = arguments.length - 3; if (!props && childrenLength !== 0) { props = { children: void 0 }; } if (props && defaultProps) { for (var propName in defaultProps) { if (props[propName] === void 0) { props[propName] = defaultProps[propName]; } } } else if (!props) { props = defaultProps || {}; } if (childrenLength === 1) { props.children = children; } else if (childrenLength > 1) { var childArray = new Array(childrenLength); for (var i = 0; i < childrenLength; i++) { childArray[i] = arguments[i + 3]; } props.children = childArray; } return { $$typeof: REACT_ELEMENT_TYPE, type: type, key: key === undefined ? null : '' + key, ref: null, props: props, _owner: null }; }
 
 import React, { memo } from 'react';
 
-var _ref2 =
-/*#__PURE__*/
-_jsx(\\"h1\\", {}, void 0, \\"test\\");
-
-var _cmp =
-/*#__PURE__*/
-function () {
-  return _ref2;
-};
-
-_cmp.displayName = \\"Test\\";
-export const Test = memo(_cmp);
-
 var _ref =
 /*#__PURE__*/
 _jsx(\\"h1\\", {}, void 0, \\"test\\");
 
-export const Test2 = memo(function Named() {
+export const Test = memo(function () {
   return _ref;
+});
+
+var _ref2 =
+/*#__PURE__*/
+_jsx(\\"h1\\", {}, void 0, \\"test\\");
+
+export const Test2 = memo(function Named() {
+  return _ref2;
 });"
 `;
 
-exports[`react preset should match the snapshot for fixture conditionalMemo.jsx 1`] = `
+exports[`react preset when production should match the snapshot for fixture conditionalMemo.jsx 1`] = `
 "var REACT_ELEMENT_TYPE;
 
 function _jsx(type, props, key, children) { if (!REACT_ELEMENT_TYPE) { REACT_ELEMENT_TYPE = typeof Symbol === \\"function\\" && Symbol[\\"for\\"] && Symbol[\\"for\\"](\\"react.element\\") || 0xeac7; } var defaultProps = type && type.defaultProps; var childrenLength = arguments.length - 3; if (!props && childrenLength !== 0) { props = { children: void 0 }; } if (props && defaultProps) { for (var propName in defaultProps) { if (props[propName] === void 0) { props[propName] = defaultProps[propName]; } } } else if (!props) { props = defaultProps || {}; } if (childrenLength === 1) { props.children = children; } else if (childrenLength > 1) { var childArray = new Array(childrenLength); for (var i = 0; i < childrenLength; i++) { childArray[i] = arguments[i + 3]; } props.children = childArray; } return { $$typeof: REACT_ELEMENT_TYPE, type: type, key: key === undefined ? null : '' + key, ref: null, props: props, _owner: null }; }
@@ -40,25 +282,14 @@ var _ref =
 /*#__PURE__*/
 _jsx(\\"h1\\", {}, void 0, \\"test a\\");
 
-var _cmp =
-/*#__PURE__*/
-() => _ref;
-
-_cmp.displayName = \\"Test\\";
-
 var _ref2 =
 /*#__PURE__*/
 _jsx(\\"h1\\", {}, void 0, \\"test b\\");
 
-var _cmp2 =
-/*#__PURE__*/
-() => _ref2;
-
-_cmp2.displayName = \\"Test\\";
-export const Test = something ? memo(_cmp) : memo(_cmp2);"
+export const Test = something ? memo(() => _ref) : memo(() => _ref2);"
 `;
 
-exports[`react preset should match the snapshot for fixture deepMemo.jsx 1`] = `
+exports[`react preset when production should match the snapshot for fixture deepMemo.jsx 1`] = `
 "var REACT_ELEMENT_TYPE;
 
 function _jsx(type, props, key, children) { if (!REACT_ELEMENT_TYPE) { REACT_ELEMENT_TYPE = typeof Symbol === \\"function\\" && Symbol[\\"for\\"] && Symbol[\\"for\\"](\\"react.element\\") || 0xeac7; } var defaultProps = type && type.defaultProps; var childrenLength = arguments.length - 3; if (!props && childrenLength !== 0) { props = { children: void 0 }; } if (props && defaultProps) { for (var propName in defaultProps) { if (props[propName] === void 0) { props[propName] = defaultProps[propName]; } } } else if (!props) { props = defaultProps || {}; } if (childrenLength === 1) { props.children = children; } else if (childrenLength > 1) { var childArray = new Array(childrenLength); for (var i = 0; i < childrenLength; i++) { childArray[i] = arguments[i + 3]; } props.children = childArray; } return { $$typeof: REACT_ELEMENT_TYPE, type: type, key: key === undefined ? null : '' + key, ref: null, props: props, _owner: null }; }
@@ -71,12 +302,7 @@ const test = () => {
     /*#__PURE__*/
     _jsx(\\"h1\\", {}, void 0, someProp);
 
-    var _cmp =
-    /*#__PURE__*/
-    () => _ref;
-
-    _cmp.displayName = \\"test\\";
-    return memo(_cmp);
+    return memo(() => _ref);
   });
 };
 
@@ -94,7 +320,7 @@ const test2 = () => {
 };"
 `;
 
-exports[`react preset should match the snapshot for fixture defaultExportMemo.jsx 1`] = `
+exports[`react preset when production should match the snapshot for fixture defaultExportMemo.jsx 1`] = `
 "var REACT_ELEMENT_TYPE;
 
 function _jsx(type, props, key, children) { if (!REACT_ELEMENT_TYPE) { REACT_ELEMENT_TYPE = typeof Symbol === \\"function\\" && Symbol[\\"for\\"] && Symbol[\\"for\\"](\\"react.element\\") || 0xeac7; } var defaultProps = type && type.defaultProps; var childrenLength = arguments.length - 3; if (!props && childrenLength !== 0) { props = { children: void 0 }; } if (props && defaultProps) { for (var propName in defaultProps) { if (props[propName] === void 0) { props[propName] = defaultProps[propName]; } } } else if (!props) { props = defaultProps || {}; } if (childrenLength === 1) { props.children = children; } else if (childrenLength > 1) { var childArray = new Array(childrenLength); for (var i = 0; i < childrenLength; i++) { childArray[i] = arguments[i + 3]; } props.children = childArray; } return { $$typeof: REACT_ELEMENT_TYPE, type: type, key: key === undefined ? null : '' + key, ref: null, props: props, _owner: null }; }
@@ -105,15 +331,10 @@ var _ref =
 /*#__PURE__*/
 _jsx(\\"h1\\", {}, void 0, \\"test\\");
 
-var _cmp =
-/*#__PURE__*/
-() => _ref;
-
-_cmp.displayName = \\"defaultExportMemo\\";
-export default memo(_cmp);"
+export default memo(() => _ref);"
 `;
 
-exports[`react preset should match the snapshot for fixture memoPassedIn.jsx 1`] = `
+exports[`react preset when production should match the snapshot for fixture memoPassedIn.jsx 1`] = `
 "var REACT_ELEMENT_TYPE;
 
 function _jsx(type, props, key, children) { if (!REACT_ELEMENT_TYPE) { REACT_ELEMENT_TYPE = typeof Symbol === \\"function\\" && Symbol[\\"for\\"] && Symbol[\\"for\\"](\\"react.element\\") || 0xeac7; } var defaultProps = type && type.defaultProps; var childrenLength = arguments.length - 3; if (!props && childrenLength !== 0) { props = { children: void 0 }; } if (props && defaultProps) { for (var propName in defaultProps) { if (props[propName] === void 0) { props[propName] = defaultProps[propName]; } } } else if (!props) { props = defaultProps || {}; } if (childrenLength === 1) { props.children = children; } else if (childrenLength > 1) { var childArray = new Array(childrenLength); for (var i = 0; i < childrenLength; i++) { childArray[i] = arguments[i + 3]; } props.children = childArray; } return { $$typeof: REACT_ELEMENT_TYPE, type: type, key: key === undefined ? null : '' + key, ref: null, props: props, _owner: null }; }
@@ -124,15 +345,10 @@ var _ref =
 /*#__PURE__*/
 _jsx(\\"h1\\", {}, void 0, \\"test\\");
 
-var _cmp =
-/*#__PURE__*/
-() => _ref;
-
-_cmp.displayName = \\"Test\\";
-export const Test = withData(memo(_cmp));"
+export const Test = withData(memo(() => _ref));"
 `;
 
-exports[`react preset should match the snapshot for fixture memoWithDestructure.jsx 1`] = `
+exports[`react preset when production should match the snapshot for fixture memoWithDestructure.jsx 1`] = `
 "var REACT_ELEMENT_TYPE;
 
 function _jsx(type, props, key, children) { if (!REACT_ELEMENT_TYPE) { REACT_ELEMENT_TYPE = typeof Symbol === \\"function\\" && Symbol[\\"for\\"] && Symbol[\\"for\\"](\\"react.element\\") || 0xeac7; } var defaultProps = type && type.defaultProps; var childrenLength = arguments.length - 3; if (!props && childrenLength !== 0) { props = { children: void 0 }; } if (props && defaultProps) { for (var propName in defaultProps) { if (props[propName] === void 0) { props[propName] = defaultProps[propName]; } } } else if (!props) { props = defaultProps || {}; } if (childrenLength === 1) { props.children = children; } else if (childrenLength > 1) { var childArray = new Array(childrenLength); for (var i = 0; i < childrenLength; i++) { childArray[i] = arguments[i + 3]; } props.children = childArray; } return { $$typeof: REACT_ELEMENT_TYPE, type: type, key: key === undefined ? null : '' + key, ref: null, props: props, _owner: null }; }
@@ -143,57 +359,56 @@ var _ref =
 /*#__PURE__*/
 _jsx(\\"h1\\", {}, void 0, \\"test\\");
 
-var _cmp =
-/*#__PURE__*/
-() => _ref;
-
-_cmp.displayName = \\"TestMemo\\";
-const TestMemo = memo(_cmp);"
+const TestMemo = memo(() => _ref);"
 `;
 
-exports[`react preset should match the snapshot for fixture standardReact.jsx 1`] = `
+exports[`react preset when production should match the snapshot for fixture standardReact.jsx 1`] = `
 "var REACT_ELEMENT_TYPE;
 
 function _jsx(type, props, key, children) { if (!REACT_ELEMENT_TYPE) { REACT_ELEMENT_TYPE = typeof Symbol === \\"function\\" && Symbol[\\"for\\"] && Symbol[\\"for\\"](\\"react.element\\") || 0xeac7; } var defaultProps = type && type.defaultProps; var childrenLength = arguments.length - 3; if (!props && childrenLength !== 0) { props = { children: void 0 }; } if (props && defaultProps) { for (var propName in defaultProps) { if (props[propName] === void 0) { props[propName] = defaultProps[propName]; } } } else if (!props) { props = defaultProps || {}; } if (childrenLength === 1) { props.children = children; } else if (childrenLength > 1) { var childArray = new Array(childrenLength); for (var i = 0; i < childrenLength; i++) { childArray[i] = arguments[i + 3]; } props.children = childArray; } return { $$typeof: REACT_ELEMENT_TYPE, type: type, key: key === undefined ? null : '' + key, ref: null, props: props, _owner: null }; }
 
 import React, { memo } from 'react';
 
+class GreetSomeone extends React.Component {
+  render() {
+    return _jsx(\\"div\\", {}, void 0, this.props.greeting, \\" \\", this.props.subject, \\"!\\");
+  }
+
+}
+
 var _ref =
 /*#__PURE__*/
-_jsx(\\"h1\\", {}, void 0, \\"test\\");
+_jsx(\\"label\\", {
+  htmlFor: \\"greeting\\"
+}, void 0, \\"Greeting: \\");
 
-const FunctionComponent = () => _ref;
+function App() {
+  const [greeting, setGreeting] = React.useState('HELLO');
+
+  function handleGreetingChange(event) {
+    const input = event.target;
+    const newGreeting = input.value.toUpperCase();
+    setGreeting(newGreeting);
+  }
+
+  return _jsx(\\"form\\", {}, void 0, _jsx(\\"div\\", {}, void 0, _ref, _jsx(\\"input\\", {
+    id: \\"greeting\\",
+    onChange: handleGreetingChange,
+    value: greeting
+  })), _jsx(\\"div\\", {}, void 0, _jsx(GreetSomeone, {
+    greeting: greeting,
+    subject: \\"Nancy\\"
+  })));
+}
 
 var _ref2 =
 /*#__PURE__*/
 _jsx(\\"h1\\", {}, void 0, \\"test\\");
 
-class ClassComponent extends React.Component {
-  render() {
-    return _ref2;
-  }
-
-}
-
-var _ref3 =
-/*#__PURE__*/
-_jsx(\\"div\\", {}, void 0, _jsx(FunctionComponent, {}), _jsx(ClassComponent, {}));
-
-const TestInline = () => _ref3;
-
-var _ref4 =
-/*#__PURE__*/
-_jsx(\\"h1\\", {}, void 0, \\"test\\");
-
-var _cmp =
-/*#__PURE__*/
-() => _ref4;
-
-_cmp.displayName = \\"MemoTest\\";
-const MemoTest = memo(_cmp);"
+const MemoTest = memo(() => _ref2);"
 `;
 
-exports[`react preset should match the snapshot for fixture usingReactMemo.jsx 1`] = `
+exports[`react preset when production should match the snapshot for fixture usingReactMemo.jsx 1`] = `
 "var REACT_ELEMENT_TYPE;
 
 function _jsx(type, props, key, children) { if (!REACT_ELEMENT_TYPE) { REACT_ELEMENT_TYPE = typeof Symbol === \\"function\\" && Symbol[\\"for\\"] && Symbol[\\"for\\"](\\"react.element\\") || 0xeac7; } var defaultProps = type && type.defaultProps; var childrenLength = arguments.length - 3; if (!props && childrenLength !== 0) { props = { children: void 0 }; } if (props && defaultProps) { for (var propName in defaultProps) { if (props[propName] === void 0) { props[propName] = defaultProps[propName]; } } } else if (!props) { props = defaultProps || {}; } if (childrenLength === 1) { props.children = children; } else if (childrenLength > 1) { var childArray = new Array(childrenLength); for (var i = 0; i < childrenLength; i++) { childArray[i] = arguments[i + 3]; } props.children = childArray; } return { $$typeof: REACT_ELEMENT_TYPE, type: type, key: key === undefined ? null : '' + key, ref: null, props: props, _owner: null }; }
@@ -204,10 +419,5 @@ var _ref =
 /*#__PURE__*/
 _jsx(\\"h1\\", {}, void 0, \\"test\\");
 
-var _cmp =
-/*#__PURE__*/
-() => _ref;
-
-_cmp.displayName = \\"TestMemo\\";
-export const TestMemo = React.memo(_cmp);"
+export const TestMemo = React.memo(() => _ref);"
 `;
