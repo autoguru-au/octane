@@ -44,7 +44,7 @@
     "relative": true
   },
   "devDependencies": {
-    "@types/node": "^12.6.8",
+    "@types/node": "^12.6.9",
     "browserslist-config-autoguru": "*",
     "eslint": "^6.1.0",
     "glob": "^7.1.4",
