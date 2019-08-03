@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`react preset when development should match the snapshot for fixture asFunction.jsx 1`] = `
-"var _jsxFileName = \\"/Users/marais/Sites/vnext/octane/packages/babel-preset/react/fixtures/asFunction.jsx\\";
+exports[`react-preset when development should match the snapshot for fixture asFunction.jsx 1`] = `
+"var _jsxFileName = \\"/Users/maraisr/Sites/autoguru/octane/packages/babel-preset/react/fixtures/asFunction.jsx\\";
 import React, { memo } from 'react';
 
 var _cmp =
@@ -29,8 +29,8 @@ export const Test2 = memo(function Named() {
 });"
 `;
 
-exports[`react preset when development should match the snapshot for fixture conditionalMemo.jsx 1`] = `
-"var _jsxFileName = \\"/Users/marais/Sites/vnext/octane/packages/babel-preset/react/fixtures/conditionalMemo.jsx\\";
+exports[`react-preset when development should match the snapshot for fixture conditionalMemo.jsx 1`] = `
+"var _jsxFileName = \\"/Users/maraisr/Sites/autoguru/octane/packages/babel-preset/react/fixtures/conditionalMemo.jsx\\";
 import React, { memo } from 'react';
 
 var _cmp =
@@ -59,8 +59,8 @@ _cmp2.displayName = \\"Test\\";
 export const Test = something ? memo(_cmp) : memo(_cmp2);"
 `;
 
-exports[`react preset when development should match the snapshot for fixture deepMemo.jsx 1`] = `
-"var _jsxFileName = \\"/Users/marais/Sites/vnext/octane/packages/babel-preset/react/fixtures/deepMemo.jsx\\";
+exports[`react-preset when development should match the snapshot for fixture deepMemo.jsx 1`] = `
+"var _jsxFileName = \\"/Users/maraisr/Sites/autoguru/octane/packages/babel-preset/react/fixtures/deepMemo.jsx\\";
 import React, { memo } from 'react';
 
 const test = () => {
@@ -96,8 +96,8 @@ const test2 = () => {
 };"
 `;
 
-exports[`react preset when development should match the snapshot for fixture defaultExportMemo.jsx 1`] = `
-"var _jsxFileName = \\"/Users/marais/Sites/vnext/octane/packages/babel-preset/react/fixtures/defaultExportMemo.jsx\\";
+exports[`react-preset when development should match the snapshot for fixture defaultExportMemo.jsx 1`] = `
+"var _jsxFileName = \\"/Users/maraisr/Sites/autoguru/octane/packages/babel-preset/react/fixtures/defaultExportMemo.jsx\\";
 import React, { memo } from 'react';
 export default memo(() => React.createElement(\\"h1\\", {
   __source: {
@@ -108,8 +108,8 @@ export default memo(() => React.createElement(\\"h1\\", {
 }, \\"test\\"));"
 `;
 
-exports[`react preset when development should match the snapshot for fixture memoPassedIn.jsx 1`] = `
-"var _jsxFileName = \\"/Users/marais/Sites/vnext/octane/packages/babel-preset/react/fixtures/memoPassedIn.jsx\\";
+exports[`react-preset when development should match the snapshot for fixture memoPassedIn.jsx 1`] = `
+"var _jsxFileName = \\"/Users/maraisr/Sites/autoguru/octane/packages/babel-preset/react/fixtures/memoPassedIn.jsx\\";
 import React, { memo } from 'react';
 
 var _cmp =
@@ -126,8 +126,8 @@ _cmp.displayName = \\"Test\\";
 export const Test = withData(memo(_cmp));"
 `;
 
-exports[`react preset when development should match the snapshot for fixture memoWithDestructure.jsx 1`] = `
-"var _jsxFileName = \\"/Users/marais/Sites/vnext/octane/packages/babel-preset/react/fixtures/memoWithDestructure.jsx\\";
+exports[`react-preset when development should match the snapshot for fixture memoWithDestructure.jsx 1`] = `
+"var _jsxFileName = \\"/Users/maraisr/Sites/autoguru/octane/packages/babel-preset/react/fixtures/memoWithDestructure.jsx\\";
 import { memo } from 'react';
 
 var _cmp =
@@ -144,8 +144,8 @@ _cmp.displayName = \\"TestMemo\\";
 const TestMemo = memo(_cmp);"
 `;
 
-exports[`react preset when development should match the snapshot for fixture standardReact.jsx 1`] = `
-"var _jsxFileName = \\"/Users/marais/Sites/vnext/octane/packages/babel-preset/react/fixtures/standardReact.jsx\\";
+exports[`react-preset when development should match the snapshot for fixture standardReact.jsx 1`] = `
+"var _jsxFileName = \\"/Users/maraisr/Sites/autoguru/octane/packages/babel-preset/react/fixtures/standardReact.jsx\\";
 import React, { memo } from 'react';
 
 class GreetSomeone extends React.Component {
@@ -229,8 +229,8 @@ _cmp.displayName = \\"MemoTest\\";
 const MemoTest = memo(_cmp);"
 `;
 
-exports[`react preset when development should match the snapshot for fixture usingReactMemo.jsx 1`] = `
-"var _jsxFileName = \\"/Users/marais/Sites/vnext/octane/packages/babel-preset/react/fixtures/usingReactMemo.jsx\\";
+exports[`react-preset when development should match the snapshot for fixture usingReactMemo.jsx 1`] = `
+"var _jsxFileName = \\"/Users/maraisr/Sites/autoguru/octane/packages/babel-preset/react/fixtures/usingReactMemo.jsx\\";
 import React from 'react';
 
 var _cmp =
@@ -247,7 +247,7 @@ _cmp.displayName = \\"TestMemo\\";
 export const TestMemo = React.memo(_cmp);"
 `;
 
-exports[`react preset when production should match the snapshot for fixture asFunction.jsx 1`] = `
+exports[`react-preset when production should match the snapshot for fixture asFunction.jsx 1`] = `
 "var REACT_ELEMENT_TYPE;
 
 function _jsx(type, props, key, children) { if (!REACT_ELEMENT_TYPE) { REACT_ELEMENT_TYPE = typeof Symbol === \\"function\\" && Symbol[\\"for\\"] && Symbol[\\"for\\"](\\"react.element\\") || 0xeac7; } var defaultProps = type && type.defaultProps; var childrenLength = arguments.length - 3; if (!props && childrenLength !== 0) { props = { children: void 0 }; } if (props && defaultProps) { for (var propName in defaultProps) { if (props[propName] === void 0) { props[propName] = defaultProps[propName]; } } } else if (!props) { props = defaultProps || {}; } if (childrenLength === 1) { props.children = children; } else if (childrenLength > 1) { var childArray = new Array(childrenLength); for (var i = 0; i < childrenLength; i++) { childArray[i] = arguments[i + 3]; } props.children = childArray; } return { $$typeof: REACT_ELEMENT_TYPE, type: type, key: key === undefined ? null : '' + key, ref: null, props: props, _owner: null }; }
@@ -271,7 +271,7 @@ export const Test2 = memo(function Named() {
 });"
 `;
 
-exports[`react preset when production should match the snapshot for fixture conditionalMemo.jsx 1`] = `
+exports[`react-preset when production should match the snapshot for fixture conditionalMemo.jsx 1`] = `
 "var REACT_ELEMENT_TYPE;
 
 function _jsx(type, props, key, children) { if (!REACT_ELEMENT_TYPE) { REACT_ELEMENT_TYPE = typeof Symbol === \\"function\\" && Symbol[\\"for\\"] && Symbol[\\"for\\"](\\"react.element\\") || 0xeac7; } var defaultProps = type && type.defaultProps; var childrenLength = arguments.length - 3; if (!props && childrenLength !== 0) { props = { children: void 0 }; } if (props && defaultProps) { for (var propName in defaultProps) { if (props[propName] === void 0) { props[propName] = defaultProps[propName]; } } } else if (!props) { props = defaultProps || {}; } if (childrenLength === 1) { props.children = children; } else if (childrenLength > 1) { var childArray = new Array(childrenLength); for (var i = 0; i < childrenLength; i++) { childArray[i] = arguments[i + 3]; } props.children = childArray; } return { $$typeof: REACT_ELEMENT_TYPE, type: type, key: key === undefined ? null : '' + key, ref: null, props: props, _owner: null }; }
@@ -289,7 +289,7 @@ _jsx(\\"h1\\", {}, void 0, \\"test b\\");
 export const Test = something ? memo(() => _ref) : memo(() => _ref2);"
 `;
 
-exports[`react preset when production should match the snapshot for fixture deepMemo.jsx 1`] = `
+exports[`react-preset when production should match the snapshot for fixture deepMemo.jsx 1`] = `
 "var REACT_ELEMENT_TYPE;
 
 function _jsx(type, props, key, children) { if (!REACT_ELEMENT_TYPE) { REACT_ELEMENT_TYPE = typeof Symbol === \\"function\\" && Symbol[\\"for\\"] && Symbol[\\"for\\"](\\"react.element\\") || 0xeac7; } var defaultProps = type && type.defaultProps; var childrenLength = arguments.length - 3; if (!props && childrenLength !== 0) { props = { children: void 0 }; } if (props && defaultProps) { for (var propName in defaultProps) { if (props[propName] === void 0) { props[propName] = defaultProps[propName]; } } } else if (!props) { props = defaultProps || {}; } if (childrenLength === 1) { props.children = children; } else if (childrenLength > 1) { var childArray = new Array(childrenLength); for (var i = 0; i < childrenLength; i++) { childArray[i] = arguments[i + 3]; } props.children = childArray; } return { $$typeof: REACT_ELEMENT_TYPE, type: type, key: key === undefined ? null : '' + key, ref: null, props: props, _owner: null }; }
@@ -320,7 +320,7 @@ const test2 = () => {
 };"
 `;
 
-exports[`react preset when production should match the snapshot for fixture defaultExportMemo.jsx 1`] = `
+exports[`react-preset when production should match the snapshot for fixture defaultExportMemo.jsx 1`] = `
 "var REACT_ELEMENT_TYPE;
 
 function _jsx(type, props, key, children) { if (!REACT_ELEMENT_TYPE) { REACT_ELEMENT_TYPE = typeof Symbol === \\"function\\" && Symbol[\\"for\\"] && Symbol[\\"for\\"](\\"react.element\\") || 0xeac7; } var defaultProps = type && type.defaultProps; var childrenLength = arguments.length - 3; if (!props && childrenLength !== 0) { props = { children: void 0 }; } if (props && defaultProps) { for (var propName in defaultProps) { if (props[propName] === void 0) { props[propName] = defaultProps[propName]; } } } else if (!props) { props = defaultProps || {}; } if (childrenLength === 1) { props.children = children; } else if (childrenLength > 1) { var childArray = new Array(childrenLength); for (var i = 0; i < childrenLength; i++) { childArray[i] = arguments[i + 3]; } props.children = childArray; } return { $$typeof: REACT_ELEMENT_TYPE, type: type, key: key === undefined ? null : '' + key, ref: null, props: props, _owner: null }; }
@@ -334,7 +334,7 @@ _jsx(\\"h1\\", {}, void 0, \\"test\\");
 export default memo(() => _ref);"
 `;
 
-exports[`react preset when production should match the snapshot for fixture memoPassedIn.jsx 1`] = `
+exports[`react-preset when production should match the snapshot for fixture memoPassedIn.jsx 1`] = `
 "var REACT_ELEMENT_TYPE;
 
 function _jsx(type, props, key, children) { if (!REACT_ELEMENT_TYPE) { REACT_ELEMENT_TYPE = typeof Symbol === \\"function\\" && Symbol[\\"for\\"] && Symbol[\\"for\\"](\\"react.element\\") || 0xeac7; } var defaultProps = type && type.defaultProps; var childrenLength = arguments.length - 3; if (!props && childrenLength !== 0) { props = { children: void 0 }; } if (props && defaultProps) { for (var propName in defaultProps) { if (props[propName] === void 0) { props[propName] = defaultProps[propName]; } } } else if (!props) { props = defaultProps || {}; } if (childrenLength === 1) { props.children = children; } else if (childrenLength > 1) { var childArray = new Array(childrenLength); for (var i = 0; i < childrenLength; i++) { childArray[i] = arguments[i + 3]; } props.children = childArray; } return { $$typeof: REACT_ELEMENT_TYPE, type: type, key: key === undefined ? null : '' + key, ref: null, props: props, _owner: null }; }
@@ -348,7 +348,7 @@ _jsx(\\"h1\\", {}, void 0, \\"test\\");
 export const Test = withData(memo(() => _ref));"
 `;
 
-exports[`react preset when production should match the snapshot for fixture memoWithDestructure.jsx 1`] = `
+exports[`react-preset when production should match the snapshot for fixture memoWithDestructure.jsx 1`] = `
 "var REACT_ELEMENT_TYPE;
 
 function _jsx(type, props, key, children) { if (!REACT_ELEMENT_TYPE) { REACT_ELEMENT_TYPE = typeof Symbol === \\"function\\" && Symbol[\\"for\\"] && Symbol[\\"for\\"](\\"react.element\\") || 0xeac7; } var defaultProps = type && type.defaultProps; var childrenLength = arguments.length - 3; if (!props && childrenLength !== 0) { props = { children: void 0 }; } if (props && defaultProps) { for (var propName in defaultProps) { if (props[propName] === void 0) { props[propName] = defaultProps[propName]; } } } else if (!props) { props = defaultProps || {}; } if (childrenLength === 1) { props.children = children; } else if (childrenLength > 1) { var childArray = new Array(childrenLength); for (var i = 0; i < childrenLength; i++) { childArray[i] = arguments[i + 3]; } props.children = childArray; } return { $$typeof: REACT_ELEMENT_TYPE, type: type, key: key === undefined ? null : '' + key, ref: null, props: props, _owner: null }; }
@@ -362,7 +362,7 @@ _jsx(\\"h1\\", {}, void 0, \\"test\\");
 const TestMemo = memo(() => _ref);"
 `;
 
-exports[`react preset when production should match the snapshot for fixture standardReact.jsx 1`] = `
+exports[`react-preset when production should match the snapshot for fixture standardReact.jsx 1`] = `
 "var REACT_ELEMENT_TYPE;
 
 function _jsx(type, props, key, children) { if (!REACT_ELEMENT_TYPE) { REACT_ELEMENT_TYPE = typeof Symbol === \\"function\\" && Symbol[\\"for\\"] && Symbol[\\"for\\"](\\"react.element\\") || 0xeac7; } var defaultProps = type && type.defaultProps; var childrenLength = arguments.length - 3; if (!props && childrenLength !== 0) { props = { children: void 0 }; } if (props && defaultProps) { for (var propName in defaultProps) { if (props[propName] === void 0) { props[propName] = defaultProps[propName]; } } } else if (!props) { props = defaultProps || {}; } if (childrenLength === 1) { props.children = children; } else if (childrenLength > 1) { var childArray = new Array(childrenLength); for (var i = 0; i < childrenLength; i++) { childArray[i] = arguments[i + 3]; } props.children = childArray; } return { $$typeof: REACT_ELEMENT_TYPE, type: type, key: key === undefined ? null : '' + key, ref: null, props: props, _owner: null }; }
@@ -408,7 +408,7 @@ _jsx(\\"h1\\", {}, void 0, \\"test\\");
 const MemoTest = memo(() => _ref2);"
 `;
 
-exports[`react preset when production should match the snapshot for fixture usingReactMemo.jsx 1`] = `
+exports[`react-preset when production should match the snapshot for fixture usingReactMemo.jsx 1`] = `
 "var REACT_ELEMENT_TYPE;
 
 function _jsx(type, props, key, children) { if (!REACT_ELEMENT_TYPE) { REACT_ELEMENT_TYPE = typeof Symbol === \\"function\\" && Symbol[\\"for\\"] && Symbol[\\"for\\"](\\"react.element\\") || 0xeac7; } var defaultProps = type && type.defaultProps; var childrenLength = arguments.length - 3; if (!props && childrenLength !== 0) { props = { children: void 0 }; } if (props && defaultProps) { for (var propName in defaultProps) { if (props[propName] === void 0) { props[propName] = defaultProps[propName]; } } } else if (!props) { props = defaultProps || {}; } if (childrenLength === 1) { props.children = children; } else if (childrenLength > 1) { var childArray = new Array(childrenLength); for (var i = 0; i < childrenLength; i++) { childArray[i] = arguments[i + 3]; } props.children = childArray; } return { $$typeof: REACT_ELEMENT_TYPE, type: type, key: key === undefined ? null : '' + key, ref: null, props: props, _owner: null }; }

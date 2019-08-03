@@ -28,7 +28,8 @@ module.exports = function autoGuruReactPreset(api, options = {}) {
 				require.resolve(
 					'@babel/plugin-transform-react-constant-elements',
 				),
-			dev && experimental && require.resolve('./plugins/named-memo.js'),
+			[require.resolve('./plugins/tracking-ref'), { debug: true }],
+			dev && experimental && require.resolve('./plugins/named-memo'),
 		].filter(Boolean),
 	};
 };

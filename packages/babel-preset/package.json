@@ -20,11 +20,14 @@
     "@babel/preset-react": "^7.0.0",
     "@babel/runtime-corejs3": "^7.5.5",
     "babel-plugin-macros": "^2.6.1",
-    "babel-plugin-transform-react-remove-prop-types": "^0.4.24"
+    "babel-plugin-syntax-jsx": "^6.18.0",
+    "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
+    "kleur": "^3.0.3"
   },
   "devDependencies": {
     "@autoguru/jest-preset": "^1.0.60",
-    "@babel/core": "^7.5.5"
+    "@babel/core": "^7.5.5",
+    "glob": "^7.1.4"
   },
   "peerDependencies": {
     "@babel/core": "^7.5.5"

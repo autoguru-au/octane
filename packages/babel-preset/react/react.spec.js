@@ -3,7 +3,7 @@ const { readdirSync } = require('fs');
 const { join } = require('path');
 const fixtures = join(__dirname, 'fixtures');
 
-describe('react preset', () => {
+describe('react-preset', () => {
 	readdirSync(fixtures).forEach(file => {
 		describe('when production', () => {
 			beforeEach(() => {

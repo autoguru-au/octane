@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`react-preset/track ref plugin should match the snapshot for fixture fixtures/sameName/standard.jsx 1`] = `
+"import { Button } from '@autoguru/overdrive';
+
+const Componet = () => {
+  return <>
+			<button onClick={() => {}} data-tref=\\"standard:Componet:button\\" />
+			<Button onClick={() => {}} />
+			<a href=\\"\\" data-tref=\\"standard:Componet:a\\" />
+		</>;
+};
+
+const AnotherComponent = () => {
+  return <>
+			<button onClick={() => {}} data-tref=\\"standard:AnotherComponent:button\\" />
+			<Button onClick={() => {}} />
+			<a href=\\"\\" data-tref=\\"standard:AnotherComponent:a\\" />
+		</>;
+};"
+`;
+
+exports[`react-preset/track ref plugin should match the snapshot for fixture fixtures/standard.jsx 1`] = `
+"import { Button } from '@autoguru/overdrive';
+
+const Componet = () => {
+  return <>
+			<button onClick={() => {}} data-tref=\\"standard:Componet:button:1\\" />
+			<Button onClick={() => {}} />
+			<a href=\\"\\" data-tref=\\"standard:Componet:a:1\\" />
+		</>;
+};
+
+const AnotherComponent = ({
+  spread
+}) => {
+  return <>
+			<button onClick={() => {}} data-tref=\\"standard:AnotherComponent:button:1\\" />
+			<Button onClick={() => {}} {...spread} />
+			<a href=\\"\\" data-tref=\\"standard:AnotherComponent:a:1\\" />
+		</>;
+};"
+`;

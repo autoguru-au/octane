@@ -1,43 +1,51 @@
 const { default: annotateAsPure } = require('@babel/helper-annotate-as-pure');
 const { declare } = require('@babel/helper-plugin-utils');
 
-module.exports = declare(function({ types: t, assertVersion }) {
+module.exports = declare(function namedMemo({ types: t, assertVersion }) {
 	assertVersion(7);
 
 	return {
-		name: 'named-memo',
 		visitor: {
-			ImportDeclaration(path) {
-				if (path.node.source.value === 'react') {
-					path.node.specifiers.forEach(item => {
-						if (
-							t.isImportDefaultSpecifier(item) ||
-							t.isImportSpecifier(item)
-						) {
-							const bindings =
-								path.scope.getBinding(item.local.name)
-									.referencePaths || [];
+			Program(programPath) {
+				programPath.traverse({
+					ImportDeclaration(path) {
+						if (path.node.source.value === 'react') {
+							path.node.specifiers.forEach(item => {
+								if (
+									t.isImportDefaultSpecifier(item) ||
+									t.isImportSpecifier(item)
+								) {
+									const bindings =
+										path.scope.getBinding(item.local.name)
+											.referencePaths || [];
 
-							if (t.isImportDefaultSpecifier(item)) {
-								bindings
-									.filter(item =>
-										t.isMemberExpression(item.parent),
-									)
-									.filter(item =>
-										t.isIdentifier(item.parent.property, {
-											name: 'memo',
-										}),
-									)
-									.forEach(assignNameFor(t));
-							} else if (
-								t.isImportSpecifier(item) &&
-								item.imported.name === 'memo'
-							) {
-								bindings.forEach(assignNameFor(t));
-							}
+									if (t.isImportDefaultSpecifier(item)) {
+										bindings
+											.filter(item =>
+												t.isMemberExpression(
+													item.parent,
+												),
+											)
+											.filter(item =>
+												t.isIdentifier(
+													item.parent.property,
+													{
+														name: 'memo',
+													},
+												),
+											)
+											.forEach(assignNameFor(t));
+									} else if (
+										t.isImportSpecifier(item) &&
+										item.imported.name === 'memo'
+									) {
+										bindings.forEach(assignNameFor(t));
+									}
+								}
+							});
 						}
-					});
-				}
+					},
+				});
 			},
 		},
 	};
