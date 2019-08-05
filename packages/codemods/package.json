@@ -1,0 +1,23 @@
+{
+  "name": "@autoguru/codemods",
+  "version": "1.0.60",
+  "description": "Codemods that help us modernise our codebases",
+  "homepage": "https://github.com/autoguru-au/octane/tree/master/packages/codemods#readme",
+  "repository": "https://github.com/autoguru-au/octane/tree/master/packages/codemods",
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "devDependencies": {
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.5.5",
+    "@types/jscodeshift": "0.6.1",
+    "@types/node": "^12.6.8",
+    "jscodeshift": "^0.6.4",
+    "typescript": "~3.5.3"
+  }
+}

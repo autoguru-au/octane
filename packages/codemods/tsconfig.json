@@ -1,0 +1,10 @@
+{
+	"extends": "@autoguru/tsconfig/web",
+	"compilerOptions": {
+		"outDir": "./dist",
+		"baseUrl": "./src",
+		"rootDir": "./src",
+		"isolatedModules": true
+	},
+	"include": ["./src/*"]
+}
