@@ -1,21 +1,27 @@
-import { Button } from '@autoguru/overdrive';
-
 const Componet = () => {
 	return (
 		<>
-			<button onClick={() => {}} />
-			<Button onClick={() => {}} />
-			<a href="" />
+			<div>
+				<button onClick={void 0}>
+					Example Button 1
+				</button>
+
+				<span>some text</span>
+
+				<Test />
+
+				<Button onClick={void 0}>
+					<Icon icon={Account} />
+					Login
+				</Button>
+			</div>
 		</>
 	);
 };
 
-const AnotherComponent = ({ spread }) => {
-	return (
-		<>
-			<button onClick={() => {}} />
-			<Button onClick={() => {}} {...spread} />
-			<a href="" />
-		</>
-	);
-};
+
+const Test =() => {
+	return <a href="">
+		Example anchor
+	</a>
+}

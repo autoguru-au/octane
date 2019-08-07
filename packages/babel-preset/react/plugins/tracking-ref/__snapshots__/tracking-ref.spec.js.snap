@@ -5,39 +5,40 @@ exports[`react-preset/track ref plugin should match the snapshot for fixture fix
 
 const Componet = () => {
   return <>
-			<button onClick={() => {}} data-tref=\\"standard:Componet:button\\" />
-			<Button onClick={() => {}} />
-			<a href=\\"\\" data-tref=\\"standard:Componet:a\\" />
+			<button onClick={() => {}} test=\\"c3e2d78\\" />
+			<Button onClick={() => {}} test=\\"707eab0\\" />
+			<a href=\\"\\" test=\\"ca97811\\" />
 		</>;
 };
 
 const AnotherComponent = () => {
   return <>
-			<button onClick={() => {}} data-tref=\\"standard:AnotherComponent:button\\" />
-			<Button onClick={() => {}} />
-			<a href=\\"\\" data-tref=\\"standard:AnotherComponent:a\\" />
+			<button onClick={() => {}} test=\\"c3e2d78\\" />
+			<Button onClick={() => {}} test=\\"707eab0\\" />
+			<a href=\\"\\" test=\\"ca97811\\" />
 		</>;
 };"
 `;
 
 exports[`react-preset/track ref plugin should match the snapshot for fixture fixtures/standard.jsx 1`] = `
-"import { Button } from '@autoguru/overdrive';
-
-const Componet = () => {
+"const Componet = () => {
   return <>
-			<button onClick={() => {}} data-tref=\\"standard:Componet:button:1\\" />
-			<Button onClick={() => {}} />
-			<a href=\\"\\" data-tref=\\"standard:Componet:a:1\\" />
-		</>;
-};
+			<div>
+				<button onClick={void 0} test=\\"b0fe0c4\\">
+					Example Button 1
+				</button>
 
-const AnotherComponent = ({
-  spread
-}) => {
-  return <>
-			<button onClick={() => {}} data-tref=\\"standard:AnotherComponent:button:1\\" />
-			<Button onClick={() => {}} {...spread} />
-			<a href=\\"\\" data-tref=\\"standard:AnotherComponent:a:1\\" />
+				<span>some text</span>
+
+				<a href=\\"\\" test=\\"462b6d5\\">
+					Example anchor
+				</a>
+
+				<Button onClick={void 0} test=\\"6697963\\">
+					<Icon icon={Account} />
+					Login
+				</Button>
+			</div>
 		</>;
 };"
 `;

@@ -9,6 +9,8 @@ describe('react-preset/track ref plugin', () => {
 			__dirname,
 			file,
 		)}`, async () => {
+			process.NODE_ENV = 'production';
+
 			const { code } = await transformFileAsync(file, {
 				babelrc: false,
 				plugins: [

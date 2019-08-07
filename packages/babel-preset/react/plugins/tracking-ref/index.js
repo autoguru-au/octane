@@ -1,13 +1,17 @@
 const { declare } = require('@babel/helper-plugin-utils');
 const { dirname, basename } = require('path');
 const { cyan, yellow, dim } = require('kleur');
+const { createHash } = require('crypto');
+const { default: generate } = require('@babel/generator');
+
+const t = require('@babel/types');
 
 const matchProps = ['onClick', 'href', 'onChange'];
 
 const nameCache = new Set();
 
 module.exports = declare(function trackingRef(
-	{ types: t, assertVersion },
+	{ assertVersion },
 	opts,
 ) {
 	assertVersion(7);
@@ -51,9 +55,25 @@ module.exports = declare(function trackingRef(
 			}
 		},
 		visitor: {
-			JSXOpeningElement(path) {
-				const { attributes } = path.node;
+			JSXElement(path, state) {
 
+				if (isElementWeShouldTrack(path)) {
+
+					const nodeId = generateNodeId(
+						t.cloneDeep(path.node),
+					);
+
+
+					path.node.openingElement.attributes.push(
+						t.jsxAttribute(
+							t.jsxIdentifier('test'),
+							t.stringLiteral(nodeId),
+						),
+					);
+				}
+
+			},
+			/*JSXOpeningElement(path) {
 				if (!path.node.name.name) {
 					return;
 				}
@@ -66,7 +86,7 @@ module.exports = declare(function trackingRef(
 					return;
 				}
 
-				const shouldTrack = attributes.some(item => {
+				const shouldTrack =  path.node.attributes.some(item => {
 					const { name } = item.name;
 					return matchProps.includes(name);
 				});
@@ -106,10 +126,39 @@ module.exports = declare(function trackingRef(
 						),
 					);
 				}
-			},
+			},*/
 		},
 	};
 });
+
+function isElementWeShouldTrack(path) {
+	const { openingElement } = path.node;
+
+	// TODO: Handle spread
+
+	return openingElement.attributes
+		.filter(item => t.isJSXIdentifier(item.name))
+		.some(item => matchProps.includes(item.name.name));
+}
+
+function generateNodeId(node) {
+
+	const { name: tagName } = node.openingElement.name;
+
+	const elementHash =
+		createHash('sha256')
+			.update(
+				tagName + node.children
+					.map(item => generate(item, {
+						comments: null
+					}).code)
+					.join('')
+					.replace(/[\s\t\n]+/g, '')
+			)
+			.digest('hex');
+
+	return elementHash.slice(0, 7);
+}
 
 function getTrackingRefFor(path, componentName, fileIdentifier) {
 	const maybeName = `${fileIdentifier}:${componentName}:${path.node.name.name}`;
