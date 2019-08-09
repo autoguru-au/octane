@@ -16,6 +16,6 @@ module.exports = {
 		'promise/catch-or-return': 'warn',
 		'unicorn/filename-case': 'off',
 		'unicorn/prevent-abbreviations': 'off',
-		camelcase: 'off',
+		camelcase: 'off'
 	},
 };

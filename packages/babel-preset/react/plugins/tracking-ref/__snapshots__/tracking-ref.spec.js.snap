@@ -5,40 +5,53 @@ exports[`react-preset/track ref plugin should match the snapshot for fixture fix
 
 const Componet = () => {
   return <>
-			<button onClick={() => {}} test=\\"c3e2d78\\" />
-			<Button onClick={() => {}} test=\\"707eab0\\" />
-			<a href=\\"\\" test=\\"ca97811\\" />
+			<button onClick={() => {}} data-tref=\\"c3e2d78f3\\" />
+			<Button onClick={() => {}} __tref=\\"707eab0c2\\" />
+			<a href=\\"\\" data-tref=\\"ca978112c\\" />
 		</>;
 };
 
 const AnotherComponent = () => {
   return <>
-			<button onClick={() => {}} test=\\"c3e2d78\\" />
-			<Button onClick={() => {}} test=\\"707eab0\\" />
-			<a href=\\"\\" test=\\"ca97811\\" />
+			<button onClick={() => {}} data-tref=\\"c3e2d78f3\\" />
+			<Button onClick={() => {}} __tref=\\"707eab0c2\\" />
+			<a href=\\"\\" data-tref=\\"ca978112c\\" />
 		</>;
 };"
 `;
 
 exports[`react-preset/track ref plugin should match the snapshot for fixture fixtures/standard.jsx 1`] = `
-"const Componet = () => {
+"function Button({
+  onClick,
+  children
+}) {
+  return <button onClick={onClick} data-tref=\\"6213d7683\\">
+		{children}
+	</button>;
+}
+
+const Componet = () => {
   return <>
 			<div>
-				<button onClick={void 0} test=\\"b0fe0c4\\">
+				<button onClick={void 0} data-tref=\\"b0fe0c4aa\\">
 					Example Button 1
 				</button>
 
 				<span>some text</span>
 
-				<a href=\\"\\" test=\\"462b6d5\\">
-					Example anchor
-				</a>
+				<Test />
 
-				<Button onClick={void 0} test=\\"6697963\\">
+				<Button onClick={void 0} __tref=\\"6697963d8\\">
 					<Icon icon={Account} />
 					Login
 				</Button>
+
+				<a href={'test'} children={'Test'} data-tref=\\"ca978112c\\" />
 			</div>
 		</>;
+};
+
+const Test = () => {
+  return <a href=\\"\\" data-tref=\\"462b6d5da\\">Example anchor</a>;
 };"
 `;

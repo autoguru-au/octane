@@ -1,3 +1,9 @@
+function Button({ onClick, children }) {
+	return <button onClick={onClick}>
+		{children}
+	</button>;
+}
+
 const Componet = () => {
 	return (
 		<>
@@ -14,14 +20,17 @@ const Componet = () => {
 					<Icon icon={Account} />
 					Login
 				</Button>
+
+				<a href={'test'} children={'Test'} />
+
+				<Link render={<link href="test" />}>
+					test
+				</Link>
 			</div>
 		</>
 	);
 };
 
-
-const Test =() => {
-	return <a href="">
-		Example anchor
-	</a>
-}
+const Test = () => {
+	return <a href="">Example anchor</a>;
+};
