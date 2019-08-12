@@ -23,7 +23,7 @@ const Componet = () => {
 
 				<a href={'test'} children={'Test'} />
 
-				<Link render={<link href="test" />}>
+				<Link render={<a href="test" />}>
 					test
 				</Link>
 			</div>

@@ -18,6 +18,9 @@ ruleTester
 
 			},
 			{
+				code: '<Button onClick={null} tref="abc123"/>',
+			},
+			{
 				code: '<button/>',
 			},
 		],

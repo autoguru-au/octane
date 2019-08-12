@@ -7,6 +7,7 @@
   "license": "MIT",
   "main": "index.js",
   "dependencies": {
+    "@babel/code-frame": "^7.5.5",
     "@babel/generator": "^7.5.5",
     "@babel/helper-annotate-as-pure": "^7.0.0",
     "@babel/helper-plugin-utils": "^7.0.0",
@@ -22,8 +23,9 @@
     "@babel/runtime-corejs3": "^7.5.5",
     "@babel/types": "^7.5.5",
     "babel-plugin-macros": "^2.6.1",
-    "@babel/plugin-syntax-jsx": "^7.2.0",
+    "babel-plugin-syntax-jsx": "^6.18.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
+    "jsx-ast-utils": "^2.2.1",
     "kleur": "^3.0.3"
   },
   "devDependencies": {

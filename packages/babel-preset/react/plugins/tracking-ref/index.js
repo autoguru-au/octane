@@ -3,13 +3,15 @@ const { dirname, basename } = require('path');
 const { cyan, yellow, dim } = require('kleur');
 const { createHash } = require('crypto');
 const { default: generate } = require('@babel/generator');
+const { codeFrameColumns } = require('@babel/code-frame');
+const { hasProp, getPropValue, hasAnyProp } = require('jsx-ast-utils');
 
 const t = require('@babel/types');
 
-const matchProps = ['onClick', 'href', 'onChange'];
+const matchProps = ['onClick', 'href'];
 const renderPropKeys = ['is', 'as', 'component', 'render'];
 
-const TRACKING_REF_STATIC = '__tref';
+const TRACKING_REF_STATIC = 'tref';
 const TRACKING_REF_ATTR = 'data-tref';
 
 module.exports = declare(function trackingRef(
@@ -21,7 +23,7 @@ module.exports = declare(function trackingRef(
 	const { debug = false } = opts;
 
 	return {
-		inherits: require('@babel/plugin-syntax-jsx'),
+		inherits: require('babel-plugin-syntax-jsx'),
 		pre(state) {
 			const { filename } = state.opts;
 			const shortFilename = basename(filename).split('.')[0];
@@ -30,38 +32,19 @@ module.exports = declare(function trackingRef(
 				? basename(dirname(filename))
 				: shortFilename;
 
-			this.trackingList = [];
+			this.refs = [];
 		},
 		post(state) {
-			if (debug && this.trackingList.length > 0) {
-				const collect = new Map();
-
-				this.trackingList.forEach(item => {
-					collect.set(item.componentName, [
-						...(collect.get(item.componentName) || []),
-						`${item.trackingRef} ${dim(
-							`@ ${item.loc.start.line}:${item.loc.start.column}`,
-						)}`,
-					]);
-				});
-
-				console.log(
-					`${cyan(state.opts.filename)}\n${[...collect.entries()]
-						.map(([key, value]) => {
-							return `${yellow(key)}\n${value
-								.map(item => `\t${item}`)
-								.join('\n')}`;
-						})
-						.join('\n')}`,
-				);
+			if (debug && this.refs.length > 0) {
+				console.log(state.opts.filename + '\n' + this.refs.map(ref => {
+					return (`${cyan(ref.hashKey)} ${dim('@')} ${dim(ref.loc)} (${yellow(ref.component)})`);
+				}).join('\n'));
 			}
 		},
 		visitor: {
 			JSXElement(path) {
 				if (isElementWeShouldTrack(path)) {
-					const nodeId = generateNodeId(t.cloneDeep(path.node), path);
-
-					applyNodeTransforms(nodeId, path);
+					applyNodeTransforms.call(this, path);
 				}
 			},
 		},
@@ -69,21 +52,25 @@ module.exports = declare(function trackingRef(
 });
 
 function applyNodeTransforms(
-	nodeId,
 	path,
 ) {
-	const attributeName = isIntrinsicComponent(path.node)
-		? TRACKING_REF_ATTR
-		: TRACKING_REF_STATIC;
-
 	if (!isIntrinsicComponent(path.node)) {
 		return;
 	}
 
-	// Check to see if there isnt a TRACKING_REF_STATIC being passed in
-	// If so, ignore node, and spread it to the thing that is applying matchProps
+	const nodeFrom = getAnnotatingNode(path);
 
-	path.node.openingElement.attributes.push(
+	const attributeName = isIntrinsicComponent(nodeFrom.node)
+		? TRACKING_REF_ATTR
+		: TRACKING_REF_STATIC;
+
+	const nodeId = generateNodeId.call(this, nodeFrom);
+
+	if (!nodeId) {
+		return;
+	}
+
+	nodeFrom.node.openingElement.attributes.push(
 		t.jsxAttribute(
 			t.jsxIdentifier(attributeName),
 			t.stringLiteral(nodeId),
@@ -94,34 +81,67 @@ function applyNodeTransforms(
 function isElementWeShouldTrack(path) {
 	const { openingElement } = path.node;
 
+	if (hasAnyProp(openingElement.attributes, [
+		TRACKING_REF_STATIC,
+		TRACKING_REF_ATTR,
+	])) {
+		return false;
+	}
+
 	// TODO: Handle spread
 
-	const isTrackableElement = openingElement.attributes
-		.filter(item => t.isJSXIdentifier(item.name))
-		.some(item => matchProps.includes(item.name.name));
-
-	return isTrackableElement;
+	return hasAnyProp(
+		openingElement.attributes,
+		matchProps,
+	);
 }
 
 function isIntrinsicComponent({ openingElement }) {
-	// TODO: Should probably check if this function exists
-
 	const tagName = openingElement.name.name;
 
 	return tagName[0] === tagName[0].toLowerCase();
 }
 
-function generateNodeId(node, path) {
+function getAnnotatingNode(path) {
+	let nodeFrom = path;
 
-	const { name: tagName } = node.openingElement.name;
-
-	if (tagName === 'link') {
-		console.log(path);
+	const maybeRenderProp = path.findParent(item => t.isJSXAttribute(item));
+	if (maybeRenderProp) {
+		if (renderPropKeys.includes(maybeRenderProp.node.name.name)) {
+			const parent = maybeRenderProp.findParent(t.isJSXElement);
+			nodeFrom = parent;
+		}
 	}
 
-	// Calculate hash from parent, if this element is being sent into a is,as,component or render prop
+	return nodeFrom;
+}
 
-	const tagKey = tagName + node.children
+function generateNodeId(nodeFrom) {
+
+	const componentMarkup = generate(nodeFrom.node).code.replace(/[\s\t\n]+/g, ' ');
+
+	const children = nodeFrom.node.children.length > 0
+		? nodeFrom.node.children
+		: hasProp(nodeFrom.node.openingElement.attributes, 'children')
+			? getPropValue(nodeFrom.node.openingElement.attributes, 'children')
+			: false;
+
+	if (children === false) {
+		console.log(
+			codeFrameColumns(nodeFrom.hub.file.code, {
+				start: {
+					line: nodeFrom.node.loc.start.line,
+				},
+			}, {
+				highlightCode: true,
+				message: 'Missing children',
+			}),
+		);
+
+		return false;
+	}
+
+	const tagKey = (Array.isArray(children) ? children : [children])
 		.map(item => generate(item).code)
 		.join('')
 		.replace(/[\s\t\n]+/g, '');
@@ -131,5 +151,15 @@ function generateNodeId(node, path) {
 			.update(tagKey)
 			.digest('hex');
 
-	return elementHash.slice(0, 9);
+	const hashKey = elementHash.slice(0, 9);
+
+	this.refs.push(
+		{
+			hashKey,
+			loc: `${nodeFrom.node.loc.start.line}:${nodeFrom.node.loc.start.column}`,
+			component: componentMarkup,
+		},
+	);
+
+	return hashKey;
 }

@@ -5,17 +5,17 @@ exports[`react-preset/track ref plugin should match the snapshot for fixture fix
 
 const Componet = () => {
   return <>
-			<button onClick={() => {}} data-tref=\\"c3e2d78f3\\" />
-			<Button onClick={() => {}} __tref=\\"707eab0c2\\" />
-			<a href=\\"\\" data-tref=\\"ca978112c\\" />
+			<button onClick={() => {}} />
+			<Button onClick={() => {}} />
+			<a href=\\"\\" />
 		</>;
 };
 
 const AnotherComponent = () => {
   return <>
-			<button onClick={() => {}} data-tref=\\"c3e2d78f3\\" />
-			<Button onClick={() => {}} __tref=\\"707eab0c2\\" />
-			<a href=\\"\\" data-tref=\\"ca978112c\\" />
+			<button onClick={() => {}} />
+			<Button onClick={() => {}} />
+			<a href=\\"\\" />
 		</>;
 };"
 `;
@@ -25,7 +25,7 @@ exports[`react-preset/track ref plugin should match the snapshot for fixture fix
   onClick,
   children
 }) {
-  return <button onClick={onClick} data-tref=\\"6213d7683\\">
+  return <button onClick={onClick} data-tref=\\"e784e520c\\">
 		{children}
 	</button>;
 }
@@ -33,7 +33,7 @@ exports[`react-preset/track ref plugin should match the snapshot for fixture fix
 const Componet = () => {
   return <>
 			<div>
-				<button onClick={void 0} data-tref=\\"b0fe0c4aa\\">
+				<button onClick={void 0} data-tref=\\"cb59873e6\\">
 					Example Button 1
 				</button>
 
@@ -41,17 +41,21 @@ const Componet = () => {
 
 				<Test />
 
-				<Button onClick={void 0} __tref=\\"6697963d8\\">
+				<Button onClick={void 0}>
 					<Icon icon={Account} />
 					Login
 				</Button>
 
-				<a href={'test'} children={'Test'} data-tref=\\"ca978112c\\" />
+				<a href={'test'} children={'Test'} data-tref=\\"e3b0c4429\\" />
+
+				<Link render={<a href=\\"test\\" />} tref=\\"9f86d0818\\">
+					test
+				</Link>
 			</div>
 		</>;
 };
 
 const Test = () => {
-  return <a href=\\"\\" data-tref=\\"462b6d5da\\">Example anchor</a>;
+  return <a href=\\"\\" data-tref=\\"81e85d523\\">Example anchor</a>;
 };"
 `;
