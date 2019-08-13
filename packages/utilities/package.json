@@ -17,6 +17,7 @@
     "prepublish": "yarn run build"
   },
   "devDependencies": {
+    "@autoguru/eslint-plugin": "*",
     "@autoguru/jest-preset": "^1.0.60",
     "@autoguru/tsconfig": "^1.0.52",
     "rollup": "^1.18.0",

@@ -1,8 +1,8 @@
 root: true
 
 extends:
-  - ./packages/eslint-config/index.js
-  - ./packages/eslint-config/jest.js
+  - plugin:@autoguru/base
+  - plugin:@autoguru/jest
 
 overrides:
   - files: ['**/jest.*js', '**/*.spec.{js,jsx}']

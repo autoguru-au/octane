@@ -1,6 +1,6 @@
 module.exports = {
 	extends: [
-		'@autoguru/eslint-config',
+		'plugin:@autoguru/base',
 		'xo-typescript',
 		'plugin:import/typescript',
 	],
