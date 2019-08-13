@@ -20,7 +20,7 @@
     "@autoguru/eslint-plugin": "*",
     "@autoguru/jest-preset": "^1.0.60",
     "@autoguru/tsconfig": "^1.0.52",
-    "rollup": "^1.18.0",
+    "rollup": "^1.19.4",
     "rollup-plugin-typescript2": "^0.22.1",
     "typescript": "~3.5.3"
   },
