@@ -1,6 +1,7 @@
 # `@autoguru/utilities`
 
-> A collection of smallish things that help [AutoGuru](https://www.autoguru.com.au/) write code.
+> A collection of smallish things that help
+> [AutoGuru](https://www.autoguru.com.au/) write code.
 
 ## Usage
 

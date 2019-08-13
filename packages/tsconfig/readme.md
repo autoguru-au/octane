@@ -24,4 +24,5 @@ yarn add --dev @autoguru/tsconfig
 ## Presets
 
 -   `@autoguru/tsconfig` is an alias of `@autoguru/tsconfig/web`
--   `@autoguru/tsconfig/web` is useful for web-based targets, adds `dom` types as standard.
+-   `@autoguru/tsconfig/web` is useful for web-based targets, adds `dom` types
+    as standard.
