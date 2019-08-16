@@ -1,2 +1,2 @@
-export * from './warning';
-export * from './invariant';
+export { default as warning } from 'tiny-warning';
+export { default as invariant } from 'tiny-invariant';

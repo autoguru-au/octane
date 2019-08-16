@@ -10,6 +10,7 @@ module.exports = function autoGuruSharedPlugins(options) {
 			require.resolve('@babel/plugin-proposal-object-rest-spread'),
 			{ loose: true, useBuiltIns: true },
 		],
+		require.resolve('babel-plugin-dev-expression'),
 	];
 
 	return options.isDevelopment

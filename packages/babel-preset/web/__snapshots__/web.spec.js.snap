@@ -83,6 +83,26 @@ var objectB = _Object$assign({}, objectA, {
 });"
 `;
 
+exports[`web preset should do the __DEV__ dev expression 1`] = `
+"\\"use strict\\";
+
+if (process.env.NODE_ENV !== \\"production\\") {
+  console.log('test');
+}"
+`;
+
+exports[`web preset should do the invariant dev expression 1`] = `
+"\\"use strict\\";
+
+!(test === true) ? process.env.NODE_ENV !== \\"production\\" ? invariant(false, \\"some error\\") : invariant(false) : void 0;"
+`;
+
+exports[`web preset should do the warning dev expression 1`] = `
+"\\"use strict\\";
+
+process.env.NODE_ENV !== \\"production\\" ? warning(test === true, \\"some error\\") : void 0;"
+`;
+
 exports[`web preset should match the snapshot 1`] = `
 "\\"use strict\\";
 

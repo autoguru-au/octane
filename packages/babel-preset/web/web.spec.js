@@ -46,4 +46,48 @@ describe('web preset', () => {
 
 		return expect(code).toMatchSnapshot();
 	});
+
+	it('should do the __DEV__ dev expression', async () => {
+		const { code } = await transformAsync(
+			`
+		if (__DEV__) {
+			console.log('test');
+		}
+		`,
+			{
+				babelrc: false,
+				presets: [[require('.'), { debug: false }]],
+			},
+		);
+
+		return expect(code).toMatchSnapshot();
+	});
+
+	it('should do the invariant dev expression', async () => {
+		const { code } = await transformAsync(
+			`
+		invariant(test === true, "some error");
+		`,
+			{
+				babelrc: false,
+				presets: [[require('.'), { debug: false }]],
+			},
+		);
+
+		return expect(code).toMatchSnapshot();
+	});
+
+	it('should do the warning dev expression', async () => {
+		const { code } = await transformAsync(
+			`
+		warning(test === true, "some error");
+		`,
+			{
+				babelrc: false,
+				presets: [[require('.'), { debug: false }]],
+			},
+		);
+
+		return expect(code).toMatchSnapshot();
+	});
 });

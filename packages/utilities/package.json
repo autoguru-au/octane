@@ -16,6 +16,10 @@
     "build": "rollup -c",
     "prepublish": "yarn run build"
   },
+  "dependencies": {
+    "tiny-invariant": "^1.0.6",
+    "tiny-warning": "^1.0.3"
+  },
   "devDependencies": {
     "@autoguru/eslint-plugin": "^1.0.62",
     "@autoguru/jest-preset": "^1.0.60",
