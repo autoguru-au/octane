@@ -1,0 +1,11 @@
+{
+	"extends": "@autoguru/tsconfig/tsconfig.base",
+	"compilerOptions": {
+		"outDir": "./dist",
+		"baseUrl": "./",
+		"rootDir": "./",
+		"declaration": true,
+		"declarationDir": "./dist/types"
+	},
+	"include": ["./lib/index.ts"]
+}

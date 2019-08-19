@@ -1,0 +1,26 @@
+{
+	"name": "@autoguru/config",
+	"version": "0.0.0",
+	"private": false,
+	"description": "AutoGuru&#x27;s way to manage AoT and JIT config files",
+	"homepage": "https://github.com/autoguru-au/octane/tree/master/packages/config#readme",
+	"repository": "https://github.com/autoguru-au/octane/tree/master/packages/config",
+	"license": "MIT",
+	"main": "index.js",
+  "scripts": {
+    "build": "tsdx build --target node --format cjs -i lib/index.ts"
+  },
+	"dependencies": {
+    "@babel/core": "^7.5.5",
+    "glob": "^7.1.4",
+    "js-yaml": "^3.13.1",
+    "quicktype": "^15.0.199"
+  },
+	"devDependencies": {
+    "tsdx": "^0.8.0"
+  },
+	"peerDependencies": {},
+	"publishConfig": {
+		"access": "public"
+	}
+}

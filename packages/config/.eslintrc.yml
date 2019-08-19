@@ -1,0 +1,12 @@
+root: false
+
+extends:
+  - 'plugin:@autoguru/typescript'
+
+parser: '@typescript-eslint/parser'
+parserOptions:
+  tsconfigRootDir: './packages/utilities/'
+
+env:
+  browser: true
+  node: true
