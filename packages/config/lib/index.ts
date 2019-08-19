@@ -1,20 +1,10 @@
-import generate from '@babel/generator';
-import * as t from '@babel/types';
-import { readFileSync } from 'fs';
+import { readFileSync, writeFileSync } from 'fs';
 import { sync as glob } from 'glob';
 import { safeLoad } from 'js-yaml';
-import jAst from 'json-to-ast';
 import mkdirp from 'mkdirp';
 import { join, parse, resolve } from 'path';
-import { breadth } from 'treeverse';
 
-export const getConfig = () => {
-
-	console.log(process.cwd());
-
-};
-
-export const getConfigFor = async (env: string, config?: {
+export const getConfigFor = async (config?: {
 	cwd: string;
 } = { cwd: process.cwd() }) => {
 
@@ -33,49 +23,10 @@ export const getConfigFor = async (env: string, config?: {
 			merged: JSON.stringify(deepMerge(base.json, item.json)),
 		}))
 		.forEach(item => {
-
-			const ast = jAst(item.merged);
-
-			console.log(
-				generate(
-					t.tsInterfaceDeclaration(
-						t.identifier('Config'),
-						null,
-						null,
-						t.tsInterfaceBody([
-							t.tsPropertySignature(t.identifier('test'), t.tsTypeAnnotation(
-								t.tsPropertySignature(t.identifier('test2'), t.tsTypeAnnotation(t.tsStringKeyword()))
-							)),
-						]),
-					),
-				).code,
-			);
-
-			breadth({
-				visit(node) {
-					if (node.type === 'Property') {
-						const name = node.key.value;
-
-						console.log(
-							t.tsPropertySignature(t.identifier(name), t.tsTypeAnnotation(
-								t.tsStringKeyword(),
-							)),
-						);
-					}
-				},
-				getChildren(node) {
-					return node.children;
-				},
-				tree: ast,
-			});
-
-			//console.log(jAst(item.merged));
-
-			//riteFileSync(join(generatedFolder, `${item.name}.json`), item.merged, 'utf8');
+			writeFileSync(join(generatedFolder, `${item.name}.json`), item.merged, 'utf8');
 		});
 
 };
-
 
 const getConfigFiles = (cwd: string) => {
 
