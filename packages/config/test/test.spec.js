@@ -6,7 +6,7 @@ describe('config', () => {
 
 	describe('when lib', () => {
 		it('should return the correct things', () => {
-			getConfigFor('test', {
+			getConfigFor({
 				cwd: fixtures,
 			});
 		});

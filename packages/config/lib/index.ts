@@ -23,7 +23,7 @@ export const getConfigFor = async (config?: {
 			merged: JSON.stringify(deepMerge(base.json, item.json)),
 		}))
 		.forEach(item => {
-			writeFileSync(join(generatedFolder, `${item.name}.json`), item.merged, 'utf8');
+			writeFileSync(join(generatedFolder, `Config_${item.name}.json`), item.merged, 'utf8');
 		});
 
 };
