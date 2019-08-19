@@ -10,6 +10,7 @@
     "format": "prettier --write \"{*,packages/**/*}.+(js|jsx|ts|tsx|css|scss|json|yml|md|mdx|html)\"",
     "generate": "plop readmes && prettier --write \"{*,packages/**/*}.md\" ",
     "lint": "eslint \"packages/**/*.{js,jsx,ts,tsx}\" --cache --quiet --fix",
+    "plop": "plop",
     "release": "lerna publish",
     "sort-package-json": "npx sort-package-json; lerna exec --stream --parallel 'npx sort-package-json'",
     "test": "jest"

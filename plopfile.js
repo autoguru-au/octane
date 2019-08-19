@@ -32,6 +32,38 @@ module.exports = function(plop) {
 			];
 		},
 	});
+
+	plop.setGenerator('package', {
+		description: 'Create a new package',
+		prompts: [
+			{
+				type: 'input',
+				name: 'name',
+				message: 'name this package',
+			},
+			{
+				type: 'input',
+				name: 'description',
+				message: 'give this a description',
+			},
+			{
+				type: 'list',
+				name: 'public',
+				choices: ['true', 'false'],
+				default: 'true',
+			},
+		],
+		actions() {
+			return [
+				{
+					type: 'addMany',
+					destination: 'packages/{{ kebabCase name }}',
+					base: 'templates/package/',
+					templateFiles: 'templates/package/**/*',
+				},
+			];
+		},
+	});
 };
 
 function getPackages() {
