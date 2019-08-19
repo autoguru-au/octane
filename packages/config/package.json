@@ -11,10 +11,8 @@
     "build": "tsdx build --target node --format cjs -i lib/index.ts"
   },
 	"dependencies": {
-    "@babel/core": "^7.5.5",
     "glob": "^7.1.4",
-    "js-yaml": "^3.13.1",
-    "quicktype": "^15.0.199"
+    "js-yaml": "^3.13.1"
   },
 	"devDependencies": {
     "tsdx": "^0.8.0"

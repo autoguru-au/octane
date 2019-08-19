@@ -2,7 +2,6 @@ import { readFileSync } from 'fs';
 import { sync as glob } from 'glob';
 import { safeLoad } from 'js-yaml';
 import { join, parse, resolve } from 'path';
-import { main } from 'quicktype';
 
 export const getConfig = () => {
 
@@ -19,18 +18,12 @@ export const getConfigFor = async (env: string, config?: {
 	const base = configFiles.find(item => item.name === 'base');
 	const envs = configFiles.filter(item => item.name !== 'base');
 
-	const output = await Promise.all(envs
+
+	console.log(envs
 		.map(item => ({
 			...item,
-			merged: deepMerge(base.json, item.json),
-		}))
-		.map(item => {
-			return main({
-				src: item.merged,
-			});
-		}));
-
-	console.log(output);
+			merged: JSON.stringify(deepMerge(base.json, item.json)),
+		})));
 
 };
 
