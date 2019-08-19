@@ -1,3 +1,5 @@
+import generate from '@babel/generator';
+import * as t from '@babel/types';
 import { readFileSync } from 'fs';
 import { sync as glob } from 'glob';
 import { safeLoad } from 'js-yaml';
@@ -34,20 +36,40 @@ export const getConfigFor = async (env: string, config?: {
 
 			const ast = jAst(item.merged);
 
+			console.log(
+				generate(
+					t.tsInterfaceDeclaration(
+						t.identifier('Config'),
+						null,
+						null,
+						t.tsInterfaceBody([
+							t.tsPropertySignature(t.identifier('test'), t.tsTypeAnnotation(
+								t.tsPropertySignature(t.identifier('test2'), t.tsTypeAnnotation(t.tsStringKeyword()))
+							)),
+						]),
+					),
+				).code,
+			);
+
 			breadth({
 				visit(node) {
-					console.log(node);
+					if (node.type === 'Property') {
+						const name = node.key.value;
+
+						console.log(
+							t.tsPropertySignature(t.identifier(name), t.tsTypeAnnotation(
+								t.tsStringKeyword(),
+							)),
+						);
+					}
 				},
 				getChildren(node) {
 					return node.children;
 				},
 				tree: ast,
-				filter(node) {
-					return node.type === 'Property';
-				}
 			});
 
-			console.log(jAst(item.merged));
+			//console.log(jAst(item.merged));
 
 			//riteFileSync(join(generatedFolder, `${item.name}.json`), item.merged, 'utf8');
 		});
