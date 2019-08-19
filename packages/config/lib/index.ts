@@ -1,7 +1,10 @@
 import { readFileSync } from 'fs';
 import { sync as glob } from 'glob';
 import { safeLoad } from 'js-yaml';
+import jAst from 'json-to-ast';
+import mkdirp from 'mkdirp';
 import { join, parse, resolve } from 'path';
+import { breadth } from 'treeverse';
 
 export const getConfig = () => {
 
@@ -13,17 +16,41 @@ export const getConfigFor = async (env: string, config?: {
 	cwd: string;
 } = { cwd: process.cwd() }) => {
 
+	const generatedFolder = join(config.cwd, '__generated__');
+
 	const configFiles = getConfigFiles(config.cwd);
 
 	const base = configFiles.find(item => item.name === 'base');
 	const envs = configFiles.filter(item => item.name !== 'base');
 
+	mkdirp(generatedFolder);
 
-	console.log(envs
+	envs
 		.map(item => ({
 			...item,
 			merged: JSON.stringify(deepMerge(base.json, item.json)),
-		})));
+		}))
+		.forEach(item => {
+
+			const ast = jAst(item.merged);
+
+			breadth({
+				visit(node) {
+					console.log(node);
+				},
+				getChildren(node) {
+					return node.children;
+				},
+				tree: ast,
+				filter(node) {
+					return node.type === 'Property';
+				}
+			});
+
+			console.log(jAst(item.merged));
+
+			//riteFileSync(join(generatedFolder, `${item.name}.json`), item.merged, 'utf8');
+		});
 
 };
 
