@@ -3,6 +3,7 @@ const { safeLoad } = require('js-yaml');
 const { readFileSync } = require('fs');
 const { traverse } = require('@babel/core');
 const { default: generate } = require('@babel/generator');
+const get = require('lodash.get');
 
 module.exports = function ({ types: t }) {
 	return {
@@ -10,51 +11,29 @@ module.exports = function ({ types: t }) {
 		visitor: {
 			ImportDeclaration(path, opts) {
 				if (path.node.source.value.endsWith('.yml')) {
+					const importName = 'config';
+
 					const sourceFile = relative(opts.file.opts.filename, path.node.source.value);
 					const fileContents = safeLoad(readFileSync(
 						resolve(dirname(opts.file.opts.filename), path.node.source.value)
 						, 'utf8'));
 
+
 					path.node.specifiers
-						.reduce((acc, item) =>
-							[...acc, ...path.scope.getBinding(item.local.name)
-								.referencePaths || []], [])
+						.reduce((acc, item) => [...acc, ...path.scope.getBinding(item.local.name).referencePaths || []], [])
 						.forEach(item => {
+							const maybeParent = item.findParent(subPath => t.isMemberExpression(subPath));
 
+							const parentNode = Array.isArray(maybeParent.container) ? maybeParent.container[0] : maybeParent.container;
 
-							/*console.log(
-								//item.inList,
-								//toPropertyAccessString(item.parent),
-							);*/
-
-							//console.log(generate(item.parent, opts));
-
-							console.log(
-								item.find(subPath => t.isMemberExpression(subPath))
-									.node.property
+							const objectChain = toPropertyAccessString(
+								parentNode,
 							);
 
-							/*item.find(subPath=>t.isMemberExpression(subPath))
-								.traverse({
-									Identifier(subPath) {
-										console.log(subPath.node.name)
-										//console.log(toPropertyAccessString(subPath.node));
-									},
-								})*/
+							const value = get({ [importName]: fileContents }, objectChain);
+
+
 						});
-
-
-					/*const a = path.node.specifiers
-						.reduce((acc, item) => {
-							return [...acc, ...path.scope.getBinding(item.local.name)
-								.referencePaths || []];
-						}, [])
-						.map(item => item.parent)
-						.map(item => generate(item));
-
-					console.log(generate());
-
-					console.log(a);*/
 
 					path.remove();
 				}
