@@ -4,18 +4,18 @@ import { safeLoad } from 'js-yaml';
 import mkdirp from 'mkdirp';
 import { join, parse, resolve } from 'path';
 
-export const getConfigFor = async (config?: {
+export const getConfigFor = (config?: {
 	cwd: string;
 } = { cwd: process.cwd() }) => {
 
 	const generatedFolder = join(config.cwd, '__generated__');
 
+	mkdirp(generatedFolder);
+
 	const configFiles = getConfigFiles(config.cwd);
 
 	const base = configFiles.find(item => item.name === 'base');
 	const envs = configFiles.filter(item => item.name !== 'base');
-
-	mkdirp(generatedFolder);
 
 	envs
 		.map(item => ({

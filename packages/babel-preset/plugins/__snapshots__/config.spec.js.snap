@@ -1,0 +1,6 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`config should match snapshot 1`] = `
+"\\"test\\";
+console.log(config.test);"
+`;

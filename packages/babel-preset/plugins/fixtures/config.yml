@@ -1,0 +1,4 @@
+test: foo_bar
+
+nested:
+  prop: value
