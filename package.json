@@ -48,23 +48,23 @@
     "@autoguru/eslint-plugin": "*",
     "@types/node": "^12.7.2",
     "browserslist-config-autoguru": "*",
-    "eslint": "^6.1.0",
+    "eslint": "^6.2.1",
     "glob": "^7.1.4",
-    "husky": "^3.0.3",
-    "jest": "^24.8.0",
+    "husky": "^3.0.4",
+    "jest": "^24.9.0",
     "jest-junit": "^7.0.0",
     "lerna": "^3.16.4",
     "lint-staged": "^8.2.1",
     "plop": "^2.4.0",
     "prettier": "^1.18.2",
     "tslib": "^1.10.0",
-    "tslint": "^5.18.0",
+    "tslint": "^5.19.0",
     "tslint-config-prettier": "^1.18.0",
     "tslint-react": "^4.0.0",
     "typescript": "~3.5.3"
   },
   "volta": {
-    "node": "12.8.0",
+    "node": "12.9.0",
     "yarn": "1.17.3"
   }
 }
