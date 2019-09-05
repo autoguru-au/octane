@@ -24,9 +24,9 @@
     "@autoguru/eslint-plugin": "^1.0.62",
     "@autoguru/jest-preset": "^1.0.64",
     "@autoguru/tsconfig": "^1.0.63",
-    "rollup": "^1.19.4",
-    "rollup-plugin-typescript2": "^0.22.1",
-    "typescript": "~3.5.3"
+    "rollup": "^1.20.3",
+    "rollup-plugin-typescript2": "^0.24.0",
+    "typescript": "~3.6.2"
   },
   "publishConfig": {
     "access": "public"
