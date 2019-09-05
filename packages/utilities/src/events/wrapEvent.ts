@@ -1,14 +1,24 @@
+import { invariant } from '../assert';
+
 type Handler<EventType> = (event: EventType) => void;
 
 export const wrapEvent = <E extends Partial<Event>>(
-	callback: Handler<E>,
-	handler?: Handler<E>,
+	handler: Handler<E>,
+	consumerHandler?: Handler<E>,
 ) => (event: E) => {
-	if (handler) {
-		handler(event);
-	}
+	invariant(
+		typeof handler === 'function',
+		'You must supply a handler method.',
+	);
 
-	if (!event.defaultPrevented) {
-		return callback(event);
+	handler(event);
+
+	if (!event.defaultPrevented && typeof consumerHandler !== 'undefined') {
+		invariant(
+			typeof consumerHandler === 'function',
+			'You supplied a consumer handler that was supposed to be a function.',
+		);
+
+		return consumerHandler(event);
 	}
 };

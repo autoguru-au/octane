@@ -27,13 +27,13 @@ describe('Utils/WrapEvent', () => {
 		expect(consumerFn).toHaveBeenCalledTimes(1);
 	});
 
-	it('not fire if consumer prevents', () => {
+	it('not fire if handler prevents', () => {
 		const fnc = jest.fn();
 		const consumerFn = jest.fn();
 
 		wrapEvent(fnc, consumerFn)({ defaultPrevented: true });
 
-		expect(consumerFn).toHaveBeenCalledTimes(1);
-		expect(fnc).toHaveBeenCalledTimes(0);
+		expect(fnc).toHaveBeenCalledTimes(1);
+		expect(consumerFn).toHaveBeenCalledTimes(0);
 	});
 });
