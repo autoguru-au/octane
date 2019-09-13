@@ -2,8 +2,8 @@ module.exports = {
 	extends: [
 		'xo/esnext',
 		'plugin:unicorn/recommended',
-		'kentcdodds/import',
 		'plugin:promise/recommended',
+		require.resolve('./import.js'),
 		'prettier',
 	],
 
