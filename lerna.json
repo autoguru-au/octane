@@ -1,8 +1,9 @@
 {
+	"packages": ["packages/*"],
 	"version": "1.0.69",
 	"npmClient": "yarn",
 	"useWorkspaces": true,
-	"packages": ["packages/*"],
+	"ignoreChanges": ["**/*.spec.{js,ts,tsx}", "**/*.{md,mdx}"],
 	"command": {
 		"publish": {
 			"message": "chore(release): :rocket: Published %v"
