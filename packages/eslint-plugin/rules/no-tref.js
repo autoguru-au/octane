@@ -8,7 +8,7 @@ const TREF_DATA_ATTRIBUTE = 'data-tref';
 const TREF_STAT_ATTRIBUTE = '__tref';
 
 module.exports = {
-	name: 'has-tref',
+	name: 'no-tref',
 	meta: {
 		type: 'problem',
 		fixable: 'code',
