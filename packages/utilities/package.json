@@ -23,8 +23,8 @@
   "devDependencies": {
     "@autoguru/eslint-plugin": "^1.0.65",
     "@autoguru/jest-preset": "^1.0.64",
-    "tsdx": "^0.9.1",
-    "typescript": "next"
+    "tsdx": "^0.9.2",
+    "typescript": "^3.6.3"
   },
   "publishConfig": {
     "access": "public"

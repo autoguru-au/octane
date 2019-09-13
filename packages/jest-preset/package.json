@@ -8,8 +8,8 @@
   "main": "jest-preset.js",
   "dependencies": {
     "@autoguru/babel-preset": "^1.0.64",
-    "@babel/core": "^7.5.5",
-    "@babel/preset-typescript": "^7.3.3",
+    "@babel/core": "^7.6.0",
+    "@babel/preset-typescript": "^7.6.0",
     "babel-jest": "^24.9.0"
   },
   "publishConfig": {
