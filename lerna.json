@@ -3,6 +3,7 @@
 	"version": "1.0.70",
 	"npmClient": "yarn",
 	"useWorkspaces": true,
+	"independent": true,
 	"ignoreChanges": ["**/*.spec.{js,ts,tsx}", "**/*.{md,mdx}"],
 	"command": {
 		"publish": {

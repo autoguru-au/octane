@@ -1,0 +1,15 @@
+root: false
+
+extends:
+  - 'plugin:@autoguru/typescript'
+
+rules:
+  unicorn/no-process-exit: off
+
+parser: '@typescript-eslint/parser'
+parserOptions:
+  tsconfigRootDir: './packages/gdu/'
+
+env:
+  browser: true
+  node: true

@@ -1,0 +1,15 @@
+{
+	"extends": "@autoguru/tsconfig/tsconfig.base",
+	"compilerOptions": {
+		"outDir": "./dist",
+		"baseUrl": "./src",
+		"rootDir": "./src",
+		"declaration": false,
+		"target": "es2015",
+		"module": "commonjs",
+		"importHelpers": false,
+		"noEmitHelpers": false,
+		"lib": ["esnext", "dom"]
+	},
+	"include": ["./src/cli.ts"]
+}
