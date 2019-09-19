@@ -1,6 +1,6 @@
 {
   "name": "@autoguru/utilities",
-  "version": "1.0.70",
+  "version": "1.0.71",
   "description": "A collection of smallish things that help AutoGuru write code.",
   "homepage": "https://github.com/autoguru-au/octane/tree/master/packages/utilities#readme",
   "repository": "https://github.com/autoguru-au/octane/tree/master/packages/utilities",
@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "@autoguru/eslint-plugin": "^1.0.70",
-    "@autoguru/jest-preset": "*",
+    "@autoguru/jest-preset": "^1.0.69",
     "tsdx": "^0.9.2",
     "typescript": "~3.6.3"
   },
