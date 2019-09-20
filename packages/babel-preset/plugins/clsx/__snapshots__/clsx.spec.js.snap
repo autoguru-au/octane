@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`plugins/clsx should match snapshot 1`] = `"
+"a";
+a ? " " + a : "";
+"a" + (b ? " " + b : "");
+"b c" + (a ? " " + a : "") + (d ? " " + d : "");
+"b c e" + (a ? " " + a : "") + (d ? " " + d : "");
+"`;
