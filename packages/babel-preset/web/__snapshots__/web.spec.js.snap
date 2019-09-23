@@ -151,12 +151,25 @@ var invalidCondition = false;
 var a = 'a-class';
 var b = 'b-class';
 var d = 'd-class';
-'a';
+clsx('a');
 clsx(a);
-clsx('a', b);
-clsx(\\"b c\\", a, d);
-clsx(\\"b c e\\", a, d);
-clsx(\\"b f\\", a, someCondition && \\"e h\\", validCondition && \\"i\\", invalidCondition && \\"j\\");
-validCondition ? 'a' : \\"\\";
-\\"btn \\" + (isDisabled ? 'btn-foo' : 'btn-bar');"
+clsx(['a', b]);
+clsx(a, 'b', ['c', d]);
+clsx(a, 'b', ['c', d], 'e');
+clsx(a, {
+  ['b']: true,
+  ['c']: false,
+  ['e']: someCondition,
+  f: true,
+  g: false,
+  h: someCondition,
+  i: validCondition,
+  j: invalidCondition
+});
+clsx(validCondition && 'a');
+clsx({
+  btn: true,
+  'btn-foo': isDisabled,
+  'btn-bar': !isDisabled
+});"
 `;
