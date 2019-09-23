@@ -20,13 +20,19 @@ module.exports = function autoGuruWebPreset(api, options = {}) {
 			],
 		],
 		plugins: [
+			require.resolve('babel-plugin-macros'),
+			[
+				require.resolve('babel-plugin-optimize-clsx'),
+				{
+					removeUnnecessaryCalls: true,
+				},
+			],
 			...sharedPlugins({
 				isDevelopment: isDevelopment(api),
 				modules,
 				debug,
 				corejs,
 			}),
-			require.resolve('babel-plugin-macros'),
 			[
 				require.resolve('@babel/plugin-transform-runtime'),
 				{

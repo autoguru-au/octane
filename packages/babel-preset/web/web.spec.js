@@ -90,4 +90,46 @@ describe('web preset', () => {
 
 		return expect(code).toMatchSnapshot();
 	});
+
+	it('should optimize clsx', async () => {
+		const { code } = await transformAsync(
+			`
+			import clsx from 'clsx';
+
+			const validCondition = true;
+			const invalidCondition = false;
+			const a = 'a-class';
+			const b = 'b-class';
+			const d = 'd-class';
+
+			clsx('a');
+			clsx(a);
+			clsx(['a', b]);
+			clsx(a, 'b', ['c', d]);
+			clsx(a, 'b', ['c', d], 'e');
+			clsx(a, {
+			        ['b']: true,
+			        ['c']: false,
+			        ['e']: someCondition,
+			        f: true,
+			        g: false,
+			        h: someCondition,
+			        i: validCondition,
+			        j: invalidCondition
+			});
+			clsx(validCondition && 'a');
+			clsx({
+				btn: true,
+				'btn-foo': isDisabled,
+				'btn-bar': !isDisabled,
+			});
+		`,
+			{
+				babelrc: false,
+				presets: [[require('.'), { debug: false }]],
+			},
+		);
+
+		return expect(code).toMatchSnapshot();
+	});
 });

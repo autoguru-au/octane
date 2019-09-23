@@ -21,7 +21,8 @@
     "@babel/runtime-corejs3": "^7.6.0",
     "babel-plugin-dev-expression": "^0.2.2",
     "babel-plugin-macros": "^2.6.1",
-    "babel-plugin-transform-react-remove-prop-types": "^0.4.24"
+    "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
+    "babel-plugin-optimize-clsx": "^2.4.1"
   },
   "devDependencies": {
     "@autoguru/jest-preset": "^1.0.69",

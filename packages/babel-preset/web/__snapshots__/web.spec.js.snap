@@ -141,3 +141,22 @@ var objectB = Object.assign({}, objectA, {
   [d]: 'd'
 });"
 `;
+
+exports[`web preset should optimize clsx 1`] = `
+"\\"use strict\\";
+
+import clsx from 'clsx';
+var validCondition = true;
+var invalidCondition = false;
+var a = 'a-class';
+var b = 'b-class';
+var d = 'd-class';
+'a';
+clsx(a);
+clsx('a', b);
+clsx(\\"b c\\", a, d);
+clsx(\\"b c e\\", a, d);
+clsx(\\"b f\\", a, someCondition && \\"e h\\", validCondition && \\"i\\", invalidCondition && \\"j\\");
+validCondition ? 'a' : \\"\\";
+\\"btn \\" + (isDisabled ? 'btn-foo' : 'btn-bar');"
+`;
