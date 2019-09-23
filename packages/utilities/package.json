@@ -21,8 +21,8 @@
     "tiny-warning": "^1.0.3"
   },
   "devDependencies": {
-    "@autoguru/eslint-plugin": "^1.0.70",
-    "@autoguru/jest-preset": "^1.0.69",
+    "@autoguru/eslint-plugin": "*",
+    "@autoguru/jest-preset": "*",
     "tsdx": "^0.9.2",
     "typescript": "~3.6.3"
   },

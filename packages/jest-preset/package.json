@@ -7,7 +7,7 @@
   "license": "MIT",
   "main": "jest-preset.js",
   "dependencies": {
-    "@autoguru/babel-preset": "^1.0.69",
+    "@autoguru/babel-preset": "*",
     "@babel/core": "^7.6.0",
     "@babel/preset-typescript": "^7.6.0",
     "babel-jest": "^24.9.0"
