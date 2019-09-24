@@ -14,5 +14,5 @@ extends:
     - 'plugin:@autoguru/base'
     - 'plugin:@autoguru/typescript' // if your project uses TypeScript (you can omit /base)
     - 'plugin:@autoguru/react' // react and react hook checks
-    - 'plugin:@autoguru/jest' // react and react hook checks
+    - 'plugin:@autoguru/jest' // jest, so we test better
 ```
