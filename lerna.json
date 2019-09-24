@@ -1,9 +1,8 @@
 {
 	"packages": ["packages/*"],
-	"version": "independent",
+	"version": "1.0.75",
 	"npmClient": "yarn",
 	"useWorkspaces": true,
-	"independent": true,
 	"ignoreChanges": ["**/*.spec.{js,ts,tsx}", "**/*.{md,mdx}"],
 	"command": {
 		"publish": {
