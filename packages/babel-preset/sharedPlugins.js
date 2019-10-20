@@ -11,6 +11,7 @@ module.exports = function autoGuruSharedPlugins(options) {
 			{ loose: true, useBuiltIns: true },
 		],
 		require.resolve('babel-plugin-dev-expression'),
+		require.resolve('@babel/plugin-proposal-optional-chaining'),
 	];
 
 	return options.isDevelopment

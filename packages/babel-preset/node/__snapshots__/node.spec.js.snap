@@ -53,5 +53,6 @@ const d = 'd';
 const objectB = Object.assign({}, objectA, {
   c: 'c',
   [d]: 'd'
-});"
+});
+console.log(objectB === null || objectB === void 0 ? void 0 : objectB.d);"
 `;

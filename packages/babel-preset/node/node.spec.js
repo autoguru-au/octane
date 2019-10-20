@@ -17,6 +17,8 @@ const objectA = {a: 'a', b: 'b'};
 
 const d = 'd';
 const objectB = {...objectA, c: 'c', [d]: 'd'};
+
+console.log(objectB?.d);
 `;
 
 describe('node preset', () => {
