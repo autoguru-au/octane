@@ -11,9 +11,19 @@ require(\\"core-js/modules/es.map\\");
 
 require(\\"core-js/modules/es.object.to-string\\");
 
+require(\\"core-js/modules/es.string.iterator\\");
+
 require(\\"core-js/modules/web.dom-collections.iterator\\");
 
+var _classCallCheck2 = _interopRequireDefault(require(\\"@babel/runtime/helpers/classCallCheck\\"));
+
 var _createClass2 = _interopRequireDefault(require(\\"@babel/runtime/helpers/createClass\\"));
+
+var _defineProperty2 = _interopRequireDefault(require(\\"@babel/runtime/helpers/defineProperty\\"));
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 var myVar = new Map([]);
 
@@ -21,7 +31,8 @@ var TestClass =
 /*#__PURE__*/
 function () {
   function TestClass() {
-    this.prop = 'prop';
+    (0, _classCallCheck2.default)(this, TestClass);
+    (0, _defineProperty2.default)(this, \\"prop\\", 'prop');
   }
 
   (0, _createClass2.default)(TestClass, [{
@@ -33,31 +44,45 @@ function () {
   return TestClass;
 }();
 
-TestClass.staticProp = 'static prop';
+(0, _defineProperty2.default)(TestClass, \\"staticProp\\", 'static prop');
 var objectA = {
   a: 'a',
   b: 'b'
 };
 var d = 'd';
-var objectB = Object.assign({}, objectA, {
-  c: 'c',
-  [d]: 'd'
-});"
+
+var objectB = _objectSpread({}, objectA, (0, _defineProperty2.default)({
+  c: 'c'
+}, d, 'd'));"
 `;
 
 exports[`web preset should allow for corejs override 1`] = `
 "\\"use strict\\";
 
-import _Object$assign from \\"@babel/runtime-corejs2/core-js/object/assign\\";
+import _Object$defineProperty from \\"@babel/runtime-corejs2/core-js/object/define-property\\";
+import _Object$defineProperties from \\"@babel/runtime-corejs2/core-js/object/define-properties\\";
+import _Object$getOwnPropertyDescriptors from \\"@babel/runtime-corejs2/core-js/object/get-own-property-descriptors\\";
+import _Object$getOwnPropertyDescriptor from \\"@babel/runtime-corejs2/core-js/object/get-own-property-descriptor\\";
+import _Object$getOwnPropertySymbols from \\"@babel/runtime-corejs2/core-js/object/get-own-property-symbols\\";
+import _Object$keys from \\"@babel/runtime-corejs2/core-js/object/keys\\";
+import _classCallCheck from \\"@babel/runtime-corejs2/helpers/classCallCheck\\";
 import _createClass from \\"@babel/runtime-corejs2/helpers/createClass\\";
+import _defineProperty from \\"@babel/runtime-corejs2/helpers/defineProperty\\";
 import _Map from \\"@babel/runtime-corejs2/core-js/map\\";
+
+function ownKeys(object, enumerableOnly) { var keys = _Object$keys(object); if (_Object$getOwnPropertySymbols) { var symbols = _Object$getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return _Object$getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (_Object$getOwnPropertyDescriptors) { _Object$defineProperties(target, _Object$getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { _Object$defineProperty(target, key, _Object$getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
 var myVar = new _Map([]);
 
 var TestClass =
 /*#__PURE__*/
 function () {
   function TestClass() {
-    this.prop = 'prop';
+    _classCallCheck(this, TestClass);
+
+    _defineProperty(this, \\"prop\\", 'prop');
   }
 
   _createClass(TestClass, [{
@@ -70,17 +95,17 @@ function () {
   return TestClass;
 }();
 
-TestClass.staticProp = 'static prop';
+_defineProperty(TestClass, \\"staticProp\\", 'static prop');
+
 var objectA = {
   a: 'a',
   b: 'b'
 };
 var d = 'd';
 
-var objectB = _Object$assign({}, objectA, {
-  c: 'c',
-  [d]: 'd'
-});"
+var objectB = _objectSpread({}, objectA, _defineProperty({
+  c: 'c'
+}, d, 'd'));"
 `;
 
 exports[`web preset should do the __DEV__ dev expression 1`] = `
@@ -109,15 +134,25 @@ exports[`web preset should match the snapshot 1`] = `
 import \\"core-js/modules/es.array.iterator\\";
 import \\"core-js/modules/es.map\\";
 import \\"core-js/modules/es.object.to-string\\";
+import \\"core-js/modules/es.string.iterator\\";
 import \\"core-js/modules/web.dom-collections.iterator\\";
+import _classCallCheck from \\"@babel/runtime/helpers/classCallCheck\\";
 import _createClass from \\"@babel/runtime/helpers/createClass\\";
+import _defineProperty from \\"@babel/runtime/helpers/defineProperty\\";
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
 var myVar = new Map([]);
 
 var TestClass =
 /*#__PURE__*/
 function () {
   function TestClass() {
-    this.prop = 'prop';
+    _classCallCheck(this, TestClass);
+
+    _defineProperty(this, \\"prop\\", 'prop');
   }
 
   _createClass(TestClass, [{
@@ -130,20 +165,25 @@ function () {
   return TestClass;
 }();
 
-TestClass.staticProp = 'static prop';
+_defineProperty(TestClass, \\"staticProp\\", 'static prop');
+
 var objectA = {
   a: 'a',
   b: 'b'
 };
 var d = 'd';
-var objectB = Object.assign({}, objectA, {
-  c: 'c',
-  [d]: 'd'
-});"
+
+var objectB = _objectSpread({}, objectA, _defineProperty({
+  c: 'c'
+}, d, 'd'));"
 `;
 
 exports[`web preset should optimize clsx 1`] = `
 "\\"use strict\\";
+
+import _defineProperty from \\"@babel/runtime/helpers/defineProperty\\";
+
+var _clsx;
 
 import clsx from 'clsx';
 var validCondition = true;
@@ -156,16 +196,7 @@ clsx(a);
 clsx(['a', b]);
 clsx(a, 'b', ['c', d]);
 clsx(a, 'b', ['c', d], 'e');
-clsx(a, {
-  ['b']: true,
-  ['c']: false,
-  ['e']: someCondition,
-  f: true,
-  g: false,
-  h: someCondition,
-  i: validCondition,
-  j: invalidCondition
-});
+clsx(a, (_clsx = {}, _defineProperty(_clsx, 'b', true), _defineProperty(_clsx, 'c', false), _defineProperty(_clsx, 'e', someCondition), _defineProperty(_clsx, \\"f\\", true), _defineProperty(_clsx, \\"g\\", false), _defineProperty(_clsx, \\"h\\", someCondition), _defineProperty(_clsx, \\"i\\", validCondition), _defineProperty(_clsx, \\"j\\", invalidCondition), _clsx));
 clsx(validCondition && 'a');
 clsx({
   btn: true,

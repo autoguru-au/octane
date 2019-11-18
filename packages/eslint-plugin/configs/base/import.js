@@ -7,6 +7,7 @@ module.exports = {
 		'simple-import-sort/sort': 'error',
 		'sort-imports': 'off',
 		'import/order': 'off',
+		'import/no-unresolved': 'off', // Just too many problems...
 
 		'import/extensions': [
 			'error',

@@ -1,5 +1,5 @@
 {
-	"extends": "@autoguru/tsconfig/tsconfig.base",
+	"extends": "@autoguru/tsconfig/base",
 	"compilerOptions": {
 		"outDir": "./dist",
 		"baseUrl": "./src",
@@ -11,5 +11,5 @@
 		"noEmitHelpers": false,
 		"lib": ["esnext", "dom"]
 	},
-	"include": ["./src/cli.ts"]
+	"include": ["./src/cli.ts", "./src/scripts/**/*.ts"]
 }

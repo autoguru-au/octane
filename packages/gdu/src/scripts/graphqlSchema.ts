@@ -23,7 +23,7 @@ export const run = async (options: { endpoint: string }) => {
 	if (existsSync(proposedConfigFile)) {
 		await updateSchemaIfHasNew(proposedConfigFile, endpointConfig);
 	} else {
-		console.log(` > No schema found - downloading one.`);
+		console.log(' > No schema found - downloading one.');
 
 		await downloadNewSchema(proposedConfigFile, endpointConfig);
 	}
@@ -77,7 +77,7 @@ async function getSchemaChecksum(endpointConfig) {
 
 	const {
 		checksum: { value },
-	} = await endpoint.getClient().request(`query { checksum { value } }`);
+	} = await endpoint.getClient().request('query { checksum { value } }');
 
 	return value.toLowerCase();
 }
