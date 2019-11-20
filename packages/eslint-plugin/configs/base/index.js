@@ -11,6 +11,7 @@ module.exports = {
 		'func-names': ['warn', 'always'],
 		'no-multi-assign': 'warn',
 		'no-void': 'off',
+		'new-cap': 'off',
 		'no-warning-comments': ['off', { terms: ['TODO'] }],
 		'promise/always-return': 'warn',
 		'promise/catch-or-return': 'warn',
