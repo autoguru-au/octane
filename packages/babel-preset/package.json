@@ -21,7 +21,7 @@
     "@babel/preset-react": "^7.7.0",
     "@babel/runtime-corejs3": "^7.7.2",
     "babel-plugin-dev-expression": "^0.2.2",
-    "babel-plugin-macros": "^2.6.2",
+    "babel-plugin-macros": "^2.7.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24"
   },
   "devDependencies": {
