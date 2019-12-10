@@ -17,6 +17,11 @@ const objectA = {a: 'a', b: 'b'};
 
 const d = 'd';
 const objectB = {...objectA, c: 'c', [d]: 'd'};
+
+function test(firstArg, ...args) {
+	const [,test2] = args;
+	console.log(firstArg, args[0], test2);
+}
 `;
 
 describe('web preset', () => {
