@@ -23,7 +23,7 @@ var _defineProperty2 = _interopRequireDefault(require(\\"@babel/runtime/helpers/
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2[\\"default\\"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 var myVar = new Map([]);
 
@@ -31,11 +31,11 @@ var TestClass =
 /*#__PURE__*/
 function () {
   function TestClass() {
-    (0, _classCallCheck2.default)(this, TestClass);
-    (0, _defineProperty2.default)(this, \\"prop\\", 'prop');
+    (0, _classCallCheck2[\\"default\\"])(this, TestClass);
+    (0, _defineProperty2[\\"default\\"])(this, \\"prop\\", 'prop');
   }
 
-  (0, _createClass2.default)(TestClass, [{
+  (0, _createClass2[\\"default\\"])(TestClass, [{
     key: \\"getterProp\\",
     get: function get() {
       return 'getter prop';
@@ -44,14 +44,14 @@ function () {
   return TestClass;
 }();
 
-(0, _defineProperty2.default)(TestClass, \\"staticProp\\", 'static prop');
+(0, _defineProperty2[\\"default\\"])(TestClass, \\"staticProp\\", 'static prop');
 var objectA = {
   a: 'a',
   b: 'b'
 };
 var d = 'd';
 
-var objectB = _objectSpread({}, objectA, (0, _defineProperty2.default)({
+var objectB = _objectSpread({}, objectA, (0, _defineProperty2[\\"default\\"])({
   c: 'c'
 }, d, 'd'));"
 `;
@@ -62,7 +62,9 @@ exports[`web preset should allow for corejs override 1`] = `
 import _Object$defineProperty from \\"@babel/runtime-corejs2/core-js/object/define-property\\";
 import _Object$defineProperties from \\"@babel/runtime-corejs2/core-js/object/define-properties\\";
 import _Object$getOwnPropertyDescriptors from \\"@babel/runtime-corejs2/core-js/object/get-own-property-descriptors\\";
+import \\"core-js/modules/es6.array.for-each\\";
 import _Object$getOwnPropertyDescriptor from \\"@babel/runtime-corejs2/core-js/object/get-own-property-descriptor\\";
+import \\"core-js/modules/es6.array.filter\\";
 import _Object$getOwnPropertySymbols from \\"@babel/runtime-corejs2/core-js/object/get-own-property-symbols\\";
 import _Object$keys from \\"@babel/runtime-corejs2/core-js/object/keys\\";
 import _classCallCheck from \\"@babel/runtime-corejs2/helpers/classCallCheck\\";
@@ -72,7 +74,7 @@ import _Map from \\"@babel/runtime-corejs2/core-js/map\\";
 
 function ownKeys(object, enumerableOnly) { var keys = _Object$keys(object); if (_Object$getOwnPropertySymbols) { var symbols = _Object$getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return _Object$getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (_Object$getOwnPropertyDescriptors) { _Object$defineProperties(target, _Object$getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { _Object$defineProperty(target, key, _Object$getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (_Object$getOwnPropertyDescriptors) { _Object$defineProperties(target, _Object$getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { _Object$defineProperty(target, key, _Object$getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 var myVar = new _Map([]);
 
@@ -142,7 +144,7 @@ import _defineProperty from \\"@babel/runtime/helpers/defineProperty\\";
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 var myVar = new Map([]);
 

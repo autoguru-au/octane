@@ -32,7 +32,8 @@ edge 18
 edge 17
 firefox 70
 firefox 69
-ios_saf 13.0-13.2
+ios_saf 13.2
+ios_saf 13.0-13.1
 ios_saf 12.2-12.4
 ios_saf 12.0-12.1
 ios_saf 11.3-11.4

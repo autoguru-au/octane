@@ -23,7 +23,7 @@ describe('react preset', () => {
 			});
 		});
 
-		describe('when development', () => {
+		describe.skip('when development', () => {
 			beforeEach(() => {
 				process.env.NODE_ENV = 'development';
 			});

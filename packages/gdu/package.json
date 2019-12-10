@@ -23,12 +23,12 @@
     "kleur": "^3.0.3",
     "mkdirp": "^0.5.1",
     "node-fetch": "^2.6.0",
-    "sade": "^1.6.1"
+    "sade": "^1.7.0"
   },
   "devDependencies": {
-    "@types/node": "^12.12.11",
-    "@types/node-fetch": "^2.5.3",
-    "typescript": "~3.7.2"
+    "@types/node": "^12.12.17",
+    "@types/node-fetch": "^2.5.4",
+    "typescript": "~3.7.3"
   },
   "publishConfig": {
     "access": "public"

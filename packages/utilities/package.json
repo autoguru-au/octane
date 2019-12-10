@@ -24,7 +24,7 @@
     "@autoguru/eslint-plugin": "^1.0.81",
     "@autoguru/jest-preset": "^1.0.81",
     "tsdx": "^0.11.0",
-    "typescript": "~3.7.2"
+    "typescript": "~3.7.3"
   },
   "publishConfig": {
     "access": "public"
