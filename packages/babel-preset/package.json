@@ -1,6 +1,6 @@
 {
   "name": "@autoguru/babel-preset",
-  "version": "1.0.81",
+  "version": "1.0.82",
   "description": "AutoGuru's org-wide Babel preset",
   "homepage": "https://github.com/autoguru-au/octane/tree/master/packages/babel-preset#readme",
   "repository": "https://github.com/autoguru-au/octane/tree/master/packages/babel-preset",
@@ -16,17 +16,17 @@
     "@babel/plugin-transform-react-constant-elements": "^7.7.4",
     "@babel/plugin-transform-react-inline-elements": "^7.7.4",
     "@babel/plugin-transform-runtime": "^7.7.6",
+    "@babel/plugin-transform-spread": "^7.7.4",
     "@babel/plugin-transform-strict-mode": "^7.7.4",
     "@babel/preset-env": "^7.7.6",
     "@babel/preset-react": "^7.7.4",
     "@babel/runtime-corejs3": "^7.7.6",
     "babel-plugin-dev-expression": "^0.2.2",
-    "@babel/plugin-transform-spread": "^7.7.4",
     "babel-plugin-macros": "^2.8.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24"
   },
   "devDependencies": {
-    "@autoguru/jest-preset": "^1.0.81",
+    "@autoguru/jest-preset": "^1.0.82",
     "@babel/core": "^7.7.5"
   },
   "peerDependencies": {
