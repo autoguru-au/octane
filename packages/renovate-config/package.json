@@ -11,53 +11,120 @@
   "renovate-config": {
     "default": {
       "extends": [
-        "config:base"
+        ":prHourlyLimit2",
+        ":prNotPending",
+        ":rebaseStalePrs",
+        ":renovatePrefix",
+        ":semanticCommits",
+        ":timezone(Australia/Brisbane)",
+        ":updateNotScheduled"
       ],
-      "branchPrefix": "renovate/",
-      "ignoreNpmrcFile": true,
-      "schedule": [
-        "after 4pm and before 8am every weekday",
-        "every weekend"
-      ],
-      "lockFileMaintenance": {
-        "enabled": true,
-        "extends": "schedule:weekly"
-      },
-      "timezone": "Australia/Brisbane",
-      "semanticCommits": false,
-      "semanticCommitType": "chore",
-      "commitMessagePrefix": "{{semanticCommitType}}({{semanticCommitScope}}):",
-      "commitMessageAction": "{{#if isPin}}Pin{{else}}{{#if isRollback}}Roll back{{else}}Update{{/if}}{{/if}}",
-      "commitMessageExtra": "to {{#unless isRange}}v{{/unless}}{{#if isMajor}}{{newVersionMajor}}.x{{else}}{{newVersion}}{{/if}}",
       "packageRules": [
-        {
-          "packagePatterns": [
-            "^@autoguru",
-            "-autoguru$"
-          ],
-          "schedule": "at any time",
-          "rangeStrategy": "bump",
-          "groupName": "AutoGuru"
-        },
         {
           "depTypeList": [
             "dependencies"
           ],
-          "rangeStrategy": "bump"
+          "semanticCommitType": "fix"
         },
         {
+          "commitMessageExtra": "{{newValue}}",
+          "commitMessageTopic": "{{depName}}",
+          "managers": [
+            "npm",
+            "nvm"
+          ]
+        },
+        {
+          "automerge": true,
+          "commitMessageExtra": "",
+          "groupName": "Definitely typed (npm)",
+          "managers": [
+            "npm"
+          ],
+          "packagePatterns": [
+            "^@types/"
+          ],
+          "prPriority": 99,
+          "recreateClosed": true,
+          "schedule": "after 1pm on Monday"
+        },
+        {
+          "commitMessageExtra": "",
           "depTypeList": [
             "devDependencies"
           ],
-          "rangeStrategy": "replace"
+          "excludePackagePatterns": [
+            "^@?autoguru",
+            "-autoguru$"
+          ],
+          "groupName": "Dev dependencies (npm)",
+          "managers": [
+            "npm"
+          ],
+          "recreateClosed": true,
+          "schedule": "after 1pm on Monday"
         },
         {
+          "commitMessageExtra": "",
           "depTypeList": [
             "peerDependencies"
           ],
-          "rangeStrategy": "widen"
+          "excludePackagePatterns": [
+            "^@?autoguru",
+            "-autoguru$"
+          ],
+          "groupName": "Peer dependencies (npm)",
+          "managers": [
+            "npm"
+          ],
+          "recreateClosed": true,
+          "schedule": "after 1pm on Monday"
+        },
+        {
+          "groupName": "AutoGuru",
+          "packagePatterns": [
+            "^@?autoguru",
+            "-autoguru$"
+          ],
+          "prPriority": 98,
+          "schedule": "before 8am on every weekday"
+        },
+        {
+          "extends": [
+            "group:monorepos"
+          ],
+          "recreateClosed": true
+        },
+        {
+          "groupName": "relay",
+          "packagePatterns": [
+            "^relay-"
+          ],
+          "recreateClosed": true
+        },
+        {
+          "automerge": true,
+          "prPriority": 99,
+          "schedule": "before 8am on every weekday",
+          "updateTypes": [
+            "pin"
+          ]
         }
-      ]
+      ],
+      "commitMessageAction": "",
+      "ignoreNpmrcFile": true,
+      "lazyGrouping": false,
+      "postUpdateOptions": [
+        "yarnDedupeHighest"
+      ],
+      "schedule": "before 8am every weekday",
+      "rangeStrategy": "auto",
+      "prConcurrentLimit": 3,
+      "prNotPendingHours": 1,
+      "lockFileMaintenance": {
+        "enabled": true,
+        "extends": "schedule:weekly"
+      }
     }
   }
 }
