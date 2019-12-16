@@ -78,7 +78,8 @@
             "npm"
           ],
           "recreateClosed": true,
-          "schedule": "after 1pm on Monday"
+          "schedule": "after 1pm on Monday",
+          "rangeStrategy": "widen"
         },
         {
           "groupName": "AutoGuru",
@@ -99,15 +100,6 @@
           "groupName": "relay",
           "packagePatterns": [
             "^relay-"
-          ],
-          "recreateClosed": true
-        },
-        {
-          "automerge": true,
-          "prPriority": 99,
-          "schedule": "before 8am on every weekday",
-          "updateTypes": [
-            "pin"
           ]
         }
       ],
@@ -118,7 +110,7 @@
         "yarnDedupeHighest"
       ],
       "schedule": "before 8am every weekday",
-      "rangeStrategy": "auto",
+      "rangeStrategy": "bump",
       "prConcurrentLimit": 3,
       "prNotPendingHours": 1,
       "lockFileMaintenance": {
