@@ -35,7 +35,12 @@ const objectB = _objectSpread({}, objectA, {
   [d]: 'd'
 });
 
-console.log(objectB === null || objectB === void 0 ? void 0 : objectB.d);"
+console.log(objectB === null || objectB === void 0 ? void 0 : objectB.d);
+
+function nullCoal(test) {
+  const thing = this;
+  return test !== null && test !== void 0 ? test : \\"thing\\";
+}"
 `;
 
 exports[`node preset should match the snapshot 1`] = `
@@ -73,5 +78,10 @@ const objectB = _objectSpread({}, objectA, {
   [d]: 'd'
 });
 
-console.log(objectB === null || objectB === void 0 ? void 0 : objectB.d);"
+console.log(objectB === null || objectB === void 0 ? void 0 : objectB.d);
+
+function nullCoal(test) {
+  const thing = this;
+  return test !== null && test !== void 0 ? test : \\"thing\\";
+}"
 `;

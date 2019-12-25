@@ -19,6 +19,11 @@ const d = 'd';
 const objectB = {...objectA, c: 'c', [d]: 'd'};
 
 console.log(objectB?.d);
+
+function nullCoal(test) {
+	const thing = this 
+	return test ?? "thing";
+}
 `;
 
 describe('node preset', () => {
