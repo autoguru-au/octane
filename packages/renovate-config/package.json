@@ -37,7 +37,7 @@
         {
           "automerge": true,
           "commitMessageExtra": "",
-          "groupName": "Definitely typed (npm)",
+          "groupName": "definitely typed (npm)",
           "managers": [
             "npm"
           ],
@@ -57,7 +57,7 @@
             "^@?autoguru",
             "-autoguru$"
           ],
-          "groupName": "Dev dependencies (npm)",
+          "groupName": "dev dependencies (npm)",
           "managers": [
             "npm"
           ],
@@ -73,7 +73,7 @@
             "^@?autoguru",
             "-autoguru$"
           ],
-          "groupName": "Peer dependencies (npm)",
+          "groupName": "peer dependencies (npm)",
           "managers": [
             "npm"
           ],
@@ -101,6 +101,14 @@
           "packagePatterns": [
             "^relay-"
           ]
+        },
+        {
+          "automerge": true,
+          "prPriority": 99,
+          "schedule": "before 7am on every weekday",
+          "updateTypes": [
+            "pin"
+          ]
         }
       ],
       "commitMessageAction": "",
@@ -110,8 +118,8 @@
         "yarnDedupeHighest"
       ],
       "schedule": "before 8am every weekday",
-      "rangeStrategy": "bump",
-      "prConcurrentLimit": 3,
+      "rangeStrategy": "auto",
+      "prConcurrentLimit": 4,
       "prNotPendingHours": 1,
       "lockFileMaintenance": {
         "enabled": true,
