@@ -6,7 +6,7 @@
 	"ignoreChanges": ["**/*.spec.{js,ts,tsx}", "**/*.{md,mdx}"],
 	"command": {
 		"publish": {
-			"message": "chore(release): :rocket: Published %v"
+			"message": "chore(release): Published :rocket:"
 		}
 	}
 }
