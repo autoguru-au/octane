@@ -6,6 +6,9 @@
   "repository": "https://github.com/autoguru-au/octane/tree/master/packages/browserslist-config",
   "license": "MIT",
   "main": "index.js",
+  "files": [
+    "./index.js"
+  ],
   "devDependencies": {
     "browserslist": "^4.8.2"
   },

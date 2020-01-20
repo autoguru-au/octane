@@ -1,18 +1,19 @@
 module.exports = [
-	'> 0.25% in au',
+	'> 0.50% in au',
 
 	'last 2 chrome versions',
-	'not chrome < 69', // > 0.25% in au, adds this explicitly.
+	'not chrome < 69', // > 0.50% in au, adds this explicitly.
 
 	'last 2 firefox versions',
+	'last 4 opera versions',
+
 	'edge >= 17',
 	'safari >= 11',
-	'chrome > 69',
-	'opera > 56',
 
 	'samsung >= 6',
-	'not samsung <= 4', // > 0.25% in au, adds this explicitly.
-	'ios >= 9',
+	'not samsung <= 4', // > 0.50% in au, adds this explicitly.
+	'ios > 10',
+	'not ios 9.3',  // > 0.50% in au, adds this explicitly.
 	'and_chr > 56',
 	'and_ff >= 64',
 

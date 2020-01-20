@@ -24,9 +24,7 @@ module.exports = function(plop) {
 					templateFile: 'templates/browserslist-config_readme.hbs.md',
 					force: true,
 					data: {
-						browsers: require('browserslist')(
-							require('./packages/browserslist-config'),
-						).join('\n'),
+						browsers_link: `https://browserl.ist/?q=${encodeURI(require('./packages/browserslist-config').join(', '))}`
 					},
 				},
 			];

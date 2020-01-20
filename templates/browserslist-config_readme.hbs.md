@@ -14,6 +14,4 @@ extends browserslist-config-autoguru
 
 ### Support
 
-```
-{{ browsers }}
-```
+[browserl.ist]({{ browsers_link }})
