@@ -7,6 +7,7 @@ module.exports = function autoGuruWebPreset(api, options = {}) {
 		debug = false,
 		corejs = 3,
 		loose = false,
+		browsers,
 	} = options;
 
 	return {
@@ -21,6 +22,9 @@ module.exports = function autoGuruWebPreset(api, options = {}) {
 					spec: false,
 					shippedProposals: true,
 					useBuiltIns: 'usage',
+					targets: {
+						browsers,
+					},
 				},
 			],
 		],
