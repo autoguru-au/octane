@@ -2,6 +2,30 @@
 # yarn lockfile v1
 
 
+"@autoguru/babel-preset@latest":
+  version "1.0.85"
+  resolved "https://registry.yarnpkg.com/@autoguru/babel-preset/-/babel-preset-1.0.85.tgz#5e4b7c5ef251f439984ae068f02d8d600754dda7"
+  integrity sha512-OihnPjx81HZKKlnKqGV9H9drhSeEjaIAw0sTJb0/3/Udgs8T3aYsYg75DNz5rAtDh560jRbY7AzJOqHz/IFnAg==
+  dependencies:
+    "@babel/helper-annotate-as-pure" "^7.7.4"
+    "@babel/helper-plugin-utils" "^7.0.0"
+    "@babel/plugin-proposal-class-properties" "^7.7.4"
+    "@babel/plugin-proposal-export-default-from" "^7.7.4"
+    "@babel/plugin-proposal-nullish-coalescing-operator" "^7.7.4"
+    "@babel/plugin-proposal-optional-chaining" "^7.7.5"
+    "@babel/plugin-syntax-dynamic-import" "^7.7.4"
+    "@babel/plugin-transform-react-constant-elements" "^7.7.4"
+    "@babel/plugin-transform-react-inline-elements" "^7.7.4"
+    "@babel/plugin-transform-runtime" "^7.7.6"
+    "@babel/plugin-transform-spread" "^7.7.4"
+    "@babel/plugin-transform-strict-mode" "^7.7.4"
+    "@babel/preset-env" "^7.7.6"
+    "@babel/preset-react" "^7.7.4"
+    "@babel/runtime-corejs3" "^7.7.6"
+    babel-plugin-dev-expression "^0.2.2"
+    babel-plugin-macros "^2.8.0"
+    babel-plugin-transform-react-remove-prop-types "^0.4.24"
+
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.5.5":
   version "7.5.5"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.5.5.tgz#bc0782f6d69f7b7d49531219699b988f669a8f9d"
