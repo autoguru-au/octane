@@ -1,6 +1,6 @@
 {
   "name": "@autoguru/jest-preset",
-  "version": "1.0.85",
+  "version": "1.0.86",
   "description": "AutoGuru's generic Jest preset",
   "homepage": "https://github.com/autoguru-au/octane/tree/master/packages/jest-preset#readme",
   "repository": "https://github.com/autoguru-au/octane/tree/master/packages/jest-preset",
