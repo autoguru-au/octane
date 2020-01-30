@@ -2,6 +2,8 @@
   "name": "renovate-config-autoguru",
   "version": "1.0.86",
   "description": "AutoGuru's org-wide Renovate config",
+  "main": "dist/renovate-config-autoguru.cjs.js",
+  "module": "dist/renovate-config-autoguru.esm.js",
   "homepage": "https://github.com/autoguru-au/octane/tree/master/packages/renovate-config-autoguru#readme",
   "repository": "https://github.com/autoguru-au/octane/tree/master/packages/renovate-config-autoguru",
   "license": "MIT",
@@ -126,5 +128,8 @@
         "extends": "schedule:weekly"
       }
     }
+  },
+  "preconstruct": {
+    "source": "."
   }
 }

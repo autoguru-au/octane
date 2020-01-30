@@ -1,0 +1,7 @@
+{
+  "main": "dist/babel-preset.cjs.js",
+  "module": "dist/babel-preset.esm.js",
+  "preconstruct": {
+    "source": "."
+  }
+}

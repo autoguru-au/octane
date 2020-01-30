@@ -5,7 +5,8 @@
   "homepage": "https://github.com/autoguru-au/octane/tree/master/packages/jest-preset#readme",
   "repository": "https://github.com/autoguru-au/octane/tree/master/packages/jest-preset",
   "license": "MIT",
-  "main": "jest-preset.js",
+  "main": "dist/jest-preset.cjs.js",
+  "module": "dist/jest-preset.esm.js",
   "dependencies": {
     "@autoguru/babel-preset": "1.0.86",
     "@babel/core": "^7.7.5",
@@ -14,5 +15,8 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "preconstruct": {
+    "source": "."
   }
 }

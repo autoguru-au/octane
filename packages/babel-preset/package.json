@@ -5,7 +5,8 @@
   "homepage": "https://github.com/autoguru-au/octane/tree/master/packages/babel-preset#readme",
   "repository": "https://github.com/autoguru-au/octane/tree/master/packages/babel-preset",
   "license": "MIT",
-  "main": "index.js",
+  "main": "dist/babel-preset.cjs.js",
+  "module": "dist/babel-preset.esm.js",
   "dependencies": {
     "@babel/helper-annotate-as-pure": "^7.7.4",
     "@babel/helper-plugin-utils": "^7.0.0",
@@ -35,5 +36,14 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "preconstruct": {
+    "source": "index",
+    "entrypoints": [
+      ".",
+      "node",
+      "react",
+      "web"
+    ]
   }
 }

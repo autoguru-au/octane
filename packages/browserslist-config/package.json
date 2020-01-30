@@ -5,10 +5,11 @@
   "homepage": "https://github.com/autoguru-au/octane/tree/master/packages/browserslist-config#readme",
   "repository": "https://github.com/autoguru-au/octane/tree/master/packages/browserslist-config",
   "license": "MIT",
-  "main": "index.js",
-  "files": [
-    "./index.js"
-  ],
+  "main": "dist/browserslist-config-autoguru.cjs.js",
+  "module": "dist/browserslist-config-autoguru.esm.js",
+  "preconstruct": {
+    "source": "."
+  },
   "devDependencies": {
     "browserslist": "^4.8.2"
   },

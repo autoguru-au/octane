@@ -5,7 +5,8 @@
   "homepage": "https://github.com/autoguru-au/octane/tree/master/packages/commitlint-config#readme",
   "repository": "https://github.com/autoguru-au/octane/tree/master/packages/commitlint-config",
   "license": "MIT",
-  "main": "index.js",
+  "main": "dist/commitlint-config.cjs.js",
+  "module": "dist/commitlint-config.esm.js",
   "dependencies": {
     "@commitlint/config-conventional": "^8.2.0"
   },
@@ -18,5 +19,8 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "preconstruct": {
+    "source": "."
   }
 }

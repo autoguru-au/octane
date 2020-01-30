@@ -9,8 +9,8 @@
     "dist"
   ],
   "sideEffects": false,
-  "main": "./dist/index.js",
-  "module": "./dist/utilities.esm.js",
+  "main": "dist/utilities.cjs.js",
+  "module": "dist/utilities.esm.js",
   "types": "./dist/index.d.ts",
   "scripts": {
     "build": "tsdx build",

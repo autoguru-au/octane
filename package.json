@@ -46,6 +46,7 @@
     "relative": true
   },
   "dependencies": {
+    "@preconstruct/cli": "^1.1.4",
     "@autoguru/eslint-plugin": "*",
     "@manypkg/cli": "^0.9.0",
     "@types/node": "^12.12.17",
@@ -63,5 +64,10 @@
   "volta": {
     "node": "13.7.0",
     "yarn": "1.21.1"
+  },
+  "preconstruct": {
+    "packages": [
+      "packages/*"
+    ]
   }
 }

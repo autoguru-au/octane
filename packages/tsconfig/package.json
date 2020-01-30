@@ -5,8 +5,12 @@
   "homepage": "https://github.com/autoguru-au/octane/tree/master/packages/tsconfig#readme",
   "repository": "https://github.com/autoguru-au/octane/tree/master/packages/tsconfig",
   "license": "MIT",
-  "main": "web.json",
+  "main": "dist/tsconfig.cjs.js",
+  "module": "dist/tsconfig.esm.js",
   "publishConfig": {
     "access": "public"
+  },
+  "preconstruct": {
+    "source": "."
   }
 }
