@@ -9,6 +9,7 @@
     "build": "lerna run --stream --parallel build",
     "format": "prettier --write \"{*,packages/**/*}.+(js|jsx|ts|tsx|css|scss|json|yml|md|mdx|html)\"",
     "generate": "plop readmes && prettier --write \"{*,packages/**/*}.md\" ",
+    "postinstall": "manypkg check",
     "lint": "eslint \"packages/**/*.{js,jsx,ts,tsx}\" --cache --quiet --fix",
     "plop": "plop",
     "release": "lerna publish",
@@ -44,26 +45,23 @@
     },
     "relative": true
   },
-  "devDependencies": {
+  "dependencies": {
     "@autoguru/eslint-plugin": "*",
+    "@manypkg/cli": "^0.9.0",
     "@types/node": "^12.12.17",
     "browserslist-config-autoguru": "*",
     "eslint": "^6.7.2",
     "glob": "^7.1.6",
     "husky": "^3.1.0",
-    "jest": "^24.9.0",
+    "jest": "^25.1.0",
     "lerna": "^3.19.0",
     "lint-staged": "^8.2.1",
     "plop": "^2.5.3",
     "prettier": "^1.19.1",
-    "tslib": "^1.10.0",
-    "tslint": "^5.20.1",
-    "tslint-config-prettier": "^1.18.0",
-    "tslint-react": "^4.0.0",
     "typescript": "~3.7.3"
   },
   "volta": {
-    "node": "12.10.0",
-    "yarn": "1.17.3"
+    "node": "13.7.0",
+    "yarn": "1.21.1"
   }
 }

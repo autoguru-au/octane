@@ -2,15 +2,15 @@
 
 exports[`config should match snapshot 1`] = `
 Array [
-  "and_chr 78",
+  "and_chr 79",
   "and_ff 68",
+  "chrome 79",
   "chrome 78",
-  "chrome 77",
-  "chrome 76",
   "edge 18",
   "edge 17",
-  "firefox 70",
-  "firefox 69",
+  "firefox 72",
+  "firefox 71",
+  "ios_saf 13.3",
   "ios_saf 13.2",
   "ios_saf 13.0-13.1",
   "ios_saf 12.2-12.4",
