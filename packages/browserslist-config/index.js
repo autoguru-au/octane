@@ -13,7 +13,7 @@ module.exports = [
 	'samsung >= 6',
 	'not samsung <= 4', // > 0.50% in au, adds this explicitly.
 	'ios > 10',
-	'not ios 9.3',  // > 0.50% in au, adds this explicitly.
+	'not ios 9.3', // > 0.50% in au, adds this explicitly.
 	'and_chr > 56',
 	'and_ff >= 64',
 

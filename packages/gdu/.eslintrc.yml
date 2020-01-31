@@ -6,13 +6,15 @@ env:
 
 rules:
   unicorn/no-process-exit: off
+  no-await-in-loop: off
 
 overrides:
-  - files: ['**/*.ts', '**/*.tsx']
+  - files: ['{lib,commands,config,utils}/**/*.{ts,tsx}', 'cli.ts']
     extends:
       - 'plugin:@autoguru/typescript'
     rules:
       unicorn/no-process-exit: off # TODO: Investigate why this rule cant exist at the root
+      '@typescript-eslint/no-var-requires': off
     parser: '@typescript-eslint/parser'
     parserOptions:
       tsconfigRootDir: './packages/gdu/'
