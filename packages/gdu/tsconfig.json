@@ -2,14 +2,26 @@
 	"extends": "@autoguru/tsconfig/base",
 	"compilerOptions": {
 		"outDir": "./dist",
-		"baseUrl": "./src",
-		"rootDir": "./src",
-		"declaration": false,
-		"target": "es2015",
+		"baseUrl": "./",
+		"rootDir": "./",
+		"declaration": true,
+		"target": "es2020",
 		"module": "commonjs",
+		"esModuleInterop": true,
 		"importHelpers": false,
 		"noEmitHelpers": false,
+		"skipLibCheck": true,
+		"allowJs": true,
 		"lib": ["esnext", "dom"]
 	},
-	"include": ["./src/cli.ts", "./src/scripts/**/*.ts"]
+	"include": [
+		"./cli.ts",
+		"./main.ts",
+		"./config/**/*",
+		"./commands/**/*",
+		"./lib/**/*",
+		"./utils/**/*",
+		"./next/**/*"
+	],
+	"exclude": ["node_modules"]
 }

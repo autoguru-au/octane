@@ -52,7 +52,7 @@
     "browserslist-config-autoguru": "*",
     "eslint": "^6.7.2",
     "glob": "^7.1.6",
-    "husky": "^3.1.0",
+    "husky": "^4.0.9",
     "jest": "^25.1.0",
     "lerna": "^3.19.0",
     "lint-staged": "^8.2.1",

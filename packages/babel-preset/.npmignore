@@ -1,5 +1,0 @@
-readme.md
-jest.config.js
-*.spec.js
-__snapshots__
-**/fixtures/**

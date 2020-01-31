@@ -6,7 +6,7 @@ import { dirname, resolve } from 'path';
 
 let endpoint = null;
 
-export const run = async (options: { endpoint: string }) => {
+export default async options => {
 	const ROOT = process.cwd();
 
 	const graphQLConfig = getGraphQLConfig(ROOT);
