@@ -22,14 +22,14 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "@autoguru/babel-preset": "1.0.86",
+    "@autoguru/babel-preset": "^1.0.87",
     "@autoguru/tsconfig": "1.0.77",
-    "@autoguru/utilities": "1.0.84",
+    "@autoguru/utilities": "^1.0.85",
     "@babel/preset-typescript": "^7.7.4",
     "@babel/runtime-corejs2": "^7.7.4",
     "babel-loader": "^8.0.6",
     "babel-plugin-relay": "^7.1.0",
-    "browserslist-config-autoguru": "1.0.83",
+    "browserslist-config-autoguru": "^1.0.84",
     "clean-webpack-plugin": "^3.0.0",
     "core-js": "~2",
     "css-loader": "^3.4.2",
