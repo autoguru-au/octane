@@ -10,7 +10,7 @@
     "create-guru": "./index.js"
   },
   "dependencies": {
-    "gdu": "2.0.0-alpha.75",
+    "gdu": "2.0.0",
     "mri": "^1.1.4"
   }
 }
