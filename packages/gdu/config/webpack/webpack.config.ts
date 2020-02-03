@@ -165,7 +165,7 @@ export const makeWebpackConfig = ({ isDevServer = false, name = 'client' }) => {
 								babelrc: false,
 								envName: !isDev ? 'production' : 'development',
 								...hooks.afterBabelConfig.call(
-									require('../config/babel.config')(
+									require('../babel.config')(
 										getGuruConfig(),
 									),
 								),
