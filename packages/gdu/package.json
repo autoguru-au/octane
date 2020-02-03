@@ -1,6 +1,6 @@
 {
   "name": "gdu",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "private": false,
   "description": "AutoGuru's development toolkit",
   "homepage": "https://github.com/autoguru-au/octane/tree/master/packages/gdu#readme",
@@ -22,9 +22,9 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "@autoguru/babel-preset": "^1.0.87",
+    "@autoguru/babel-preset": "^1.0.88",
     "@autoguru/tsconfig": "1.0.77",
-    "@autoguru/utilities": "^1.0.85",
+    "@autoguru/utilities": "^1.0.86",
     "@babel/preset-typescript": "^7.7.4",
     "@babel/runtime-corejs2": "^7.7.4",
     "babel-loader": "^8.0.6",
