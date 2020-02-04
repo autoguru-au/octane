@@ -12,6 +12,7 @@
     "@babel/plugin-proposal-class-properties": "^7.7.4",
     "@babel/plugin-proposal-export-default-from": "^7.7.4",
     "@babel/plugin-proposal-nullish-coalescing-operator": "^7.7.4",
+    "@babel/plugin-proposal-object-rest-spread": "^7.8.3",
     "@babel/plugin-proposal-optional-chaining": "^7.7.5",
     "@babel/plugin-syntax-dynamic-import": "^7.7.4",
     "@babel/plugin-transform-react-constant-elements": "^7.7.4",
@@ -27,7 +28,7 @@
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24"
   },
   "devDependencies": {
-    "@autoguru/jest-preset": "^1.0.88",
+    "@autoguru/jest-preset": "*",
     "@babel/core": "^7.7.5"
   },
   "peerDependencies": {
