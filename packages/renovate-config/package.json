@@ -16,15 +16,32 @@
         ":rebaseStalePrs",
         ":renovatePrefix",
         ":semanticCommits",
-        ":timezone(Australia/Brisbane)",
-        ":updateNotScheduled"
+        ":timezone(Australia/Brisbane)"
       ],
+      "commitMessageAction": "",
+      "ignoreNpmrcFile": true,
+      "lazyGrouping": false,
+      "postUpdateOptions": [
+        "yarnDedupeHighest"
+      ],
+      "schedule": [
+        "after 4pm and before 8am every weekday",
+        "every weekend"
+      ],
+      "lockFileMaintenance": {
+        "enabled": true,
+        "extends": "schedule:weekly"
+      },
+      "rangeStrategy": "auto",
+      "prConcurrentLimit": 4,
+      "prNotPendingHours": 1,
       "packageRules": [
         {
           "depTypeList": [
             "dependencies"
           ],
-          "semanticCommitType": "fix"
+          "semanticCommitType": "fix",
+          "rangeStrategy": "replace"
         },
         {
           "commitMessageExtra": "{{newValue}}",
@@ -44,7 +61,7 @@
           "packagePatterns": [
             "^@types/"
           ],
-          "prPriority": 99,
+          "prPriority": 50,
           "recreateClosed": true,
           "schedule": "after 1pm on Monday"
         },
@@ -87,8 +104,8 @@
             "^@?autoguru",
             "-autoguru$"
           ],
-          "prPriority": 98,
-          "schedule": "before 8am on every weekday"
+          "prPriority": 99,
+          "schedule": "at any time"
         },
         {
           "extends": [
@@ -104,27 +121,12 @@
         },
         {
           "automerge": true,
-          "prPriority": 99,
-          "schedule": "before 7am on every weekday",
+          "prPriority": 98,
           "updateTypes": [
             "pin"
           ]
         }
-      ],
-      "commitMessageAction": "",
-      "ignoreNpmrcFile": true,
-      "lazyGrouping": false,
-      "postUpdateOptions": [
-        "yarnDedupeHighest"
-      ],
-      "schedule": "before 8am every weekday",
-      "rangeStrategy": "auto",
-      "prConcurrentLimit": 4,
-      "prNotPendingHours": 1,
-      "lockFileMaintenance": {
-        "enabled": true,
-        "extends": "schedule:weekly"
-      }
+      ]
     }
   }
 }
