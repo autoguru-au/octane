@@ -28,9 +28,20 @@ module.exports = guruConfig => {
 		presets: [
 			[
 				require.resolve('@autoguru/babel-preset/web'),
-				{ corejs: 2, browsers, loose: false },
+				{ corejs: 3, browsers, loose: false },
 			],
-			guruConfig.isSSR && require.resolve('next/babel'),
+			guruConfig.isSSR && [
+				require.resolve('next/babel'),
+				{
+					'preset-env': {
+						corejs: 3,
+						useBuiltIns: 'entry',
+					},
+					'transform-runtime': {
+						corejs: 3,
+					},
+				},
+			],
 			require.resolve('@autoguru/babel-preset/react'),
 			[
 				require.resolve('@babel/preset-typescript'),

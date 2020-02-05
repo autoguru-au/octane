@@ -23,12 +23,14 @@ export const createNextJSConfig = () => {
 		webpack(originalConfig: Configuration, nextConfig) {
 			const guruConfig = getGuruConfig();
 
-			(originalConfig.module.rules[0].include as any[]).unshift(
+			originalConfig.module.rules[0].include = [
+				...(originalConfig.module.rules[0].include as any[]),
 				...guruConfig?.srcPaths.map(item => join(PROJECT_ROOT, item)),
 				CALLING_WORKSPACE_ROOT &&
-					join(CALLING_WORKSPACE_ROOT, 'packages'),
-				/@autoguru[\\/]/,
-			);
+				join(CALLING_WORKSPACE_ROOT, 'packages'),
+				/@autoguru[\\/]/
+			].filter(Boolean);
+
 
 			originalConfig.resolve.plugins.push(new TsconfigPathsPlugin());
 

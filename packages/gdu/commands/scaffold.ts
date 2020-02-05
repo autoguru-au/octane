@@ -121,7 +121,7 @@ const genSPA = async options => {
 		dedent`import React from 'react';
 	import { Heading } from '@autoguru/overdrive';
 
-	export default () => <Heading>Welcome!</Heading>
+	export default () => <Heading is="h1">Welcome to your new SPA application!</Heading>
 	`,
 	);
 
@@ -153,7 +153,7 @@ const genSSR = async options => {
 	import React from 'react';
 	import { Heading } from '@autoguru/overdrive';
 
-	export default () => <Heading is="h1">Hello</Heading>;`,
+	export default () => <Heading is="h1">Welcome to your new SSR application!</Heading>;`,
 	);
 
 	await writeFileMap(writeFiles, appFolder);
