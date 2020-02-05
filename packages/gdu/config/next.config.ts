@@ -57,7 +57,7 @@ export const createNextJSConfig = () => {
 							options: {
 								babelrc: false,
 								...hooks.afterBabelConfig.call(
-									require('../config/babel.config')(
+									require('./babel.config')(
 										guruConfig,
 									),
 								),
