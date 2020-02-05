@@ -60,6 +60,8 @@ export const configure = async app_location => {
 			strict: true,
 			skipLibCheck: true,
 			isolatedModules: true,
+			noUnusedLocals: !guruConfig?.__legacy_mode,
+			noUnusedParameters: !guruConfig?.__legacy_mode,
 			paths: {
 				'~/*': ['./*'],
 			},

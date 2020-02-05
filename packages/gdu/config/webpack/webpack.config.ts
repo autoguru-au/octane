@@ -59,16 +59,16 @@ export const makeWebpackConfig = ({ isDevServer = false, name = 'client' }) => {
 
 	const { outputPath } = getGuruConfig();
 
-	const fileMask = !isDev ? '[name]-[chunkhash:8]' : '[name]';
+	const fileMask = isDev ? '[name]' : '[name]-[chunkhash:8]';
 
 	const options: Configuration = {
 		name,
 		context: PROJECT_ROOT,
-		mode: !isDev ? 'production' : 'development',
+		mode: isDev ? 'development' : 'production',
 		entry: {
 			main: join(GDU_ROOT, 'entry/spa/client.js'),
 		},
-		devtool: !isDev ? 'source-map' : 'cheap-module-source-map',
+		devtool: isDev ? 'cheap-module-source-map' : 'source-map',
 		bail: !isDev || !isDevServer,
 		output: {
 			path: outputPath,
@@ -163,11 +163,9 @@ export const makeWebpackConfig = ({ isDevServer = false, name = 'client' }) => {
 							loader: require.resolve('babel-loader'),
 							options: {
 								babelrc: false,
-								envName: !isDev ? 'production' : 'development',
+								envName: isDev ? 'development' : 'production',
 								...hooks.afterBabelConfig.call(
-									require('../babel.config')(
-										getGuruConfig(),
-									),
+									require('../babel.config')(getGuruConfig()),
 								),
 							},
 						},
@@ -185,7 +183,7 @@ export const makeWebpackConfig = ({ isDevServer = false, name = 'client' }) => {
 			new DefinePlugin({
 				'process.browser': JSON.stringify(false),
 				'process.env.NODE_ENV': JSON.stringify(
-					!isDev ? 'production' : 'development',
+					isDev ? 'development' : 'production',
 				),
 				__DEV__: JSON.stringify(!isDev),
 			}),

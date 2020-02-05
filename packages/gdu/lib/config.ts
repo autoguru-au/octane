@@ -16,6 +16,7 @@ export interface GuruConfig {
 	outputPath: string;
 	srcPaths?: string[];
 	__configPath: string;
+	__legacy_mode?: boolean;
 
 	tap?(hooks: Record<string, Hook>): void;
 }

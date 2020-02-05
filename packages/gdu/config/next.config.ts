@@ -27,11 +27,12 @@ export const createNextJSConfig = () => {
 				...(originalConfig.module.rules[0].include as any[]),
 				...guruConfig?.srcPaths.map(item => join(PROJECT_ROOT, item)),
 				CALLING_WORKSPACE_ROOT &&
-				join(CALLING_WORKSPACE_ROOT, 'packages'),
-				/@autoguru[\\/]/
+					join(CALLING_WORKSPACE_ROOT, 'packages'),
+				/@autoguru[\\/]/,
 			].filter(Boolean);
 
-
+			originalConfig.resolve.alias['@babel/runtime-corejs2'] =
+				'@babel/runtime-corejs3';
 			originalConfig.resolve.plugins.push(new TsconfigPathsPlugin());
 
 			// Yes... sadly next does some silly things.
@@ -59,9 +60,7 @@ export const createNextJSConfig = () => {
 							options: {
 								babelrc: false,
 								...hooks.afterBabelConfig.call(
-									require('./babel.config')(
-										guruConfig,
-									),
+									require('./babel.config')(guruConfig),
 								),
 							},
 						};

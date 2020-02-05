@@ -50,7 +50,9 @@ module.exports = guruConfig => {
 					allExtensions: true,
 				},
 			],
-			hasRelay && require.resolve('babel-plugin-relay'),
 		].filter(Boolean),
+		plugins: [hasRelay && require.resolve('babel-plugin-relay')].filter(
+			Boolean,
+		),
 	};
 };
