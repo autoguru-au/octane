@@ -9,7 +9,7 @@ import { TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
 import { Configuration, DefinePlugin, HashedModuleIdsPlugin } from 'webpack';
 
 import { getGuruConfig } from '../../lib/config';
-import { hasString, isEnvProduction } from '../../lib/misc';
+import { hashString, isEnvProduction } from '../../lib/misc';
 import {
 	CALLING_WORKSPACE_ROOT,
 	GDU_ROOT,
@@ -108,7 +108,7 @@ export const makeWebpackConfig = ({ isDevServer = false, name = 'client' }) => {
 					},
 					common: {
 						name(_module, chunks) {
-							return hasString(
+							return hashString(
 								chunks.reduce((result, chunk) => {
 									return result + chunk.name;
 								}, ''),

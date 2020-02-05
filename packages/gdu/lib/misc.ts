@@ -26,9 +26,8 @@ export const setEnvProd = which => {
 	prodEnv = true;
 };
 
-const hasher = createHash('sha256');
-
-export const hasString = str => {
+export const hashString = str => {
+	const hasher = createHash('sha256');
 	return hasher.update(str).digest('hex');
 };
 
