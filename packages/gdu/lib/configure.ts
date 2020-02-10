@@ -38,7 +38,7 @@ export const configure = async app_location => {
 	await ensureGitignore({
 		filepath: join(app_location, '.gitignore'),
 		comment: 'autoguru-au:gdu managed',
-		patterns: [...gitIgnorePatterns, '.prettierignore', 'tsconfig.json'],
+		patterns: [...gitIgnorePatterns, '/gdu.d.ts', 'tsconfig.json'],
 	});
 
 	// Writes prettierignore
@@ -67,6 +67,7 @@ export const configure = async app_location => {
 			},
 		},
 		include: [
+			'./gdu.d.ts',
 			'./*.d.ts',
 			...guruConfig.srcPaths.map(
 				item => `${item.replace(/\/$/, '')}/**/*`,
@@ -74,6 +75,13 @@ export const configure = async app_location => {
 		].filter(Boolean),
 		exclude: ['node_modules'],
 	};
+
+	writeFiles.set(
+		'gdu.d.ts',
+		WRAP_BANNER(dedent`
+		declare const __DEV__: boolean;
+	`),
+	);
 
 	writeFiles.set(
 		'tsconfig.json',

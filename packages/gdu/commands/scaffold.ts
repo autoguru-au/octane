@@ -55,13 +55,13 @@ const baseAppScaff = async (options, outputFiles) => {
 				format: 'gdu format',
 			},
 			dependencies: {
-				'@autoguru/overdrive': 'latest',
+				'@autoguru/overdrive': '*',
 				react: '^16.12.0',
 				'react-dom': '^16.12.0',
 			},
 			devDependencies: {
-				gdu: 'alpha',
-				'browserslist-config-autoguru': 'latest',
+				gdu: '*',
+				'browserslist-config-autoguru': '*',
 				'@types/react': '^16.9.0',
 				'@types/react-dom': '^16.9.0',
 				typescript: '^3.7.0',

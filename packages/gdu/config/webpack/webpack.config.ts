@@ -9,17 +9,19 @@ import { TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
 import { Configuration, DefinePlugin, HashedModuleIdsPlugin } from 'webpack';
 
 import { getGuruConfig } from '../../lib/config';
-import { hashString, isEnvProduction } from '../../lib/misc';
+import { isEnvProduction } from '../../lib/misc';
 import {
 	CALLING_WORKSPACE_ROOT,
 	GDU_ROOT,
 	PROJECT_ROOT,
 } from '../../lib/roots';
+import { getHooks } from '../../utils/hooks';
 import { commonLoaders } from './blocks/common';
 import { makeImagesLoader } from './blocks/images';
 import { makeCssLoader, makeSassLoader } from './blocks/styles';
 import { GuruBuildManifest } from './plugins/GuruBuildManifest';
-import { getHooks } from '../../utils/hooks';
+
+const { branch = 'null', commit = 'null' } = require('env-ci')();
 
 const debug = bugger('gdu:webpack:config');
 
@@ -44,7 +46,7 @@ const terserOptions = {
 	mangle: { safari10: true },
 };
 
-const frameworkRegex = /(?<!node_modules.*)[\\/]node_modules[\\/](react|react-dom|scheduler|prop-types|use-subscription|relay|react-relay)[\\/]/;
+const frameworkRegex = /(?<!node_modules.*)[\\/]node_modules[\\/](react|react-dom|scheduler|prop-types|use-subscription|relay-runtime|react-relay)[\\/]/;
 
 export const makeWebpackConfig = ({ isDevServer = false, name = 'client' }) => {
 	const hooks = getHooks();
@@ -59,7 +61,7 @@ export const makeWebpackConfig = ({ isDevServer = false, name = 'client' }) => {
 
 	const { outputPath } = getGuruConfig();
 
-	const fileMask = isDev ? '[name]' : '[name]-[chunkhash:8]';
+	const fileMask = isDev ? '[name]' : '[name]-[contenthash:8]';
 
 	const options: Configuration = {
 		name,
@@ -78,6 +80,7 @@ export const makeWebpackConfig = ({ isDevServer = false, name = 'client' }) => {
 			hashFunction: 'sha256',
 			crossOriginLoading: 'anonymous',
 			futureEmitAssets: !isDev,
+			sourceMapFilename: 'sourceMaps/[file].map',
 		},
 		resolve: {
 			extensions: ['.tsx', '.ts', '.mjs', '.jsx', '.js', '.json'],
@@ -99,6 +102,8 @@ export const makeWebpackConfig = ({ isDevServer = false, name = 'client' }) => {
 				maxInitialRequests: 25,
 				minSize: 20000,
 				cacheGroups: {
+					default: false,
+					// For React + Relay
 					framework: {
 						chunks: 'all',
 						name: 'framework',
@@ -106,21 +111,18 @@ export const makeWebpackConfig = ({ isDevServer = false, name = 'client' }) => {
 						priority: 40,
 						enforce: true,
 					},
+					// For things that are shared by at least 2+ chunks.
 					common: {
-						name(_module, chunks) {
-							return hashString(
-								chunks.reduce((result, chunk) => {
-									return result + chunk.name;
-								}, ''),
-							);
-						},
+						// TODO: Create hashed names here
 						priority: 10,
 						minChunks: 2,
 						reuseExistingChunk: true,
 					},
+					// AutoGuru related assets here
 					guru: {
 						test: /@autoguru[\\/]/,
 						priority: 99,
+						reuseExistingChunk: true,
 						enforce: true,
 					},
 				},
@@ -185,7 +187,11 @@ export const makeWebpackConfig = ({ isDevServer = false, name = 'client' }) => {
 				'process.env.NODE_ENV': JSON.stringify(
 					isDev ? 'development' : 'production',
 				),
-				__DEV__: JSON.stringify(!isDev),
+				__DEV__: JSON.stringify(isDev),
+				__BUILD_INFO__: JSON.stringify({
+					commit,
+					branch,
+				}),
 			}),
 			new MiniCssExtractPlugin({
 				filename: `${fileMask}.css`,
