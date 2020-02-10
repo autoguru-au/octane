@@ -1,6 +1,6 @@
 {
   "name": "gdu",
-  "version": "2.0.7",
+  "version": "2.0.8",
   "private": false,
   "description": "AutoGuru's development toolkit",
   "homepage": "https://github.com/autoguru-au/octane/tree/master/packages/gdu#readme",
@@ -37,6 +37,7 @@
     "date-fns": "^2.9.0",
     "debug": "^4.1.1",
     "ensure-gitignore": "^1.1.2",
+    "env-ci": "^5.0.1",
     "execa": "^4.0.0",
     "find-yarn-workspace-root": "^1.2.1",
     "glob": "^7.1.6",
@@ -45,7 +46,6 @@
     "html-webpack-plugin": "^4.0.0-beta.11",
     "ip": "^1.1.5",
     "js-yaml-loader": "^1.2.2",
-    "env-ci": "^5.0.1",
     "kleur": "^3.0.3",
     "mini-css-extract-plugin": "^0.9.0",
     "mkdirp": "^0.5.1",
