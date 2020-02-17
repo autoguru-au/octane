@@ -10,7 +10,7 @@
     "./index.js"
   ],
   "devDependencies": {
-    "browserslist": "^4.8.2"
+    "browserslist": "^4.8.7"
   },
   "publishConfig": {
     "access": "public"
