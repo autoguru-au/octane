@@ -20,7 +20,7 @@ module.exports = guruConfig => {
 		if (deps.has('react-relay')) {
 			hasRelay = true;
 		}
-	} catch (e) {
+	} catch (error) {
 		// Do nothing
 	}
 
@@ -51,8 +51,15 @@ module.exports = guruConfig => {
 				},
 			],
 		].filter(Boolean),
-		plugins: [hasRelay && require.resolve('babel-plugin-relay')].filter(
-			Boolean,
-		),
+		plugins: [
+			hasRelay && [
+				require.resolve('babel-plugin-relay'),
+				{
+					haste: false,
+					isDevVariable: '__DEV__',
+					eagerESModules: true,
+				},
+			],
+		].filter(Boolean),
 	};
 };
