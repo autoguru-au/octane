@@ -7,7 +7,7 @@ import { PROJECT_ROOT } from './roots';
 
 const debug = require('debug')('gdu:io');
 
-export const mkdirpAsync = promisify(mkdirp);
+export const mkdirpAsync = mkdirp;
 
 const writeFileAsyncFn = promisify(writeFile);
 export const writeFileAsync = async (fileName, body) => {
