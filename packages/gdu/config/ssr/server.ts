@@ -21,7 +21,7 @@ export const run = async () => {
 
 	const app = next({
 		dev: !isEnvProduction(),
-		quiet: true,
+		quiet: false,
 		dir: PROJECT_ROOT,
 		conf: nextJsConfig,
 	});

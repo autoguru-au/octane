@@ -1,14 +1,16 @@
 import { join } from 'path';
 import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
-import { Configuration } from 'webpack';
+import { Configuration, DefinePlugin } from 'webpack';
 
 import { getGuruConfig } from '../lib/config';
+import { isEnvProduction } from '../lib/misc';
 import { CALLING_WORKSPACE_ROOT, PROJECT_ROOT } from '../lib/roots';
 import { getHooks } from '../utils/hooks';
 import { makeSassLoader } from './webpack/blocks/styles';
 
 export const createNextJSConfig = () => {
 	const hooks = getHooks();
+	const isDev = !isEnvProduction();
 
 	const nextJsConfig = {
 		poweredByHeader: false,
@@ -48,6 +50,13 @@ export const createNextJSConfig = () => {
 							},
 							...compiler.options.module.rules,
 						];
+
+						// TODO: Abstract this, to mimic the same as what SPA webpack builds have
+						compiler.options.plugins.push(
+							new DefinePlugin({
+								__DEV__: JSON.stringify(isDev),
+							}),
+						);
 
 						console.assert(
 							compiler.options.module.rules[1].use.loader ===
