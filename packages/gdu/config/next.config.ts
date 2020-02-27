@@ -69,7 +69,7 @@ export const createNextJSConfig = () => {
 							...origBabel,
 							include: [...origBabel.include, ...ourCodePaths],
 							exclude(path) {
-								const orig = origBabel?.exlucde(path);
+								const orig = origBabel?.exclude(path);
 
 								return orig
 									? !ourCodePaths.some(r => {
