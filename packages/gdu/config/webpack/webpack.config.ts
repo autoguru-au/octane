@@ -199,7 +199,13 @@ export const makeWebpackConfig = ({ isDevServer = false, name = 'client' }) => {
 				ignoreOrder: true,
 			}),
 			new TreatPlugin({
-				outputLoaders: [MiniCssExtractPlugin.loader],
+				outputLoaders: [
+					{
+						loader: isEnvProduction()
+							? MiniCssExtractPlugin.loader
+							: require.resolve('style-loader'),
+					},
+				],
 				minify: !isDev,
 				browsers,
 			}),

@@ -25,8 +25,7 @@ export const createNextJSConfig = () => {
 		webpack(originalConfig: Configuration, nextConfig) {
 			const guruConfig = getGuruConfig();
 
-			originalConfig.module.rules[0].include = [
-				...(originalConfig.module.rules[0].include as any[]),
+			const ourCodePaths = [
 				...guruConfig?.srcPaths.map(item => join(PROJECT_ROOT, item)),
 				CALLING_WORKSPACE_ROOT &&
 					join(CALLING_WORKSPACE_ROOT, 'packages'),
@@ -64,13 +63,32 @@ export const createNextJSConfig = () => {
 							'Module rules [1] isnt next-babel-loader',
 						);
 
-						compiler.options.module.rules[1].use = {
-							loader: require.resolve('babel-loader'),
-							options: {
-								babelrc: false,
-								...hooks.afterBabelConfig.call(
-									require('./babel.config')(guruConfig),
-								),
+						const origBabel = compiler.options.module.rules[1];
+
+						compiler.options.module.rules[1] = {
+							...origBabel,
+							include: [...origBabel.include, ...ourCodePaths],
+							exclude(path) {
+								const orig = origBabel?.exlucde(path);
+
+								return orig
+									? !ourCodePaths.some(r => {
+											if (r instanceof RegExp) {
+												return r.test(path);
+											}
+
+											return path.includes(r);
+									  })
+									: false;
+							},
+							use: {
+								loader: require.resolve('babel-loader'),
+								options: {
+									babelrc: false,
+									...hooks.afterBabelConfig.call(
+										require('./babel.config')(guruConfig),
+									),
+								},
 							},
 						};
 					}
