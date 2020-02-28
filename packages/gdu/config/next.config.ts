@@ -1,5 +1,7 @@
 import { join } from 'path';
 import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
+import browsers from 'browserslist-config-autoguru';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import { Configuration, DefinePlugin } from 'webpack';
 import TreatPlugin from 'treat/webpack-plugin';
 

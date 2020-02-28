@@ -12,5 +12,6 @@
   "dependencies": {
     "gdu": "^2.0.15",
     "mri": "^1.1.4"
-  }
+  },
+  "gitHead": "a4873da2f3eacf8203c748e0021f503fddd46003"
 }
