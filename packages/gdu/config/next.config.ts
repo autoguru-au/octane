@@ -1,9 +1,9 @@
-import { join } from 'path';
-import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
 import browsers from 'browserslist-config-autoguru';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import { Configuration, DefinePlugin } from 'webpack';
+import { join } from 'path';
 import TreatPlugin from 'treat/webpack-plugin';
+import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
+import { Configuration, DefinePlugin } from 'webpack';
 
 import { getGuruConfig } from '../lib/config';
 import { isEnvProduction } from '../lib/misc';
@@ -31,7 +31,7 @@ export const createNextJSConfig = () => {
 			const ourCodePaths = [
 				...guruConfig?.srcPaths.map(item => join(PROJECT_ROOT, item)),
 				CALLING_WORKSPACE_ROOT &&
-					join(CALLING_WORKSPACE_ROOT, 'packages'),
+				join(CALLING_WORKSPACE_ROOT, 'packages'),
 				/@autoguru[\\/]/,
 			].filter(Boolean);
 
@@ -60,10 +60,13 @@ export const createNextJSConfig = () => {
 							}),
 							new TreatPlugin({
 								outputLoaders: [
-									{
-										loader: isEnvProduction()
-											? MiniCssExtractPlugin.loader
-											: require.resolve('style-loader'),
+									!isDev &&
+									!nextConfig.isServer && {
+										loader: MiniCssExtractPlugin.loader,
+									},
+									isDev &&
+									!nextConfig.isServer && {
+										loader: require.resolve('style-loader'),
 									},
 								],
 								minify: !isDev,
@@ -73,7 +76,7 @@ export const createNextJSConfig = () => {
 
 						console.assert(
 							compiler.options.module.rules[1].use.loader ===
-								'next-babel-loader',
+							'next-babel-loader',
 							'Module rules [1] isnt next-babel-loader',
 						);
 
@@ -87,12 +90,12 @@ export const createNextJSConfig = () => {
 
 								return orig
 									? !ourCodePaths.some(r => {
-											if (r instanceof RegExp) {
-												return r.test(path);
-											}
+										if (r instanceof RegExp) {
+											return r.test(path);
+										}
 
-											return path.includes(r);
-									  })
+										return path.includes(r);
+									})
 									: false;
 							},
 							use: {
