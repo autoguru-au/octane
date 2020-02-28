@@ -49,9 +49,7 @@ export const configure = async app_location => {
 	});
 
 	const tsConfig = {
-		extends: require.resolve('@autoguru/tsconfig/web.json', {
-			paths: [join(GDU_ROOT, 'node_modules')],
-		}),
+		extends: '@autoguru/tsconfig/web.json',
 		compilerOptions: {
 			baseUrl: './',
 			rootDir: app_location,
