@@ -31,7 +31,7 @@ export const createNextJSConfig = () => {
 			const ourCodePaths = [
 				...guruConfig?.srcPaths.map(item => join(PROJECT_ROOT, item)),
 				CALLING_WORKSPACE_ROOT &&
-				join(CALLING_WORKSPACE_ROOT, 'packages'),
+					join(CALLING_WORKSPACE_ROOT, 'packages'),
 				/@autoguru[\\/]/,
 			].filter(Boolean);
 
@@ -61,16 +61,18 @@ export const createNextJSConfig = () => {
 							new TreatPlugin({
 								outputLoaders: [
 									!isDev &&
-									!nextConfig.isServer && {
-										loader: MiniCssExtractPlugin.loader,
-									},
+										!nextConfig.isServer && {
+											loader: MiniCssExtractPlugin.loader,
+										},
 									isDev &&
-									!nextConfig.isServer && {
-										loader: require.resolve('style-loader'),
-									},
+										!nextConfig.isServer && {
+											loader: require.resolve(
+												'style-loader',
+											),
+										},
 									nextConfig.isServer && {
 										loader: require.resolve('null-loader'),
-									}
+									},
 								].filter(Boolean),
 								minify: !isDev,
 								browsers,
@@ -79,7 +81,7 @@ export const createNextJSConfig = () => {
 
 						console.assert(
 							compiler.options.module.rules[1].use.loader ===
-							'next-babel-loader',
+								'next-babel-loader',
 							'Module rules [1] isnt next-babel-loader',
 						);
 
@@ -93,12 +95,12 @@ export const createNextJSConfig = () => {
 
 								return orig
 									? !ourCodePaths.some(r => {
-										if (r instanceof RegExp) {
-											return r.test(path);
-										}
+											if (r instanceof RegExp) {
+												return r.test(path);
+											}
 
-										return path.includes(r);
-									})
+											return path.includes(r);
+									  })
 									: false;
 							},
 							use: {
