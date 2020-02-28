@@ -59,6 +59,7 @@ export const createNextJSConfig = () => {
 								__DEV__: JSON.stringify(isDev),
 							}),
 							new TreatPlugin({
+								outputCSS: !nextConfig.isServer,
 								outputLoaders: [
 									!isDev &&
 										!nextConfig.isServer && {
@@ -70,9 +71,6 @@ export const createNextJSConfig = () => {
 												'style-loader',
 											),
 										},
-									nextConfig.isServer && {
-										loader: require.resolve('null-loader'),
-									},
 								].filter(Boolean),
 								minify: !isDev,
 								browsers,
