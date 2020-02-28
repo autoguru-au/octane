@@ -105,7 +105,10 @@ const genSPA = async options => {
 	writeFiles.set(
 		'src/App/index.tsx',
 		dedent`import React from 'react';
-	import { OverdriveProvider, baseTheme } from '@autoguru/overdrive';
+	import '@autoguru/overdrive/reset';
+
+	import { baseTheme } from '@autoguru/overdrive/themes';
+	import { OverdriveProvider } from '@autoguru/overdrive';
 	import DefaultScene from '../scenes';
 
 	export default () => (
