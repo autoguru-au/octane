@@ -5,7 +5,7 @@ import dedent from 'ts-dedent';
 
 import { getGuruConfig } from './config';
 import { writeFileMap } from './io';
-import { GDU_ROOT, PROJECT_ROOT } from './roots';
+import { PROJECT_ROOT } from './roots';
 
 const debug = require('debug')('gdu:configure');
 
