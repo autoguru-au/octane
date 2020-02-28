@@ -60,6 +60,7 @@ module.exports = guruConfig => {
 					eagerESModules: true,
 				},
 			],
+			require.resolve('babel-plugin-treat'),
 		].filter(Boolean),
 	};
 };

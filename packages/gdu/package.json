@@ -29,6 +29,7 @@
     "@babel/runtime-corejs3": "^7.8.4",
     "babel-loader": "^8.0.6",
     "babel-plugin-relay": "^9.0.0",
+    "babel-plugin-treat": "^1.1.0",
     "browserslist-config-autoguru": "^1.0.85",
     "clean-webpack-plugin": "^3.0.0",
     "core-js": "^3.6.4",

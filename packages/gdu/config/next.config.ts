@@ -1,6 +1,7 @@
 import { join } from 'path';
 import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
 import { Configuration, DefinePlugin } from 'webpack';
+import TreatPlugin from 'treat/webpack-plugin';
 
 import { getGuruConfig } from '../lib/config';
 import { isEnvProduction } from '../lib/misc';
@@ -54,6 +55,17 @@ export const createNextJSConfig = () => {
 						compiler.options.plugins.push(
 							new DefinePlugin({
 								__DEV__: JSON.stringify(isDev),
+							}),
+							new TreatPlugin({
+								outputLoaders: [
+									{
+										loader: isEnvProduction()
+											? MiniCssExtractPlugin.loader
+											: require.resolve('style-loader'),
+									},
+								],
+								minify: !isDev,
+								browsers,
 							}),
 						);
 
