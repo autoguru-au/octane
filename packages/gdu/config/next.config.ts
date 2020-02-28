@@ -68,7 +68,10 @@ export const createNextJSConfig = () => {
 									!nextConfig.isServer && {
 										loader: require.resolve('style-loader'),
 									},
-								],
+									nextConfig.isServer && {
+										loader: require.resolve('null-loader'),
+									}
+								].filter(Boolean),
 								minify: !isDev,
 								browsers,
 							}),
