@@ -16,4 +16,5 @@ module.exports = require('babel-jest').createTransformer({
 			},
 		],
 	],
+	plugins: [require.resolve('babel-plugin-treat')],
 });
