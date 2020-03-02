@@ -22,9 +22,7 @@ module.exports = function autoGuruWebPreset(api, options = {}) {
 					spec: false,
 					shippedProposals: true,
 					useBuiltIns: 'usage',
-					targets: {
-						browsers,
-					},
+					targets: browsers,
 				},
 			],
 		],
