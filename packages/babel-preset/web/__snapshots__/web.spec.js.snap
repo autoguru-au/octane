@@ -7,62 +7,55 @@ var _interopRequireDefault = require(\\"@babel/runtime/helpers/interopRequireDef
 
 require(\\"core-js/modules/es.array.iterator\\");
 
-require(\\"core-js/modules/es.map\\");
+require(\\"core-js/modules/es.promise\\");
 
-require(\\"core-js/modules/es.object.to-string\\");
-
-require(\\"core-js/modules/es.string.iterator\\");
+require(\\"core-js/modules/web.dom-collections.for-each\\");
 
 require(\\"core-js/modules/web.dom-collections.iterator\\");
-
-var _classCallCheck2 = _interopRequireDefault(require(\\"@babel/runtime/helpers/classCallCheck\\"));
-
-var _createClass2 = _interopRequireDefault(require(\\"@babel/runtime/helpers/createClass\\"));
 
 var _defineProperty2 = _interopRequireDefault(require(\\"@babel/runtime/helpers/defineProperty\\"));
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2[\\"default\\"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
-var myVar = new Map([]);
+const myVar = new Map([]);
 
-var TestClass =
-/*#__PURE__*/
-function () {
-  function TestClass() {
-    (0, _classCallCheck2[\\"default\\"])(this, TestClass);
-    (0, _defineProperty2[\\"default\\"])(this, \\"prop\\", 'prop');
+class TestClass {
+  constructor() {
+    (0, _defineProperty2.default)(this, \\"prop\\", 'prop');
   }
 
-  (0, _createClass2[\\"default\\"])(TestClass, [{
-    key: \\"getterProp\\",
-    get: function get() {
-      return 'getter prop';
-    }
-  }]);
-  return TestClass;
-}();
+  get getterProp() {
+    return 'getter prop';
+  }
 
-(0, _defineProperty2[\\"default\\"])(TestClass, \\"staticProp\\", 'static prop');
-var objectA = {
+}
+
+(0, _defineProperty2.default)(TestClass, \\"staticProp\\", 'static prop');
+const objectA = {
   a: 'a',
   b: 'b'
 };
-var d = 'd';
+const d = 'd';
 
-var objectB = _objectSpread({}, objectA, (0, _defineProperty2[\\"default\\"])({
-  c: 'c'
-}, d, 'd'));
+const objectB = _objectSpread({}, objectA, {
+  c: 'c',
+  [d]: 'd'
+});
 
 function test(firstArg) {
   for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
     args[_key - 1] = arguments[_key];
   }
 
-  var test2 = args[1];
+  const [, test2] = args;
   console.log(firstArg, args[0], test2);
-}"
+}
+
+const testAsync = async () => {
+  await 'test';
+};"
 `;
 
 exports[`web preset should allow for corejs override 1`] = `
@@ -71,13 +64,9 @@ exports[`web preset should allow for corejs override 1`] = `
 import _Object$defineProperty from \\"@babel/runtime-corejs2/core-js/object/define-property\\";
 import _Object$defineProperties from \\"@babel/runtime-corejs2/core-js/object/define-properties\\";
 import _Object$getOwnPropertyDescriptors from \\"@babel/runtime-corejs2/core-js/object/get-own-property-descriptors\\";
-import \\"core-js/modules/es6.array.for-each\\";
 import _Object$getOwnPropertyDescriptor from \\"@babel/runtime-corejs2/core-js/object/get-own-property-descriptor\\";
-import \\"core-js/modules/es6.array.filter\\";
 import _Object$getOwnPropertySymbols from \\"@babel/runtime-corejs2/core-js/object/get-own-property-symbols\\";
 import _Object$keys from \\"@babel/runtime-corejs2/core-js/object/keys\\";
-import _classCallCheck from \\"@babel/runtime-corejs2/helpers/classCallCheck\\";
-import _createClass from \\"@babel/runtime-corejs2/helpers/createClass\\";
 import _defineProperty from \\"@babel/runtime-corejs2/helpers/defineProperty\\";
 import _Map from \\"@babel/runtime-corejs2/core-js/map\\";
 
@@ -85,47 +74,44 @@ function ownKeys(object, enumerableOnly) { var keys = _Object$keys(object); if (
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (_Object$getOwnPropertyDescriptors) { _Object$defineProperties(target, _Object$getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { _Object$defineProperty(target, key, _Object$getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
-var myVar = new _Map([]);
+const myVar = new _Map([]);
 
-var TestClass =
-/*#__PURE__*/
-function () {
-  function TestClass() {
-    _classCallCheck(this, TestClass);
-
+class TestClass {
+  constructor() {
     _defineProperty(this, \\"prop\\", 'prop');
   }
 
-  _createClass(TestClass, [{
-    key: \\"getterProp\\",
-    get: function get() {
-      return 'getter prop';
-    }
-  }]);
+  get getterProp() {
+    return 'getter prop';
+  }
 
-  return TestClass;
-}();
+}
 
 _defineProperty(TestClass, \\"staticProp\\", 'static prop');
 
-var objectA = {
+const objectA = {
   a: 'a',
   b: 'b'
 };
-var d = 'd';
+const d = 'd';
 
-var objectB = _objectSpread({}, objectA, _defineProperty({
-  c: 'c'
-}, d, 'd'));
+const objectB = _objectSpread({}, objectA, {
+  c: 'c',
+  [d]: 'd'
+});
 
 function test(firstArg) {
   for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
     args[_key - 1] = arguments[_key];
   }
 
-  var test2 = args[1];
+  const [, test2] = args;
   console.log(firstArg, args[0], test2);
-}"
+}
+
+const testAsync = async () => {
+  await 'test';
+};"
 `;
 
 exports[`web preset should do the __DEV__ dev expression 1`] = `
@@ -152,80 +138,79 @@ exports[`web preset should match the snapshot 1`] = `
 "\\"use strict\\";
 
 import \\"core-js/modules/es.array.iterator\\";
-import \\"core-js/modules/es.map\\";
-import \\"core-js/modules/es.object.to-string\\";
-import \\"core-js/modules/es.string.iterator\\";
+import \\"core-js/modules/es.promise\\";
+import \\"core-js/modules/web.dom-collections.for-each\\";
 import \\"core-js/modules/web.dom-collections.iterator\\";
-import _classCallCheck from \\"@babel/runtime/helpers/classCallCheck\\";
-import _createClass from \\"@babel/runtime/helpers/createClass\\";
 import _defineProperty from \\"@babel/runtime/helpers/defineProperty\\";
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
-var myVar = new Map([]);
+const myVar = new Map([]);
 
-var TestClass =
-/*#__PURE__*/
-function () {
-  function TestClass() {
-    _classCallCheck(this, TestClass);
-
+class TestClass {
+  constructor() {
     _defineProperty(this, \\"prop\\", 'prop');
   }
 
-  _createClass(TestClass, [{
-    key: \\"getterProp\\",
-    get: function get() {
-      return 'getter prop';
-    }
-  }]);
+  get getterProp() {
+    return 'getter prop';
+  }
 
-  return TestClass;
-}();
+}
 
 _defineProperty(TestClass, \\"staticProp\\", 'static prop');
 
-var objectA = {
+const objectA = {
   a: 'a',
   b: 'b'
 };
-var d = 'd';
+const d = 'd';
 
-var objectB = _objectSpread({}, objectA, _defineProperty({
-  c: 'c'
-}, d, 'd'));
+const objectB = _objectSpread({}, objectA, {
+  c: 'c',
+  [d]: 'd'
+});
 
 function test(firstArg) {
   for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
     args[_key - 1] = arguments[_key];
   }
 
-  var test2 = args[1];
+  const [, test2] = args;
   console.log(firstArg, args[0], test2);
-}"
+}
+
+const testAsync = async () => {
+  await 'test';
+};"
 `;
 
 exports[`web preset should optimize clsx 1`] = `
 "\\"use strict\\";
 
-import _defineProperty from \\"@babel/runtime/helpers/defineProperty\\";
-
-var _clsx;
-
 import clsx from 'clsx';
-var validCondition = true;
-var invalidCondition = false;
-var a = 'a-class';
-var b = 'b-class';
-var d = 'd-class';
+const validCondition = true;
+const invalidCondition = false;
+const a = 'a-class';
+const b = 'b-class';
+const d = 'd-class';
 clsx('a');
 clsx(a);
 clsx(['a', b]);
 clsx(a, 'b', ['c', d]);
 clsx(a, 'b', ['c', d], 'e');
-clsx(a, (_clsx = {}, _defineProperty(_clsx, 'b', true), _defineProperty(_clsx, 'c', false), _defineProperty(_clsx, 'e', someCondition), _defineProperty(_clsx, \\"f\\", true), _defineProperty(_clsx, \\"g\\", false), _defineProperty(_clsx, \\"h\\", someCondition), _defineProperty(_clsx, \\"i\\", validCondition), _defineProperty(_clsx, \\"j\\", invalidCondition), _clsx));
+clsx(a, {
+  ['b']: true,
+  ['c']: false,
+  ['e']: someCondition,
+  f: true,
+  g: false,
+  h: someCondition,
+  i: validCondition,
+  j: invalidCondition
+});
 clsx(validCondition && 'a');
 clsx({
   btn: true,

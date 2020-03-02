@@ -7,7 +7,7 @@ const myVar = new Map([]);
 class TestClass {
 	static staticProp = 'static prop';
 	prop = 'prop';
-	
+
 	get getterProp() {
 		return 'getter prop';
 	}
@@ -21,6 +21,10 @@ const objectB = {...objectA, c: 'c', [d]: 'd'};
 function test(firstArg, ...args) {
 	const [,test2] = args;
 	console.log(firstArg, args[0], test2);
+}
+
+const testAsync = async () => {
+	await 'test';
 }
 `;
 
