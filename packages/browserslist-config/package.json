@@ -9,8 +9,8 @@
   "files": [
     "./index.js"
   ],
-  "devDependencies": {
-    "browserslist": "^4.8.7"
+  "dependencies": {
+    "browserslist": "^4.9.1"
   },
   "publishConfig": {
     "access": "public"
