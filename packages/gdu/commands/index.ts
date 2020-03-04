@@ -46,6 +46,7 @@ export default (app: Sade) => {
 	app.command('start')
 		.describe('Starts a development server')
 		.option('-p, --port', 'Specify a port to start at', 8080)
+		.option('--env', 'Run a specific environment', 'dev')
 		.example('start -p 80')
 		.action(deferredAction(async () => import('./start'), IS_NOT_ROOT));
 

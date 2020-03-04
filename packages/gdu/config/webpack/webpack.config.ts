@@ -9,12 +9,18 @@ import { TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
 import { Configuration, DefinePlugin, HashedModuleIdsPlugin } from 'webpack';
 
 import { getGuruConfig } from '../../lib/config';
+import { getConsumerRuntimeConfig } from '../../lib/getConsumerRuntimeConfig';
 import { isEnvProduction } from '../../lib/misc';
-import { CALLING_WORKSPACE_ROOT, GDU_ROOT, PROJECT_ROOT } from '../../lib/roots';
+import {
+	CALLING_WORKSPACE_ROOT,
+	GDU_ROOT,
+	PROJECT_ROOT,
+} from '../../lib/roots';
 import { getHooks } from '../../utils/hooks';
 import { commonLoaders } from './blocks/common';
 import { makeImagesLoader } from './blocks/images';
 import { makeCssLoader, makeSassLoader } from './blocks/styles';
+import ConfigPlugin from './plugins/ConfigPlugin';
 import { GuruBuildManifest } from './plugins/GuruBuildManifest';
 
 const { branch = 'null', commit = 'null' } = require('env-ci')();
@@ -195,9 +201,9 @@ export const makeWebpackConfig = ({ isDevServer = false, name = 'client' }) => {
 		},
 		plugins: [
 			!isDev &&
-			new HashedModuleIdsPlugin({
-				hashFunction: 'sha256',
-			}),
+				new HashedModuleIdsPlugin({
+					hashFunction: 'sha256',
+				}),
 			!isDev && new CleanWebpackPlugin(),
 			new DefinePlugin({
 				'process.browser': JSON.stringify(false),
@@ -227,6 +233,10 @@ export const makeWebpackConfig = ({ isDevServer = false, name = 'client' }) => {
 				browsers,
 			}),
 			!isDev && new GuruBuildManifest(),
+			new ConfigPlugin({
+				getConfig: getConsumerRuntimeConfig,
+				alterPublicPath: !isDev,
+			}),
 		].filter(Boolean),
 	};
 

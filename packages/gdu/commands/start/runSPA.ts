@@ -12,7 +12,10 @@ import { getHooks } from '../../utils/hooks';
 
 const localhost = '0.0.0.0';
 const hosts = ['localhost', localhost];
-export const runSPA = async (guruConfig: GuruConfig) => {
+export const runSPA = async (
+	guruConfig: GuruConfig,
+	environmentName: string,
+) => {
 	const hooks = getHooks();
 	console.log(`${cyan('Starting dev server...')}`);
 
@@ -27,17 +30,34 @@ export const runSPA = async (guruConfig: GuruConfig) => {
 		new (class GuruHtml {
 			apply(compiler) {
 				compiler.hooks.compilation.tap('guru', compilation => {
-					((HtmlWebpackPlugin as any).getHooks(
+					const hooks = (HtmlWebpackPlugin as any).getHooks(
 						compilation,
-					) as HtmlWebpackPlugin.Hooks).beforeEmit.tapAsync(
-						'guru',
-						(data, cb) => {
-							const segs = data.html.split('<body>');
-							data.html =
-								segs[0] + '<div id="app"></div>' + segs[1];
-							cb(null, data);
-						},
-					);
+					) as HtmlWebpackPlugin.Hooks;
+
+					hooks.beforeEmit.tapAsync('guru', (data, cb) => {
+						const { chunks } = compilation;
+						const maybeEncChunk = chunks.find(
+							c =>
+								c?._isEnvironmentChunk &&
+								c?._environmentName === environmentName,
+						);
+
+						const extraJs = (
+							maybeEncChunk?.files.filter(f =>
+								f.endsWith('.js'),
+							) ?? []
+						).map(
+							f =>
+								`<script src="${compilation.outputOptions.publicPath}${f}"></script>`,
+						);
+
+						const segs = data.html.split('<body>');
+						data.html =
+							`${segs[0]}<div id="app"></div>${extraJs.join(
+								'',
+							)}` + segs[1];
+						cb(null, data);
+					});
 				});
 			}
 		})(),
@@ -52,14 +72,10 @@ export const runSPA = async (guruConfig: GuruConfig) => {
 
 			You can now view ${bold(getProjectName())} in the browser.
 
-			  Local:            ${blue(
-				`http://${hosts[0]}:${guruConfig.port}/`,
-			)}
+			  Local:            ${blue(`http://${hosts[0]}:${guruConfig.port}/`)}
 			  On Your Network:  ${blue(
-				`http://${require('ip').address()}:${
-					guruConfig.port
-				}/`,
-			)}
+					`http://${require('ip').address()}:${guruConfig.port}/`,
+				)}
 
 			Note that the development build is not optimized.
 			To create a production build, use ${cyan('yarn build')}.

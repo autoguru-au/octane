@@ -75,6 +75,9 @@ export const decorateConfig = (guruConfig: Partial<GuruConfig>): GuruConfig => {
 	if (!isAbsolute(guruConfig.outputPath))
 		guruConfig.outputPath = join(project_root, guruConfig.outputPath);
 
+	guruConfig.publicPath =
+		(guruConfig.publicPath ?? '/').replace(/(\/+)$/g, '') + '/';
+
 	guruConfig.isRoot = guruConfig.isRoot ?? false;
 
 	if (guruConfig.publicPath)

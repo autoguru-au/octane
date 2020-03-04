@@ -6,12 +6,19 @@ export class GuruBuildManifest {
 			hash: '',
 			publicPath: compiler.options.output.publicPath,
 			assets: { css: [], js: [] },
+			env: {},
 		};
 
 		compiler.hooks.emit.tapAsync(
 			'BuildManifestPlugin',
 			(compilation, cb) => {
 				fileMap.hash = compilation.hash;
+
+				for (const chunk of compilation.chunks) {
+					if (chunk?._isEnvironmentChunk === true) {
+						fileMap.env[chunk.name] = chunk.files;
+					}
+				}
 
 				for (const [
 					,

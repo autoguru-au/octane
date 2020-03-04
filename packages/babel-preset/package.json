@@ -28,7 +28,7 @@
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24"
   },
   "devDependencies": {
-    "@autoguru/jest-preset": "^1.0.95",
+    "@autoguru/jest-preset": "*",
     "@babel/core": "^7.8.6"
   },
   "peerDependencies": {
