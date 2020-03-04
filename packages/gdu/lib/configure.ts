@@ -51,7 +51,7 @@ export const configure = async app_location => {
 		extends: '@autoguru/tsconfig/web.json',
 		compilerOptions: {
 			baseUrl: './',
-			rootDir: app_location,
+			rootDir: './',
 			jsx: 'preserve',
 			outDir: './dist',
 			strict: true,

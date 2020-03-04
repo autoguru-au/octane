@@ -10,11 +10,7 @@ import { Configuration, DefinePlugin, HashedModuleIdsPlugin } from 'webpack';
 
 import { getGuruConfig } from '../../lib/config';
 import { isEnvProduction } from '../../lib/misc';
-import {
-	CALLING_WORKSPACE_ROOT,
-	GDU_ROOT,
-	PROJECT_ROOT,
-} from '../../lib/roots';
+import { CALLING_WORKSPACE_ROOT, GDU_ROOT, PROJECT_ROOT } from '../../lib/roots';
 import { getHooks } from '../../utils/hooks';
 import { commonLoaders } from './blocks/common';
 import { makeImagesLoader } from './blocks/images';
@@ -183,9 +179,9 @@ export const makeWebpackConfig = ({ isDevServer = false, name = 'client' }) => {
 		},
 		plugins: [
 			!isDev &&
-				new HashedModuleIdsPlugin({
-					hashFunction: 'sha256',
-				}),
+			new HashedModuleIdsPlugin({
+				hashFunction: 'sha256',
+			}),
 			!isDev && new CleanWebpackPlugin(),
 			new DefinePlugin({
 				'process.browser': JSON.stringify(false),
