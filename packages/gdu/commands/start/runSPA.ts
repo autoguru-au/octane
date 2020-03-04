@@ -6,7 +6,7 @@ import webpack, { Configuration } from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 
 import { makeWebpackConfig } from '../../config/webpack/webpack.config';
-import { getGuruConfig, getProjectName, GuruConfig } from '../../lib/config';
+import { getProjectName, GuruConfig } from '../../lib/config';
 import { PROJECT_ROOT } from '../../lib/roots';
 import { getHooks } from '../../utils/hooks';
 
@@ -48,20 +48,18 @@ export const runSPA = async (guruConfig: GuruConfig) => {
 	let beenReadyBefore = false;
 	compiler.hooks.done.tap('runner', () => {
 		if (!beenReadyBefore) {
-			const publicPath = getGuruConfig()?.publicPath ?? '/';
-
 			console.log(dedent`
 
 			You can now view ${bold(getProjectName())} in the browser.
 
 			  Local:            ${blue(
-					`http://${hosts[0]}:${guruConfig.port}${publicPath}`,
-				)}
+				`http://${hosts[0]}:${guruConfig.port}/`,
+			)}
 			  On Your Network:  ${blue(
-					`http://${require('ip').address()}:${
-						guruConfig.port
-					}${publicPath}`,
-				)}
+				`http://${require('ip').address()}:${
+					guruConfig.port
+				}/`,
+			)}
 
 			Note that the development build is not optimized.
 			To create a production build, use ${cyan('yarn build')}.
@@ -74,7 +72,7 @@ export const runSPA = async (guruConfig: GuruConfig) => {
 
 	const devServer = new WebpackDevServer(compiler, {
 		contentBase: join(PROJECT_ROOT, 'public'),
-		publicPath: guruConfig?.publicPath ?? '/',
+		publicPath: '/',
 		host: hosts[0],
 		allowedHosts: hosts,
 		overlay: true,

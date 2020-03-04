@@ -77,6 +77,9 @@ export const decorateConfig = (guruConfig: Partial<GuruConfig>): GuruConfig => {
 
 	guruConfig.isRoot = guruConfig.isRoot ?? false;
 
+	if (guruConfig.publicPath)
+		guruConfig.publicPath = guruConfig.publicPath.replace(/\/+$/, '') + '/';
+
 	return guruConfig as GuruConfig;
 };
 

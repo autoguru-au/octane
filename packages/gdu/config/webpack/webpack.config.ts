@@ -75,7 +75,7 @@ export const makeWebpackConfig = ({ isDevServer = false, name = 'client' }) => {
 		bail: !isDev || !isDevServer,
 		output: {
 			path: outputPath,
-			publicPath: getGuruConfig()?.publicPath ?? '/',
+			publicPath: isDev ? '/' : getGuruConfig()?.publicPath ?? '/',
 			filename: `${fileMask}.js`,
 			chunkFilename: `chunks/${fileMask}.js`,
 			hashFunction: 'sha256',
