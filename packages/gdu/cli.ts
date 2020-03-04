@@ -10,24 +10,24 @@ configureCommands(app);
 
 export default (argv: string[]) => {
 	// -- SetupHooks
-	// TODO: Maybe find a better place for this?
 
 	// Transpilation Related Hooks
 	registerHooks({
-		afterWebpackConfig: new SyncWaterfallHook(['config']),
-		afterBabelConfig: new SyncWaterfallHook(['config']),
+		webpackConfig: new SyncWaterfallHook(['config']),
+		babelConfig: new SyncWaterfallHook(['config']),
 	});
 
 	// Server Hooks
 	registerHooks({
-		beforeServer: new SyncWaterfallHook(['server']), // TODO: Maybe these can be async?
-		afterServer: new SyncWaterfallHook(['server']), // TODO: Maybe these can be async?
+		beforeServer: new AsyncSeriesWaterfallHook(['server']),
+		afterServer: new AsyncSeriesWaterfallHook(['server']),
 	});
 
+	// TODO: Move these hooks to next js something
 	// NextJS Hooks
 	registerHooks({
-		beforeNextJSPrepare: new AsyncSeriesWaterfallHook(['app']),
-		afterNextJSConfig: new SyncWaterfallHook(['config']),
+		nextJSPrepare: new AsyncSeriesWaterfallHook(['app']),
+		nextJSConfig: new SyncWaterfallHook(['config']),
 	});
 
 	app.parse(argv);

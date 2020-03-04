@@ -30,7 +30,7 @@ module.exports = guruConfig => {
 				require.resolve('@autoguru/babel-preset/web'),
 				{ corejs: 3, browsers, loose: false },
 			],
-			guruConfig.isSSR && [
+			guruConfig.type === 'ssr' && [
 				require.resolve('next/babel'),
 				{
 					'preset-env': {

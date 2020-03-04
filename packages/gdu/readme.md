@@ -44,7 +44,7 @@ For a project to be considered a `gdu` project. It must contain a
 
 ```ts
 interface GuruConfig {
-	isSSR: boolean; // Is set for you during scaffold.
+	type: 'spa' | 'ssr'; // Is set for you during scaffold.
 	isRoot?: boolean; // When set is mainly for workspace roots, and other things. Advanced Usage.
 	port?: number; // When starting, or running, use this port (default: 8080)
 	publicPath?: string; // When deployed where to go find static assets (default: /)
@@ -58,7 +58,7 @@ interface GuruConfig {
 
 ### Hooks
 
--   `afterWebpackConfig(config)` - After we have resolved a webpack config, but
+-   `webpackConfig(config)` - After we have resolved a webpack config, but
     before we use it.
 -   `beforeServer(server)` - After we have initialized a new polka server, but
     before default routes kick in, mainly used to inject middleware.
@@ -68,7 +68,7 @@ interface GuruConfig {
     `nextjs.getRequestHandler()`
 -   `afterNextJSConfig(config)` - After default nextjs config has been resolved
     to be sent forward into nextjs.
--   `afterBabelConfig(config)` - After babel config has been resolved, but
-    before it's used.
+-   `babelConfig(config)` - After babel config has been resolved, but before
+    it's used.
 
 <a href="http://www.autoguru.com.au/"><img src="https://cdn.autoguru.com.au/images/logos/autoguru.svg" alt="AutoGuru" width="150" /></a>

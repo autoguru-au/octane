@@ -52,8 +52,10 @@ export const makeWebpackConfig = ({ isDevServer = false, name = 'client' }) => {
 	const hooks = getHooks();
 	const isDev = !isEnvProduction();
 
+	const gduEntryPath = join(GDU_ROOT, 'entry');
+
 	const ourCodePaths = [
-		join(GDU_ROOT, 'entry/client/spa'),
+		join(gduEntryPath, '/client/spa'),
 		...getGuruConfig().srcPaths.map(item => join(PROJECT_ROOT, item)),
 		CALLING_WORKSPACE_ROOT && join(CALLING_WORKSPACE_ROOT, 'packages'),
 		/@autoguru[\\/]/,
@@ -68,7 +70,10 @@ export const makeWebpackConfig = ({ isDevServer = false, name = 'client' }) => {
 		context: PROJECT_ROOT,
 		mode: isDev ? 'development' : 'production',
 		entry: {
-			main: join(GDU_ROOT, 'entry/spa/client.js'),
+			main: [
+				join(gduEntryPath, '/polyfill.js'),
+				join(gduEntryPath, '/spa/client.js'),
+			],
 		},
 		devtool: isDev ? 'cheap-module-source-map' : 'source-map',
 		bail: !isDev || !isDevServer,
@@ -166,7 +171,7 @@ export const makeWebpackConfig = ({ isDevServer = false, name = 'client' }) => {
 							options: {
 								babelrc: false,
 								envName: isDev ? 'development' : 'production',
-								...hooks.afterBabelConfig.call(
+								...hooks.babelConfig.call(
 									require('../babel.config')(getGuruConfig()),
 								),
 							},

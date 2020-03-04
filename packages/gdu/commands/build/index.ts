@@ -1,8 +1,8 @@
-import { green } from 'kleur';
 import { banner } from '../../lib/banner';
 import { getGuruConfig } from '../../lib/config';
 import { genGithubOutputs } from '../../lib/githubOutputs';
 import { setEnvProd } from '../../lib/misc';
+import { projectInfo } from '../../lib/terminal';
 import { buildSPA } from './buildSPA';
 import { buildSSR } from './buildSSR';
 
@@ -14,9 +14,9 @@ export default async () => {
 	banner('Building');
 
 	let stats;
-	if (guruConfig?.isSSR === true) {
+	if (guruConfig?.type === 'ssr') {
 		stats = await buildSSR(guruConfig);
-	} else if (guruConfig?.isSSR === false || guruConfig?.isSSR === undefined) {
+	} else if (guruConfig?.type === 'spa') {
 		stats = await buildSPA(guruConfig);
 	}
 
@@ -26,5 +26,5 @@ export default async () => {
 		});
 	}
 
-	console.log(green('Done!'));
+	projectInfo('Done ✅');
 };

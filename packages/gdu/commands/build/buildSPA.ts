@@ -8,7 +8,7 @@ import { getHooks } from '../../utils/hooks';
 export const buildSPA = async (guruConfig: GuruConfig) => {
 	const hooks = getHooks();
 
-	const webpackConfig: Configuration = hooks.afterWebpackConfig.call(
+	const webpackConfig: Configuration = hooks.webpackConfig.call(
 		makeWebpackConfig({
 			isDevServer: false,
 		}),

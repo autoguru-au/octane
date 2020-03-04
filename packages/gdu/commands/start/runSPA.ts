@@ -16,7 +16,7 @@ export const runSPA = async (guruConfig: GuruConfig) => {
 	const hooks = getHooks();
 	console.log(`${cyan('Starting dev server...')}`);
 
-	const webpackConfig: Configuration = hooks.afterWebpackConfig.call(
+	const webpackConfig: Configuration = hooks.webpackConfig.call(
 		makeWebpackConfig({
 			isDevServer: true,
 		}),

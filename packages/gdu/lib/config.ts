@@ -9,7 +9,7 @@ const debug = require('debug')('gdu:config');
 const readCache = new Map();
 
 export interface GuruConfig {
-	isSSR: boolean;
+	type: 'ssr' | 'spa';
 	isRoot?: boolean;
 	port?: number;
 	publicPath?: string;
@@ -37,6 +37,10 @@ export const getGuruConfig = (location = PROJECT_ROOT): GuruConfig | null => {
 
 		debug('resolved guru config %o', config);
 
+		if (typeof config.type !== 'string') {
+			throw new TypeError('Type is required');
+		}
+
 		const resolvedConfig = {
 			...config,
 			__configPath: normalizePath,
@@ -59,16 +63,14 @@ export const getGuruConfig = (location = PROJECT_ROOT): GuruConfig | null => {
 export const decorateConfig = (guruConfig: Partial<GuruConfig>): GuruConfig => {
 	const project_root = guruConfig.__configPath;
 
-	guruConfig.isSSR = guruConfig?.isSSR ?? false;
-
 	guruConfig.srcPaths =
-		guruConfig.srcPaths ?? Boolean(guruConfig?.isSSR)
+		guruConfig.srcPaths ?? Boolean(guruConfig.type === 'ssr')
 			? ['./pages/', './components/', './scenes/']
 			: ['./src/'];
 
 	guruConfig.outputPath =
 		guruConfig.outputPath ??
-		join(project_root, guruConfig.isSSR ? './.next' : './dist');
+		join(project_root, guruConfig.type === 'ssr' ? './.next' : './dist');
 
 	if (!isAbsolute(guruConfig.outputPath))
 		guruConfig.outputPath = join(project_root, guruConfig.outputPath);

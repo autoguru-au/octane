@@ -15,13 +15,10 @@ export default async ({ port: incomingPort }) => {
 
 	if (!isEnvProduction()) banner('Starting');
 
-	if (resolvedConfig?.isSSR === true) {
+	if (resolvedConfig?.type === 'ssr') {
 		const runSSR = await import('./runSSR');
 		await runSSR.runNextJS(resolvedConfig);
-	} else if (
-		typeof resolvedConfig?.isSSR === 'undefined' ||
-		resolvedConfig?.isSSR === false
-	) {
+	} else if (resolvedConfig?.type === 'spa') {
 		const runSSR = await import('./runSPA');
 		await runSSR.runSPA(resolvedConfig);
 	}

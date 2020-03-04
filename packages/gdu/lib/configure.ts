@@ -1,11 +1,10 @@
 import ensureGitignore from 'ensure-gitignore';
-import { dim, magenta } from 'kleur';
-import { join, relative } from 'path';
+import { join } from 'path';
 import dedent from 'ts-dedent';
 
 import { getGuruConfig } from './config';
 import { writeFileMap } from './io';
-import { PROJECT_ROOT } from './roots';
+import { projectInfo } from './terminal';
 
 const debug = require('debug')('gdu:configure');
 
@@ -30,7 +29,7 @@ export const configure = async app_location => {
 		'.browserslistrc',
 	];
 
-	if (guruConfig?.isSSR) {
+	if (guruConfig?.type === 'ssr') {
 		gitIgnorePatterns.push('.next/');
 	}
 
@@ -78,6 +77,11 @@ export const configure = async app_location => {
 		'gdu.d.ts',
 		WRAP_BANNER(dedent`
 		declare const __DEV__: boolean;
+
+		declare module '*.scss' {
+			const content: { [className: string]: string };
+			export default content;
+		}
 	`),
 	);
 
@@ -97,16 +101,5 @@ export const configure = async app_location => {
 
 	await writeFileMap(writeFiles, app_location);
 
-	const writeFilesPrint = [...writeFiles.entries()]
-		.map(item => item[0])
-		.concat(['.gitignore', '.prettierignore'])
-		.join(', ');
-
-	console.log(
-		`Configured ${magenta(
-			PROJECT_ROOT === guruConfig.__configPath
-				? guruConfig.__configPath
-				: relative(PROJECT_ROOT, guruConfig.__configPath),
-		)} ${dim(writeFilesPrint)}`,
-	);
+	projectInfo('configured ✅', app_location);
 };

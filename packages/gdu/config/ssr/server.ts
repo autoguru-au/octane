@@ -13,7 +13,8 @@ const hooks = getHooks();
 
 export const run = async () => {
 	const server = polka();
-	hooks.beforeServer.call(server);
+
+	await hooks.beforeServer.promise(server);
 
 	const { default: next } = requireFromCaller('next');
 
@@ -28,24 +29,28 @@ export const run = async () => {
 
 	const handle = app.getRequestHandler();
 
-	await hooks.beforeNextJSPrepare.promise(app);
+	await hooks.nextJSPrepare.promise(app.prepare());
 
-	await app.prepare();
-
-	const { pageChecker } = app.router;
+	const { pageChecker, dynamicRoutes } = app.router;
 
 	server.use(async (req, res, next) => {
 		const start = new Date().getTime();
 
+		const incomingPath = req.originalUrl;
+
+		const isPageWeCareAbout =
+			dynamicRoutes.some(({ match }) => match(incomingPath)) ||
+			(await pageChecker(incomingPath));
+
 		await next();
 
-		(await pageChecker(req.originalUrl)) &&
+		isPageWeCareAbout &&
 			logger.info('response', {
 				processingTime: new Date().getTime() - start,
 				responseHeaders: Object.fromEntries(
 					Object.entries(res.getHeaders()),
 				),
-				url: req.url,
+				url: incomingPath,
 				statusCode: res.statusCode,
 			});
 	});
@@ -62,5 +67,5 @@ export const run = async () => {
 
 	server.all('*', (req, res) => handle(req, res));
 
-	hooks.afterServer.call(server);
+	await hooks.afterServer.promise(server);
 };

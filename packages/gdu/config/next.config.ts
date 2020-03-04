@@ -105,7 +105,7 @@ export const createNextJSConfig = () => {
 								loader: require.resolve('babel-loader'),
 								options: {
 									babelrc: false,
-									...hooks.afterBabelConfig.call(
+									...hooks.babelConfig.call(
 										require('./babel.config')(guruConfig),
 									),
 								},
@@ -115,9 +115,9 @@ export const createNextJSConfig = () => {
 				})(),
 			);
 
-			return hooks.afterWebpackConfig.call(originalConfig);
+			return hooks.webpackConfig.call(originalConfig);
 		},
 	};
 
-	return hooks.afterNextJSConfig.call(nextJsConfig);
+	return hooks.nextJSConfig.call(nextJsConfig);
 };

@@ -38,7 +38,7 @@ const ensureAppFolder = async app_name => {
 const baseAppScaff = async (options, outputFiles) => {
 	// Build guru.config
 	const configFile = dedent`module.exports = {
-		isSSR: ${options.type === 'ssr' ? 'true' : 'false'},
+		type: ${options.type === 'ssr' ? "'ssr'" : "'spa'"},
 	};`;
 	outputFiles.set('guru.config.js', configFile);
 
