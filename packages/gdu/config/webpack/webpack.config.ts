@@ -161,6 +161,22 @@ export const makeWebpackConfig = ({ isDevServer = false, name = 'client' }) => {
 				{
 					test: /\.(js|mjs|jsx|ts|tsx)$/,
 					include: ourCodePaths,
+					exclude(path) {
+						// TODO: Temp, remove this
+						if (path.includes('@autoguru/utilities')) {
+							return true;
+						}
+
+						const ourCode = ourCodePaths.some(item => {
+							if (item instanceof RegExp) {
+								return item.test(path);
+							}
+
+							return path.includes(item);
+						});
+
+						return ourCode ? false : path.includes('node_modules');
+					},
 					use: [
 						{
 							loader: require.resolve('babel-loader'),
