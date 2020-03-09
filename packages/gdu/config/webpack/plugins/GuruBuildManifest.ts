@@ -16,7 +16,7 @@ export class GuruBuildManifest {
 
 				for (const chunk of compilation.chunks) {
 					if (chunk?._isEnvironmentChunk === true) {
-						fileMap.env[chunk.name] = chunk.files;
+						fileMap.env[chunk._environmentName] = chunk.files;
 					}
 				}
 
