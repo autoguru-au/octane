@@ -1,11 +1,22 @@
 import { Compiler } from 'webpack';
+import { META_SYMBOL } from './ConfigPlugin';
+
+interface EnvironmentFiles {
+	[envName: string]: {
+		js: string[];
+		css: string[];
+	};
+}
+
+interface Manifest {
+	hash: string;
+	env: EnvironmentFiles;
+}
 
 export class GuruBuildManifest {
 	public apply(compiler: Compiler) {
-		const fileMap = {
+		const fileMap: Manifest = {
 			hash: '',
-			publicPath: compiler.options.output.publicPath,
-			assets: { css: [], js: [] },
 			env: {},
 		};
 
@@ -14,20 +25,31 @@ export class GuruBuildManifest {
 			(compilation, cb) => {
 				fileMap.hash = compilation.hash;
 
-				for (const chunk of compilation.chunks) {
-					if (chunk?._isEnvironmentChunk === true) {
-						fileMap.env[chunk._environmentName] = chunk.files;
-					}
-				}
+				const js = [];
+				const css = [];
 
 				for (const [
 					,
 					entrypoint,
 				] of compilation.entrypoints.entries()) {
 					for (const file of entrypoint.getFiles()) {
-						if (file.endsWith('.js')) fileMap.assets.js.push(file);
-						if (file.endsWith('.css'))
-							fileMap.assets.css.push(file);
+						if (file.endsWith('.js')) js.push(file);
+						if (file.endsWith('.css')) css.push(file);
+					}
+				}
+
+				for (const chunk of compilation.chunks) {
+					if (typeof chunk[META_SYMBOL] !== 'undefined') {
+						const { name, config } = chunk[META_SYMBOL];
+
+						const prefixCreator = path =>
+							`${config.publicPathBase ?? ''}${compiler.options
+								.output.publicPath ?? ''}${path}`;
+
+						fileMap.env[name] = {
+							js: [...chunk.files, ...js].map(prefixCreator),
+							css: [...css].map(prefixCreator),
+						};
 					}
 				}
 

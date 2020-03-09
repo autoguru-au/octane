@@ -36,14 +36,14 @@ export const runSPA = async (
 
 					hooks.beforeEmit.tapAsync('guru', (data, cb) => {
 						const { chunks } = compilation;
-						const maybeEncChunk = chunks.find(
+						const maybeEnvChunk = chunks.find(
 							c =>
 								c?._isEnvironmentChunk &&
 								c?._environmentName === environmentName,
 						);
 
 						const extraJs = (
-							maybeEncChunk?.files.filter(f =>
+							maybeEnvChunk?.files.filter(f =>
 								f.endsWith('.js'),
 							) ?? []
 						).map(

@@ -19,6 +19,8 @@ const CONFIG_EXPORT_SYMBOL = 'a';
 
 const PLUGIN_NAME = 'ConfigPlugin';
 
+export const META_SYMBOL = Symbol('confg object symbol');
+
 export default class ConfigPlugin {
 	private readonly _configMap = new Map();
 
@@ -126,9 +128,12 @@ class ConfigModule extends Module {
 				newChunk.id = 0;
 				newChunk.ids = [0];
 				newChunk.chunkReason = `config for ${name}`;
-				newChunk._isEnvironmentChunk = true;
-				newChunk._environmentName = name;
 				newChunk.preventIntegration = true;
+
+				newChunk[META_SYMBOL] = {
+					name,
+					config,
+				};
 
 				const mod = new EnvConfigModule({
 					name,
