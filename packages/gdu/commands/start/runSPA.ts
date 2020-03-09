@@ -4,6 +4,7 @@ import { join } from 'path';
 import dedent from 'ts-dedent';
 import webpack, { Configuration } from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
+import { META_SYMBOL } from '../../config/webpack/plugins/ConfigPlugin';
 
 import { makeWebpackConfig } from '../../config/webpack/webpack.config';
 import { getProjectName, GuruConfig } from '../../lib/config';
@@ -38,14 +39,12 @@ export const runSPA = async (
 						const { chunks } = compilation;
 						const maybeEnvChunk = chunks.find(
 							c =>
-								c?._isEnvironmentChunk &&
-								c?._environmentName === environmentName,
+								c[META_SYMBOL] &&
+								c[META_SYMBOL]?.name === environmentName,
 						);
 
 						const extraJs = (
-							maybeEnvChunk?.files.filter(f =>
-								f.endsWith('.js'),
-							) ?? []
+							maybeEnvChunk?.filter(f => f.endsWith('.js')) ?? []
 						).map(
 							f =>
 								`<script src="${compilation.outputOptions.publicPath}${f}"></script>`,
