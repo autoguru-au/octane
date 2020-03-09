@@ -55,10 +55,10 @@ export const run = async () => {
 			});
 	});
 
-	if (nextJsConfig.assetPrefix !== '') {
-		server.get(`${nextJsConfig.assetPrefix}/*`, async (req, res) => {
+	if ((nextJsConfig.assetPrefix ?? '/') !== '/') {
+		server.get(`${nextJsConfig.assetPrefix}*`, async (req, res) => {
 			req.url = req.originalUrl.replace(
-				`${nextJsConfig.assetPrefix}/`,
+				`${nextJsConfig.assetPrefix}`,
 				'/',
 			);
 			return handle(req, res);

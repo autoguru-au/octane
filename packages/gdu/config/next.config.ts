@@ -21,7 +21,7 @@ export const createNextJSConfig = () => {
 
 		pageExtensions: ['tsx', 'ts'],
 
-		assetPrefix: getGuruConfig()?.publicPath ?? '',
+		assetPrefix: getGuruConfig()?.publicPath,
 
 		publicRuntimeConfig: {},
 
