@@ -35,7 +35,7 @@ export const runSPA = async (
 						compilation,
 					) as HtmlWebpackPlugin.Hooks;
 
-					hooks.beforeEmit.tapAsync('guru', (data, cb) => {
+					compilation.hooks.seal.tap('guru', () => {
 						const { chunks } = compilation;
 						const maybeEnvChunk = chunks.find(
 							c =>
@@ -43,18 +43,26 @@ export const runSPA = async (
 								c[META_SYMBOL]?.name === environmentName,
 						);
 
-						const extraJs = (
-							maybeEnvChunk?.files?.filter(f => f.endsWith('.js')) ?? []
-						).map(
-							f =>
-								`<script src="${compilation.outputOptions.publicPath}${f}"></script>`,
-						);
+						hooks.alterAssetTags.tap('guru', tags => {
+							tags.assetTags.scripts = [
+								...(
+									maybeEnvChunk?.files?.filter(f =>
+										f.endsWith('.js'),
+									) ?? []
+								).map(item => ({
+									tagName: 'script',
+									voidTag: false,
+									attributes: { src: `/${item}` },
+								})),
+								...tags.assetTags.scripts,
+							];
+							return tags;
+						});
+					});
 
+					hooks.beforeEmit.tapAsync('guru', (data, cb) => {
 						const segs = data.html.split('<body>');
-						data.html =
-							`${segs[0]}<div id="app"></div>${extraJs.join(
-								'',
-							)}` + segs[1];
+						data.html = `${segs[0]}<div id="app"></div>` + segs[1];
 						cb(null, data);
 					});
 				});

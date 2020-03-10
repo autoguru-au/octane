@@ -307,7 +307,8 @@ class ConfigEntryModule extends Module {
 				importVar,
 				originModule: this,
 			}),
-			`if (typeof ${useConfigExport}['publicPathBase'] !== 'undefined' && ${process.NODE_ENV === 'production'}) {
+			`if (typeof ${useConfigExport}['publicPathBase'] !== 'undefined' && ${process.NODE_ENV ===
+				'production'}) {
 				__webpack_require__.p = ${useConfigExport}['publicPathBase'] + __webpack_require__.p;
 			}`,
 		);
