@@ -42,7 +42,6 @@ export const runSPA = async (
 								c[META_SYMBOL] &&
 								c[META_SYMBOL]?.name === environmentName,
 						);
-						console.log(maybeEnvChunk?.files, environmentName);
 
 						const extraJs = (
 							maybeEnvChunk?.files?.filter(f => f.endsWith('.js')) ?? []
