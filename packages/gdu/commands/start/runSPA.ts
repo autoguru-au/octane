@@ -1,15 +1,29 @@
+import { existsSync } from 'fs';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { blue, bold, cyan, red } from 'kleur';
 import { join } from 'path';
 import dedent from 'ts-dedent';
 import webpack, { Configuration } from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
-import { META_SYMBOL } from '../../config/webpack/plugins/ConfigPlugin';
 
+import { META_SYMBOL } from '../../config/webpack/plugins/ConfigPlugin';
 import { makeWebpackConfig } from '../../config/webpack/webpack.config';
 import { getProjectName, GuruConfig } from '../../lib/config';
 import { PROJECT_ROOT } from '../../lib/roots';
 import { getHooks } from '../../utils/hooks';
+
+const getConsumerHtmlTemplate = (guruConfig: GuruConfig) => {
+	try {
+		const filePath = join(guruConfig.__configPath, '/template.html');
+		if (existsSync(filePath)) {
+			return filePath;
+		}
+	} catch (_) {
+		return undefined;
+	}
+
+	return undefined;
+};
 
 const localhost = '0.0.0.0';
 const hosts = ['localhost', localhost];
@@ -26,7 +40,11 @@ export const runSPA = async (
 		}),
 	);
 
-	webpackConfig.plugins.push(new HtmlWebpackPlugin());
+	webpackConfig.plugins.push(
+		new HtmlWebpackPlugin({
+			template: getConsumerHtmlTemplate(guruConfig),
+		}),
+	);
 	webpackConfig.plugins.push(
 		new (class GuruHtml {
 			apply(compiler) {
