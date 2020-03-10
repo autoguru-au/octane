@@ -9,12 +9,11 @@
     "dist"
   ],
   "sideEffects": false,
-  "main": "./dist/index.js",
-  "module": "./dist/utilities.esm.js",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "tsdx build",
-    "watch": "tsdx watch",
+    "build": "tsc --module commonjs --outDir dist/cjs && tsc --module esnext --outDir dist/esm && tsc --emitDeclarationOnly --declarationDir dist/types -d",
     "prepublish": "yarn run build"
   },
   "dependencies": {
@@ -24,7 +23,6 @@
   "devDependencies": {
     "@autoguru/eslint-plugin": "*",
     "@autoguru/jest-preset": "^1.0.96",
-    "tsdx": "^0.12.3",
     "typescript": "~3.8.3"
   },
   "publishConfig": {

@@ -4,8 +4,7 @@
 		"outDir": "./dist",
 		"baseUrl": "./src",
 		"rootDir": "./src",
-		"declaration": true,
-		"declarationDir": "./dist/types"
+		"importHelpers": false
 	},
 	"include": ["./src/index.ts"]
 }
