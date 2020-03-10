@@ -9,6 +9,7 @@ import NullDependency from 'webpack/lib/dependencies/NullDependency';
 import GraphHelpers from 'webpack/lib/GraphHelpers';
 import Module from 'webpack/lib/Module';
 import createHash from 'webpack/lib/util/createHash';
+import { isEnvProduction } from '../../../lib/misc';
 
 interface Options {
 	getConfig: () => Iterable<{ name: string; config: any }>;
@@ -307,8 +308,7 @@ class ConfigEntryModule extends Module {
 				importVar,
 				originModule: this,
 			}),
-			`if (typeof ${useConfigExport}['publicPathBase'] !== 'undefined' && ${process.NODE_ENV ===
-				'production'}) {
+			`if (typeof ${useConfigExport}['publicPathBase'] !== 'undefined' && ${isEnvProduction()}) {
 				__webpack_require__.p = ${useConfigExport}['publicPathBase'] + __webpack_require__.p;
 			}`,
 		);
