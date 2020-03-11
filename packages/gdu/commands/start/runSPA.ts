@@ -40,9 +40,11 @@ export const runSPA = async (
 		}),
 	);
 
+	const consumerHtmlTemplate = getConsumerHtmlTemplate(guruConfig);
+
 	webpackConfig.plugins.push(
 		new HtmlWebpackPlugin({
-			template: getConsumerHtmlTemplate(guruConfig),
+			template: consumerHtmlTemplate,
 		}),
 	);
 	webpackConfig.plugins.push(
@@ -78,11 +80,13 @@ export const runSPA = async (
 						});
 					});
 
-					hooks.beforeEmit.tapAsync('guru', (data, cb) => {
-						const segs = data.html.split('<body>');
-						data.html = `${segs[0]}<div id="app"></div>` + segs[1];
-						cb(null, data);
-					});
+					if (consumerHtmlTemplate === undefined) {
+						hooks.beforeEmit.tapAsync('guru', (data, cb) => {
+							const segs = data.html.split('<body>');
+							data.html = `${segs[0]}<div id="app"></div>` + segs[1];
+							cb(null, data);
+						});
+					}
 				});
 			}
 		})(),
@@ -99,8 +103,8 @@ export const runSPA = async (
 
 			  Local:            ${blue(`http://${hosts[0]}:${guruConfig.port}/`)}
 			  On Your Network:  ${blue(
-					`http://${require('ip').address()}:${guruConfig.port}/`,
-				)}
+				`http://${require('ip').address()}:${guruConfig.port}/`,
+			)}
 
 			Note that the development build is not optimized.
 			To create a production build, use ${cyan('yarn build')}.
