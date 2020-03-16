@@ -6,14 +6,12 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "lerna run --stream --parallel build",
     "format": "prettier --write \"{*,packages/**/*}.+(js|jsx|ts|tsx|css|scss|json|yml|md|mdx|html)\"",
     "generate": "plop readmes && prettier --write \"{*,packages/**/*}.md\" ",
     "postinstall": "manypkg check",
     "lint": "eslint \"packages/**/*.{js,jsx,ts,tsx}\" --cache --quiet --fix",
     "plop": "plop",
-    "release": "lerna publish",
-    "sort-package-json": "npx sort-package-json; lerna exec --stream --parallel 'npx sort-package-json'",
+    "release": "changeset publish",
     "test": "jest"
   },
   "husky": {
@@ -22,31 +20,22 @@
     }
   },
   "lint-staged": {
-    "ignore": [
-      "templates/**/*"
+    "!(stories).{js,tsx,ts,tsx}": [
+      "eslint --cache --quiet --fix",
+      "jest --bail --findRelatedTests",
+      "prettier --write"
     ],
-    "linters": {
-      "package.json": [
-        "npx sort-package-json",
-        "git add"
-      ],
-      "*.{js,jsx,ts,tsx}": [
-        "eslint --cache --quiet --fix",
-        "git add"
-      ],
-      "*.{js,jsx,ts,tsx,css,scss,json,yml,md,mdx,html}": [
-        "prettier --write",
-        "git add"
-      ],
-      "*.{js,tsx,ts,tsx}": [
-        "jest --bail --findRelatedTests",
-        "git add"
-      ]
-    },
-    "relative": true
+    "*.{js,jsx,ts,tsx,json,yml,md,mdx,html}": [
+      "prettier --write"
+    ],
+    "package.json": [
+      "npx sort-package-json",
+      "prettier --write"
+    ]
   },
   "dependencies": {
     "@autoguru/eslint-plugin": "*",
+    "@changesets/cli": "^2.6.1",
     "@manypkg/cli": "^0.10.0",
     "@types/node": "^13.7.7",
     "browserslist-config-autoguru": "*",
@@ -54,14 +43,13 @@
     "glob": "^7.1.6",
     "husky": "^4.2.3",
     "jest": "^25.1.0",
-    "lerna": "^3.19.0",
     "lint-staged": "^8.2.1",
     "plop": "^2.5.4",
     "prettier": "^1.19.1",
     "typescript": "~3.8.3"
   },
   "volta": {
-    "node": "13.7.0",
-    "yarn": "1.21.1"
+    "node": "12.16.1",
+    "yarn": "1.22.1"
   }
 }
