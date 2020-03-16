@@ -1,22 +1,22 @@
 {
-  "name": "@autoguru/commitlint-config",
-  "version": "1.0.55",
-  "description": "AutoGuru's shareable commitlint config",
-  "homepage": "https://github.com/autoguru-au/octane/tree/master/packages/commitlint-config#readme",
-  "repository": "https://github.com/autoguru-au/octane/tree/master/packages/commitlint-config",
-  "license": "MIT",
-  "main": "index.js",
-  "dependencies": {
-    "@commitlint/config-conventional": "^8.2.0"
-  },
-  "devDependencies": {
-    "@commitlint/cli": ">=7.5.0",
-    "@commitlint/core": "^8.2.0"
-  },
-  "peerDependencies": {
-    "@commitlint/cli": ">=7.5.0"
-  },
-  "publishConfig": {
-    "access": "public"
-  }
+	"name": "@autoguru/commitlint-config",
+	"version": "1.0.56",
+	"description": "AutoGuru's shareable commitlint config",
+	"homepage": "https://github.com/autoguru-au/octane/tree/master/packages/commitlint-config#readme",
+	"repository": "https://github.com/autoguru-au/octane/tree/master/packages/commitlint-config",
+	"license": "MIT",
+	"main": "index.js",
+	"dependencies": {
+		"@commitlint/config-conventional": "^8.2.0"
+	},
+	"devDependencies": {
+		"@commitlint/cli": ">=7.5.0",
+		"@commitlint/core": "^8.2.0"
+	},
+	"peerDependencies": {
+		"@commitlint/cli": ">=7.5.0"
+	},
+	"publishConfig": {
+		"access": "public"
+	}
 }
