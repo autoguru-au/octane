@@ -44,7 +44,7 @@ export const runSPA = async (
 
 	webpackConfig.plugins.push(
 		new HtmlWebpackPlugin({
-			template: consumerHtmlTemplate,
+			template: consumerHtmlTemplate ?? 'auto',
 		}),
 	);
 	webpackConfig.plugins.push(
