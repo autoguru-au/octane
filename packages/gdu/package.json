@@ -1,6 +1,6 @@
 {
   "name": "gdu",
-  "version": "2.0.40",
+  "version": "2.0.41",
   "private": false,
   "description": "AutoGuru's development toolkit",
   "homepage": "https://github.com/autoguru-au/octane/tree/master/packages/gdu#readme",
@@ -32,7 +32,7 @@
     "babel-plugin-treat": "^1.1.0",
     "browserslist-config-autoguru": "^1.0.87",
     "clean-webpack-plugin": "^3.0.0",
-    "configs-webpack-plugin": "^0.0.6",
+    "configs-webpack-plugin": "^0.1.0",
     "core-js": "^3.6.4",
     "css-loader": "^3.4.2",
     "cssnano": "^4.1.10",
