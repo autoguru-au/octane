@@ -1,3 +1,4 @@
+import { RuntimeConfigsPlugin } from 'configs-webpack-plugin';
 import { existsSync } from 'fs';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { blue, bold, cyan, red } from 'kleur';
@@ -6,7 +7,6 @@ import dedent from 'ts-dedent';
 import webpack, { Configuration } from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 
-import { META_SYMBOL } from '../../config/webpack/plugins/ConfigPlugin';
 import { makeWebpackConfig } from '../../config/webpack/webpack.config';
 import { getProjectName, GuruConfig } from '../../lib/config';
 import { PROJECT_ROOT } from '../../lib/roots';
@@ -48,44 +48,55 @@ export const runSPA = async (
 		}),
 	);
 	webpackConfig.plugins.push(
-		new (class GuruHtml {
+		new (class HtmlWebpackPluginConfigAdditionsPlugin {
 			apply(compiler) {
-				compiler.hooks.compilation.tap('guru', compilation => {
-					const hooks = (HtmlWebpackPlugin as any).getHooks(
+				compiler.hooks.make.tap('guru', compilation => {
+					const htmlWebpackHooks = (HtmlWebpackPlugin as any).getHooks(
 						compilation,
 					) as HtmlWebpackPlugin.Hooks;
 
-					compilation.hooks.seal.tap('guru', () => {
-						const { chunks } = compilation;
-						const maybeEnvChunk = chunks.find(
-							c =>
-								c[META_SYMBOL] &&
-								c[META_SYMBOL]?.name === environmentName,
-						);
+					let thisEnvChunk;
 
-						hooks.alterAssetTags.tap('guru', tags => {
-							tags.assetTags.scripts = [
-								...(
-									maybeEnvChunk?.files?.filter(f =>
-										f.endsWith('.js'),
-									) ?? []
-								).map(item => ({
-									tagName: 'script',
-									voidTag: false,
-									attributes: { src: `/${item}` },
-								})),
-								...tags.assetTags.scripts,
-							];
-							return tags;
-						});
+					RuntimeConfigsPlugin.getHooks(compilation).configChunks.tap(
+						'guru',
+						(configs, configChunks) => {
+							const idx = configs.findIndex(
+								item => item.name === environmentName,
+							);
+							thisEnvChunk = configChunks[idx];
+						},
+					);
+
+					htmlWebpackHooks.alterAssetTags.tap('guru', cfg => {
+						if (thisEnvChunk) {
+							thisEnvChunk.files
+								.reverse()
+								.filter(file => file.endsWith('.js'))
+								.forEach(file => {
+									cfg.assetTags.scripts.unshift({
+										tagName: 'script',
+										voidTag: false,
+										attributes: {
+											src: `${compilation.options.output
+												.publicPath || ''}${file}`,
+										},
+									});
+								});
+						}
+
+						return cfg;
 					});
 
 					if (consumerHtmlTemplate === undefined) {
-						hooks.beforeEmit.tapAsync('guru', (data, cb) => {
-							const segs = data.html.split('<body>');
-							data.html = `${segs[0]}<div id="app"></div>` + segs[1];
-							cb(null, data);
-						});
+						htmlWebpackHooks.beforeEmit.tapAsync(
+							'guru',
+							(data, cb) => {
+								const segs = data.html.split('<body>');
+								data.html =
+									`${segs[0]}<div id="app"></div>` + segs[1];
+								cb(null, data);
+							},
+						);
 					}
 				});
 			}
@@ -103,8 +114,8 @@ export const runSPA = async (
 
 			  Local:            ${blue(`http://${hosts[0]}:${guruConfig.port}/`)}
 			  On Your Network:  ${blue(
-				`http://${require('ip').address()}:${guruConfig.port}/`,
-			)}
+					`http://${require('ip').address()}:${guruConfig.port}/`,
+				)}
 
 			Note that the development build is not optimized.
 			To create a production build, use ${cyan('yarn build')}.

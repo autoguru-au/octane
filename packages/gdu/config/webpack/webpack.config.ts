@@ -1,5 +1,6 @@
 import browsers from 'browserslist-config-autoguru';
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
+import { RuntimeConfigsPlugin } from 'configs-webpack-plugin';
 import bugger from 'debug';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import { join } from 'path';
@@ -20,7 +21,6 @@ import { getHooks } from '../../utils/hooks';
 import { commonLoaders } from './blocks/common';
 import { makeImagesLoader } from './blocks/images';
 import { makeCssLoader, makeSassLoader } from './blocks/styles';
-import ConfigPlugin from './plugins/ConfigPlugin';
 import { GuruBuildManifest } from './plugins/GuruBuildManifest';
 
 const { branch = 'null', commit = 'null' } = require('env-ci')();
@@ -233,9 +233,9 @@ export const makeWebpackConfig = ({ isDevServer = false, name = 'client' }) => {
 				browsers,
 			}),
 			!isDev && new GuruBuildManifest(),
-			new ConfigPlugin({
-				getConfig: getConsumerRuntimeConfig,
-				alterPublicPath: !isDev,
+			new RuntimeConfigsPlugin({
+				configs: getConsumerRuntimeConfig(),
+				request: 'gdu/config',
 			}),
 		].filter(Boolean),
 	};

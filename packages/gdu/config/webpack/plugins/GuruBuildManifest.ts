@@ -1,5 +1,5 @@
 import { Compiler } from 'webpack';
-import { META_SYMBOL } from './ConfigPlugin';
+import { RuntimeConfigsPlugin } from 'configs-webpack-plugin';
 
 interface EnvironmentFiles {
 	[envName: string]: {
@@ -20,6 +20,24 @@ export class GuruBuildManifest {
 			env: {},
 		};
 
+		const configChunks = new Map<string, { chunk: any; config: any }>();
+
+		compiler.hooks.make.tap('BuildManifestPlugin', compilation => {
+			RuntimeConfigsPlugin.getHooks(compilation).configChunks.tap(
+				'guru',
+				(configs, chunks) => {
+					configChunks.clear();
+
+					configs.forEach((config, idx) => {
+						configChunks.set(config.name, {
+							config,
+							chunk: chunks[idx],
+						});
+					});
+				},
+			);
+		});
+
 		compiler.hooks.emit.tapAsync(
 			'BuildManifestPlugin',
 			(compilation, cb) => {
@@ -38,19 +56,21 @@ export class GuruBuildManifest {
 					}
 				}
 
-				for (const chunk of compilation.chunks) {
-					if (typeof chunk[META_SYMBOL] !== 'undefined') {
-						const { name, config } = chunk[META_SYMBOL];
+				for (const [
+					name,
+					{ chunk, config },
+				] of configChunks.entries()) {
+					const prefixCreator = path =>
+						`${config.publicPathBase ?? ''}${compiler.options.output
+							.publicPath ?? ''}${path}`;
 
-						const prefixCreator = path =>
-							`${config.publicPathBase ?? ''}${compiler.options
-								.output.publicPath ?? ''}${path}`;
-
-						fileMap.env[name] = {
-							js: [...chunk.files, ...js].map(prefixCreator),
-							css: [...css].map(prefixCreator),
-						};
-					}
+					fileMap.env[name] = {
+						js: [
+							...chunk.files.filter(i => i.endsWith('.js')),
+							...js,
+						].map(prefixCreator),
+						css: [...css].map(prefixCreator),
+					};
 				}
 
 				compilation.assets['build-manifest.json'] = makeSource(
