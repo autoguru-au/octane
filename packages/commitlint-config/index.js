@@ -16,7 +16,7 @@ module.exports = {
 				'style',
 				'revert',
 				'test',
-				"ci"
+				'ci',
 			],
 		],
 	},
