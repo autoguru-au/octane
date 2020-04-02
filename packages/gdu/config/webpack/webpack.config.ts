@@ -73,10 +73,10 @@ export const makeWebpackConfig = ({ isDevServer = false, name = 'client' }) => {
 		mode: isDev ? 'development' : 'production',
 		entry: {
 			main: [
-				join(gduEntryPath, '/spa/set-public-path.js'),
+				!isDev && join(gduEntryPath, '/spa/set-public-path.js'),
 				join(gduEntryPath, '/polyfill.js'),
 				join(gduEntryPath, '/spa/client.js'),
-			],
+			].filter(Boolean),
 		},
 		devtool: isDev ? 'cheap-module-source-map' : 'source-map',
 		bail: !isDev || !isDevServer,
