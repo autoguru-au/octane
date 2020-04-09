@@ -61,8 +61,8 @@ export class GuruBuildManifest {
 					{ chunk, config },
 				] of configChunks.entries()) {
 					const prefixCreator = path =>
-						`${config.publicPathBase ?? ''}${compiler.options.output
-							.publicPath ?? ''}${path}`;
+						`${config.config?.publicPathBase ?? ''}${compiler
+							.options.output.publicPath ?? ''}${path}`;
 
 					fileMap.env[name] = {
 						js: [
