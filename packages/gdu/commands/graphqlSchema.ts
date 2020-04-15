@@ -1,83 +1,110 @@
-import { existsSync, readFileSync } from 'fs';
-import { getGraphQLConfig, GraphQLEndpoint, writeSchema } from 'graphql-config';
+import { UrlLoader } from '@graphql-toolkit/url-loader';
+import { readFileSync } from 'fs';
+import { GraphQLSchema, printSchema } from 'graphql';
+import { GraphQLProjectConfig, loadConfig } from 'graphql-config';
+import { GraphQLConfigExtension } from 'graphql-config/extension';
+import { GraphQLClient } from 'graphql-request';
 import { cyan, green, red } from 'kleur';
-import mkdirp from 'mkdirp';
-import { dirname, resolve } from 'path';
+import { resolve } from 'path';
 
-let endpoint = null;
+import { writeFileAsync } from '../lib/io';
+import { CALLING_WORKSPACE_ROOT } from '../lib/roots';
+
+interface EndpointExtension extends GraphQLConfigExtension {
+	url: string;
+	method: string;
+	headers: Record<string, string>;
+}
+
+const debug = require('debug')('gdu:commands:graphqlSchema');
 
 export default async options => {
-	const ROOT = process.cwd();
 
-	const graphQLConfig = getGraphQLConfig(ROOT);
+	const graphQLConfig = await loadConfig({
+		rootDir: CALLING_WORKSPACE_ROOT,
+	});
 
-	const endpointConfig =
-		graphQLConfig.config.extensions.endpoints[options.endpoint];
+	const config = graphQLConfig.getDefault();
+
+	const endpointConfig = config.extension('endpoints')[options.endpoint] as EndpointExtension | undefined;
 
 	if (typeof endpointConfig === 'undefined') {
 		throw new TypeError(`Endpoint ${options.endpoint} doesnt exist`);
 	}
 
-	const proposedConfigFile = resolve(ROOT, graphQLConfig.config.schemaPath);
+	const schemaString = await loadLocalSchema(config);
 
-	if (existsSync(proposedConfigFile)) {
-		await updateSchemaIfHasNew(proposedConfigFile, endpointConfig);
+	if (schemaString) {
+		await updateSchemaIfHasNew(config, endpointConfig);
 	} else {
 		console.log(' > No schema found - downloading one.');
 
-		await downloadNewSchema(proposedConfigFile, endpointConfig);
+		await downloadNewSchema(config, endpointConfig);
 	}
 
 	console.log(' > Schema has been checked, and is ready to use! ✅️');
 };
 
-async function updateSchemaIfHasNew(schemaPath, endpointConfig) {
-	const checksum = await getSchemaChecksum(endpointConfig);
+async function loadLocalSchema(config: GraphQLProjectConfig): Promise<string | null> {
+	let schemaString = null;
 
-	console.log(` > Checking schema with checksum ${green(checksum)}`);
+	try {
+		schemaString = readFileSync(resolve(config.dirpath, config.schema as string), 'utf8');
+	} catch (error) {
+		debug(error);
+	}
 
-	const schemaData = readFileSync(schemaPath, 'utf8');
+	return schemaString;
+}
 
-	const [, oldChecksum] = /^#\schecksum:\s([a-z0-9]+)/.exec(schemaData);
+async function getRemoteSchema(_config: GraphQLProjectConfig, endpointConfig: EndpointExtension): Promise<GraphQLSchema> {
+	return (await new UrlLoader().load(endpointConfig.url, {
+		method: endpointConfig.method,
+		headers: endpointConfig.headers,
+	})).schema;
+}
 
-	if (oldChecksum !== checksum) {
-		console.log(` > Found changed checksum: ${red(oldChecksum)}`);
+async function updateSchemaIfHasNew(config: GraphQLProjectConfig, endpointConfig: EndpointExtension) {
+	const checksum = await getSchemaChecksum(config, endpointConfig);
+	const schemaRegex = /^#\schecksum:\s([a-z0-9]+)/;
 
+	console.log(` > Checking schema with remote checksum ${green(checksum)}`);
+
+	const schemaData = await loadLocalSchema(config);
+
+	if (schemaRegex.test(schemaData)) {
+
+		const [, oldChecksum] = schemaRegex.exec(schemaData);
+
+		if (oldChecksum !== checksum) {
+			console.log(` > Found changed checksum: ${red(oldChecksum)}`);
+
+			console.log(` > ${cyan('Downloading new schema')}`);
+			await downloadNewSchema(config, endpointConfig);
+		}
+	} else {
+		console.log(' > No checksum found');
 		console.log(` > ${cyan('Downloading new schema')}`);
-		await downloadNewSchema(schemaPath, endpointConfig);
+		await downloadNewSchema(config, endpointConfig);
 	}
 }
 
-async function downloadNewSchema(schemaPath, endpointConfig) {
-	const endpoint = await getSchemaEndpoint(endpointConfig);
-	const checksum = await getSchemaChecksum(endpointConfig);
+async function downloadNewSchema(config: GraphQLProjectConfig, endpointConfig: EndpointExtension) {
+	const remoteSchema = await getRemoteSchema(config, endpointConfig);
+	const checksum = await getSchemaChecksum(config, endpointConfig);
 
-	mkdirp.sync(dirname(schemaPath));
+	await writeFileAsync(config.schema as string, `# checksum: ${checksum}\n\n${printSchema(remoteSchema)}`);
+}
 
-	await writeSchema(schemaPath, await endpoint.resolveSchema(), {
-		checksum,
-		endpoint: endpoint.url,
-		timestamp: new Date().toISOString(),
+async function getSchemaChecksum(_config: GraphQLProjectConfig, endpointConfig: EndpointExtension): Promise<string> {
+	const cl = new GraphQLClient(endpointConfig.url, {
+		headers: endpointConfig.headers,
+		method: endpointConfig.method,
 	});
-}
-
-function getSchemaEndpoint(endpointConfig) {
-	if (endpoint === null) {
-		console.log(` > Using endpoint ${green(endpointConfig.url)}`);
-		endpoint = new GraphQLEndpoint(endpointConfig);
-
-		return endpoint;
-	}
-
-	return endpoint;
-}
-
-async function getSchemaChecksum(endpointConfig) {
-	const endpoint = await getSchemaEndpoint(endpointConfig);
 
 	const {
 		checksum: { value },
-	} = await endpoint.getClient().request('query { checksum { value } }');
+	} = await cl.request('query { checksum { value } }');
 
 	return value.toLowerCase();
 }
