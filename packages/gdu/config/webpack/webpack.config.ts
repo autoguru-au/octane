@@ -207,7 +207,7 @@ export const makeWebpackConfig = ({ isDevServer = false, name = 'client' }) => {
 				}),
 			!isDev && new CleanWebpackPlugin(),
 			new DefinePlugin({
-				'process.browser': JSON.stringify(false),
+				'process.browser': JSON.stringify(true),
 				'process.env.NODE_ENV': JSON.stringify(
 					isDev ? 'development' : 'production',
 				),
