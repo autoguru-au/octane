@@ -9,6 +9,9 @@
   "files": [
     "./index.js"
   ],
+  "scripts": {
+    "build": "echo \"no op\""
+  },
   "dependencies": {
     "browserslist": "^4.12.0"
   },

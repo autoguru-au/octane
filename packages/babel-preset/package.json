@@ -6,6 +6,9 @@
   "repository": "https://github.com/autoguru-au/octane/tree/master/packages/babel-preset",
   "license": "MIT",
   "main": "index.js",
+  "scripts": {
+    "build": "echo \"no op\""
+  },
   "dependencies": {
     "@babel/helper-annotate-as-pure": "^7.10.1",
     "@babel/helper-plugin-utils": "^7.10.1",

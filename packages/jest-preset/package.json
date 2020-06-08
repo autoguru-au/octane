@@ -6,6 +6,9 @@
   "repository": "https://github.com/autoguru-au/octane/tree/master/packages/jest-preset",
   "license": "MIT",
   "main": "jest-preset.js",
+  "scripts": {
+    "build": "echo \"no op\""
+  },
   "dependencies": {
     "@autoguru/babel-preset": "^1.0.96",
     "@babel/core": "^7.10.2",

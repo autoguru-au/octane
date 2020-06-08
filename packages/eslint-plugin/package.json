@@ -6,6 +6,9 @@
   "repository": "https://github.com/autoguru-au/octane/tree/master/packages/eslint-plugin",
   "license": "MIT",
   "main": "index.js",
+  "scripts": {
+    "build": "echo \"no op\""
+  },
   "dependencies": {
     "@typescript-eslint/eslint-plugin": "^2.11.0",
     "@typescript-eslint/parser": "^2.11.0",

@@ -5,6 +5,9 @@
   "homepage": "https://github.com/autoguru-au/octane/tree/master/packages/renovate-config-autoguru#readme",
   "repository": "https://github.com/autoguru-au/octane/tree/master/packages/renovate-config-autoguru",
   "license": "MIT",
+  "scripts": {
+    "build": "echo \"no op\""
+  },
   "publishConfig": {
     "access": "public"
   },

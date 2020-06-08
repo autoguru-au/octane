@@ -11,7 +11,7 @@
     "postinstall": "manypkg check",
     "lint": "eslint \"packages/**/*.{js,jsx,ts,tsx}\" --cache --quiet --fix",
     "plop": "plop",
-    "release": "changeset publish",
+    "release": "yarn workspaces run build && changeset publish",
     "test": "jest"
   },
   "husky": {
