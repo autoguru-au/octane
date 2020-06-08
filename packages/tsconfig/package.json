@@ -1,15 +1,15 @@
 {
-  "name": "@autoguru/tsconfig",
-  "version": "1.0.77",
-  "description": "AutoGuru's TypeScript shared config",
-  "homepage": "https://github.com/autoguru-au/octane/tree/master/packages/tsconfig#readme",
-  "repository": "https://github.com/autoguru-au/octane/tree/master/packages/tsconfig",
-  "license": "MIT",
-  "main": "web.json",
-  "scripts": {
-    "build": "echo \"no op\""
-  },
-  "publishConfig": {
-    "access": "public"
-  }
+	"name": "@autoguru/tsconfig",
+	"version": "1.0.78",
+	"description": "AutoGuru's TypeScript shared config",
+	"homepage": "https://github.com/autoguru-au/octane/tree/master/packages/tsconfig#readme",
+	"repository": "https://github.com/autoguru-au/octane/tree/master/packages/tsconfig",
+	"license": "MIT",
+	"main": "web.json",
+	"scripts": {
+		"build": "echo \"no op\""
+	},
+	"publishConfig": {
+		"access": "public"
+	}
 }

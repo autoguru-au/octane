@@ -1,135 +1,135 @@
 {
-  "name": "renovate-config-autoguru",
-  "version": "1.0.87",
-  "description": "AutoGuru's org-wide Renovate config",
-  "homepage": "https://github.com/autoguru-au/octane/tree/master/packages/renovate-config-autoguru#readme",
-  "repository": "https://github.com/autoguru-au/octane/tree/master/packages/renovate-config-autoguru",
-  "license": "MIT",
-  "scripts": {
-    "build": "echo \"no op\""
-  },
-  "publishConfig": {
-    "access": "public"
-  },
-  "renovate-config": {
-    "default": {
-      "extends": [
-        ":prHourlyLimit2",
-        ":prNotPending",
-        ":rebaseStalePrs",
-        ":renovatePrefix",
-        ":semanticCommits",
-        ":timezone(Australia/Brisbane)"
-      ],
-      "commitMessageAction": "",
-      "ignoreNpmrcFile": true,
-      "lazyGrouping": false,
-      "postUpdateOptions": [
-        "yarnDedupeHighest"
-      ],
-      "schedule": [
-        "after 4pm and before 8am every weekday",
-        "every weekend"
-      ],
-      "lockFileMaintenance": {
-        "enabled": true,
-        "extends": "schedule:weekly"
-      },
-      "rangeStrategy": "auto",
-      "prConcurrentLimit": 4,
-      "prNotPendingHours": 1,
-      "packageRules": [
-        {
-          "depTypeList": [
-            "dependencies"
-          ],
-          "semanticCommitType": "fix",
-          "rangeStrategy": "replace"
-        },
-        {
-          "commitMessageExtra": "{{newValue}}",
-          "commitMessageTopic": "{{depName}}",
-          "managers": [
-            "npm",
-            "nvm"
-          ]
-        },
-        {
-          "automerge": true,
-          "commitMessageExtra": "",
-          "groupName": "definitely typed (npm)",
-          "managers": [
-            "npm"
-          ],
-          "packagePatterns": [
-            "^@types/"
-          ],
-          "prPriority": 50,
-          "recreateClosed": true,
-          "schedule": "after 1pm on Monday"
-        },
-        {
-          "commitMessageExtra": "",
-          "depTypeList": [
-            "devDependencies"
-          ],
-          "excludePackagePatterns": [
-            "^@?autoguru",
-            "-autoguru$"
-          ],
-          "groupName": "dev dependencies (npm)",
-          "managers": [
-            "npm"
-          ],
-          "recreateClosed": true,
-          "schedule": "after 1pm on Monday"
-        },
-        {
-          "commitMessageExtra": "",
-          "depTypeList": [
-            "peerDependencies"
-          ],
-          "excludePackagePatterns": [
-            "^@?autoguru",
-            "-autoguru$"
-          ],
-          "groupName": "peer dependencies (npm)",
-          "managers": [
-            "npm"
-          ],
-          "recreateClosed": true,
-          "schedule": "after 1pm on Monday",
-          "rangeStrategy": "widen"
-        },
-        {
-          "groupName": "AutoGuru",
-          "packagePatterns": [
-            "^@?autoguru",
-            "-autoguru$"
-          ],
-          "prPriority": 99,
-          "schedule": "at any time"
-        },
-        {
-          "extends": [
-            "group:monorepos"
-          ],
-          "recreateClosed": true
-        },
-        {
-          "groupName": "relay",
-          "packagePatterns": [
-            "^relay-"
-          ]
-        },
-        {
-          "automerge": true,
-          "prPriority": 98,
-          "updateTypes": [
-            "pin"
-          ]
-        }
-      ]
-    }
-  }
+	"name": "renovate-config-autoguru",
+	"version": "1.0.88",
+	"description": "AutoGuru's org-wide Renovate config",
+	"homepage": "https://github.com/autoguru-au/octane/tree/master/packages/renovate-config-autoguru#readme",
+	"repository": "https://github.com/autoguru-au/octane/tree/master/packages/renovate-config-autoguru",
+	"license": "MIT",
+	"scripts": {
+		"build": "echo \"no op\""
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"renovate-config": {
+		"default": {
+			"extends": [
+				":prHourlyLimit2",
+				":prNotPending",
+				":rebaseStalePrs",
+				":renovatePrefix",
+				":semanticCommits",
+				":timezone(Australia/Brisbane)"
+			],
+			"commitMessageAction": "",
+			"ignoreNpmrcFile": true,
+			"lazyGrouping": false,
+			"postUpdateOptions": [
+				"yarnDedupeHighest"
+			],
+			"schedule": [
+				"after 4pm and before 8am every weekday",
+				"every weekend"
+			],
+			"lockFileMaintenance": {
+				"enabled": true,
+				"extends": "schedule:weekly"
+			},
+			"rangeStrategy": "auto",
+			"prConcurrentLimit": 4,
+			"prNotPendingHours": 1,
+			"packageRules": [
+				{
+					"depTypeList": [
+						"dependencies"
+					],
+					"semanticCommitType": "fix",
+					"rangeStrategy": "replace"
+				},
+				{
+					"commitMessageExtra": "{{newValue}}",
+					"commitMessageTopic": "{{depName}}",
+					"managers": [
+						"npm",
+						"nvm"
+					]
+				},
+				{
+					"automerge": true,
+					"commitMessageExtra": "",
+					"groupName": "definitely typed (npm)",
+					"managers": [
+						"npm"
+					],
+					"packagePatterns": [
+						"^@types/"
+					],
+					"prPriority": 50,
+					"recreateClosed": true,
+					"schedule": "after 1pm on Monday"
+				},
+				{
+					"commitMessageExtra": "",
+					"depTypeList": [
+						"devDependencies"
+					],
+					"excludePackagePatterns": [
+						"^@?autoguru",
+						"-autoguru$"
+					],
+					"groupName": "dev dependencies (npm)",
+					"managers": [
+						"npm"
+					],
+					"recreateClosed": true,
+					"schedule": "after 1pm on Monday"
+				},
+				{
+					"commitMessageExtra": "",
+					"depTypeList": [
+						"peerDependencies"
+					],
+					"excludePackagePatterns": [
+						"^@?autoguru",
+						"-autoguru$"
+					],
+					"groupName": "peer dependencies (npm)",
+					"managers": [
+						"npm"
+					],
+					"recreateClosed": true,
+					"schedule": "after 1pm on Monday",
+					"rangeStrategy": "widen"
+				},
+				{
+					"groupName": "AutoGuru",
+					"packagePatterns": [
+						"^@?autoguru",
+						"-autoguru$"
+					],
+					"prPriority": 99,
+					"schedule": "at any time"
+				},
+				{
+					"extends": [
+						"group:monorepos"
+					],
+					"recreateClosed": true
+				},
+				{
+					"groupName": "relay",
+					"packagePatterns": [
+						"^relay-"
+					]
+				},
+				{
+					"automerge": true,
+					"prPriority": 98,
+					"updateTypes": [
+						"pin"
+					]
+				}
+			]
+		}
+	}
 }
