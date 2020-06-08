@@ -9,7 +9,7 @@ import TreatPlugin from 'treat/webpack-plugin';
 import { TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
 import { Configuration, DefinePlugin, HashedModuleIdsPlugin } from 'webpack';
 
-import { getGuruConfig } from '../../lib/config';
+import { getGuruConfig, getProjectName } from '../../lib/config';
 import { getConsumerRuntimeConfig } from '../../lib/getConsumerRuntimeConfig';
 import { isEnvProduction } from '../../lib/misc';
 import {
@@ -58,7 +58,7 @@ export const makeWebpackConfig = ({ isDevServer = false, name = 'client' }) => {
 
 	const ourCodePaths = [
 		join(gduEntryPath, '/client/spa'),
-		...getGuruConfig().srcPaths.map(item => join(PROJECT_ROOT, item)),
+		...getGuruConfig().srcPaths.map((item) => join(PROJECT_ROOT, item)),
 		CALLING_WORKSPACE_ROOT && join(CALLING_WORKSPACE_ROOT, 'packages'),
 		/@autoguru[\\/]/,
 	].filter(Boolean);
@@ -98,7 +98,7 @@ export const makeWebpackConfig = ({ isDevServer = false, name = 'client' }) => {
 				}),
 			],
 			alias: {
-				__consumer_client__: join(PROJECT_ROOT, 'src/client.tsx'),
+				__GDU_CONSUMER_CLIENT__: join(PROJECT_ROOT, 'src/client.tsx'),
 			},
 		},
 		optimization: {
@@ -174,7 +174,7 @@ export const makeWebpackConfig = ({ isDevServer = false, name = 'client' }) => {
 							return true;
 						}
 
-						const ourCode = ourCodePaths.some(item => {
+						const ourCode = ourCodePaths.some((item) => {
 							if (item instanceof RegExp) {
 								return item.test(path);
 							}
@@ -212,7 +212,8 @@ export const makeWebpackConfig = ({ isDevServer = false, name = 'client' }) => {
 					isDev ? 'development' : 'production',
 				),
 				__DEV__: JSON.stringify(isDev),
-				__BUILD_INFO__: JSON.stringify({
+				__GDU_APP_NAME__: JSON.stringify(getProjectName()),
+				__GDU_BUILD_INFO__: JSON.stringify({
 					commit,
 					branch,
 				}),
