@@ -30,7 +30,7 @@ const objectA = {
 };
 const d = 'd';
 
-const objectB = _objectSpread({}, objectA, {
+const objectB = _objectSpread(_objectSpread({}, objectA), {}, {
   c: 'c',
   [d]: 'd'
 });
@@ -73,7 +73,7 @@ const objectA = {
 };
 const d = 'd';
 
-const objectB = _objectSpread({}, objectA, {
+const objectB = _objectSpread(_objectSpread({}, objectA), {}, {
   c: 'c',
   [d]: 'd'
 });

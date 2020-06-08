@@ -4,7 +4,7 @@ import { cyan } from 'kleur';
 import { resolvePathFromCaller } from '../lib/resolve';
 import { GDU_ROOT, PROJECT_ROOT } from '../lib/roots';
 
-export default options => {
+export default (options) => {
 	console.log(`${cyan('Formatting with prettier...')}`);
 
 	const shouldWrite =

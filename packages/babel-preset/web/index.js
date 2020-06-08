@@ -2,13 +2,7 @@ const sharedPlugins = require('../sharedPlugins');
 const { isDevelopment } = require('../utils');
 
 module.exports = function autoGuruWebPreset(api, options = {}) {
-	const {
-		modules = false,
-		debug = false,
-		corejs = 3,
-		loose = false,
-		browsers,
-	} = options;
+	const { modules = false, debug = false, corejs = 3, browsers } = options;
 
 	return {
 		presets: [
@@ -17,7 +11,7 @@ module.exports = function autoGuruWebPreset(api, options = {}) {
 				{
 					corejs,
 					debug,
-					loose,
+					loose: false,
 					modules,
 					spec: false,
 					shippedProposals: true,
@@ -32,7 +26,7 @@ module.exports = function autoGuruWebPreset(api, options = {}) {
 				modules,
 				debug,
 				corejs,
-				loose,
+				loose: false,
 			}),
 			require.resolve('babel-plugin-macros'),
 			[

@@ -1,8 +1,8 @@
 import { createHash } from 'crypto';
 import { red } from 'kleur';
 
-export const wrapAction = handler => (...args) => {
-	handler(...args).catch(error => {
+export const wrapAction = (handler) => (...args) => {
+	handler(...args).catch((error) => {
 		console.error(red(error));
 		process.exit(1);
 	});
@@ -16,7 +16,7 @@ if (prodEnv === true) {
 
 export const isEnvProduction = () => prodEnv;
 
-export const setEnvProd = which => {
+export const setEnvProd = (which) => {
 	if (which === true) {
 		process.env.NODE_ENV === 'production';
 	}
@@ -26,7 +26,7 @@ export const setEnvProd = which => {
 	prodEnv = true;
 };
 
-export const hashString = str => {
+export const hashString = (str) => {
 	const hasher = createHash('sha256');
 	return hasher.update(str).digest('hex');
 };

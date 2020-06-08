@@ -50,7 +50,7 @@ export const runSPA = async (
 	webpackConfig.plugins.push(
 		new (class HtmlWebpackPluginConfigAdditionsPlugin {
 			apply(compiler) {
-				compiler.hooks.make.tap('guru', compilation => {
+				compiler.hooks.make.tap('guru', (compilation) => {
 					const htmlWebpackHooks = (HtmlWebpackPlugin as any).getHooks(
 						compilation,
 					) as HtmlWebpackPlugin.Hooks;
@@ -61,24 +61,26 @@ export const runSPA = async (
 						'guru',
 						(configs, configChunks) => {
 							const idx = configs.findIndex(
-								item => item.name === environmentName,
+								(item) => item.name === environmentName,
 							);
 							thisEnvChunk = configChunks[idx];
 						},
 					);
 
-					htmlWebpackHooks.alterAssetTags.tap('guru', cfg => {
+					htmlWebpackHooks.alterAssetTags.tap('guru', (cfg) => {
 						if (thisEnvChunk) {
 							thisEnvChunk.files
 								.reverse()
-								.filter(file => file.endsWith('.js'))
-								.forEach(file => {
+								.filter((file) => file.endsWith('.js'))
+								.forEach((file) => {
 									cfg.assetTags.scripts.unshift({
 										tagName: 'script',
 										voidTag: false,
 										attributes: {
-											src: `${compilation.options.output
-												.publicPath || ''}${file}`,
+											src: `${
+												compilation.options.output
+													.publicPath || ''
+											}${file}`,
 										},
 									});
 								});
@@ -143,7 +145,7 @@ export const runSPA = async (
 		},
 	});
 
-	devServer.listen(guruConfig.port, localhost, err => {
+	devServer.listen(guruConfig.port, localhost, (err) => {
 		if (err) {
 			console.log(red(err));
 		}

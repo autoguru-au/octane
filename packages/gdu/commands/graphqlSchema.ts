@@ -18,7 +18,7 @@ interface EndpointExtension extends GraphQLConfigExtension {
 
 const debug = require('debug')('gdu:commands:graphqlSchema');
 
-export default async options => {
+export default async (options) => {
 	const graphQLConfig = await loadConfig({
 		rootDir: CALLING_WORKSPACE_ROOT,
 	});

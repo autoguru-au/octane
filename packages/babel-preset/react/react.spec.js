@@ -4,7 +4,7 @@ const { join } = require('path');
 const fixtures = join(__dirname, 'fixtures');
 
 describe('react preset', () => {
-	readdirSync(fixtures).forEach(file => {
+	readdirSync(fixtures).forEach((file) => {
 		describe('when production', () => {
 			beforeEach(() => {
 				process.env.NODE_ENV = 'production';

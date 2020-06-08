@@ -29,7 +29,7 @@ export const createNextJSConfig = () => {
 			const guruConfig = getGuruConfig();
 
 			const ourCodePaths = [
-				...guruConfig?.srcPaths.map(item => join(PROJECT_ROOT, item)),
+				...guruConfig?.srcPaths.map((item) => join(PROJECT_ROOT, item)),
 				CALLING_WORKSPACE_ROOT &&
 					join(CALLING_WORKSPACE_ROOT, 'packages'),
 				/@autoguru[\\/]/,
@@ -92,7 +92,7 @@ export const createNextJSConfig = () => {
 								const orig = origBabel?.exclude(path);
 
 								return orig
-									? !ourCodePaths.some(r => {
+									? !ourCodePaths.some((r) => {
 											if (r instanceof RegExp) {
 												return r.test(path);
 											}

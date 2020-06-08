@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "gdu": "^2.0.38",
-    "mri": "^1.1.4"
+    "mri": "^1.1.5"
   },
   "gitHead": "1fd78179aa54ca3d0f878b698fe122dc499ba144"
 }

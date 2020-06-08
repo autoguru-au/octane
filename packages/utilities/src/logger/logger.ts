@@ -16,7 +16,7 @@ const createLogThing = (level: string, realm: string) => (
 		payload: extra,
 	});
 
-const printPayload = payload => {
+const printPayload = (payload) => {
 	const decorated = {
 		...payload,
 		timestamp: new Date().toISOString(),

@@ -3,7 +3,7 @@ const glob = require('glob');
 
 const { workspaces = [] } = require('./package.json');
 
-module.exports = function(plop) {
+module.exports = function (plop) {
 	plop.setGenerator('readmes', {
 		description: 'Generate root repo readme',
 		prompts: [],
@@ -70,9 +70,9 @@ module.exports = function(plop) {
 
 function getPackages() {
 	return workspaces
-		.map(item => `${item}/package.json`)
+		.map((item) => `${item}/package.json`)
 		.reduce((results, item) => [...results, ...glob.sync(item)], [])
-		.map(item => {
+		.map((item) => {
 			const pkg = require(`./${item}`);
 
 			return {

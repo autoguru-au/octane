@@ -9,7 +9,7 @@ const debug = require('debug')('gdu:commands:start:ssr');
 
 const log = createLogger('server');
 
-export const runNextJS = async guruConfig => {
+export const runNextJS = async (guruConfig) => {
 	const port = guruConfig.port ?? 8080;
 
 	debug('next start %o', { port });
@@ -21,8 +21,8 @@ export const runNextJS = async guruConfig => {
 			console.log(`${cyan('Starting dev server...')}`);
 		});
 
-	hooks.afterServer.tap('runner', server => {
-		server.listen(guruConfig.port ?? 8080, err => {
+	hooks.afterServer.tap('runner', (server) => {
+		server.listen(guruConfig.port ?? 8080, (err) => {
 			if (err) throw err;
 
 			if (isEnvProduction()) {

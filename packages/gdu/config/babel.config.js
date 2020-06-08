@@ -2,7 +2,7 @@ const browsers = require('browserslist-config-autoguru');
 
 const { join } = require('path');
 
-module.exports = guruConfig => {
+module.exports = (guruConfig) => {
 	let hasRelay = false;
 
 	try {
@@ -12,10 +12,10 @@ module.exports = guruConfig => {
 		));
 
 		const deps = new Set();
-		Object.keys(packageJson.devDependencies).forEach(item =>
+		Object.keys(packageJson.devDependencies).forEach((item) =>
 			deps.add(item),
 		);
-		Object.keys(packageJson.dependencies).forEach(item => deps.add(item));
+		Object.keys(packageJson.dependencies).forEach((item) => deps.add(item));
 
 		if (deps.has('react-relay')) {
 			hasRelay = true;

@@ -9,13 +9,13 @@ import React, { memo } from 'react';
 
 var _ref = /*#__PURE__*/_jsx(\\"h1\\", {}, void 0, \\"test\\");
 
-export const Test = memo(function () {
+export const Test = /*#__PURE__*/memo(function () {
   return _ref;
 });
 
 var _ref2 = /*#__PURE__*/_jsx(\\"h1\\", {}, void 0, \\"test\\");
 
-export const Test2 = memo(function Named() {
+export const Test2 = /*#__PURE__*/memo(function Named() {
   return _ref2;
 });"
 `;
@@ -31,7 +31,7 @@ var _ref = /*#__PURE__*/_jsx(\\"h1\\", {}, void 0, \\"test a\\");
 
 var _ref2 = /*#__PURE__*/_jsx(\\"h1\\", {}, void 0, \\"test b\\");
 
-export const Test = something ? memo(() => _ref) : memo(() => _ref2);"
+export const Test = something ? /*#__PURE__*/memo(() => _ref) : /*#__PURE__*/memo(() => _ref2);"
 `;
 
 exports[`react preset when production should match the snapshot for fixture deepMemo.jsx 1`] = `
@@ -45,7 +45,7 @@ const test = () => {
   return factory(someProp => {
     var _ref = /*#__PURE__*/_jsx(\\"h1\\", {}, void 0, someProp);
 
-    return memo(() => _ref);
+    return /*#__PURE__*/memo(() => _ref);
   });
 };
 
@@ -56,7 +56,7 @@ const test2 = () => {
     const WrappedFn = () => _ref2;
 
     WrappedFn.displayName = 'boom bang, click clak';
-    return memo(WrappedFn);
+    return /*#__PURE__*/memo(WrappedFn);
   });
 };"
 `;
@@ -70,7 +70,7 @@ import React, { memo } from 'react';
 
 var _ref = /*#__PURE__*/_jsx(\\"h1\\", {}, void 0, \\"test\\");
 
-export default memo(() => _ref);"
+export default /*#__PURE__*/memo(() => _ref);"
 `;
 
 exports[`react preset when production should match the snapshot for fixture memoPassedIn.jsx 1`] = `
@@ -82,7 +82,7 @@ import React, { memo } from 'react';
 
 var _ref = /*#__PURE__*/_jsx(\\"h1\\", {}, void 0, \\"test\\");
 
-export const Test = withData(memo(() => _ref));"
+export const Test = withData( /*#__PURE__*/memo(() => _ref));"
 `;
 
 exports[`react preset when production should match the snapshot for fixture memoWithDestructure.jsx 1`] = `
@@ -94,7 +94,7 @@ import { memo } from 'react';
 
 var _ref = /*#__PURE__*/_jsx(\\"h1\\", {}, void 0, \\"test\\");
 
-const TestMemo = memo(() => _ref);"
+const TestMemo = /*#__PURE__*/memo(() => _ref);"
 `;
 
 exports[`react preset when production should match the snapshot for fixture standardReact.jsx 1`] = `
@@ -106,7 +106,7 @@ import React, { memo } from 'react';
 
 class GreetSomeone extends React.Component {
   render() {
-    return _jsx(\\"div\\", {}, void 0, this.props.greeting, \\" \\", this.props.subject, \\"!\\");
+    return /*#__PURE__*/_jsx(\\"div\\", {}, void 0, this.props.greeting, \\" \\", this.props.subject, \\"!\\");
   }
 
 }
@@ -124,11 +124,11 @@ function App() {
     setGreeting(newGreeting);
   }
 
-  return _jsx(\\"form\\", {}, void 0, _jsx(\\"div\\", {}, void 0, _ref, _jsx(\\"input\\", {
+  return /*#__PURE__*/_jsx(\\"form\\", {}, void 0, /*#__PURE__*/_jsx(\\"div\\", {}, void 0, _ref, /*#__PURE__*/_jsx(\\"input\\", {
     id: \\"greeting\\",
     onChange: handleGreetingChange,
     value: greeting
-  })), _jsx(\\"div\\", {}, void 0, _jsx(GreetSomeone, {
+  })), /*#__PURE__*/_jsx(\\"div\\", {}, void 0, /*#__PURE__*/_jsx(GreetSomeone, {
     greeting: greeting,
     subject: \\"Nancy\\"
   })));
@@ -136,7 +136,7 @@ function App() {
 
 var _ref2 = /*#__PURE__*/_jsx(\\"h1\\", {}, void 0, \\"test\\");
 
-const MemoTest = memo(() => _ref2);"
+const MemoTest = /*#__PURE__*/memo(() => _ref2);"
 `;
 
 exports[`react preset when production should match the snapshot for fixture usingReactMemo.jsx 1`] = `
@@ -148,5 +148,5 @@ import React from 'react';
 
 var _ref = /*#__PURE__*/_jsx(\\"h1\\", {}, void 0, \\"test\\");
 
-export const TestMemo = React.memo(() => _ref);"
+export const TestMemo = /*#__PURE__*/React.memo(() => _ref);"
 `;

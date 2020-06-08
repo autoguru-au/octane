@@ -1,7 +1,7 @@
 const { default: annotateAsPure } = require('@babel/helper-annotate-as-pure');
 const { declare } = require('@babel/helper-plugin-utils');
 
-module.exports = declare(function({ types: t, assertVersion }) {
+module.exports = declare(function ({ types: t, assertVersion }) {
 	assertVersion(7);
 
 	return {
@@ -9,7 +9,7 @@ module.exports = declare(function({ types: t, assertVersion }) {
 		visitor: {
 			ImportDeclaration(path) {
 				if (path.node.source.value === 'react') {
-					path.node.specifiers.forEach(item => {
+					path.node.specifiers.forEach((item) => {
 						if (
 							t.isImportDefaultSpecifier(item) ||
 							t.isImportSpecifier(item)
@@ -20,10 +20,10 @@ module.exports = declare(function({ types: t, assertVersion }) {
 
 							if (t.isImportDefaultSpecifier(item)) {
 								bindings
-									.filter(item =>
+									.filter((item) =>
 										t.isMemberExpression(item.parent),
 									)
-									.filter(item =>
+									.filter((item) =>
 										t.isIdentifier(item.parent.property, {
 											name: 'memo',
 										}),
@@ -54,8 +54,8 @@ function assignNameFor(t) {
 		return maybeParent.node.declarations[0].id.name;
 	}
 
-	return path => {
-		const blockLevelStatement = path.find(node => {
+	return (path) => {
+		const blockLevelStatement = path.find((node) => {
 			if (node.parentPath.isBlock()) {
 				return node;
 			}

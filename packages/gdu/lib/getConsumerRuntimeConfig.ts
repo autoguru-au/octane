@@ -5,7 +5,7 @@ import { join } from 'path';
 
 import { CALLING_WORKSPACE_ROOT, PROJECT_ROOT } from './roots';
 
-const reader = path => {
+const reader = (path) => {
 	try {
 		return readFileSync(path, 'utf8');
 	} catch (error) {
@@ -38,8 +38,8 @@ export function* getConsumerRuntimeConfig(): Generator<{
 		.reduce((results: any[], item: any) => [...results, ...item], [])
 		.filter(Boolean);
 
-	const bases = configFilesContent.filter(item => !item.env);
-	const envs = configFilesContent.filter(item => item.env);
+	const bases = configFilesContent.filter((item) => !item.env);
+	const envs = configFilesContent.filter((item) => item.env);
 
 	const base = deepmerge.all(bases);
 
@@ -48,15 +48,15 @@ export function* getConsumerRuntimeConfig(): Generator<{
 		config: base,
 	};
 
-	// eslint-disable-next-line no-constant-condition
-	while (true) {
-		const currentEnv = envs.shift();
+	let currentEnv;
+	// eslint-disable-next-line no-cond-assign
+	while ((currentEnv = envs.shift())) {
 		const { env: name, ...config } = currentEnv;
 
 		// Collect all other envs for this current one
 		let others = [];
-		while (envs.some(i => i.env === name)) {
-			const otherIdx = envs.findIndex(i => i.env === name);
+		while (envs.some((i) => i.env === name)) {
+			const otherIdx = envs.findIndex((i) => i.env === name);
 			others = others.concat(envs.splice(otherIdx, 1));
 		}
 

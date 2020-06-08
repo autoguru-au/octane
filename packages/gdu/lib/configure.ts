@@ -8,10 +8,10 @@ import { projectInfo } from './terminal';
 
 const debug = require('debug')('gdu:configure');
 
-const WRAP_BANNER = extra =>
+const WRAP_BANNER = (extra) =>
 	`/** THIS FILE IS GENERATED, ALL CHANGES WILL NOT PERSIST **/\n${extra}`;
 
-export const configure = async app_location => {
+export const configure = async (app_location) => {
 	debug('attempting a configure @ %s', app_location);
 
 	const guruConfig = getGuruConfig(app_location);
@@ -67,7 +67,7 @@ export const configure = async app_location => {
 			'./gdu.d.ts',
 			'./*.d.ts',
 			...guruConfig.srcPaths.map(
-				item => `${item.replace(/\/$/, '')}/**/*`,
+				(item) => `${item.replace(/\/$/, '')}/**/*`,
 			),
 		].filter(Boolean),
 		exclude: ['node_modules'],

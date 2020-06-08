@@ -17,12 +17,10 @@
     "eslint-import-resolver-typescript": "^2.0.0",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-react": "^7.18.3",
+    "eslint-plugin-react": "^7.20.0",
     "eslint-plugin-react-hooks": "^2.4.0",
     "eslint-plugin-simple-import-sort": "^4.0.0",
-    "eslint-plugin-unicorn": "^13.0.0",
-    "jsx-ast-utils": "^2.2.3",
-    "ulid": "^2.3.0"
+    "eslint-plugin-unicorn": "^13.0.0"
   },
   "peerDependencies": {
     "eslint": ">=6"
@@ -31,6 +29,6 @@
     "access": "public"
   },
   "devDependencies": {
-    "eslint": "^6.7.2"
+    "eslint": "^7.2.0"
   }
 }

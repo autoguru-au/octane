@@ -18,7 +18,7 @@ const deferredAction = (
 
 		bindHooks(); // TODO: Is this too soon?
 
-		return importee().then(item => {
+		return importee().then((item) => {
 			return item.default(...args);
 		});
 	});
@@ -82,6 +82,6 @@ const NOT_READY = wrapAction(() => {
 	throw new Error('No ready yet');
 });
 
-const IS_NOT_ROOT = config => {
+const IS_NOT_ROOT = (config) => {
 	return !config?.isRoot;
 };

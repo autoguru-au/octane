@@ -16,7 +16,7 @@ module.exports = function autoGuruNodePreset(api, options = {}) {
 				{
 					corejs,
 					debug,
-					loose: true,
+					loose: false,
 					modules,
 					spec: false,
 					shippedProposals: true,

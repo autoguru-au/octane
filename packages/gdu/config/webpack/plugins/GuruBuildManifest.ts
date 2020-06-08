@@ -22,7 +22,7 @@ export class GuruBuildManifest {
 
 		const configChunks = new Map<string, { chunk: any; config: any }>();
 
-		compiler.hooks.make.tap('BuildManifestPlugin', compilation => {
+		compiler.hooks.make.tap('BuildManifestPlugin', (compilation) => {
 			RuntimeConfigsPlugin.getHooks(compilation).configChunks.tap(
 				'guru',
 				(configs, chunks) => {
@@ -60,13 +60,14 @@ export class GuruBuildManifest {
 					name,
 					{ chunk, config },
 				] of configChunks.entries()) {
-					const prefixCreator = path =>
-						`${config.config?.publicPathBase ?? ''}${compiler
-							.options.output.publicPath ?? ''}${path}`;
+					const prefixCreator = (path) =>
+						`${config.config?.publicPathBase ?? ''}${
+							compiler.options.output.publicPath ?? ''
+						}${path}`;
 
 					fileMap.env[name] = {
 						js: [
-							...chunk.files.filter(i => i.endsWith('.js')),
+							...chunk.files.filter((i) => i.endsWith('.js')),
 							...js,
 						].map(prefixCreator),
 						css: [...css].map(prefixCreator),

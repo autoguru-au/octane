@@ -22,7 +22,7 @@ const validateOptions = ({ type }) => {
 	}
 };
 
-const ensureAppFolder = async app_name => {
+const ensureAppFolder = async (app_name) => {
 	const appFolder = join(PROJECT_ROOT, `apps/${app_name}/`);
 
 	debug('scaffolding into %s', appFolder);
@@ -95,7 +95,7 @@ export default async (type, app_name) => {
 	console.log(green('Done!'));
 };
 
-const genSPA = async options => {
+const genSPA = async (options) => {
 	const appFolder = await ensureAppFolder(options.app_name);
 
 	const writeFiles = new Map();
@@ -143,7 +143,7 @@ const genSPA = async options => {
 	return appFolder;
 };
 
-const genSSR = async options => {
+const genSSR = async (options) => {
 	const appFolder = await ensureAppFolder(options.app_name);
 
 	const writeFiles = new Map();
