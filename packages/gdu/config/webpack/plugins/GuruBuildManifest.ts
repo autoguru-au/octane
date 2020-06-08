@@ -1,5 +1,5 @@
-import { Compiler } from 'webpack';
 import { RuntimeConfigsPlugin } from 'configs-webpack-plugin';
+import { Compiler } from 'webpack';
 
 interface EnvironmentFiles {
 	[envName: string]: {

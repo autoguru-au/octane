@@ -1,4 +1,4 @@
-module.exports = function autoGuruSharedPlugins(options) {
+module.exports = function autoGuruSharedPlugins() {
 	return [
 		[
 			require.resolve('@babel/plugin-transform-strict-mode'),

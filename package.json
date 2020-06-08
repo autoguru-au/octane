@@ -39,7 +39,7 @@
     "@manypkg/cli": "^0.13.0",
     "@types/node": "^14.0.11",
     "browserslist-config-autoguru": "*",
-    "eslint": "^6.7.2",
+    "eslint": "^7.2.0",
     "glob": "^7.1.6",
     "husky": "^4.2.5",
     "jest": "^26.0.1",

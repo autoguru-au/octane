@@ -1,6 +1,6 @@
 import { configure } from '../../lib/configure';
-import { bindHooks } from '../../utils/hooks';
 import { getApps } from '../../main';
+import { bindHooks } from '../../utils/hooks';
 
 export default async () => {
 	bindHooks();

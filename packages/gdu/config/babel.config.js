@@ -20,7 +20,7 @@ module.exports = (guruConfig) => {
 		if (deps.has('react-relay')) {
 			hasRelay = true;
 		}
-	} catch (error) {
+	} catch (_) {
 		// Do nothing
 	}
 

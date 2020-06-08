@@ -1,7 +1,7 @@
 import { Sade } from 'sade';
 
-import { wrapAction } from '../lib/misc';
 import { getGuruConfig, GuruConfig } from '../lib/config';
+import { wrapAction } from '../lib/misc';
 import { bindHooks } from '../utils/hooks';
 
 const deferredAction = (

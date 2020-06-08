@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import client_app from '__GDU_CONSUMER_CLIENT__';
 
 const canPerformance =

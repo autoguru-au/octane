@@ -4,6 +4,9 @@ extends:
   - plugin:@autoguru/base
   - plugin:@autoguru/jest
 
+rules:
+  unicorn/no-abusive-eslint-disable: off
+
 overrides:
   - files: ['**/jest.*js', '**/*.spec.{js,jsx}']
     env: { jest: true, node: true }

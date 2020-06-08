@@ -8,7 +8,7 @@ import { CALLING_WORKSPACE_ROOT, PROJECT_ROOT } from './roots';
 const reader = (path) => {
 	try {
 		return readFileSync(path, 'utf8');
-	} catch (error) {
+	} catch (_) {
 		return '';
 	}
 };
