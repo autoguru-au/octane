@@ -1,4 +1,4 @@
-import { UrlLoader } from '@graphql-toolkit/url-loader';
+import { UrlLoader } from '@graphql-tools/url-loader';
 import { readFileSync } from 'fs';
 import { GraphQLSchema, printSchema } from 'graphql';
 import { GraphQLProjectConfig, loadConfig } from 'graphql-config';
