@@ -15,8 +15,8 @@
 		"lib": ["esnext", "dom"]
 	},
 	"include": [
-		"./cli.ts",
-		"./main.ts",
+		"./*.ts",
+		"./*.d.ts",
 		"./config/**/*",
 		"./commands/**/*",
 		"./lib/**/*",
