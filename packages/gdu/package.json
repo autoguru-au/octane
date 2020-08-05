@@ -23,7 +23,6 @@
 		"watch": "tsc --watch"
 	},
 	"dependencies": {
-		"@types/node": "^14.0.11",
 		"@autoguru/babel-preset": "^1.0.97",
 		"@autoguru/tsconfig": "1.0.78",
 		"@autoguru/utilities": "^1.0.97",
@@ -80,11 +79,14 @@
 	},
 	"devDependencies": {
 		"@types/glob": "^7.1.2",
-		"@types/node": "^14.0.11",
+		"@types/node": "^14.0.27",
 		"@types/node-fetch": "^2.5.7",
 		"@types/sade": "^1.7.1",
 		"@types/webpack": "^4.41.17",
 		"typescript": "~3.9.5"
+	},
+	"peerDependencies": {
+		"@types/node": ">=10"
 	},
 	"engines": {
 		"node": ">=12.14.0"
