@@ -1,5 +1,17 @@
 # gdu
 
+## 2.1.0
+
+### Minor Changes
+
+-   b5c0b8f: Performs schema fetching using HC's `/schema` endpoint
+-   69a313d: gdu.d.ts file is now removed in favour of npm maintained file,
+    allowing for more defined properties and can be _more_ global.
+
+### Patch Changes
+
+-   dc79f71: Drops custom sass from NextJs apps
+
 ## 2.0.46
 
 ### Patch Changes
