@@ -9,7 +9,8 @@
 	"files": [
 		"bin/",
 		"dist/",
-		"entry/"
+		"entry/",
+		"gdu.d.ts"
 	],
 	"bin": {
 		"gdu": "./bin/gdu.js"
@@ -22,6 +23,7 @@
 		"watch": "tsc --watch"
 	},
 	"dependencies": {
+		"@types/node": "^14.0.11",
 		"@autoguru/babel-preset": "^1.0.97",
 		"@autoguru/tsconfig": "1.0.78",
 		"@autoguru/utilities": "^1.0.97",

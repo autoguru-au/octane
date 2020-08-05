@@ -56,15 +56,15 @@ const baseAppScaff = async (options, outputFiles) => {
 			},
 			dependencies: {
 				'@autoguru/overdrive': '*',
-				react: '^16.12.0',
-				'react-dom': '^16.12.0',
+				react: '*',
+				'react-dom': '*',
 			},
 			devDependencies: {
 				gdu: '*',
 				'browserslist-config-autoguru': '*',
-				'@types/react': '^16.9.0',
-				'@types/react-dom': '^16.9.0',
-				typescript: '^3.7.0',
+				'@types/react': '*',
+				'@types/react-dom': '*',
+				typescript: '*',
 			},
 		},
 		null,
@@ -104,7 +104,7 @@ const genSPA = async (options) => {
 
 	writeFiles.set(
 		'src/App/index.tsx',
-		dedent`import React from 'react';
+		dedent`import * as React from 'react';
 	import '@autoguru/overdrive/reset';
 
 	import { baseTheme } from '@autoguru/overdrive/themes';
@@ -112,7 +112,7 @@ const genSPA = async (options) => {
 	import DefaultScene from '../scenes';
 
 	export default () => (
-		<OverdriveProvider theme={baseTheme} isServer={false}>
+		<OverdriveProvider theme={baseTheme}>
 			<DefaultScene />
 		</OverdriveProvider>
 	);
@@ -121,7 +121,7 @@ const genSPA = async (options) => {
 
 	writeFiles.set(
 		'src/scenes/index.tsx',
-		dedent`import React from 'react';
+		dedent`import * as React from 'react';
 	import { Heading } from '@autoguru/overdrive';
 
 	export default () => <Heading is="h1">Welcome to your new SPA application!</Heading>
@@ -130,7 +130,7 @@ const genSPA = async (options) => {
 
 	writeFiles.set(
 		'src/client.tsx',
-		dedent`import React from 'react';
+		dedent`import * as React from 'react';
 	import { render } from 'react-dom';
 	import App from './App';
 
