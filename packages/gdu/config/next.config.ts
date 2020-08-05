@@ -9,7 +9,6 @@ import { getGuruConfig } from '../lib/config';
 import { isEnvProduction } from '../lib/misc';
 import { CALLING_WORKSPACE_ROOT, PROJECT_ROOT } from '../lib/roots';
 import { getHooks } from '../utils/hooks';
-import { makeSassLoader } from './webpack/blocks/styles';
 
 export const createNextJSConfig = () => {
 	const hooks = getHooks();
@@ -43,16 +42,6 @@ export const createNextJSConfig = () => {
 			originalConfig.plugins.push(
 				new (class {
 					apply(compiler) {
-						compiler.options.module.rules = [
-							{
-								test: /\.scss$/,
-								use: makeSassLoader({
-									isServer: nextConfig.isServer,
-								}),
-							},
-							...compiler.options.module.rules,
-						];
-
 						// TODO: Abstract this, to mimic the same as what SPA webpack builds have
 						compiler.options.plugins.push(
 							new DefinePlugin({
