@@ -67,14 +67,14 @@ export const createNextJSConfig = () => {
 						);
 
 						console.assert(
-							compiler.options.module.rules[1].use.loader ===
+							compiler.options.module.rules[0].use.loader ===
 								'next-babel-loader',
-							'Module rules [1] isnt next-babel-loader',
+							'Module rules [0] isnt next-babel-loader',
 						);
 
-						const origBabel = compiler.options.module.rules[1];
+						const origBabel = compiler.options.module.rules[0];
 
-						compiler.options.module.rules[1] = {
+						compiler.options.module.rules[0] = {
 							...origBabel,
 							include: [...origBabel.include, ...ourCodePaths],
 							exclude(path) {
