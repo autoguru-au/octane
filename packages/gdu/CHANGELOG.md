@@ -1,5 +1,12 @@
 # gdu
 
+## 2.1.1
+
+### Patch Changes
+
+-   6886f49: GDU will now render a stack trace for errors
+-   3deb6b9: Fix issue where the next-babel-loader is at index 0, not 1
+
 ## 2.1.0
 
 ### Minor Changes
