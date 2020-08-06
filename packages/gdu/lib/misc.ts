@@ -3,7 +3,8 @@ import { red } from 'kleur';
 
 export const wrapAction = (handler) => (...args) => {
 	handler(...args).catch((error) => {
-		console.error(red(error));
+		console.error(red('An error occurred during command running.'));
+		console.error(error);
 		process.exit(1);
 	});
 };
