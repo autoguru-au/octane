@@ -11,18 +11,16 @@ export const wrapAction = (handler) => (...args) => {
 
 let prodEnv = process.env.NODE_ENV === 'production';
 
-if (prodEnv === true) {
-	process.env.NODE_ENV === 'production';
-}
-
 export const isEnvProduction = () => prodEnv;
 
 export const setEnvProd = (which) => {
 	if (which === true) {
-		process.env.NODE_ENV === 'production';
+		// @ts-ignore
+		process.env.NODE_ENV = 'production';
 	}
 
-	process.env.NODE_ENV === 'development';
+	// @ts-ignore
+	process.env.NODE_ENV = 'development';
 
 	prodEnv = true;
 };
