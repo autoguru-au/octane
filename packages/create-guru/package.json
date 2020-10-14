@@ -11,7 +11,7 @@
 	},
 	"dependencies": {
 		"gdu": "^2.0.46",
-		"mri": "^1.1.5"
+		"mri": "^1.1.6"
 	},
 	"scripts": {
 		"build": "echo \"no op\""

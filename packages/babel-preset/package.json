@@ -20,19 +20,19 @@
 		"@babel/plugin-syntax-dynamic-import": "^7.7.4",
 		"@babel/plugin-transform-react-constant-elements": "^7.10.4",
 		"@babel/plugin-transform-react-inline-elements": "^7.10.4",
-		"@babel/plugin-transform-runtime": "^7.11.0",
+		"@babel/plugin-transform-runtime": "^7.11.5",
 		"@babel/plugin-transform-spread": "^7.11.0",
 		"@babel/plugin-transform-strict-mode": "^7.10.4",
-		"@babel/preset-env": "^7.11.0",
+		"@babel/preset-env": "^7.11.5",
 		"@babel/preset-react": "^7.10.4",
-		"@babel/runtime-corejs3": "^7.11.1",
+		"@babel/runtime-corejs3": "^7.11.2",
 		"babel-plugin-dev-expression": "^0.2.2",
 		"babel-plugin-macros": "^2.8.0",
 		"babel-plugin-transform-react-remove-prop-types": "^0.4.24"
 	},
 	"devDependencies": {
 		"@autoguru/jest-preset": "*",
-		"@babel/core": "^7.11.1"
+		"@babel/core": "^7.11.6"
 	},
 	"peerDependencies": {
 		"@babel/core": "^7.7.5"

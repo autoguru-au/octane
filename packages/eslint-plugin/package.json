@@ -32,6 +32,6 @@
 		"access": "public"
 	},
 	"devDependencies": {
-		"eslint": "^7.2.0"
+		"eslint": "^7.11.0"
 	}
 }
