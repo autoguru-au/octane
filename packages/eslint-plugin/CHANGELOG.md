@@ -1,5 +1,11 @@
 # @autoguru/eslint-plugin
 
+## 1.1.1
+
+### Patch Changes
+
+-   5567db1: Fixes some eslint rules breaking our things
+
 ## 1.1.0
 
 ### Minor Changes
