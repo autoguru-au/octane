@@ -19,11 +19,9 @@ const getConsumerHtmlTemplate = (guruConfig: GuruConfig) => {
 		if (existsSync(filePath)) {
 			return filePath;
 		}
-	} catch {
-		return;
+	} finally {
+		return undefined;
 	}
-
-	return;
 };
 
 const localhost = '0.0.0.0';
@@ -44,6 +42,7 @@ export const runSPA = async (
 	const consumerHtmlTemplate = getConsumerHtmlTemplate(guruConfig);
 
 	webpackConfig.plugins.push(
+		// @ts-ignore
 		new HtmlWebpackPlugin({
 			template: consumerHtmlTemplate ?? 'auto',
 		}),

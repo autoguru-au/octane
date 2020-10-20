@@ -1,7 +1,5 @@
 import { isAbsolute, join } from 'path';
 
-import { Hook } from 'tapable';
-
 import { requireFromCaller } from './resolve';
 import { PROJECT_ROOT } from './roots';
 
@@ -19,7 +17,7 @@ export interface GuruConfig {
 	__configPath: string;
 	__legacy_mode?: boolean;
 
-	tap?(hooks: Record<string, Hook>): void;
+	tap?(hooks: Record<string, any>): void;
 }
 
 export const getGuruConfig = (location = PROJECT_ROOT): GuruConfig | null => {
