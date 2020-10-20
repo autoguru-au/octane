@@ -1,6 +1,7 @@
+import { join } from 'path';
+
 import browsers from 'browserslist-config-autoguru';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import { join } from 'path';
 import TreatPlugin from 'treat/webpack-plugin';
 import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
 import { Configuration, DefinePlugin } from 'webpack';
@@ -31,7 +32,7 @@ export const createNextJSConfig = () => {
 				...guruConfig?.srcPaths.map((item) => join(PROJECT_ROOT, item)),
 				CALLING_WORKSPACE_ROOT &&
 					join(CALLING_WORKSPACE_ROOT, 'packages'),
-				/@autoguru[\\/]/,
+				/@autoguru[/\\]/,
 			].filter(Boolean);
 
 			originalConfig.resolve.alias['@babel/runtime-corejs2'] =

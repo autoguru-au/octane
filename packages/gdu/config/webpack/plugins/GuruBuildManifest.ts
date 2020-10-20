@@ -69,8 +69,8 @@ export class GuruBuildManifest {
 						js: [
 							...chunk.files.filter((i) => i.endsWith('.js')),
 							...js,
-						].map(prefixCreator),
-						css: [...css].map(prefixCreator),
+						].map((i) => prefixCreator(i)),
+						css: [...css].map((i) => prefixCreator(i)),
 					};
 				}
 

@@ -1,7 +1,13 @@
 module.exports = {
-	extends: ['xo-react', 'prettier/react'],
+	extends: ['plugin:react/recommended', 'prettier/react'],
 
-	plugins: ['jsx-a11y'],
+	plugins: ['react', 'react-hooks', 'jsx-a11y'],
+
+	settings: {
+		react: {
+			version: '>16',
+		},
+	},
 
 	rules: {
 		'react/button-has-type': 'off',

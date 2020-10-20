@@ -1,5 +1,8 @@
 module.exports = {
-	extends: ['kentcdodds/jest'],
+	extends: ['plugin:jest/recommended'],
+
+	plugins: ['jest'],
+
 	rules: {
 		'jest/prefer-called-with': 'warn',
 	},

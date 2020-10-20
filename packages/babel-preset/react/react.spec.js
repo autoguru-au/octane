@@ -1,6 +1,7 @@
-const { transformFileAsync } = require('@babel/core');
 const { readdirSync } = require('fs');
 const { join } = require('path');
+
+const { transformFileAsync } = require('@babel/core');
 const fixtures = join(__dirname, 'fixtures');
 
 describe('react preset', () => {

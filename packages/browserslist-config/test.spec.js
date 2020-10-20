@@ -1,4 +1,5 @@
 const browserslist = require('browserslist');
+
 const config = require('.');
 
 describe('config', () => {

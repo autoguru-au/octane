@@ -30,7 +30,7 @@ const createLogThing = (level: Level, realm: string) => (
 };
 
 const printPayload = <T>(payload: Payload<T>) => {
-	let decorated = {
+	const decorated = {
 		...payload,
 		timestamp: new Date().toISOString(),
 	};

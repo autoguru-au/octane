@@ -1,6 +1,7 @@
 import { existsSync } from 'fs';
-import { green } from 'kleur';
 import { join } from 'path';
+
+import { green } from 'kleur';
 import dedent from 'ts-dedent';
 
 import { banner } from '../lib/banner';
@@ -82,13 +83,9 @@ export default async (type, app_name) => {
 
 	banner('Creating', `@autoguru/${app_name}`);
 
-	let outputPath;
-
-	if (options.type === 'spa') {
-		outputPath = await genSPA(options);
-	} else {
-		outputPath = await genSSR(options);
-	}
+	const outputPath = await (options.type === 'spa'
+		? genSPA(options)
+		: genSSR(options));
 
 	await configure(outputPath);
 

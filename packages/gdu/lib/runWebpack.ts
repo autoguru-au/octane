@@ -19,7 +19,7 @@ const done = (resolve, reject) => (err, stats) => {
 				}.`,
 			),
 		);
-		warnings.forEach(debug);
+		warnings.forEach((i) => debug(i));
 	}
 
 	resolve();

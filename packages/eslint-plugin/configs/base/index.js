@@ -1,6 +1,10 @@
 module.exports = {
+	parserOptions: {
+		sourceType: 'module',
+		ecmaFeatures: { jsx: true },
+	},
+
 	extends: [
-		'xo/esnext',
 		'plugin:unicorn/recommended',
 		'plugin:promise/recommended',
 		require.resolve('./import.js'),
@@ -13,10 +17,12 @@ module.exports = {
 		'no-void': 'off',
 		'new-cap': 'off',
 		'no-warning-comments': ['off', { terms: ['TODO'] }],
+		camelcase: 'off',
 		'promise/always-return': 'warn',
 		'promise/catch-or-return': 'warn',
 		'unicorn/filename-case': 'off',
 		'unicorn/prevent-abbreviations': 'off',
-		camelcase: 'off',
+		'unicorn/no-null': 'off',
+		'unicorn/no-reduce': 'off',
 	},
 };

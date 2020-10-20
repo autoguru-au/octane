@@ -3,6 +3,7 @@ import { getGuruConfig } from '../../lib/config';
 import { genGithubOutputs } from '../../lib/githubOutputs';
 import { setEnvProd } from '../../lib/misc';
 import { projectInfo } from '../../lib/terminal';
+
 import { buildSPA } from './buildSPA';
 import { buildSSR } from './buildSSR';
 

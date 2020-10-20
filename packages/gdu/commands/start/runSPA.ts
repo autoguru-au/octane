@@ -1,8 +1,9 @@
-import { RuntimeConfigsPlugin } from 'configs-webpack-plugin';
 import { existsSync } from 'fs';
+import { join } from 'path';
+
+import { RuntimeConfigsPlugin } from 'configs-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { blue, bold, cyan, red } from 'kleur';
-import { join } from 'path';
 import dedent from 'ts-dedent';
 import webpack, { Configuration } from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
@@ -18,11 +19,11 @@ const getConsumerHtmlTemplate = (guruConfig: GuruConfig) => {
 		if (existsSync(filePath)) {
 			return filePath;
 		}
-	} catch (_) {
-		return undefined;
+	} catch {
+		return;
 	}
 
-	return undefined;
+	return;
 };
 
 const localhost = '0.0.0.0';

@@ -2,11 +2,15 @@ root: true
 
 extends:
     - plugin:@autoguru/base
-    - plugin:@autoguru/jest
 
 rules:
     unicorn/no-abusive-eslint-disable: off
 
 overrides:
     - files: ['**/jest.*js', '**/*.spec.{js,jsx}']
+      extends: ['plugin:@autoguru/jest']
       env: { jest: true, node: true }
+    - files: ['**/*.ts', '**/*.tsx']
+      extends: ['plugin:@autoguru/typescript']
+      parserOptions:
+          project: 'packages/*/tsconfig.json'

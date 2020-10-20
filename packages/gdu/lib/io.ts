@@ -1,7 +1,8 @@
 import { writeFile } from 'fs';
-import mkdirp from 'mkdirp';
 import { dirname, join, relative } from 'path';
 import { promisify } from 'util';
+
+import mkdirp from 'mkdirp';
 
 import { PROJECT_ROOT } from './roots';
 

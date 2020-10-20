@@ -1,12 +1,30 @@
 module.exports = {
-	plugins: ['simple-import-sort'],
-
-	extends: ['kentcdodds/import'],
+	extends: ['plugin:import/errors', 'plugin:import/warnings'],
 
 	rules: {
-		'simple-import-sort/sort': 'error',
-		'sort-imports': 'off',
-		'import/order': 'off',
+		'import/order': [
+			'error',
+			{
+				'newlines-between': 'always',
+				alphabetize: { order: 'asc' },
+				groups: [
+					'builtin',
+					'external',
+					'internal',
+					'parent',
+					'sibling',
+					'index',
+				],
+				pathGroups: [
+					{
+						pattern: '*.+(treat)',
+						group: 'index',
+						position: 'after',
+						patternOptions: { matchBase: true },
+					},
+				],
+			},
+		],
 		'import/no-unresolved': 'off', // Just too many problems...
 
 		'import/extensions': [
@@ -14,8 +32,13 @@ module.exports = {
 			'never',
 			{
 				graphql: 'always',
+				treat: 'always',
 				scss: 'always',
 			},
 		],
+
+		'import/no-duplicates': 'error',
+
+		'unicorn/import-style': 'off',
 	},
 };

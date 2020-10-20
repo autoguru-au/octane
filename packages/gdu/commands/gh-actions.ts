@@ -17,5 +17,5 @@ export default () => {
 function getBranchName() {
 	return (process.env.GITHUB_REF ?? 'master')
 		.replace('refs/heads/', '')
-		.replace(/[^\w]+/g, '-');
+		.replace(/\W+/g, '-');
 }

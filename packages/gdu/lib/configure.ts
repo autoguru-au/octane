@@ -1,5 +1,6 @@
-import ensureGitignore from 'ensure-gitignore';
 import { join } from 'path';
+
+import ensureGitignore from 'ensure-gitignore';
 import dedent from 'ts-dedent';
 
 import { getGuruConfig } from './config';

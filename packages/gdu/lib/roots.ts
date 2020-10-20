@@ -1,5 +1,6 @@
-import getYarnWorkspaceRoot from 'find-yarn-workspace-root';
 import { join } from 'path';
+
+import getYarnWorkspaceRoot from 'find-yarn-workspace-root';
 
 const debug = require('debug')('gdu:roots');
 

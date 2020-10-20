@@ -1,14 +1,15 @@
-import deepmerge from 'deepmerge';
 import { readFileSync } from 'fs';
-import { loadAll } from 'js-yaml';
 import { join } from 'path';
+
+import deepmerge from 'deepmerge';
+import { loadAll } from 'js-yaml';
 
 import { CALLING_WORKSPACE_ROOT, PROJECT_ROOT } from './roots';
 
 const reader = (path) => {
 	try {
 		return readFileSync(path, 'utf8');
-	} catch (_) {
+	} catch {
 		return '';
 	}
 };
@@ -33,8 +34,8 @@ export function* getConsumerRuntimeConfig(): Generator<{
 	// Load all yaml's
 	// @ts-ignore
 	const configFilesContent: ConfigThing[] = configFiles
-		.map(reader)
-		.map(loadAll)
+		.map((i) => reader(i))
+		.map((i) => loadAll(i))
 		.reduce((results: any[], item: any) => [...results, ...item], [])
 		.filter(Boolean);
 

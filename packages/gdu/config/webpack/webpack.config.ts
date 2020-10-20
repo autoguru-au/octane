@@ -1,9 +1,10 @@
+import { join } from 'path';
+
 import browsers from 'browserslist-config-autoguru';
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import { RuntimeConfigsPlugin } from 'configs-webpack-plugin';
 import bugger from 'debug';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import { join } from 'path';
 import TerserPlugin from 'terser-webpack-plugin';
 import TreatPlugin from 'treat/webpack-plugin';
 import { TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
@@ -18,6 +19,7 @@ import {
 	PROJECT_ROOT,
 } from '../../lib/roots';
 import { getHooks } from '../../utils/hooks';
+
 import { commonLoaders } from './blocks/common';
 import { makeImagesLoader } from './blocks/images';
 import { makeCssLoader, makeSassLoader } from './blocks/styles';
@@ -48,7 +50,7 @@ const terserOptions = {
 	mangle: { safari10: true },
 };
 
-const frameworkRegex = /(?<!node_modules.*)[\\/]node_modules[\\/](react|react-dom|scheduler|prop-types|use-subscription|relay-runtime|react-relay)[\\/]/;
+const frameworkRegex = /(?<!node_modules.*)[/\\]node_modules[/\\](react|react-dom|scheduler|prop-types|use-subscription|relay-runtime|react-relay)[/\\]/;
 
 export const makeWebpackConfig = ({ isDevServer = false, name = 'client' }) => {
 	const hooks = getHooks();
@@ -60,7 +62,7 @@ export const makeWebpackConfig = ({ isDevServer = false, name = 'client' }) => {
 		join(gduEntryPath, '/client/spa'),
 		...getGuruConfig().srcPaths.map((item) => join(PROJECT_ROOT, item)),
 		CALLING_WORKSPACE_ROOT && join(CALLING_WORKSPACE_ROOT, 'packages'),
-		/@autoguru[\\/]/,
+		/@autoguru[/\\]/,
 	].filter(Boolean);
 
 	const { outputPath } = getGuruConfig();
@@ -128,7 +130,7 @@ export const makeWebpackConfig = ({ isDevServer = false, name = 'client' }) => {
 					},
 					// AutoGuru related assets here
 					guru: {
-						test: /@autoguru[\\/]/,
+						test: /@autoguru[/\\]/,
 						priority: 99,
 						reuseExistingChunk: true,
 						enforce: true,

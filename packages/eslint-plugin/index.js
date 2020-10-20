@@ -1,6 +1,4 @@
 module.exports = {
-	rules: require('./rules'),
-
 	configs: {
 		base: require('./configs/base'),
 		jest: require('./configs/jest'),

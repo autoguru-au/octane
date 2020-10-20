@@ -1,4 +1,5 @@
 import { isAbsolute, join } from 'path';
+
 import { Hook } from 'tapable';
 
 import { requireFromCaller } from './resolve';
@@ -54,7 +55,7 @@ export const getGuruConfig = (location = PROJECT_ROOT): GuruConfig | null => {
 
 		return storeThis;
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	} catch (error) {
+	} catch {
 		debug('no guru config @ %o', normalizePath);
 		return null;
 	}

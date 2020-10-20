@@ -1,6 +1,6 @@
-const browsers = require('browserslist-config-autoguru');
-
 const { join } = require('path');
+
+const browsers = require('browserslist-config-autoguru');
 
 module.exports = (guruConfig) => {
 	let hasRelay = false;
@@ -20,7 +20,7 @@ module.exports = (guruConfig) => {
 		if (deps.has('react-relay')) {
 			hasRelay = true;
 		}
-	} catch (_) {
+	} catch {
 		// Do nothing
 	}
 
