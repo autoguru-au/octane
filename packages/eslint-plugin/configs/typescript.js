@@ -26,7 +26,7 @@ module.exports = {
 		'@typescript-eslint/no-require-imports': 'off',
 		'@typescript-eslint/ban-types': 'off', // Complains about Omit so cya
 		'@typescript-eslint/no-explicit-any': 'warn',
-		'@typescript-eslint/ban-ts-ignore': 'warn',
+		'@typescript-eslint/ban-ts-comment': 'warn',
 
 		'@typescript-eslint/no-use-before-define': 'warn',
 	},

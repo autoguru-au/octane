@@ -24,6 +24,7 @@ module.exports = {
 		'react/no-children-prop': 'warn',
 		'react/no-unescaped-entities': 'warn',
 		'react/prop-types': 'off',
+		'react/display-name': 'off',
 
 		// https://github.com/evcohen/eslint-plugin-jsx-a11y/tree/master/docs/rules
 		'jsx-a11y/accessible-emoji': 'warn',

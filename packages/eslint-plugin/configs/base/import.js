@@ -26,7 +26,7 @@ module.exports = {
 			},
 		],
 		'import/no-unresolved': 'off', // Just too many problems...
-
+		'import/default': 'off',
 		'import/extensions': [
 			'error',
 			'never',
@@ -36,7 +36,6 @@ module.exports = {
 				scss: 'always',
 			},
 		],
-
 		'import/no-duplicates': 'error',
 
 		'unicorn/import-style': 'off',
