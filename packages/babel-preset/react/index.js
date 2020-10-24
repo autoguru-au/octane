@@ -19,10 +19,6 @@ module.exports = function autoGuruReactPreset(api, options = {}) {
 		plugins: [
 			!dev &&
 				require.resolve(
-					'@babel/plugin-transform-react-inline-elements',
-				),
-			!dev &&
-				require.resolve(
 					'babel-plugin-transform-react-remove-prop-types',
 				),
 			!dev &&

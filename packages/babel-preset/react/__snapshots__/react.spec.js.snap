@@ -1,19 +1,20 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`react preset when production should match the snapshot for fixture asFunction.jsx 1`] = `
-"var REACT_ELEMENT_TYPE;
-
-function _jsx(type, props, key, children) { if (!REACT_ELEMENT_TYPE) { REACT_ELEMENT_TYPE = typeof Symbol === \\"function\\" && Symbol[\\"for\\"] && Symbol[\\"for\\"](\\"react.element\\") || 0xeac7; } var defaultProps = type && type.defaultProps; var childrenLength = arguments.length - 3; if (!props && childrenLength !== 0) { props = { children: void 0 }; } if (childrenLength === 1) { props.children = children; } else if (childrenLength > 1) { var childArray = new Array(childrenLength); for (var i = 0; i < childrenLength; i++) { childArray[i] = arguments[i + 3]; } props.children = childArray; } if (props && defaultProps) { for (var propName in defaultProps) { if (props[propName] === void 0) { props[propName] = defaultProps[propName]; } } } else if (!props) { props = defaultProps || {}; } return { $$typeof: REACT_ELEMENT_TYPE, type: type, key: key === undefined ? null : '' + key, ref: null, props: props, _owner: null }; }
-
+"import { jsx as _jsx } from \\"react/jsx-runtime\\";
 import React, { memo } from 'react';
 
-var _ref = /*#__PURE__*/_jsx(\\"h1\\", {}, void 0, \\"test\\");
+var _ref = /*#__PURE__*/_jsx(\\"h1\\", {
+  children: \\"test\\"
+});
 
 export const Test = /*#__PURE__*/memo(function () {
   return _ref;
 });
 
-var _ref2 = /*#__PURE__*/_jsx(\\"h1\\", {}, void 0, \\"test\\");
+var _ref2 = /*#__PURE__*/_jsx(\\"h1\\", {
+  children: \\"test\\"
+});
 
 export const Test2 = /*#__PURE__*/memo(function Named() {
   return _ref2;
@@ -21,29 +22,29 @@ export const Test2 = /*#__PURE__*/memo(function Named() {
 `;
 
 exports[`react preset when production should match the snapshot for fixture conditionalMemo.jsx 1`] = `
-"var REACT_ELEMENT_TYPE;
-
-function _jsx(type, props, key, children) { if (!REACT_ELEMENT_TYPE) { REACT_ELEMENT_TYPE = typeof Symbol === \\"function\\" && Symbol[\\"for\\"] && Symbol[\\"for\\"](\\"react.element\\") || 0xeac7; } var defaultProps = type && type.defaultProps; var childrenLength = arguments.length - 3; if (!props && childrenLength !== 0) { props = { children: void 0 }; } if (childrenLength === 1) { props.children = children; } else if (childrenLength > 1) { var childArray = new Array(childrenLength); for (var i = 0; i < childrenLength; i++) { childArray[i] = arguments[i + 3]; } props.children = childArray; } if (props && defaultProps) { for (var propName in defaultProps) { if (props[propName] === void 0) { props[propName] = defaultProps[propName]; } } } else if (!props) { props = defaultProps || {}; } return { $$typeof: REACT_ELEMENT_TYPE, type: type, key: key === undefined ? null : '' + key, ref: null, props: props, _owner: null }; }
-
+"import { jsx as _jsx } from \\"react/jsx-runtime\\";
 import React, { memo } from 'react';
 
-var _ref = /*#__PURE__*/_jsx(\\"h1\\", {}, void 0, \\"test a\\");
+var _ref = /*#__PURE__*/_jsx(\\"h1\\", {
+  children: \\"test a\\"
+});
 
-var _ref2 = /*#__PURE__*/_jsx(\\"h1\\", {}, void 0, \\"test b\\");
+var _ref2 = /*#__PURE__*/_jsx(\\"h1\\", {
+  children: \\"test b\\"
+});
 
 export const Test = something ? /*#__PURE__*/memo(() => _ref) : /*#__PURE__*/memo(() => _ref2);"
 `;
 
 exports[`react preset when production should match the snapshot for fixture deepMemo.jsx 1`] = `
-"var REACT_ELEMENT_TYPE;
-
-function _jsx(type, props, key, children) { if (!REACT_ELEMENT_TYPE) { REACT_ELEMENT_TYPE = typeof Symbol === \\"function\\" && Symbol[\\"for\\"] && Symbol[\\"for\\"](\\"react.element\\") || 0xeac7; } var defaultProps = type && type.defaultProps; var childrenLength = arguments.length - 3; if (!props && childrenLength !== 0) { props = { children: void 0 }; } if (childrenLength === 1) { props.children = children; } else if (childrenLength > 1) { var childArray = new Array(childrenLength); for (var i = 0; i < childrenLength; i++) { childArray[i] = arguments[i + 3]; } props.children = childArray; } if (props && defaultProps) { for (var propName in defaultProps) { if (props[propName] === void 0) { props[propName] = defaultProps[propName]; } } } else if (!props) { props = defaultProps || {}; } return { $$typeof: REACT_ELEMENT_TYPE, type: type, key: key === undefined ? null : '' + key, ref: null, props: props, _owner: null }; }
-
+"import { jsx as _jsx } from \\"react/jsx-runtime\\";
 import React, { memo } from 'react';
 
 const test = () => {
   return factory(someProp => {
-    var _ref = /*#__PURE__*/_jsx(\\"h1\\", {}, void 0, someProp);
+    var _ref = /*#__PURE__*/_jsx(\\"h1\\", {
+      children: someProp
+    });
 
     return /*#__PURE__*/memo(() => _ref);
   });
@@ -51,7 +52,9 @@ const test = () => {
 
 const test2 = () => {
   return factory(someProp => {
-    var _ref2 = /*#__PURE__*/_jsx(\\"h1\\", {}, void 0, someProp);
+    var _ref2 = /*#__PURE__*/_jsx(\\"h1\\", {
+      children: someProp
+    });
 
     const WrappedFn = () => _ref2;
 
@@ -62,58 +65,56 @@ const test2 = () => {
 `;
 
 exports[`react preset when production should match the snapshot for fixture defaultExportMemo.jsx 1`] = `
-"var REACT_ELEMENT_TYPE;
-
-function _jsx(type, props, key, children) { if (!REACT_ELEMENT_TYPE) { REACT_ELEMENT_TYPE = typeof Symbol === \\"function\\" && Symbol[\\"for\\"] && Symbol[\\"for\\"](\\"react.element\\") || 0xeac7; } var defaultProps = type && type.defaultProps; var childrenLength = arguments.length - 3; if (!props && childrenLength !== 0) { props = { children: void 0 }; } if (childrenLength === 1) { props.children = children; } else if (childrenLength > 1) { var childArray = new Array(childrenLength); for (var i = 0; i < childrenLength; i++) { childArray[i] = arguments[i + 3]; } props.children = childArray; } if (props && defaultProps) { for (var propName in defaultProps) { if (props[propName] === void 0) { props[propName] = defaultProps[propName]; } } } else if (!props) { props = defaultProps || {}; } return { $$typeof: REACT_ELEMENT_TYPE, type: type, key: key === undefined ? null : '' + key, ref: null, props: props, _owner: null }; }
-
+"import { jsx as _jsx } from \\"react/jsx-runtime\\";
 import React, { memo } from 'react';
 
-var _ref = /*#__PURE__*/_jsx(\\"h1\\", {}, void 0, \\"test\\");
+var _ref = /*#__PURE__*/_jsx(\\"h1\\", {
+  children: \\"test\\"
+});
 
 export default /*#__PURE__*/memo(() => _ref);"
 `;
 
 exports[`react preset when production should match the snapshot for fixture memoPassedIn.jsx 1`] = `
-"var REACT_ELEMENT_TYPE;
-
-function _jsx(type, props, key, children) { if (!REACT_ELEMENT_TYPE) { REACT_ELEMENT_TYPE = typeof Symbol === \\"function\\" && Symbol[\\"for\\"] && Symbol[\\"for\\"](\\"react.element\\") || 0xeac7; } var defaultProps = type && type.defaultProps; var childrenLength = arguments.length - 3; if (!props && childrenLength !== 0) { props = { children: void 0 }; } if (childrenLength === 1) { props.children = children; } else if (childrenLength > 1) { var childArray = new Array(childrenLength); for (var i = 0; i < childrenLength; i++) { childArray[i] = arguments[i + 3]; } props.children = childArray; } if (props && defaultProps) { for (var propName in defaultProps) { if (props[propName] === void 0) { props[propName] = defaultProps[propName]; } } } else if (!props) { props = defaultProps || {}; } return { $$typeof: REACT_ELEMENT_TYPE, type: type, key: key === undefined ? null : '' + key, ref: null, props: props, _owner: null }; }
-
+"import { jsx as _jsx } from \\"react/jsx-runtime\\";
 import React, { memo } from 'react';
 
-var _ref = /*#__PURE__*/_jsx(\\"h1\\", {}, void 0, \\"test\\");
+var _ref = /*#__PURE__*/_jsx(\\"h1\\", {
+  children: \\"test\\"
+});
 
 export const Test = withData( /*#__PURE__*/memo(() => _ref));"
 `;
 
 exports[`react preset when production should match the snapshot for fixture memoWithDestructure.jsx 1`] = `
-"var REACT_ELEMENT_TYPE;
-
-function _jsx(type, props, key, children) { if (!REACT_ELEMENT_TYPE) { REACT_ELEMENT_TYPE = typeof Symbol === \\"function\\" && Symbol[\\"for\\"] && Symbol[\\"for\\"](\\"react.element\\") || 0xeac7; } var defaultProps = type && type.defaultProps; var childrenLength = arguments.length - 3; if (!props && childrenLength !== 0) { props = { children: void 0 }; } if (childrenLength === 1) { props.children = children; } else if (childrenLength > 1) { var childArray = new Array(childrenLength); for (var i = 0; i < childrenLength; i++) { childArray[i] = arguments[i + 3]; } props.children = childArray; } if (props && defaultProps) { for (var propName in defaultProps) { if (props[propName] === void 0) { props[propName] = defaultProps[propName]; } } } else if (!props) { props = defaultProps || {}; } return { $$typeof: REACT_ELEMENT_TYPE, type: type, key: key === undefined ? null : '' + key, ref: null, props: props, _owner: null }; }
-
+"import { jsx as _jsx } from \\"react/jsx-runtime\\";
 import { memo } from 'react';
 
-var _ref = /*#__PURE__*/_jsx(\\"h1\\", {}, void 0, \\"test\\");
+var _ref = /*#__PURE__*/_jsx(\\"h1\\", {
+  children: \\"test\\"
+});
 
 const TestMemo = /*#__PURE__*/memo(() => _ref);"
 `;
 
 exports[`react preset when production should match the snapshot for fixture standardReact.jsx 1`] = `
-"var REACT_ELEMENT_TYPE;
-
-function _jsx(type, props, key, children) { if (!REACT_ELEMENT_TYPE) { REACT_ELEMENT_TYPE = typeof Symbol === \\"function\\" && Symbol[\\"for\\"] && Symbol[\\"for\\"](\\"react.element\\") || 0xeac7; } var defaultProps = type && type.defaultProps; var childrenLength = arguments.length - 3; if (!props && childrenLength !== 0) { props = { children: void 0 }; } if (childrenLength === 1) { props.children = children; } else if (childrenLength > 1) { var childArray = new Array(childrenLength); for (var i = 0; i < childrenLength; i++) { childArray[i] = arguments[i + 3]; } props.children = childArray; } if (props && defaultProps) { for (var propName in defaultProps) { if (props[propName] === void 0) { props[propName] = defaultProps[propName]; } } } else if (!props) { props = defaultProps || {}; } return { $$typeof: REACT_ELEMENT_TYPE, type: type, key: key === undefined ? null : '' + key, ref: null, props: props, _owner: null }; }
-
+"import { jsx as _jsx } from \\"react/jsx-runtime\\";
+import { jsxs as _jsxs } from \\"react/jsx-runtime\\";
 import React, { memo } from 'react';
 
 class GreetSomeone extends React.Component {
   render() {
-    return /*#__PURE__*/_jsx(\\"div\\", {}, void 0, this.props.greeting, \\" \\", this.props.subject, \\"!\\");
+    return /*#__PURE__*/_jsxs(\\"div\\", {
+      children: [this.props.greeting, \\" \\", this.props.subject, \\"!\\"]
+    });
   }
 
 }
 
 var _ref = /*#__PURE__*/_jsx(\\"label\\", {
-  htmlFor: \\"greeting\\"
-}, void 0, \\"Greeting: \\");
+  htmlFor: \\"greeting\\",
+  children: \\"Greeting: \\"
+});
 
 function App() {
   const [greeting, setGreeting] = React.useState('HELLO');
@@ -124,29 +125,36 @@ function App() {
     setGreeting(newGreeting);
   }
 
-  return /*#__PURE__*/_jsx(\\"form\\", {}, void 0, /*#__PURE__*/_jsx(\\"div\\", {}, void 0, _ref, /*#__PURE__*/_jsx(\\"input\\", {
-    id: \\"greeting\\",
-    onChange: handleGreetingChange,
-    value: greeting
-  })), /*#__PURE__*/_jsx(\\"div\\", {}, void 0, /*#__PURE__*/_jsx(GreetSomeone, {
-    greeting: greeting,
-    subject: \\"Nancy\\"
-  })));
+  return /*#__PURE__*/_jsxs(\\"form\\", {
+    children: [/*#__PURE__*/_jsxs(\\"div\\", {
+      children: [_ref, /*#__PURE__*/_jsx(\\"input\\", {
+        id: \\"greeting\\",
+        onChange: handleGreetingChange,
+        value: greeting
+      })]
+    }), /*#__PURE__*/_jsx(\\"div\\", {
+      children: /*#__PURE__*/_jsx(GreetSomeone, {
+        greeting: greeting,
+        subject: \\"Nancy\\"
+      })
+    })]
+  });
 }
 
-var _ref2 = /*#__PURE__*/_jsx(\\"h1\\", {}, void 0, \\"test\\");
+var _ref2 = /*#__PURE__*/_jsx(\\"h1\\", {
+  children: \\"test\\"
+});
 
 const MemoTest = /*#__PURE__*/memo(() => _ref2);"
 `;
 
 exports[`react preset when production should match the snapshot for fixture usingReactMemo.jsx 1`] = `
-"var REACT_ELEMENT_TYPE;
-
-function _jsx(type, props, key, children) { if (!REACT_ELEMENT_TYPE) { REACT_ELEMENT_TYPE = typeof Symbol === \\"function\\" && Symbol[\\"for\\"] && Symbol[\\"for\\"](\\"react.element\\") || 0xeac7; } var defaultProps = type && type.defaultProps; var childrenLength = arguments.length - 3; if (!props && childrenLength !== 0) { props = { children: void 0 }; } if (childrenLength === 1) { props.children = children; } else if (childrenLength > 1) { var childArray = new Array(childrenLength); for (var i = 0; i < childrenLength; i++) { childArray[i] = arguments[i + 3]; } props.children = childArray; } if (props && defaultProps) { for (var propName in defaultProps) { if (props[propName] === void 0) { props[propName] = defaultProps[propName]; } } } else if (!props) { props = defaultProps || {}; } return { $$typeof: REACT_ELEMENT_TYPE, type: type, key: key === undefined ? null : '' + key, ref: null, props: props, _owner: null }; }
-
+"import { jsx as _jsx } from \\"react/jsx-runtime\\";
 import React from 'react';
 
-var _ref = /*#__PURE__*/_jsx(\\"h1\\", {}, void 0, \\"test\\");
+var _ref = /*#__PURE__*/_jsx(\\"h1\\", {
+  children: \\"test\\"
+});
 
 export const TestMemo = /*#__PURE__*/React.memo(() => _ref);"
 `;

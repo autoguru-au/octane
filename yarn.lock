@@ -1453,14 +1453,6 @@
   dependencies:
     "@babel/helper-plugin-utils" "^7.10.1"
 
-"@babel/plugin-transform-react-inline-elements@^7.12.1":
-  version "7.12.1"
-  resolved "https://registry.yarnpkg.com/@babel/plugin-transform-react-inline-elements/-/plugin-transform-react-inline-elements-7.12.1.tgz#f7d507200923adbbdacb107feec7ad09cefae631"
-  integrity sha512-9ZuH22V68nUyLkhSJYKBqQr10d/gqmyAEeffpGXh3cRkETDUVDaY5PgX/dg8id419KoyWc5VCwsCgJVmxxAk3g==
-  dependencies:
-    "@babel/helper-builder-react-jsx" "^7.10.4"
-    "@babel/helper-plugin-utils" "^7.10.4"
-
 "@babel/plugin-transform-react-jsx-development@^7.12.1":
   version "7.12.1"
   resolved "https://registry.yarnpkg.com/@babel/plugin-transform-react-jsx-development/-/plugin-transform-react-jsx-development-7.12.1.tgz#0b8f8cd531dcf7991f1e5f2c10a2a4f1cfc78e36"
