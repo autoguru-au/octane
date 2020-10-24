@@ -1,5 +1,11 @@
 # @autoguru/eslint-plugin
 
+## 1.1.3
+
+### Patch Changes
+
+-   f1dd447: The react-in-scope rule is now mute
+
 ## 1.1.2
 
 ### Patch Changes
