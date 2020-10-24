@@ -20,7 +20,7 @@ const getConsumerHtmlTemplate = (guruConfig: GuruConfig) => {
 			return filePath;
 		}
 	} finally {
-		return undefined;
+		return;
 	}
 };
 

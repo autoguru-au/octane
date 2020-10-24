@@ -12,5 +12,7 @@ overrides:
       extends:
           - 'plugin:@autoguru/typescript'
       parser: '@typescript-eslint/parser'
+      rules:
+          '@typescript-eslint/ban-ts-ignore': 'off'
       parserOptions:
           tsconfigRootDir: './packages/utilities/'
