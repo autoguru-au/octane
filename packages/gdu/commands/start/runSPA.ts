@@ -13,15 +13,19 @@ import { getProjectName, GuruConfig } from '../../lib/config';
 import { PROJECT_ROOT } from '../../lib/roots';
 import { getHooks } from '../../utils/hooks';
 
-const getConsumerHtmlTemplate = (guruConfig: GuruConfig) => {
+const getConsumerHtmlTemplate = (
+	guruConfig: GuruConfig,
+): string | undefined => {
 	try {
 		const filePath = join(guruConfig.__configPath, '/template.html');
 		if (existsSync(filePath)) {
 			return filePath;
 		}
 	} finally {
-		return;
 	}
+
+	// @ts-ignore
+	return;
 };
 
 const localhost = '0.0.0.0';
