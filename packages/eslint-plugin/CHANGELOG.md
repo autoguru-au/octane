@@ -1,5 +1,11 @@
 # @autoguru/eslint-plugin
 
+## 1.1.2
+
+### Patch Changes
+
+-   4260eb3: Bumps all deps
+
 ## 1.1.1
 
 ### Patch Changes

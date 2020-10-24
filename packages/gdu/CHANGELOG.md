@@ -1,5 +1,13 @@
 # gdu
 
+## 2.1.2
+
+### Patch Changes
+
+-   4260eb3: Bumps deps and publishes new peerDeeps ranges
+-   Updated dependencies [4260eb3]
+    -   @autoguru/babel-preset@1.0.98
+
 ## 2.1.1
 
 ### Patch Changes
