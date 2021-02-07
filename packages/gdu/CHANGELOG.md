@@ -1,5 +1,11 @@
 # gdu
 
+## 2.1.3
+
+### Patch Changes
+
+-   d016ff6: Adds in an intersection observer polyfill
+
 ## 2.1.2
 
 ### Patch Changes
