@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`react preset when production should match the snapshot for fixture asFunction.jsx 1`] = `
-"import { jsx as _jsx } from \\"react/jsx-runtime\\";
-import React, { memo } from 'react';
+"import React, { memo } from 'react';
+import { jsx as _jsx } from \\"react/jsx-runtime\\";
 
 var _ref = /*#__PURE__*/_jsx(\\"h1\\", {
   children: \\"test\\"
@@ -22,8 +22,8 @@ export const Test2 = /*#__PURE__*/memo(function Named() {
 `;
 
 exports[`react preset when production should match the snapshot for fixture conditionalMemo.jsx 1`] = `
-"import { jsx as _jsx } from \\"react/jsx-runtime\\";
-import React, { memo } from 'react';
+"import React, { memo } from 'react';
+import { jsx as _jsx } from \\"react/jsx-runtime\\";
 
 var _ref = /*#__PURE__*/_jsx(\\"h1\\", {
   children: \\"test a\\"
@@ -37,8 +37,8 @@ export const Test = something ? /*#__PURE__*/memo(() => _ref) : /*#__PURE__*/mem
 `;
 
 exports[`react preset when production should match the snapshot for fixture deepMemo.jsx 1`] = `
-"import { jsx as _jsx } from \\"react/jsx-runtime\\";
-import React, { memo } from 'react';
+"import React, { memo } from 'react';
+import { jsx as _jsx } from \\"react/jsx-runtime\\";
 
 const test = () => {
   return factory(someProp => {
@@ -65,8 +65,8 @@ const test2 = () => {
 `;
 
 exports[`react preset when production should match the snapshot for fixture defaultExportMemo.jsx 1`] = `
-"import { jsx as _jsx } from \\"react/jsx-runtime\\";
-import React, { memo } from 'react';
+"import React, { memo } from 'react';
+import { jsx as _jsx } from \\"react/jsx-runtime\\";
 
 var _ref = /*#__PURE__*/_jsx(\\"h1\\", {
   children: \\"test\\"
@@ -76,8 +76,8 @@ export default /*#__PURE__*/memo(() => _ref);"
 `;
 
 exports[`react preset when production should match the snapshot for fixture memoPassedIn.jsx 1`] = `
-"import { jsx as _jsx } from \\"react/jsx-runtime\\";
-import React, { memo } from 'react';
+"import React, { memo } from 'react';
+import { jsx as _jsx } from \\"react/jsx-runtime\\";
 
 var _ref = /*#__PURE__*/_jsx(\\"h1\\", {
   children: \\"test\\"
@@ -87,8 +87,8 @@ export const Test = withData( /*#__PURE__*/memo(() => _ref));"
 `;
 
 exports[`react preset when production should match the snapshot for fixture memoWithDestructure.jsx 1`] = `
-"import { jsx as _jsx } from \\"react/jsx-runtime\\";
-import { memo } from 'react';
+"import { memo } from 'react';
+import { jsx as _jsx } from \\"react/jsx-runtime\\";
 
 var _ref = /*#__PURE__*/_jsx(\\"h1\\", {
   children: \\"test\\"
@@ -98,9 +98,9 @@ const TestMemo = /*#__PURE__*/memo(() => _ref);"
 `;
 
 exports[`react preset when production should match the snapshot for fixture standardReact.jsx 1`] = `
-"import { jsx as _jsx } from \\"react/jsx-runtime\\";
+"import React, { memo } from 'react';
 import { jsxs as _jsxs } from \\"react/jsx-runtime\\";
-import React, { memo } from 'react';
+import { jsx as _jsx } from \\"react/jsx-runtime\\";
 
 class GreetSomeone extends React.Component {
   render() {
@@ -149,8 +149,8 @@ const MemoTest = /*#__PURE__*/memo(() => _ref2);"
 `;
 
 exports[`react preset when production should match the snapshot for fixture usingReactMemo.jsx 1`] = `
-"import { jsx as _jsx } from \\"react/jsx-runtime\\";
-import React from 'react';
+"import React from 'react';
+import { jsx as _jsx } from \\"react/jsx-runtime\\";
 
 var _ref = /*#__PURE__*/_jsx(\\"h1\\", {
   children: \\"test\\"
