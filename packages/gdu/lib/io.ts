@@ -1,3 +1,4 @@
+import { diary } from 'diary';
 import { writeFile } from 'fs';
 import { dirname, join, relative } from 'path';
 import { promisify } from 'util';
@@ -6,7 +7,7 @@ import mkdirp from 'mkdirp';
 
 import { PROJECT_ROOT } from './roots';
 
-const debug = require('debug')('gdu:io');
+const { debug } = diary('gdu:io');
 
 export const mkdirpAsync = mkdirp;
 

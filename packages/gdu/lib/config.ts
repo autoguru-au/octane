@@ -1,9 +1,10 @@
+import { diary } from 'diary';
 import { isAbsolute, join } from 'path';
 
 import { requireFromCaller } from './resolve';
 import { PROJECT_ROOT } from './roots';
 
-const debug = require('debug')('gdu:config');
+const { debug } = diary('gdu:config');
 
 const readCache = new Map();
 

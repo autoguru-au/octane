@@ -1,7 +1,6 @@
-import { join } from 'path';
-
 import browsers from 'browserslist-config-autoguru';
-import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import { getClientStyleLoader } from 'next/dist/build/webpack/config/blocks/css/loaders/client';
+import { join } from 'path';
 import TreatPlugin from 'treat/webpack-plugin';
 import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
 import { Configuration, DefinePlugin } from 'webpack';
@@ -51,55 +50,55 @@ export const createNextJSConfig = () => {
 							new TreatPlugin({
 								outputCSS: !nextConfig.isServer,
 								outputLoaders: [
-									!isDev &&
-										!nextConfig.isServer && {
-											loader: MiniCssExtractPlugin.loader,
-										},
-									isDev &&
-										!nextConfig.isServer && {
-											loader: require.resolve(
-												'style-loader',
-											),
-										},
-								].filter(Boolean),
+									!nextConfig.isServer
+										? getClientStyleLoader({
+												isDevelopment: isDev,
+												assetPrefix:
+													nextConfig.config
+														.assetPrefix,
+										  })
+										: '',
+								],
 								minify: !isDev,
 								browsers,
 							}),
 						);
 
-						console.assert(
-							compiler.options.module.rules[0].use.loader ===
-								'next-babel-loader',
-							'Module rules [0] isnt next-babel-loader',
+						const oldLoader = compiler.options.module.rules[0];
+
+						const babelConfig = hooks.babelConfig.call(
+							require('./babel.config')(guruConfig),
 						);
 
-						const origBabel = compiler.options.module.rules[0];
+						// Have to rip out react-refresh due to treat
+						let use = oldLoader.use;
+						if (Array.isArray(use)) {
+							use = use[1];
+						}
+						use.options = {
+							...use.options,
+							hasReactRefresh: false,
+							overrides: [babelConfig],
+						};
 
 						compiler.options.module.rules[0] = {
-							...origBabel,
-							include: [...origBabel.include, ...ourCodePaths],
+							...oldLoader,
+							include: [...oldLoader.include, ...ourCodePaths],
 							exclude(path) {
-								const orig = origBabel?.exclude(path);
-
+								const orig =
+									oldLoader === null || oldLoader === void 0
+										? void 0
+										: oldLoader.exclude(path);
 								return orig
 									? !ourCodePaths.some((r) => {
 											if (r instanceof RegExp) {
 												return r.test(path);
 											}
-
 											return path.includes(r);
 									  })
 									: false;
 							},
-							use: {
-								loader: require.resolve('babel-loader'),
-								options: {
-									babelrc: false,
-									...hooks.babelConfig.call(
-										require('./babel.config')(guruConfig),
-									),
-								},
-							},
+							use,
 						};
 					}
 				})(),

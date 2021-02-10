@@ -18,6 +18,7 @@
 		"@babel/plugin-proposal-object-rest-spread": "^7.12.13",
 		"@babel/plugin-proposal-optional-chaining": "^7.12.13",
 		"@babel/plugin-syntax-dynamic-import": "^7.7.4",
+		"@babel/plugin-transform-classes": "^7.12.13",
 		"@babel/plugin-transform-react-constant-elements": "^7.12.13",
 		"@babel/plugin-transform-runtime": "^7.12.15",
 		"@babel/plugin-transform-spread": "^7.12.13",

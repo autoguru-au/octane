@@ -1,3 +1,4 @@
+import { diary } from 'diary';
 import { existsSync } from 'fs';
 import { join } from 'path';
 
@@ -9,7 +10,7 @@ import { configure } from '../lib/configure';
 import { mkdirpAsync, writeFileMap } from '../lib/io';
 import { PROJECT_ROOT } from '../lib/roots';
 
-const debug = require('debug')('gdu:commands:scaffold');
+const { debug } = diary('gdu:commands:scaffold');
 
 const availableTypes = ['ssr', 'spa'];
 

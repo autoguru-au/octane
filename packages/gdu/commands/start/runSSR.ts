@@ -1,11 +1,12 @@
 import { createLogger } from '@autoguru/utilities';
+import { diary } from 'diary';
 import { blue, cyan, dim } from 'kleur';
 
 import { run } from '../../config/ssr/server';
 import { isEnvProduction } from '../../lib/misc';
 import { getHooks } from '../../utils/hooks';
 
-const debug = require('debug')('gdu:commands:start:ssr');
+const { debug } = diary('gdu:commands:start:ssr');
 
 const log = createLogger('server');
 

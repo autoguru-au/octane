@@ -12,7 +12,7 @@ module.exports = function autoGuruReactPreset(api, options = {}) {
 				{
 					useBuiltIns: true,
 					development: dev,
-					runtime: 'automatic',
+					runtime: 'classic',
 				},
 			],
 		],

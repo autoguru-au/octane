@@ -1,3 +1,4 @@
+import { diary } from 'diary';
 import { join } from 'path';
 
 import ensureGitignore from 'ensure-gitignore';
@@ -7,7 +8,7 @@ import { getGuruConfig } from './config';
 import { writeFileMap } from './io';
 import { projectInfo } from './terminal';
 
-const debug = require('debug')('gdu:configure');
+const { debug } = diary('gdu:configure');
 
 const WRAP_BANNER = (extra) =>
 	`/** THIS FILE IS GENERATED, ALL CHANGES WILL NOT PERSIST **/\n${extra}`;

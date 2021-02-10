@@ -1,9 +1,10 @@
+import { diary } from 'diary';
 import { banner } from '../../lib/banner';
 import { getGuruConfig, GuruConfig } from '../../lib/config';
 import { isEnvProduction } from '../../lib/misc';
 import { PROJECT_ROOT } from '../../lib/roots';
 
-const debug = require('debug')('gdu:commands:start');
+const { debug } = diary('gdu:commands:start');
 
 export default async ({ port: incomingPort, env: configEnvironment }) => {
 	debug('running action with %O', { port: incomingPort });

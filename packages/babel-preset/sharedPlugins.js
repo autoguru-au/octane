@@ -28,6 +28,7 @@ module.exports = function autoGuruSharedPlugins() {
 			{ loose: false },
 		],
 		[require.resolve('@babel/plugin-transform-spread'), { loose: false }],
+		[require.resolve('@babel/plugin-transform-classes'), { loose: true }],
 		require.resolve('babel-plugin-dev-expression'),
 	];
 };
