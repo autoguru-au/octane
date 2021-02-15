@@ -27,12 +27,12 @@
 		"@babel/preset-react": "^7.12.13",
 		"@babel/runtime-corejs3": "^7.12.13",
 		"babel-plugin-dev-expression": "^0.2.2",
-		"babel-plugin-macros": "^2.8.0",
+		"babel-plugin-macros": "^3.0.1",
 		"babel-plugin-transform-react-remove-prop-types": "^0.4.24"
 	},
 	"devDependencies": {
 		"@autoguru/jest-preset": "*",
-		"@babel/core": "^7.12.13"
+		"@babel/core": "^7.12.16"
 	},
 	"peerDependencies": {
 		"@babel/core": "^7.7.5"
