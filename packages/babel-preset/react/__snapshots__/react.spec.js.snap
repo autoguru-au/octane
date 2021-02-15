@@ -2,19 +2,14 @@
 
 exports[`react preset when production should match the snapshot for fixture asFunction.jsx 1`] = `
 "import React, { memo } from 'react';
-import { jsx as _jsx } from \\"react/jsx-runtime\\";
 
-var _ref = /*#__PURE__*/_jsx(\\"h1\\", {
-  children: \\"test\\"
-});
+var _ref = /*#__PURE__*/React.createElement(\\"h1\\", null, \\"test\\");
 
 export const Test = /*#__PURE__*/memo(function () {
   return _ref;
 });
 
-var _ref2 = /*#__PURE__*/_jsx(\\"h1\\", {
-  children: \\"test\\"
-});
+var _ref2 = /*#__PURE__*/React.createElement(\\"h1\\", null, \\"test\\");
 
 export const Test2 = /*#__PURE__*/memo(function Named() {
   return _ref2;
@@ -23,28 +18,20 @@ export const Test2 = /*#__PURE__*/memo(function Named() {
 
 exports[`react preset when production should match the snapshot for fixture conditionalMemo.jsx 1`] = `
 "import React, { memo } from 'react';
-import { jsx as _jsx } from \\"react/jsx-runtime\\";
 
-var _ref = /*#__PURE__*/_jsx(\\"h1\\", {
-  children: \\"test a\\"
-});
+var _ref = /*#__PURE__*/React.createElement(\\"h1\\", null, \\"test a\\");
 
-var _ref2 = /*#__PURE__*/_jsx(\\"h1\\", {
-  children: \\"test b\\"
-});
+var _ref2 = /*#__PURE__*/React.createElement(\\"h1\\", null, \\"test b\\");
 
 export const Test = something ? /*#__PURE__*/memo(() => _ref) : /*#__PURE__*/memo(() => _ref2);"
 `;
 
 exports[`react preset when production should match the snapshot for fixture deepMemo.jsx 1`] = `
 "import React, { memo } from 'react';
-import { jsx as _jsx } from \\"react/jsx-runtime\\";
 
 const test = () => {
   return factory(someProp => {
-    var _ref = /*#__PURE__*/_jsx(\\"h1\\", {
-      children: someProp
-    });
+    var _ref = /*#__PURE__*/React.createElement(\\"h1\\", null, someProp);
 
     return /*#__PURE__*/memo(() => _ref);
   });
@@ -52,9 +39,7 @@ const test = () => {
 
 const test2 = () => {
   return factory(someProp => {
-    var _ref2 = /*#__PURE__*/_jsx(\\"h1\\", {
-      children: someProp
-    });
+    var _ref2 = /*#__PURE__*/React.createElement(\\"h1\\", null, someProp);
 
     const WrappedFn = () => _ref2;
 
@@ -66,55 +51,41 @@ const test2 = () => {
 
 exports[`react preset when production should match the snapshot for fixture defaultExportMemo.jsx 1`] = `
 "import React, { memo } from 'react';
-import { jsx as _jsx } from \\"react/jsx-runtime\\";
 
-var _ref = /*#__PURE__*/_jsx(\\"h1\\", {
-  children: \\"test\\"
-});
+var _ref = /*#__PURE__*/React.createElement(\\"h1\\", null, \\"test\\");
 
 export default /*#__PURE__*/memo(() => _ref);"
 `;
 
 exports[`react preset when production should match the snapshot for fixture memoPassedIn.jsx 1`] = `
 "import React, { memo } from 'react';
-import { jsx as _jsx } from \\"react/jsx-runtime\\";
 
-var _ref = /*#__PURE__*/_jsx(\\"h1\\", {
-  children: \\"test\\"
-});
+var _ref = /*#__PURE__*/React.createElement(\\"h1\\", null, \\"test\\");
 
 export const Test = withData( /*#__PURE__*/memo(() => _ref));"
 `;
 
 exports[`react preset when production should match the snapshot for fixture memoWithDestructure.jsx 1`] = `
 "import { memo } from 'react';
-import { jsx as _jsx } from \\"react/jsx-runtime\\";
 
-var _ref = /*#__PURE__*/_jsx(\\"h1\\", {
-  children: \\"test\\"
-});
+var _ref = /*#__PURE__*/React.createElement(\\"h1\\", null, \\"test\\");
 
 const TestMemo = /*#__PURE__*/memo(() => _ref);"
 `;
 
 exports[`react preset when production should match the snapshot for fixture standardReact.jsx 1`] = `
 "import React, { memo } from 'react';
-import { jsxs as _jsxs } from \\"react/jsx-runtime\\";
-import { jsx as _jsx } from \\"react/jsx-runtime\\";
 
 class GreetSomeone extends React.Component {
   render() {
-    return /*#__PURE__*/_jsxs(\\"div\\", {
-      children: [this.props.greeting, \\" \\", this.props.subject, \\"!\\"]
-    });
+    return /*#__PURE__*/React.createElement(\\"div\\", null, this.props.greeting, \\" \\", this.props.subject, \\"!\\");
   }
 
 }
 
-var _ref = /*#__PURE__*/_jsx(\\"label\\", {
-  htmlFor: \\"greeting\\",
-  children: \\"Greeting: \\"
-});
+var _ref = /*#__PURE__*/React.createElement(\\"label\\", {
+  htmlFor: \\"greeting\\"
+}, \\"Greeting: \\");
 
 function App() {
   const [greeting, setGreeting] = React.useState('HELLO');
@@ -125,36 +96,25 @@ function App() {
     setGreeting(newGreeting);
   }
 
-  return /*#__PURE__*/_jsxs(\\"form\\", {
-    children: [/*#__PURE__*/_jsxs(\\"div\\", {
-      children: [_ref, /*#__PURE__*/_jsx(\\"input\\", {
-        id: \\"greeting\\",
-        onChange: handleGreetingChange,
-        value: greeting
-      })]
-    }), /*#__PURE__*/_jsx(\\"div\\", {
-      children: /*#__PURE__*/_jsx(GreetSomeone, {
-        greeting: greeting,
-        subject: \\"Nancy\\"
-      })
-    })]
-  });
+  return /*#__PURE__*/React.createElement(\\"form\\", null, /*#__PURE__*/React.createElement(\\"div\\", null, _ref, /*#__PURE__*/React.createElement(\\"input\\", {
+    id: \\"greeting\\",
+    onChange: handleGreetingChange,
+    value: greeting
+  })), /*#__PURE__*/React.createElement(\\"div\\", null, /*#__PURE__*/React.createElement(GreetSomeone, {
+    greeting: greeting,
+    subject: \\"Nancy\\"
+  })));
 }
 
-var _ref2 = /*#__PURE__*/_jsx(\\"h1\\", {
-  children: \\"test\\"
-});
+var _ref2 = /*#__PURE__*/React.createElement(\\"h1\\", null, \\"test\\");
 
 const MemoTest = /*#__PURE__*/memo(() => _ref2);"
 `;
 
 exports[`react preset when production should match the snapshot for fixture usingReactMemo.jsx 1`] = `
 "import React from 'react';
-import { jsx as _jsx } from \\"react/jsx-runtime\\";
 
-var _ref = /*#__PURE__*/_jsx(\\"h1\\", {
-  children: \\"test\\"
-});
+var _ref = /*#__PURE__*/React.createElement(\\"h1\\", null, \\"test\\");
 
 export const TestMemo = /*#__PURE__*/React.memo(() => _ref);"
 `;

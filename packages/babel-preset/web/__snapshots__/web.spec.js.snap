@@ -11,6 +11,8 @@ require(\\"core-js/modules/es.promise.js\\");
 
 require(\\"core-js/modules/web.dom-collections.iterator.js\\");
 
+var _createClass2 = _interopRequireDefault(require(\\"@babel/runtime/helpers/createClass\\"));
+
 var _defineProperty2 = _interopRequireDefault(require(\\"@babel/runtime/helpers/defineProperty\\"));
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
@@ -19,16 +21,19 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 const myVar = new Map([]);
 
-class TestClass {
-  constructor() {
+let TestClass = /*#__PURE__*/function () {
+  function TestClass() {
     (0, _defineProperty2.default)(this, \\"prop\\", 'prop');
   }
 
-  get getterProp() {
-    return 'getter prop';
-  }
-
-}
+  (0, _createClass2.default)(TestClass, [{
+    key: \\"getterProp\\",
+    get: function get() {
+      return 'getter prop';
+    }
+  }]);
+  return TestClass;
+}();
 
 (0, _defineProperty2.default)(TestClass, \\"staticProp\\", 'static prop');
 const objectA = {
@@ -65,6 +70,7 @@ import _Object$getOwnPropertyDescriptors from \\"@babel/runtime-corejs2/core-js/
 import _Object$getOwnPropertyDescriptor from \\"@babel/runtime-corejs2/core-js/object/get-own-property-descriptor\\";
 import _Object$getOwnPropertySymbols from \\"@babel/runtime-corejs2/core-js/object/get-own-property-symbols\\";
 import _Object$keys from \\"@babel/runtime-corejs2/core-js/object/keys\\";
+import _createClass from \\"@babel/runtime-corejs2/helpers/createClass\\";
 import _defineProperty from \\"@babel/runtime-corejs2/helpers/defineProperty\\";
 import _Map from \\"@babel/runtime-corejs2/core-js/map\\";
 
@@ -74,16 +80,20 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 const myVar = new _Map([]);
 
-class TestClass {
-  constructor() {
+let TestClass = /*#__PURE__*/function () {
+  function TestClass() {
     _defineProperty(this, \\"prop\\", 'prop');
   }
 
-  get getterProp() {
-    return 'getter prop';
-  }
+  _createClass(TestClass, [{
+    key: \\"getterProp\\",
+    get: function get() {
+      return 'getter prop';
+    }
+  }]);
 
-}
+  return TestClass;
+}();
 
 _defineProperty(TestClass, \\"staticProp\\", 'static prop');
 
@@ -138,6 +148,7 @@ exports[`web preset should match the snapshot 1`] = `
 import \\"core-js/modules/es.array.iterator.js\\";
 import \\"core-js/modules/es.promise.js\\";
 import \\"core-js/modules/web.dom-collections.iterator.js\\";
+import _createClass from \\"@babel/runtime/helpers/createClass\\";
 import _defineProperty from \\"@babel/runtime/helpers/defineProperty\\";
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
@@ -146,16 +157,20 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 const myVar = new Map([]);
 
-class TestClass {
-  constructor() {
+let TestClass = /*#__PURE__*/function () {
+  function TestClass() {
     _defineProperty(this, \\"prop\\", 'prop');
   }
 
-  get getterProp() {
-    return 'getter prop';
-  }
+  _createClass(TestClass, [{
+    key: \\"getterProp\\",
+    get: function get() {
+      return 'getter prop';
+    }
+  }]);
 
-}
+  return TestClass;
+}();
 
 _defineProperty(TestClass, \\"staticProp\\", 'static prop');
 
