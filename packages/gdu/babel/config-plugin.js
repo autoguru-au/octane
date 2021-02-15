@@ -1,19 +1,3 @@
-/*
-import React from 'react';
-import * as config from 'gdu/config';
-import { api, auth, url as url2 } from 'gdu/config';
-
-~~ OUT
-
-import React from 'react';
-const config = global.GDU_CONFIG();
-const {
-  api: api,
-  auth: auth,
-  url: url2
-} = global.GDU_GLOBAL();
-*/
-
 const { declare } = require('@babel/helper-plugin-utils');
 
 module.exports = declare(function ({ types: t, assertVersion }) {
