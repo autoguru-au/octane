@@ -1,5 +1,12 @@
 # gdu
 
+## 2.2.1
+
+### Patch Changes
+
+-   5990714: Process all node_modules through babel as well
+-   ea885c9: Upgrades treat to latest
+
 ## 2.2.0
 
 ### Minor Changes
