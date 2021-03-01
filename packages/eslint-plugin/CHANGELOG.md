@@ -1,5 +1,11 @@
 # @autoguru/eslint-plugin
 
+## 1.1.4
+
+### Patch Changes
+
+-   919e4a0: Upgraded all dev and prod deps
+
 ## 1.1.3
 
 ### Patch Changes

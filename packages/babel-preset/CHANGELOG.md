@@ -1,5 +1,16 @@
 # @autoguru/babel-preset
 
+## 1.1.0
+
+### Minor Changes
+
+-   941261e: Supporst new classes thing with node as well as some react changes
+    for nextjs integration
+
+### Patch Changes
+
+-   919e4a0: Upgraded all dev and prod deps
+
 ## 1.0.98
 
 ### Patch Changes

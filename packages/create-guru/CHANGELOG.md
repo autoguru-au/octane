@@ -1,5 +1,16 @@
 # create-guru
 
+## 2.2.0
+
+### Patch Changes
+
+-   919e4a0: Upgraded all dev and prod deps
+-   Updated dependencies [941261e]
+-   Updated dependencies [68ae99c]
+-   Updated dependencies [919e4a0]
+-   Updated dependencies [00da6cc]
+    -   gdu@2.2.0
+
 ## 2.1.2
 
 ### Patch Changes

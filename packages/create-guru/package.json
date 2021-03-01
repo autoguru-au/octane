@@ -1,6 +1,6 @@
 {
 	"name": "create-guru",
-	"version": "2.1.2",
+	"version": "2.2.0",
 	"private": false,
 	"description": "Create a GDU project",
 	"homepage": "https://github.com/autoguru-au/octane/tree/master/packages/create-guru#readme",
@@ -10,7 +10,7 @@
 		"create-guru": "./index.js"
 	},
 	"dependencies": {
-		"gdu": "^2.1.2",
+		"gdu": "^2.2.0",
 		"mri": "^1.1.6"
 	},
 	"scripts": {
