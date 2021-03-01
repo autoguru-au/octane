@@ -19,7 +19,7 @@ jobs:
           key: ${{ hashFiles('yarn.lock') }}
       - run: yarn install
       - name: Create Release or Publish
-        uses: changesets/action@main
+        uses: changesets/action@master
         with:
           publish: yarn release
         env:
