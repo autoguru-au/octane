@@ -162,36 +162,79 @@ export const makeWebpackConfig = ({ isDevServer = false, name = 'client' }) => {
 					sideEffects: true,
 					use: makeCssLoader({ isServer: false }),
 				},
-				// TODO: Process babel over node_modules
 				{
 					test: /\.(js|mjs|jsx|ts|tsx)$/,
-					include: ourCodePaths,
-					exclude(path) {
-						// TODO: Temp, remove this
-						if (path.includes('@autoguru/utilities')) {
-							return true;
-						}
-
-						const ourCode = ourCodePaths.some((item) => {
-							if (item instanceof RegExp) {
-								return item.test(path);
-							}
-
-							return path.includes(item);
-						});
-
-						return ourCode ? false : path.includes('node_modules');
-					},
-					use: [
+					oneOf: [
+						// our stuff
 						{
-							loader: require.resolve('babel-loader'),
-							options: {
-								babelrc: false,
-								envName: isDev ? 'development' : 'production',
-								...hooks.babelConfig.call(
-									require('../babel.config')(getGuruConfig()),
-								),
+							include: ourCodePaths,
+							exclude(path) {
+								// TODO: Temp, remove this
+								if (path.includes('@autoguru/utilities')) {
+									return true;
+								}
+
+								const ourCode = ourCodePaths.some((item) => {
+									if (item instanceof RegExp) {
+										return item.test(path);
+									}
+
+									return path.includes(item);
+								});
+
+								return ourCode
+									? false
+									: path.includes('node_modules');
 							},
+							use: [
+								{
+									loader: require.resolve('babel-loader'),
+									options: {
+										babelrc: false,
+										envName: isDev
+											? 'development'
+											: 'production',
+										...hooks.babelConfig.call(
+											require('../babel.config')(
+												getGuruConfig(),
+											),
+										),
+									},
+								},
+							],
+						},
+						// node_modules stuff
+						{
+							exclude: /@babel(?:\/|\\{1,2})runtime/,
+							use: [
+								{
+									loader: require.resolve('babel-loader'),
+									options: {
+										babelrc: false,
+										envName: isDev
+											? 'development'
+											: 'production',
+										presets: [
+											[
+												require.resolve(
+													'@babel/preset-env',
+												),
+												{
+													useBuiltIns: false,
+													modules: false,
+													exclude: [
+														'transform-typeof-symbol',
+													],
+													loose: false,
+													shippedProposals: true,
+													spec: true,
+													targets: browsers,
+												},
+											],
+										],
+									},
+								},
+							],
 						},
 					],
 				},
