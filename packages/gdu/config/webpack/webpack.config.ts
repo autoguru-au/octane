@@ -22,7 +22,7 @@ import { getHooks } from '../../utils/hooks';
 
 import { commonLoaders } from './blocks/common';
 import { makeImagesLoader } from './blocks/images';
-import { makeCssLoader, makeSassLoader } from './blocks/styles';
+import { makeCssLoader } from './blocks/styles';
 import { GuruBuildManifest } from './plugins/GuruBuildManifest';
 
 const { branch = 'null', commit = 'null' } = require('env-ci')();
@@ -156,10 +156,6 @@ export const makeWebpackConfig = ({ isDevServer = false, name = 'client' }) => {
 				{
 					test: [/\.gif$/, /\.jpe?g$/, /\.png$/],
 					use: makeImagesLoader(),
-				},
-				{
-					test: /\.scss$/,
-					use: makeSassLoader({ isServer: false }),
 				},
 				{
 					test: /\.css$/,
