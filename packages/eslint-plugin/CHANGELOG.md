@@ -1,5 +1,11 @@
 # @autoguru/eslint-plugin
 
+## 1.1.5
+
+### Patch Changes
+
+-   3827266: Prettier just has itself (no more /react)
+
 ## 1.1.4
 
 ### Patch Changes
