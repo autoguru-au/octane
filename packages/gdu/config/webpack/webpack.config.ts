@@ -6,7 +6,7 @@ import { RuntimeConfigsPlugin } from 'configs-webpack-plugin';
 import bugger from 'debug';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
-import TreatPlugin from 'treat/webpack-plugin';
+import { TreatPlugin } from 'treat/webpack-plugin';
 import { TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
 import { Configuration, DefinePlugin, HashedModuleIdsPlugin } from 'webpack';
 
