@@ -1,5 +1,54 @@
 # gdu
 
+## 2.2.0
+
+### Minor Changes
+
+-   941261e: Supports latest nextjs as well new babel integration
+-   68ae99c: Adds support for React Native to use our config strategy.
+
+    Usage:
+
+    ```js
+    // index.js (the entrypoint)
+    import 'gdu/react-native/config';
+    ```
+
+    ```js
+    // consumer
+    import * as config from 'gdu/config';
+    import { api } from 'gdu/config';
+    import { auth, url as url2 } from 'gdu/config';
+    ```
+
+    ```js
+    // babel.config.js
+
+    module.exports = {
+    	plugins: [
+    		require.resolve('babel-plugin-macros'),
+    		require.resolve('gdu/babel/config-plugin'),
+    	],
+    };
+    ```
+
+    > Make sure you have `babel-plugin-macros` added to your project.
+
+    > _**Note**_ Please only use this for react-native projects, config is
+    > managed via webpack for our browser apps.
+
+-   00da6cc: Removes sass support, we are now treat through-and-through.
+
+### Patch Changes
+
+-   919e4a0: Upgraded all dev and prod deps
+-   Updated dependencies [941261e]
+-   Updated dependencies [919e4a0]
+    -   @autoguru/babel-preset@1.1.0
+    -   browserslist-config-autoguru@1.0.89
+    -   @autoguru/tsconfig@1.0.79
+    -   @autoguru/utilities@1.0.98
+
 ## 2.1.3
 
 ### Patch Changes
