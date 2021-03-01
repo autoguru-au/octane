@@ -10,11 +10,11 @@
 		"build": "echo \"no op\""
 	},
 	"dependencies": {
-		"@commitlint/config-conventional": "^8.2.0"
+		"@commitlint/config-conventional": "^12.0.1"
 	},
 	"devDependencies": {
-		"@commitlint/cli": ">=7.5.0",
-		"@commitlint/core": "^8.2.0"
+		"@commitlint/cli": ">=12.0.1",
+		"@commitlint/core": "^12.0.1"
 	},
 	"peerDependencies": {
 		"@commitlint/cli": ">=7.5.0"

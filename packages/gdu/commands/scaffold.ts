@@ -1,7 +1,7 @@
-import { diary } from 'diary';
 import { existsSync } from 'fs';
 import { join } from 'path';
 
+import { diary } from 'diary';
 import { green } from 'kleur';
 import dedent from 'ts-dedent';
 

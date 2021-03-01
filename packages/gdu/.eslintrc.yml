@@ -9,7 +9,7 @@ rules:
     no-await-in-loop: off
 
 overrides:
-    - files: ['{lib,commands,config,utils}/**/*.{ts,tsx}', '*.ts']
+    - files: ['**/*.{ts,tsx}', '*.ts']
       extends:
           - 'plugin:@autoguru/typescript'
       rules:

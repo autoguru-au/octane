@@ -34,7 +34,7 @@ export const run = async () => {
 	const { pageChecker, dynamicRoutes } = app.router;
 
 	server.use(async (req, res, next) => {
-		const start = new Date().getTime();
+		const start = Date.now();
 
 		const incomingPath = req.originalUrl;
 
@@ -46,7 +46,7 @@ export const run = async () => {
 
 		isPageWeCareAbout &&
 			logger.info('response', {
-				processingTime: new Date().getTime() - start,
+				processingTime: Date.now() - start,
 				responseHeaders: Object.fromEntries(
 					Object.entries(res.getHeaders()),
 				),

@@ -1,6 +1,6 @@
-import { diary } from 'diary';
 import { join } from 'path';
 
+import { diary } from 'diary';
 import ensureGitignore from 'ensure-gitignore';
 import dedent from 'ts-dedent';
 

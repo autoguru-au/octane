@@ -73,21 +73,20 @@ export const runSPA = async (
 
 					htmlWebpackHooks.alterAssetTags.tap('guru', (cfg) => {
 						if (thisEnvChunk) {
-							thisEnvChunk.files
+							for (const file of thisEnvChunk.files
 								.reverse()
-								.filter((file) => file.endsWith('.js'))
-								.forEach((file) => {
-									cfg.assetTags.scripts.unshift({
-										tagName: 'script',
-										voidTag: false,
-										attributes: {
-											src: `${
-												compilation.options.output
-													.publicPath || ''
-											}${file}`,
-										},
-									});
+								.filter((file) => file.endsWith('.js'))) {
+								cfg.assetTags.scripts.unshift({
+									tagName: 'script',
+									voidTag: false,
+									attributes: {
+										src: `${
+											compilation.options.output
+												.publicPath || ''
+										}${file}`,
+									},
 								});
+							}
 						}
 
 						return cfg;

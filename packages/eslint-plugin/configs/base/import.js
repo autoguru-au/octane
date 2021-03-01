@@ -1,5 +1,5 @@
 module.exports = {
-	extends: ['plugin:import/errors', 'plugin:import/warnings'],
+	extends: ['plugin:import/errors'],
 
 	rules: {
 		'import/order': [
@@ -39,5 +39,7 @@ module.exports = {
 		'import/no-duplicates': 'error',
 
 		'unicorn/import-style': 'off',
+
+		'import/namespace': 'off', // breaks??
 	},
 };

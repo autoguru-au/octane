@@ -1,9 +1,8 @@
+const { default: template } = require('@babel/template');
 const { createMacro, MacroError } = require('babel-plugin-macros');
 const {
 	getConsumerRuntimeConfig,
 } = require('gdu/dist/lib/getConsumerRuntimeConfig');
-
-const { default: template } = require('@babel/template');
 
 const configs = [...getConsumerRuntimeConfig()];
 const env = process.env.APP_ENV;

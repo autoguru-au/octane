@@ -5,7 +5,7 @@ const { transformFileAsync } = require('@babel/core');
 const fixtures = join(__dirname, 'fixtures');
 
 describe('react preset', () => {
-	readdirSync(fixtures).forEach((file) => {
+	for (const file of readdirSync(fixtures)) {
 		describe('when production', () => {
 			beforeEach(() => {
 				process.env.NODE_ENV = 'production';
@@ -41,5 +41,5 @@ describe('react preset', () => {
 				expect(code).toMatchSnapshot();
 			});
 		});
-	});
+	}
 });

@@ -1,6 +1,6 @@
 import { join } from 'path';
-import { diary } from 'diary';
 
+import { diary } from 'diary';
 import getYarnWorkspaceRoot from 'find-yarn-workspace-root';
 
 const { debug } = diary('gdu:roots');

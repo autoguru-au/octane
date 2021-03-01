@@ -9,7 +9,7 @@ module.exports = declare(function ({ types: t, assertVersion }) {
 		visitor: {
 			ImportDeclaration(path) {
 				if (path.node.source.value === 'react') {
-					path.node.specifiers.forEach((item) => {
+					for (const item of path.node.specifiers) {
 						if (
 							t.isImportDefaultSpecifier(item) ||
 							t.isImportSpecifier(item)
@@ -36,7 +36,7 @@ module.exports = declare(function ({ types: t, assertVersion }) {
 								bindings.forEach(assignNameFor(t));
 							}
 						}
-					});
+					}
 				}
 			},
 		},

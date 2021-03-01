@@ -24,5 +24,9 @@ module.exports = {
 		'unicorn/prevent-abbreviations': 'off',
 		'unicorn/no-null': 'off',
 		'unicorn/no-reduce': 'off',
+		'unicorn/no-array-reduce': 'off',
+		'unicorn/no-array-for-each': 'off',
+		'unicorn/no-array-push-push': 'off',
+		'unicorn/prefer-spread': 'warn',
 	},
 };

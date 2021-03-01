@@ -28,12 +28,12 @@ export class GuruBuildManifest {
 				(configs, chunks) => {
 					configChunks.clear();
 
-					configs.forEach((config, idx) => {
+					for (const [idx, config] of configs.entries()) {
 						configChunks.set(config.name, {
 							config,
 							chunk: chunks[idx],
 						});
-					});
+					}
 				},
 			);
 		});

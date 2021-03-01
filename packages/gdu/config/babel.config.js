@@ -12,10 +12,10 @@ module.exports = (guruConfig) => {
 		));
 
 		const deps = new Set();
-		Object.keys(packageJson.devDependencies).forEach((item) =>
-			deps.add(item),
-		);
-		Object.keys(packageJson.dependencies).forEach((item) => deps.add(item));
+		for (const item of Object.keys(packageJson.devDependencies))
+			deps.add(item);
+		for (const item of Object.keys(packageJson.dependencies))
+			deps.add(item);
 
 		if (deps.has('react-relay')) {
 			hasRelay = true;
