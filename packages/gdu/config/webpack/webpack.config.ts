@@ -108,12 +108,19 @@ export const makeWebpackConfig = ({ isDevServer = false, name = 'client' }) => {
 			minimize: !isDev,
 			concatenateModules: !isDev,
 			splitChunks: {
-				chunks: 'all',
-				maxInitialRequests: 25,
+				maxAsyncRequests: Infinity,
+				maxInitialRequests: Infinity,
 				minSize: 20000,
+				chunks: 'all',
 				cacheGroups: {
 					default: false,
-					// For React + Relay
+					vendors: false,
+					lib: {
+						test: /(?!.*gdu)[\\/]node_modules[\\/]/,
+						priority: 30,
+						minChunks: 1,
+						reuseExistingChunk: true,
+					},
 					framework: {
 						chunks: 'all',
 						name: 'framework',
@@ -123,9 +130,9 @@ export const makeWebpackConfig = ({ isDevServer = false, name = 'client' }) => {
 					},
 					// For things that are shared by at least 2+ chunks.
 					common: {
-						// TODO: Create hashed names here
-						priority: 10,
+						name: 'common',
 						minChunks: 2,
+						priority: 20,
 						reuseExistingChunk: true,
 					},
 					// AutoGuru related assets here
