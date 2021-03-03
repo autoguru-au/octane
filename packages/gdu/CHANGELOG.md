@@ -1,5 +1,11 @@
 # gdu
 
+## 2.2.2
+
+### Patch Changes
+
+-   3078dbf: Correctly split the chunks such that gdu is included with main
+
 ## 2.2.1
 
 ### Patch Changes
