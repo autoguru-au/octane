@@ -1,5 +1,11 @@
 # gdu
 
+## 3.0.0
+
+### Major Changes
+
+-   41b6042: Uses named webpack chunks
+
 ## 2.2.2
 
 ### Patch Changes
