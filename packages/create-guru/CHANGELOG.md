@@ -1,5 +1,12 @@
 # create-guru
 
+## 3.0.0
+
+### Patch Changes
+
+-   Updated dependencies [41b6042]
+    -   gdu@3.0.0
+
 ## 2.2.0
 
 ### Patch Changes
