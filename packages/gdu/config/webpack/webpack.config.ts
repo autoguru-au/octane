@@ -144,6 +144,7 @@ export const makeWebpackConfig = ({ isDevServer = false, name = 'client' }) => {
 					},
 				},
 			},
+			namedModules: true,
 			runtimeChunk: {
 				name: 'runtime',
 			},
