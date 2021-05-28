@@ -1,5 +1,13 @@
 # gdu
 
+## 3.0.1
+
+### Patch Changes
+
+-   cdace6e: graphql-schema command expects endpointConfig url to be the
+    complete url to the schema
+-   cdace6e: graphql-schema command respects endpointConfig's http method
+
 ## 3.0.0
 
 ### Major Changes
