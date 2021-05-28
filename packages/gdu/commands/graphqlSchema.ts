@@ -26,7 +26,8 @@ export default async (options) => {
 		throw new TypeError(`Endpoint ${options.endpoint} doesnt exist`);
 	}
 
-	const response = await fetch(endpointConfig.url + '/schema', {
+	const response = await fetch(endpointConfig.url, {
+		method: endpointConfig.method,
 		headers: endpointConfig.headers,
 	});
 
