@@ -108,15 +108,15 @@ export const makeWebpackConfig = ({ isDevServer = false, name = 'client' }) => {
 			minimize: !isDev,
 			concatenateModules: !isDev,
 			splitChunks: {
-				maxAsyncRequests: Infinity,
-				maxInitialRequests: Infinity,
+				maxAsyncRequests: Number.POSITIVE_INFINITY,
+				maxInitialRequests: Number.POSITIVE_INFINITY,
 				minSize: 20000,
 				chunks: 'all',
 				cacheGroups: {
 					default: false,
 					vendors: false,
 					lib: {
-						test: /(?!.*gdu)[\\/]node_modules[\\/]/,
+						test: /(?!.*gdu)[/\\]node_modules[/\\]/,
 						priority: 30,
 						minChunks: 1,
 						reuseExistingChunk: true,
