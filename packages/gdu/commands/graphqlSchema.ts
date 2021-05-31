@@ -9,7 +9,23 @@ interface EndpointExtension extends GraphQLConfigExtension {
 	url: string;
 	method: 'GET' | 'POST';
 	headers: Record<string, string>;
+	schemaNormaliserPatterns: Array<{ pattern: string; replacer: string }>;
 }
+
+const normalise = (
+	patterns: EndpointExtension['schemaNormaliserPatterns'],
+	rawSchema: string,
+) =>
+	Array.isArray(patterns) && typeof rawSchema === 'string'
+		? patterns.reduce(
+				(schema, normaliser) =>
+					schema.replace(
+						new RegExp(normaliser.pattern, 'g'),
+						normaliser.replacer,
+					),
+				rawSchema,
+		  )
+		: rawSchema;
 
 export default async (options) => {
 	const graphQLConfig = await loadConfig({
@@ -32,7 +48,13 @@ export default async (options) => {
 	});
 
 	if (response?.ok || response?.body) {
-		await writeFileAsync(config.schema as string, await response.text());
+		await writeFileAsync(
+			config.schema as string,
+			normalise(
+				endpointConfig.schemaNormaliserPatterns,
+				await response.text(),
+			),
+		);
 	}
 
 	console.log('~> Schema has been checked, and is ready to use! ✅️');
