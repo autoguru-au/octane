@@ -9,7 +9,7 @@ interface EndpointExtension extends GraphQLConfigExtension {
 	url: string;
 	method: 'GET' | 'POST';
 	headers: Record<string, string>;
-	schemaNormaliserPatterns: Array<{ pattern: string; replacer: string }>;
+	schemaNormaliserPatterns: Array<{ pattern: string; flags?: string; replacer: string }>;
 }
 
 const normalise = (
@@ -20,7 +20,7 @@ const normalise = (
 		? patterns.reduce(
 				(schema, normaliser) =>
 					schema.replace(
-						new RegExp(normaliser.pattern, 'g'),
+						new RegExp(normaliser.pattern, normaliser.flags),
 						normaliser.replacer,
 					),
 				rawSchema,
