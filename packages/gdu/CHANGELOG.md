@@ -1,5 +1,13 @@
 # gdu
 
+## 3.1.0
+
+### Minor Changes
+
+-   7917b5d: graphql config endpoint gets support for optional schema
+    normalisers patterns
+-   4f954f8: graphql config endpoint normaliser pattern gets optional flag
+
 ## 3.0.1
 
 ### Patch Changes
