@@ -8,15 +8,17 @@
 
 ## Usage
 
-The project is maintained as a monorepo which composes a wide array of npm packages, each package has it's own readme that document its own usage.
+The project is maintained as a monorepo which composes a wide array of npm packages, each package has it's own readme
+that document its own usage.
 
 ### Index
 
 | package |     |
 | ------- | --- |
-{{#each packages}}
-| [`{{this.name}}`]({{this.folder}}) | [![npm version](http://img.shields.io/npm/v/{{this.name}}.svg?style=flat-square)](https://npmjs.org/package/{{this.name}} 'View {{this.name}} on npm') |
-{{/each}}
+
+{{#each packages}} | [`{{this.name}}`]({{this.folder}})
+| [![npm version](http://img.shields.io/npm/v/{{this.name}}.svg?style=flat-square)](https://npmjs.org/package/{{this.name}} 'View {{this.name}} on npm')
+| {{/each}}
 
 ## License
 

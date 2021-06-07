@@ -1,5 +1,5 @@
 process.env.NODE_ENV = 'production';
-
+/* eslint-disable unicorn/prefer-module */
 const { transformAsync } = require('@babel/core');
 
 const fixture = `
@@ -7,7 +7,7 @@ const myVar = new Map([]);
 class TestClass {
 	static staticProp = 'static prop';
 	prop = 'prop';
-	
+
 	get getterProp() {
 		return 'getter prop';
 	}
@@ -21,7 +21,7 @@ const objectB = {...objectA, c: 'c', [d]: 'd'};
 console.log(objectB?.d);
 
 function nullCoal(test) {
-	const thing = this 
+	const thing = this
 	return test ?? "thing";
 }
 `;

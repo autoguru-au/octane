@@ -50,5 +50,5 @@ module.exports = {
 -   `@autoguru/babel-preset/react` is for React based projects, including
     transformations for JSX. Also hoists `FunctionComponents` to the root, where
     it can. See
-    [@babel/plugin-transform-react-constant-elements](https://babeljs.io/docs/en/babel-plugin-transform-react-constant-elements).
-    You can use this alongside `@autoguru/babel-preset/web`.
+    [@babel/plugin-transform-react-constant-elements](https://babeljs.io/docs/en/babel-plugin-transform-react-constant-elements)
+    . You can use this alongside `@autoguru/babel-preset/web`.

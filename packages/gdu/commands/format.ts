@@ -3,7 +3,7 @@ import { cyan } from 'kleur';
 
 import { resolvePathFromCaller } from '../lib/resolve';
 import { GDU_ROOT, PROJECT_ROOT } from '../lib/roots';
-
+/* eslint-disable unicorn/prefer-module */
 export default (options) => {
 	console.log(`${cyan('Formatting with prettier...')}`);
 

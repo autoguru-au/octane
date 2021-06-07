@@ -9,7 +9,11 @@ interface EndpointExtension extends GraphQLConfigExtension {
 	url: string;
 	method: 'GET' | 'POST';
 	headers: Record<string, string>;
-	schemaNormaliserPatterns: Array<{ pattern: string; flags?: string; replacer: string }>;
+	schemaNormaliserPatterns: Array<{
+		pattern: string;
+		flags?: string;
+		replacer: string;
+	}>;
 }
 
 const normalise = (

@@ -1,5 +1,4 @@
-import { dirname } from 'path';
-
+import { dirname } from 'node:path';
 import findRecursive from 'recursive-readdir';
 
 import { PROJECT_ROOT } from './roots';

@@ -1,12 +1,11 @@
-import { join } from 'path';
-
 import { dim, green } from 'kleur';
+import { join } from 'node:path';
 import dedent from 'ts-dedent';
 
 import { getGuruConfig } from './config';
 import { GDU_ROOT } from './roots';
 import { columnLoop } from './terminal';
-
+/* eslint-disable unicorn/prefer-module */
 export const banner = (verb: string, app_name?: string) => {
 	const projectName =
 		app_name ??

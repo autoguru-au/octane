@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/prefer-module */
 const { declare } = require('@babel/helper-plugin-utils');
 
 module.exports = declare(function ({ types: t, assertVersion }) {

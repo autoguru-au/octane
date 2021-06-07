@@ -1,7 +1,7 @@
-import { join } from 'path';
-
+/* eslint-disable unicorn/prefer-prototype-methods */
 import browsers from 'browserslist-config-autoguru';
 import { getClientStyleLoader } from 'next/dist/build/webpack/config/blocks/css/loaders/client';
+import { join } from 'node:path';
 import { TreatPlugin } from 'treat/webpack-plugin';
 import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
 import { Configuration, DefinePlugin } from 'webpack';
@@ -68,6 +68,7 @@ export const createNextJSConfig = () => {
 						const oldLoader = compiler.options.module.rules[0];
 
 						const babelConfig = hooks.babelConfig.call(
+							// eslint-disable-next-line unicorn/prefer-module
 							require('./babel.config')(guruConfig),
 						);
 

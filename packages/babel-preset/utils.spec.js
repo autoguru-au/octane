@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/prefer-module */
 const { isDevelopment } = require('./utils');
 
 describe('utils', () => {

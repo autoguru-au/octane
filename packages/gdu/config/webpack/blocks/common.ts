@@ -1,5 +1,5 @@
 import { RuleSetRule } from 'webpack';
-
+/* eslint-disable unicorn/prefer-module */
 export const commonLoaders = () => {
 	return {
 		before: [
