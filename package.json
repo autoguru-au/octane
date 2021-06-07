@@ -21,6 +21,7 @@
 		"@types/node": "^14.14.31",
 		"browserslist-config-autoguru": "*",
 		"eslint": "^7.28.0",
+		"eslint-plugin-jest": "^24.3.6",
 		"glob": "^7.1.6",
 		"jest": "^26.6.1",
 		"plop": "^2.7.4",
