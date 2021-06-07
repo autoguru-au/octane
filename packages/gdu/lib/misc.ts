@@ -1,14 +1,15 @@
-import { createHash } from 'crypto';
-
 import { red } from 'kleur';
+import { createHash } from 'node:crypto';
 
-export const wrapAction = (handler) => (...args) => {
-	handler(...args).catch((error) => {
-		console.error(red('An error occurred during command running.'));
-		console.error(error);
-		process.exit(1);
-	});
-};
+export const wrapAction =
+	(handler) =>
+	(...args) => {
+		handler(...args).catch((error) => {
+			console.error(red('An error occurred during command running.'));
+			console.error(error);
+			process.exit(1);
+		});
+	};
 
 let prodEnv = process.env.NODE_ENV === 'production';
 

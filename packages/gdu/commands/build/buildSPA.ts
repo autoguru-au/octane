@@ -8,6 +8,7 @@ import { getHooks } from '../../utils/hooks';
 export const buildSPA = async (guruConfig: GuruConfig) => {
 	const hooks = getHooks();
 
+	// eslint-disable-next-line unicorn/prefer-prototype-methods
 	const webpackConfig: Configuration = hooks.webpackConfig.call(
 		makeWebpackConfig({
 			isDevServer: false,

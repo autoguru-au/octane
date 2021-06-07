@@ -3,6 +3,7 @@ function isDevelopment(api) {
 	return env === 'development' || env === 'test';
 }
 
+// eslint-disable-next-line unicorn/prefer-module
 module.exports = {
 	isDevelopment,
 };

@@ -67,7 +67,7 @@
 		"postcss-flexbugs-fixes": "^4.2.1",
 		"postcss-loader": "^3.0.0",
 		"postcss-preset-env": "^6.7.0",
-		"prettier": "^2.2.1",
+		"prettier": "^2.3.1",
 		"recursive-readdir": "^2.2.2",
 		"resolve-url-loader": "^3.1.2",
 		"sade": "^1.7.4",

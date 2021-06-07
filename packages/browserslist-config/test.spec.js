@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/prefer-module */
 const browserslist = require('browserslist');
 
 const config = require('.');

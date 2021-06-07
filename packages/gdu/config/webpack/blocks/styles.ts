@@ -2,7 +2,7 @@ import browsers from 'browserslist-config-autoguru';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
 import { isEnvProduction } from '../../../lib/misc';
-
+/* eslint-disable unicorn/prefer-module */
 export const makeCssLoader = ({ isServer = false }) => {
 	return [
 		isEnvProduction() &&

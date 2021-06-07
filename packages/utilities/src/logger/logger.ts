@@ -15,19 +15,18 @@ export const createLogger = (realm: string) => {
 	};
 };
 
-const createLogThing = (level: Level, realm: string) => (
-	message: string | Error,
-	extra?: object | string | number,
-) => {
-	if (level === 'debug' && process.env.NODE_ENV === 'production') return;
+const createLogThing =
+	(level: Level, realm: string) =>
+	(message: string | Error, extra?: object | string | number) => {
+		if (level === 'debug' && process.env.NODE_ENV === 'production') return;
 
-	printPayload({
-		type: realm,
-		level,
-		message,
-		payload: extra,
-	});
-};
+		printPayload({
+			type: realm,
+			level,
+			message,
+			payload: extra,
+		});
+	};
 
 const printPayload = <T>(payload: Payload<T>) => {
 	const decorated = {

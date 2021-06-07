@@ -1,9 +1,8 @@
-import { writeFile } from 'fs';
-import { dirname, join, relative } from 'path';
-import { promisify } from 'util';
-
 import { diary } from 'diary';
 import mkdirp from 'mkdirp';
+import { writeFile } from 'node:fs';
+import { dirname, join, relative } from 'node:path';
+import { promisify } from 'node:util';
 
 import { PROJECT_ROOT } from './roots';
 

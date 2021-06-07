@@ -1,10 +1,9 @@
-import { join } from 'path';
-
 import browsers from 'browserslist-config-autoguru';
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import { RuntimeConfigsPlugin } from 'configs-webpack-plugin';
 import bugger from 'debug';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import { join } from 'node:path';
 import TerserPlugin from 'terser-webpack-plugin';
 import { TreatPlugin } from 'treat/webpack-plugin';
 import { TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
@@ -25,6 +24,8 @@ import { makeImagesLoader } from './blocks/images';
 import { makeCssLoader } from './blocks/styles';
 import { GuruBuildManifest } from './plugins/GuruBuildManifest';
 
+/* eslint-disable unicorn/prefer-module */
+/* eslint-disable unicorn/prefer-prototype-methods */
 const { branch = 'null', commit = 'null' } = require('env-ci')();
 
 const debug = bugger('gdu:webpack:config');
@@ -50,7 +51,8 @@ const terserOptions = {
 	mangle: { safari10: true },
 };
 
-const frameworkRegex = /(?<!node_modules.*)[/\\]node_modules[/\\](react|react-dom|scheduler|prop-types|use-subscription|relay-runtime|react-relay)[/\\]/;
+const frameworkRegex =
+	/(?<!node_modules.*)[/\\]node_modules[/\\](react|react-dom|scheduler|prop-types|use-subscription|relay-runtime|react-relay)[/\\]/;
 
 export const makeWebpackConfig = ({ isDevServer = false, name = 'client' }) => {
 	const hooks = getHooks();
@@ -110,7 +112,7 @@ export const makeWebpackConfig = ({ isDevServer = false, name = 'client' }) => {
 			splitChunks: {
 				maxAsyncRequests: Number.POSITIVE_INFINITY,
 				maxInitialRequests: Number.POSITIVE_INFINITY,
-				minSize: 20000,
+				minSize: 20_000,
 				chunks: 'all',
 				cacheGroups: {
 					default: false,

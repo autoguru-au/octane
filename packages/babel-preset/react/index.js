@@ -1,5 +1,7 @@
+/* eslint-disable unicorn/prefer-module */
 const { isDevelopment } = require('../utils');
 
+// eslint-disable-next-line unicorn/prefer-module
 module.exports = function autoGuruReactPreset(api, options = {}) {
 	const dev = isDevelopment(api);
 

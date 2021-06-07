@@ -1,9 +1,8 @@
-import { existsSync } from 'fs';
-import { join } from 'path';
-
 import { RuntimeConfigsPlugin } from 'configs-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { blue, bold, cyan, red } from 'kleur';
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
 import dedent from 'ts-dedent';
 import webpack, { Configuration } from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
@@ -12,7 +11,7 @@ import { makeWebpackConfig } from '../../config/webpack/webpack.config';
 import { getProjectName, GuruConfig } from '../../lib/config';
 import { PROJECT_ROOT } from '../../lib/roots';
 import { getHooks } from '../../utils/hooks';
-
+/* eslint-disable unicorn/prefer-module */
 const getConsumerHtmlTemplate = (
 	guruConfig: GuruConfig,
 ): string | undefined => {
@@ -37,6 +36,7 @@ export const runSPA = async (
 	const hooks = getHooks();
 	console.log(`${cyan('Starting dev server...')}`);
 
+	// eslint-disable-next-line unicorn/prefer-prototype-methods
 	const webpackConfig: Configuration = hooks.webpackConfig.call(
 		makeWebpackConfig({
 			isDevServer: true,
@@ -55,9 +55,9 @@ export const runSPA = async (
 		new (class HtmlWebpackPluginConfigAdditionsPlugin {
 			apply(compiler) {
 				compiler.hooks.make.tap('guru', (compilation) => {
-					const htmlWebpackHooks = (HtmlWebpackPlugin as any).getHooks(
-						compilation,
-					) as HtmlWebpackPlugin.Hooks;
+					const htmlWebpackHooks = (
+						HtmlWebpackPlugin as any
+					).getHooks(compilation) as HtmlWebpackPlugin.Hooks;
 
 					let thisEnvChunk;
 
@@ -98,7 +98,7 @@ export const runSPA = async (
 							(data, cb) => {
 								const segs = data.html.split('<body>');
 								data.html =
-									`${segs[0]}<div id="app"></div>` + segs[1];
+									`${segs[0]}<div id='app'></div>` + segs[1];
 								cb(null, data);
 							},
 						);

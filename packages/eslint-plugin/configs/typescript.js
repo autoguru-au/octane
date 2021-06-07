@@ -1,3 +1,4 @@
+// eslint-disable-next-line unicorn/prefer-module
 module.exports = {
 	extends: [
 		'plugin:@typescript-eslint/eslint-recommended',
