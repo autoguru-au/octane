@@ -1,5 +1,13 @@
 # @autoguru/utilities
 
+## 1.1.0
+
+### Minor Changes
+
+-   d80a10b: Unicorn eslint rules: Upgraded to v33
+
+    Prettier: Upgrades to v2.3
+
 ## 1.0.98
 
 ### Patch Changes
