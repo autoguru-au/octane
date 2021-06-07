@@ -1,5 +1,11 @@
 # @autoguru/eslint-plugin
 
+## 1.2.0
+
+### Minor Changes
+
+-   df57e1a: Upgrades eslint packages
+
 ## 1.1.5
 
 ### Patch Changes
