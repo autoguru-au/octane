@@ -1,5 +1,6 @@
+import { isAbsolute, join } from 'path';
+
 import { diary } from 'diary';
-import { isAbsolute, join } from 'node:path';
 
 import { requireFromCaller } from './resolve';
 import { PROJECT_ROOT } from './roots';

@@ -1,9 +1,10 @@
+import { join } from 'path';
+
 import browsers from 'browserslist-config-autoguru';
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import { RuntimeConfigsPlugin } from 'configs-webpack-plugin';
 import bugger from 'debug';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import { join } from 'node:path';
 import TerserPlugin from 'terser-webpack-plugin';
 import { TreatPlugin } from 'treat/webpack-plugin';
 import { TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';

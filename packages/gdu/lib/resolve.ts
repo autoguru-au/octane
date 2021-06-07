@@ -1,5 +1,5 @@
-import module from 'node:module';
-import { join, resolve } from 'node:path';
+import module from 'module';
+import { join, resolve } from 'path';
 
 import { PROJECT_ROOT } from './roots';
 

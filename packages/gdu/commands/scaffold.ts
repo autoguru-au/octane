@@ -1,7 +1,8 @@
+import { existsSync } from 'fs';
+import { join } from 'path';
+
 import { diary } from 'diary';
 import { green } from 'kleur';
-import { existsSync } from 'node:fs';
-import { join } from 'node:path';
 import dedent from 'ts-dedent';
 
 import { banner } from '../lib/banner';

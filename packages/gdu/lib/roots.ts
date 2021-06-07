@@ -1,6 +1,7 @@
+import { join } from 'path';
+
 import { diary } from 'diary';
 import getYarnWorkspaceRoot from 'find-yarn-workspace-root';
-import { join } from 'node:path';
 /* eslint-disable unicorn/prefer-module */
 const { debug } = diary('gdu:roots');
 
