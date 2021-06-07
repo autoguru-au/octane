@@ -1,5 +1,11 @@
 # gdu
 
+## 3.2.1
+
+### Patch Changes
+
+-   e625578: GDU: No longer follows "unicorn/prefer-node-protocol" rule
+
 ## 3.2.0
 
 ### Minor Changes
