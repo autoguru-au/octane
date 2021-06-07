@@ -1,7 +1,8 @@
+import { readFileSync } from 'fs';
+import { join } from 'path';
+
 import deepmerge from 'deepmerge';
 import { loadAll } from 'js-yaml';
-import { readFileSync } from 'node:fs';
-import { join } from 'node:path';
 
 import { CALLING_WORKSPACE_ROOT, PROJECT_ROOT } from './roots';
 

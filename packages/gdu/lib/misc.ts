@@ -1,5 +1,6 @@
+import { createHash } from 'crypto';
+
 import { red } from 'kleur';
-import { createHash } from 'node:crypto';
 
 export const wrapAction =
 	(handler) =>

@@ -1,7 +1,8 @@
 /* eslint-disable unicorn/prefer-prototype-methods */
+import { join } from 'path';
+
 import browsers from 'browserslist-config-autoguru';
 import { getClientStyleLoader } from 'next/dist/build/webpack/config/blocks/css/loaders/client';
-import { join } from 'node:path';
 import { TreatPlugin } from 'treat/webpack-plugin';
 import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
 import { Configuration, DefinePlugin } from 'webpack';

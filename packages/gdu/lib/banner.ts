@@ -1,5 +1,6 @@
+import { join } from 'path';
+
 import { dim, green } from 'kleur';
-import { join } from 'node:path';
 import dedent from 'ts-dedent';
 
 import { getGuruConfig } from './config';

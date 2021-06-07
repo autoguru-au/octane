@@ -1,8 +1,9 @@
+import { existsSync } from 'fs';
+import { join } from 'path';
+
 import { RuntimeConfigsPlugin } from 'configs-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { blue, bold, cyan, red } from 'kleur';
-import { existsSync } from 'node:fs';
-import { join } from 'node:path';
 import dedent from 'ts-dedent';
 import webpack, { Configuration } from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
