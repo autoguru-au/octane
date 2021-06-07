@@ -1,5 +1,20 @@
 # gdu
 
+## 3.2.0
+
+### Minor Changes
+
+-   d80a10b: Unicorn eslint rules: Upgraded to v33
+
+    Prettier: Upgrades to v2.3
+
+### Patch Changes
+
+-   Updated dependencies [d80a10b]
+    -   @autoguru/babel-preset@1.2.0
+    -   browserslist-config-autoguru@1.1.0
+    -   @autoguru/utilities@1.1.0
+
 ## 3.1.0
 
 ### Minor Changes

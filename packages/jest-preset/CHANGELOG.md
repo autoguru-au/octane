@@ -1,5 +1,18 @@
 # @autoguru/jest-preset
 
+## 1.1.0
+
+### Minor Changes
+
+-   d80a10b: Unicorn eslint rules: Upgraded to v33
+
+    Prettier: Upgrades to v2.3
+
+### Patch Changes
+
+-   Updated dependencies [d80a10b]
+    -   @autoguru/babel-preset@1.2.0
+
 ## 1.0.98
 
 ### Patch Changes
