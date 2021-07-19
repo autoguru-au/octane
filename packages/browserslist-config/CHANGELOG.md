@@ -1,5 +1,11 @@
 # browserslist-config-autoguru
 
+## 2.0.0
+
+### Major Changes
+
+-   14e78dc: browserlist config: Gets updates browser versions
+
 ## 1.1.0
 
 ### Minor Changes

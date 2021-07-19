@@ -1,5 +1,16 @@
 # gdu
 
+## 3.3.0
+
+### Minor Changes
+
+-   55153b1: GDU: Upgrades treat to latest version
+
+### Patch Changes
+
+-   Updated dependencies [14e78dc]
+    -   browserslist-config-autoguru@2.0.0
+
 ## 3.2.1
 
 ### Patch Changes
