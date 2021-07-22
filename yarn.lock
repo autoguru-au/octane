@@ -4118,15 +4118,10 @@ caniuse-api@^3.0.0:
     lodash.memoize "^4.1.2"
     lodash.uniq "^4.5.0"
 
-caniuse-lite@^1.0.0, caniuse-lite@^1.0.30000981, caniuse-lite@^1.0.30001093, caniuse-lite@^1.0.30001109, caniuse-lite@^1.0.30001113, caniuse-lite@^1.0.30001154, caniuse-lite@^1.0.30001181:
-  version "1.0.30001192"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001192.tgz#b848ebc0ab230cf313d194a4775a30155d50ae40"
-  integrity sha512-63OrUnwJj5T1rUmoyqYTdRWBqFFxZFlyZnRRjDR8NSUQFB6A+j/uBORU/SyJ5WzDLg4SPiZH40hQCBNdZ/jmAw==
-
-caniuse-lite@^1.0.30001219:
-  version "1.0.30001238"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001238.tgz#e6a8b45455c5de601718736d0242feef0ecdda15"
-  integrity sha512-bZGam2MxEt7YNsa2VwshqWQMwrYs5tR5WZQRYSuFxsBQunWjBuXhN4cS9nV5FFb1Z9y+DoQcQ0COyQbv6A+CKw==
+caniuse-lite@^1.0.0, caniuse-lite@^1.0.30000981, caniuse-lite@^1.0.30001093, caniuse-lite@^1.0.30001109, caniuse-lite@^1.0.30001113, caniuse-lite@^1.0.30001154, caniuse-lite@^1.0.30001181, caniuse-lite@^1.0.30001219:
+  version "1.0.30001246"
+  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001246.tgz"
+  integrity sha512-Tc+ff0Co/nFNbLOrziBXmMVtpt9S2c2Y+Z9Nk9Khj09J+0zR9ejvIW5qkZAErCbOrVODCx/MN+GpB5FNBs5GFA==
 
 capture-exit@^2.0.0:
   version "2.0.0"
@@ -14463,10 +14458,10 @@ traverse@0.6.6:
   resolved "https://registry.yarnpkg.com/traverse/-/traverse-0.6.6.tgz#cbdf560fd7b9af632502fed40f918c157ea97137"
   integrity sha1-y99WD9e5r2MlAv7UD5GMFX6pcTc=
 
-treat@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/treat/-/treat-2.0.1.tgz#ed57ba60b761af20b9740425460bb8b239b21ee5"
-  integrity sha512-nujCBCRC6DNXHd4vmom67kMdeFnEvPjBxKeEmFMQ28qlXk1JLxsydqJk8N8/DIuGO/zNk+uIGHCM3QweSmlnkw==
+treat@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/treat/-/treat-2.0.4.tgz#7ba35cdf639ac2d2239061f6ca09621344f9c58d"
+  integrity sha512-YDeTflrFi+CksIiPMlSrQT0A3nzAu82r2IkTEO1aczluFtVIu0+yJDhPNqSEDDLZ8e61UUQSusfez4phLF68uQ==
   dependencies:
     "@hapi/joi" "^17.1.1"
     "@types/object-hash" "^1.2.0"
