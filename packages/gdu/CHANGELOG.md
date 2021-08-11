@@ -1,5 +1,11 @@
 # gdu
 
+## 4.0.0-next.0
+
+### Major Changes
+
+-   GDU: Upgrades babel
+
 ## 3.3.0
 
 ### Minor Changes
