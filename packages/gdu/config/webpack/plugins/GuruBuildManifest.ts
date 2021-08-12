@@ -84,13 +84,16 @@ export class GuruBuildManifest {
 	}
 }
 
-function makeSource(contents) {
-	return {
-		source() {
-			return Buffer.from(contents);
-		},
-		size() {
-			return Buffer.byteLength(contents);
-		},
-	};
-}
+const makeSource = (contents) => ({
+	source() {
+		return Buffer.from(contents);
+	},
+	size() {
+		return Buffer.byteLength(contents);
+	},
+	updateHash: null,
+	map: null,
+	sourceAndMap: null,
+	buffer: null,
+});
+

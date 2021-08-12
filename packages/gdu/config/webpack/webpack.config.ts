@@ -1,4 +1,4 @@
-import { join } from 'path';
+import { join, resolve } from 'path';
 
 import browsers from 'browserslist-config-autoguru';
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
@@ -8,16 +8,12 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
 import { TreatPlugin } from 'treat/webpack-plugin';
 import { TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
-import { Configuration, DefinePlugin, HashedModuleIdsPlugin } from 'webpack';
+import { Configuration, DefinePlugin } from 'webpack';
 
 import { getGuruConfig, getProjectName } from '../../lib/config';
 import { getConsumerRuntimeConfig } from '../../lib/getConsumerRuntimeConfig';
 import { isEnvProduction } from '../../lib/misc';
-import {
-	CALLING_WORKSPACE_ROOT,
-	GDU_ROOT,
-	PROJECT_ROOT,
-} from '../../lib/roots';
+import { CALLING_WORKSPACE_ROOT, GDU_ROOT, PROJECT_ROOT } from '../../lib/roots';
 import { getHooks } from '../../utils/hooks';
 
 import { commonLoaders } from './blocks/common';
@@ -83,6 +79,15 @@ export const makeWebpackConfig = ({ isDevServer = false, name = 'client' }) => {
 				join(gduEntryPath, '/spa/client.js'),
 			].filter(Boolean),
 		},
+		cache: {
+			type: 'filesystem',
+			cacheLocation: resolve(__dirname, '.build_cache'),
+			buildDependencies: {
+				// This makes all dependencies of this file - build dependencies
+				config: [__filename],
+				// By default webpack and loaders are build dependencies
+			},
+		},
 		devtool: isDev ? 'cheap-module-source-map' : 'source-map',
 		bail: !isDev || !isDevServer,
 		output: {
@@ -92,7 +97,6 @@ export const makeWebpackConfig = ({ isDevServer = false, name = 'client' }) => {
 			chunkFilename: `chunks/${fileMask}.js`,
 			hashFunction: 'sha256',
 			crossOriginLoading: 'anonymous',
-			futureEmitAssets: !isDev,
 			sourceMapFilename: 'sourceMaps/[file].map',
 		},
 		resolve: {
@@ -117,7 +121,7 @@ export const makeWebpackConfig = ({ isDevServer = false, name = 'client' }) => {
 				chunks: 'all',
 				cacheGroups: {
 					default: false,
-					vendors: false,
+					defaultVendors: false,
 					lib: {
 						test: /(?!.*gdu)[/\\]node_modules[/\\]/,
 						priority: 30,
@@ -147,15 +151,13 @@ export const makeWebpackConfig = ({ isDevServer = false, name = 'client' }) => {
 					},
 				},
 			},
-			namedModules: true,
+			moduleIds: isDev ? 'named' : 'deterministic',
 			runtimeChunk: {
 				name: 'runtime',
 			},
 			minimizer: [
 				new TerserPlugin({
-					cache: true,
 					parallel: true,
-					sourceMap: false,
 					terserOptions,
 				}),
 			],
@@ -253,10 +255,6 @@ export const makeWebpackConfig = ({ isDevServer = false, name = 'client' }) => {
 			],
 		},
 		plugins: [
-			!isDev &&
-				new HashedModuleIdsPlugin({
-					hashFunction: 'sha256',
-				}),
 			!isDev && new CleanWebpackPlugin(),
 			new DefinePlugin({
 				'process.browser': JSON.stringify(true),
