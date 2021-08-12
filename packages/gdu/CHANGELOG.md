@@ -1,5 +1,11 @@
 # gdu
 
+## 4.0.0-next.1
+
+### Patch Changes
+
+-   Upgrades webpack dependencies
+
 ## 4.0.0-next.0
 
 ### Major Changes
