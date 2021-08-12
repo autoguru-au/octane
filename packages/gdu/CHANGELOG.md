@@ -1,5 +1,11 @@
 # gdu
 
+## 4.0.0-next.2
+
+### Patch Changes
+
+-   GDU upgrades webpack dependency to v5
+
 ## 4.0.0-next.1
 
 ### Patch Changes

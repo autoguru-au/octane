@@ -1,7 +1,7 @@
 import { existsSync } from 'fs';
 import { join } from 'path';
 
-import { RuntimeConfigsPlugin } from 'configs-webpack-plugin';
+// import { RuntimeConfigsPlugin } from 'configs-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { blue, bold, cyan, red } from 'kleur';
 import dedent from 'ts-dedent';
@@ -32,7 +32,7 @@ const localhost = '0.0.0.0';
 const hosts = ['localhost', localhost];
 export const runSPA = async (
 	guruConfig: GuruConfig,
-	environmentName: string,
+	// environmentName: string,
 ) => {
 	const hooks = getHooks();
 	console.log(`${cyan('Starting dev server...')}`);
@@ -62,7 +62,8 @@ export const runSPA = async (
 
 					let thisEnvChunk;
 
-					RuntimeConfigsPlugin.getHooks(compilation).configChunks.tap(
+					//TODO: Fix this back
+					/*RuntimeConfigsPlugin.getHooks(compilation).configChunks.tap(
 						'guru',
 						(configs, configChunks) => {
 							const idx = configs.findIndex(
@@ -70,7 +71,7 @@ export const runSPA = async (
 							);
 							thisEnvChunk = configChunks[idx];
 						},
-					);
+					);*/
 
 					htmlWebpackHooks.alterAssetTags.tap('guru', (cfg) => {
 						if (thisEnvChunk) {
@@ -86,7 +87,9 @@ export const runSPA = async (
 												.publicPath || ''
 										}${file}`,
 									},
+									meta: {'plugin': 'html-webpack-plugin'}
 								});
+
 							}
 						}
 

@@ -1,4 +1,4 @@
-import { RuntimeConfigsPlugin } from 'configs-webpack-plugin';
+// import { RuntimeConfigsPlugin } from 'configs-webpack-plugin';
 import { Compiler } from 'webpack';
 
 interface EnvironmentFiles {
@@ -22,7 +22,8 @@ export class GuruBuildManifest {
 
 		const configChunks = new Map<string, { chunk: any; config: any }>();
 
-		compiler.hooks.make.tap('BuildManifestPlugin', (compilation) => {
+		//TODO: Fix this back
+		/*compiler.hooks.make.tap('BuildManifestPlugin', (compilation) => {
 			RuntimeConfigsPlugin.getHooks(compilation).configChunks.tap(
 				'guru',
 				(configs, chunks) => {
@@ -36,7 +37,7 @@ export class GuruBuildManifest {
 					}
 				},
 			);
-		});
+		})*/;
 
 		compiler.hooks.emit.tapAsync(
 			'BuildManifestPlugin',
