@@ -1,8 +1,13 @@
-import { join, resolve } from 'path';
+import path, { join, resolve } from 'path';
 
 import browsers from 'browserslist-config-autoguru';
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
-import { RuntimeConfigsPlugin } from 'configs-webpack-plugin';
+// import { RuntimeConfigsPlugin } from 'configs-webpack-plugin';
+// import { getConsumerRuntimeConfig } from '../../lib/getConsumerRuntimeConfig';
+// webpack.config.js
+/* eslint-disable @typescript-eslint/no-var-requires */
+
+import Dotenv from 'dotenv-webpack';
 import bugger from 'debug';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
@@ -11,7 +16,6 @@ import { TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
 import { Configuration, DefinePlugin } from 'webpack';
 
 import { getGuruConfig, getProjectName } from '../../lib/config';
-import { getConsumerRuntimeConfig } from '../../lib/getConsumerRuntimeConfig';
 import { isEnvProduction } from '../../lib/misc';
 import { CALLING_WORKSPACE_ROOT, GDU_ROOT, PROJECT_ROOT } from '../../lib/roots';
 import { getHooks } from '../../utils/hooks';
@@ -285,9 +289,17 @@ export const makeWebpackConfig = ({ isDevServer = false, name = 'client' }) => {
 				browsers,
 			}),
 			!isDev && new GuruBuildManifest(),
-			new RuntimeConfigsPlugin({
+			/*new RuntimeConfigsPlugin({
 				configs: getConsumerRuntimeConfig(),
 				request: 'gdu/config',
+			}),*/
+			// Read defaults
+			new Dotenv({
+				path: path.resolve(PROJECT_ROOT, 'config', '.env.defaults')
+			}),
+			// Read env
+			new Dotenv({
+				path: path.resolve(PROJECT_ROOT, 'config', '.env')
 			}),
 		].filter(Boolean),
 	};

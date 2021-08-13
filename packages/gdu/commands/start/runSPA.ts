@@ -136,20 +136,11 @@ export const runSPA = async (
 	});
 
 	const devServer = new WebpackDevServer(compiler, {
-		contentBase: join(PROJECT_ROOT, 'public'),
-		publicPath: '/',
+		static: join(PROJECT_ROOT, 'public'),
 		host: hosts[0],
 		allowedHosts: hosts,
-		overlay: true,
-		stats: 'errors-only',
-		serveIndex: false,
 		historyApiFallback: true,
 		hot: true,
-		inline: true,
-		watchOptions: {
-			aggregateTimeout: 300,
-			poll: 1000,
-		},
 	});
 
 	devServer.listen(guruConfig.port, localhost, (err) => {

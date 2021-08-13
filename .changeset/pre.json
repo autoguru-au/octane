@@ -14,8 +14,10 @@
     "@autoguru/utilities": "1.1.0"
   },
   "changesets": [
+    "angry-chicken-build",
     "bright-cameras-compare",
     "old-plums-yell",
+    "twenty-mayflies-wash",
     "twenty-planes-pump"
   ]
 }

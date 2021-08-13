@@ -1,5 +1,12 @@
 # gdu
 
+## 4.0.0-next.3
+
+### Patch Changes
+
+-   GDU: Uses dotenv for env variables
+-   Dev server: Removed invalid options
+
 ## 4.0.0-next.2
 
 ### Patch Changes
