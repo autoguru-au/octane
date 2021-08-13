@@ -9,6 +9,7 @@ import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 
 import Dotenv from 'dotenv-webpack';
 import bugger from 'debug';
+import findUp from 'find-up';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
 import { TreatPlugin } from 'treat/webpack-plugin';
@@ -58,6 +59,7 @@ const frameworkRegex =
 export const makeWebpackConfig = ({ isDevServer = false, name = 'client' }) => {
 	const hooks = getHooks();
 	const isDev = !isEnvProduction();
+	const configsDir = findUp.sync('.gdu_config',{type: 'directory'})
 
 	const gduEntryPath = join(GDU_ROOT, 'entry');
 
@@ -295,11 +297,11 @@ export const makeWebpackConfig = ({ isDevServer = false, name = 'client' }) => {
 			}),*/
 			// Read defaults
 			new Dotenv({
-				path: path.resolve(PROJECT_ROOT, 'config', '.env.defaults')
+				path: path.resolve(configsDir, '.env.defaults')
 			}),
 			// Read env
 			new Dotenv({
-				path: path.resolve(PROJECT_ROOT, 'config', '.env')
+				path: path.resolve(configsDir, `.env.${process.env.NODE_ENV || 'dev'}`)
 			}),
 		].filter(Boolean),
 	};

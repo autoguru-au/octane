@@ -1,5 +1,11 @@
 # gdu
 
+## 4.0.0-next.4
+
+### Patch Changes
+
+-   GDU: Fixed config file paths
+
 ## 4.0.0-next.3
 
 ### Patch Changes
