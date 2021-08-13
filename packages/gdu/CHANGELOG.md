@@ -1,5 +1,11 @@
 # gdu
 
+## 4.0.0-next.5
+
+### Patch Changes
+
+-   GDU: Allows app level configs
+
 ## 4.0.0-next.4
 
 ### Patch Changes

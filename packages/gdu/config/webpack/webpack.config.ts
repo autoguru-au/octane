@@ -59,7 +59,10 @@ const frameworkRegex =
 export const makeWebpackConfig = ({ isDevServer = false, name = 'client' }) => {
 	const hooks = getHooks();
 	const isDev = !isEnvProduction();
-	const configsDir = findUp.sync('.gdu_config',{type: 'directory'})
+	const configsDirs = [
+		findUp.sync('.gdu_config',{type: 'directory'}),
+		findUp.sync('.gdu_app_config',{type: 'directory'})
+	].filter(Boolean);
 
 	const gduEntryPath = join(GDU_ROOT, 'entry');
 
@@ -296,13 +299,13 @@ export const makeWebpackConfig = ({ isDevServer = false, name = 'client' }) => {
 				request: 'gdu/config',
 			}),*/
 			// Read defaults
-			new Dotenv({
+			...configsDirs.flatMap(configsDir => [new Dotenv({
 				path: path.resolve(configsDir, '.env.defaults')
-			}),
-			// Read env
-			new Dotenv({
-				path: path.resolve(configsDir, `.env.${process.env.NODE_ENV || 'dev'}`)
-			}),
+			}), // Read env
+				new Dotenv({
+					path: path.resolve(configsDir, `.env.${process.env.NODE_ENV || 'dev'}`)
+				}),
+			]),
 		].filter(Boolean),
 	};
 
