@@ -1,5 +1,12 @@
 # gdu
 
+## 4.0.0-next.6
+
+### Patch Changes
+
+-   GDU: Moves build cache to project root level
+-   GDU uses APP_ENV instead of NODE_ENV for environment configs
+
 ## 4.0.0-next.5
 
 ### Patch Changes

@@ -90,7 +90,7 @@ export const makeWebpackConfig = ({ isDevServer = false, name = 'client' }) => {
 		},
 		cache: {
 			type: 'filesystem',
-			cacheLocation: resolve(__dirname, '.build_cache'),
+			cacheLocation: resolve(PROJECT_ROOT, '.build_cache'),
 			buildDependencies: {
 				// This makes all dependencies of this file - build dependencies
 				config: [__filename],
@@ -303,7 +303,7 @@ export const makeWebpackConfig = ({ isDevServer = false, name = 'client' }) => {
 				path: path.resolve(configsDir, '.env.defaults')
 			}), // Read env
 				new Dotenv({
-					path: path.resolve(configsDir, `.env.${process.env.NODE_ENV || 'dev'}`)
+					path: path.resolve(configsDir, `.env.${process.env.APP_ENV || 'dev'}`)
 				}),
 			]),
 		].filter(Boolean),
