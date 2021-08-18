@@ -23,8 +23,10 @@ export class GuruBuildManifest {
 		const configChunks = new Map<string, { chunk: any; config: any }>();
 
 		//TODO: Fix this back
-		/*compiler.hooks.make.tap('BuildManifestPlugin', (compilation) => {
-			RuntimeConfigsPlugin.getHooks(compilation).configChunks.tap(
+		// @ts-ignore
+		compiler.hooks.make.tap('BuildManifestPlugin', (compilation) => {
+
+			/*RuntimeConfigsPlugin.getHooks(compilation).configChunks.tap(
 				'guru',
 				(configs, chunks) => {
 					configChunks.clear();
@@ -36,8 +38,8 @@ export class GuruBuildManifest {
 						});
 					}
 				},
-			);
-		})*/;
+			);*/
+		});
 
 		compiler.hooks.emit.tapAsync(
 			'BuildManifestPlugin',

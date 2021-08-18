@@ -9,12 +9,12 @@ export const commonLoaders = () => {
 				type: 'javascript/auto',
 			},
 		] as RuleSetRule[],
-		after: [
+		/*after: [
 			{
 				test: /\.yml$/,
 				type: 'javascript/auto',
 				use: require.resolve('js-yaml-loader'),
 			},
-		] as RuleSetRule[],
+		] as RuleSetRule[],*/
 	};
 };

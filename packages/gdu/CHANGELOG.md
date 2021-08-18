@@ -1,5 +1,18 @@
 # gdu
 
+## 4.0.0-next.8
+
+### Major Changes
+
+-   GDU: Applies caching to babel
+-   GDU fixed build commads
+
+## 4.0.0-next.7
+
+### Patch Changes
+
+-   GDU Updated GuruBuildManifest plugin
+
 ## 4.0.0-next.6
 
 ### Patch Changes

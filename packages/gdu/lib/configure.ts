@@ -23,7 +23,8 @@ export const configure = async (app_location) => {
 	const writeFiles = new Map();
 
 	const gitIgnorePatterns = [
-		'dist/',
+		'dist*/',
+		'.build_cache*/',
 		'.cache/',
 		'node_modules/',
 		'coverage/',
