@@ -1,5 +1,11 @@
 # gdu
 
+## 4.0.0-next.9
+
+### Patch Changes
+
+-   GDU: Support vanilla extract
+
 ## 4.0.0-next.8
 
 ### Major Changes
