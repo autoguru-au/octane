@@ -1,8 +1,12 @@
-const { resolve } = require('path');
-const { TreatPlugin } = require('treat/webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+import { resolve} from 'path';
+import { TreatPlugin } from 'treat/webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import NTM from 'next-transpile-modules';
+import { DefinePlugin } from 'webpack';
+import { createVanillaExtractPlugin } from '@vanilla-extract/next-plugin';
 
-const withTM = require('next-transpile-modules')([
+const withVanillaExtract = createVanillaExtractPlugin();
+const withTM = NTM([
 	'@autoguru/overdrive',
 	'@autoguru/icons',
 	'@autoguru/components',
@@ -11,16 +15,12 @@ const withTM = require('next-transpile-modules')([
 	'@autoguru/components',
 	'@popperjs/core',
 ]);
-const { DefinePlugin } = require('webpack');
 
-const { createVanillaExtractPlugin } = require('@vanilla-extract/next-plugin');
-const withVanillaExtract = createVanillaExtractPlugin();
-
-module.exports = withVanillaExtract(
+export const nextJSConfig = withVanillaExtract(
 	withTM({
 		webpack: (
 			defaultConfig,
-			{ buildId, dev, isServer, defaultLoaders, webpack },
+			{ /*buildId, dev, isServer, defaultLoaders, webpack*/ },
 		) => {
 			defaultConfig.plugins.push(
 				new TreatPlugin({

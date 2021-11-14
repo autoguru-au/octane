@@ -1,5 +1,11 @@
 # gdu
 
+## 4.0.0-next.10
+
+### Patch Changes
+
+-   GDU: Uses next cli dev command to start dev server
+
 ## 4.0.0-next.9
 
 ### Patch Changes
