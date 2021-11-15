@@ -1,13 +1,15 @@
-import { createLogger } from '@autoguru/utilities';
+//import { createLogger } from '@autoguru/utilities';
 import polka from 'polka';
 
 import { isEnvProduction } from '../../lib/misc';
 import { requireFromCaller } from '../../lib/resolve';
-import { PROJECT_ROOT } from '../../lib/roots';
+import { /*GDU_ROOT,*/ PROJECT_ROOT } from '../../lib/roots';
 import { getHooks } from '../../utils/hooks';
 import { createNextJSConfig } from '../next.config';
+//import execa from 'execa';
+//import { blue, dim } from 'kleur';
 
-const logger = createLogger('server');
+//const logger = createLogger('server');
 
 const hooks = getHooks();
 
@@ -27,6 +29,20 @@ export const run = async () => {
 		conf: nextJsConfig,
 	});
 
+	console.log(app);
+	console.log(next);
+	/*execa.command(
+		`next dev -p ${port}`,
+		{
+			stdio: 'inherit',
+			cwd: PROJECT_ROOT,
+			localDir: GDU_ROOT,
+		},
+	).then(() => console.log(
+		`${dim('Listening')}: ${blue(`http://localhost:${port}/`)}`,
+	), (error) => {
+		throw error;
+	});
 	const handle = app.getRequestHandler();
 
 	await hooks.nextJSPrepare.promise(app.prepare());
@@ -67,5 +83,5 @@ export const run = async () => {
 
 	server.all('*', (req, res) => handle(req, res));
 
-	await hooks.afterServer.promise(server);
+	await hooks.afterServer.promise(server);*/
 };

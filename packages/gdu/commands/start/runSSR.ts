@@ -23,7 +23,7 @@ export const runNextJS = async (guruConfig) => {
 
 	if (!isEnvProduction()) {
 		//hooks.beforeServer.tap('runner', () => {
-		console.log(`${cyan('Starting dev server...')}`);
+			console.log(`${cyan('Starting dev server...')}`);
 		//});
 		execa.command(
 			`next dev -p ${port}`,
@@ -32,9 +32,9 @@ export const runNextJS = async (guruConfig) => {
 				cwd: PROJECT_ROOT,
 				localDir: GDU_ROOT,
 			},
-		).then(() => console.log(
+		).then(()=> console.log(
 			`${dim('Listening')}: ${blue(`http://localhost:${port}/`)}`,
-		), (error) => {
+		), (error)=> {
 			throw error;
 		});
 
