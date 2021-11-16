@@ -1,15 +1,13 @@
 /* eslint-disable unicorn/prefer-prototype-methods */
 import { PROJECT_ROOT } from '../lib/roots';
-
-import { resolve } from 'path';
+import path, { resolve } from 'path';
 import { DefinePlugin } from 'webpack';
 import { isEnvProduction } from '../lib/misc';
+import Dotenv from 'dotenv-webpack';
 import { createVanillaExtractPlugin } from '@vanilla-extract/next-plugin';
 
-
-import { TreatPlugin } from 'treat/webpack-plugin';
-import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import NTM from 'next-transpile-modules';
+import { getConfigsDirs } from '../utils/configs';
 
 const withVanillaExtract = createVanillaExtractPlugin();
 const withTM = NTM([
@@ -36,24 +34,28 @@ export const createNextJSConfig = () => {
 			webpack: (
 				defaultConfig,
 			) => {
-				defaultConfig.plugins.push(
-					new TreatPlugin({
-						outputLoaders: [MiniCssExtractPlugin.loader],
-						outputCSS: false,
-					}),
-				);
 
 				defaultConfig.plugins.push(
 					new DefinePlugin({
 						__DEV__: isDev, // TODO: Make this real
 					}),
 				);
+
+				getConfigsDirs().flatMap(configsDir => [new Dotenv({
+					path: path.resolve(configsDir, '.env.defaults'),
+				}), // Read env
+					new Dotenv({
+						path: path.resolve(configsDir, `.env.${process.env.APP_ENV || 'dev'}`),
+					}),
+				]).forEach(plugin => defaultConfig.plugins.push(plugin));
+
 				// ONLY ONE COPY OF EACH
 				defaultConfig.resolve.alias['react'] = resolve(
 					PROJECT_ROOT,
 					'../../',
 					'node_modules/react/',
 				);
+
 				defaultConfig.resolve.alias['react-dom'] = resolve(
 					PROJECT_ROOT,
 					'../../',

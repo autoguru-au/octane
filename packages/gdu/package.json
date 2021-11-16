@@ -69,7 +69,6 @@
 		"next-transpile-modules": "^9.0.0",
 		"node-fetch": "^2.6.1",
 		"null-loader": "^4.0.1",
-		"polka": "^0.5.2",
 		"postcss-flexbugs-fixes": "^4.2.1",
 		"postcss-loader": "^3.0.0",
 		"postcss-preset-env": "^6.7.0",
