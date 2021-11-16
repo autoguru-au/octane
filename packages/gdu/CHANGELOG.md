@@ -1,5 +1,11 @@
 # gdu
 
+## 4.0.0-next.11
+
+### Patch Changes
+
+-   Fixes for ssr apps
+
 ## 4.0.0-next.10
 
 ### Patch Changes

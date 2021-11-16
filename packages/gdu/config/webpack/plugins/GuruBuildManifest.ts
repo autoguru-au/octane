@@ -25,7 +25,6 @@ export class GuruBuildManifest {
 		//TODO: Fix this back
 		// @ts-ignore
 		compiler.hooks.make.tap('BuildManifestPlugin', (compilation) => {
-
 			/*RuntimeConfigsPlugin.getHooks(compilation).configChunks.tap(
 				'guru',
 				(configs, chunks) => {
@@ -99,4 +98,3 @@ const makeSource = (contents) => ({
 	sourceAndMap: null,
 	buffer: null,
 });
-

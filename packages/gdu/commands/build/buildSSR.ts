@@ -5,33 +5,34 @@ import { GDU_ROOT, PROJECT_ROOT } from '../../lib/roots';
 import execa from 'execa';
 import { blue, dim } from 'kleur';
 
-
 const logger = createLogger('build');
 export const buildSSR = async (guruConfig: GuruConfig) => {
 	const start = Date.now();
-	execa.command(
-		`next build --profile`,
-		{
+	execa
+		.command(`next build --profile`, {
 			stdio: 'inherit',
 			cwd: PROJECT_ROOT,
 			localDir: GDU_ROOT,
-		},
-	).then((result) => {
-		console.log(
-			`${dim('SUCCESS!')}`,
-			`${dim('Listening')}: ${blue(result?.all)}`,
+		})
+		.then(
+			(result) => {
+				console.log(
+					`${dim('SUCCESS!')}`,
+					`${dim('Listening')}: ${blue(result?.all)}`,
+				);
+			},
+			(error) => {
+				logger.error('response', {
+					processingTime: Date.now() - start,
+					responseHeaders: Object.fromEntries(
+						Object.entries(error.getHeaders()),
+					),
+					url: 'incomingPath',
+					statusCode: error.statusCode,
+				});
+				throw error;
+			},
 		);
-	}, (error) => {
-		logger.error('response', {
-			processingTime: Date.now() - start,
-			responseHeaders: Object.fromEntries(
-				Object.entries(error.getHeaders()),
-			),
-			url: 'incomingPath',
-			statusCode: error.statusCode,
-		});
-		throw error;
-	});
 
 	return {
 		artifactPath: join(guruConfig.outputPath, 'BUILD_ID'),

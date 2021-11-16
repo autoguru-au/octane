@@ -25,7 +25,7 @@ const done = (resolve, reject) => (err, stats) => {
 	resolve();
 };
 
-export const run = async (compiler: Compiler|MultiCompiler) =>
+export const run = async (compiler: Compiler | MultiCompiler) =>
 	new Promise((resolve, reject) => compiler.run(done(resolve, reject)));
 
 export const watch = async (compiler: Compiler) =>

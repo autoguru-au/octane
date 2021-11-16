@@ -38,11 +38,9 @@ export const runSPA = async (
 	console.log(`${cyan('Starting dev server...')}`);
 
 	// eslint-disable-next-line unicorn/prefer-prototype-methods
-	const webpackConfig: Configuration = hooks.webpackConfig.call(
-		webpackConfigs(),
-	).find(({name})=> name === process.env.APP_ENV);
-
-
+	const webpackConfig: Configuration = hooks.webpackConfig
+		.call(webpackConfigs())
+		.find(({ name }) => name === process.env.APP_ENV);
 
 	const consumerHtmlTemplate = getConsumerHtmlTemplate(guruConfig);
 
@@ -87,9 +85,8 @@ export const runSPA = async (
 												.publicPath || ''
 										}${file}`,
 									},
-									meta: {'plugin': 'html-webpack-plugin'}
+									meta: { plugin: 'html-webpack-plugin' },
 								});
-
 							}
 						}
 

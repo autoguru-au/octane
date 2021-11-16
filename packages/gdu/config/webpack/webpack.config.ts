@@ -11,7 +11,11 @@ import { Configuration, DefinePlugin } from 'webpack';
 
 import { getGuruConfig, getProjectName } from '../../lib/config';
 import { isEnvProduction } from '../../lib/misc';
-import { CALLING_WORKSPACE_ROOT, GDU_ROOT, PROJECT_ROOT } from '../../lib/roots';
+import {
+	CALLING_WORKSPACE_ROOT,
+	GDU_ROOT,
+	PROJECT_ROOT,
+} from '../../lib/roots';
 import { getHooks } from '../../utils/hooks';
 
 import { commonLoaders } from './blocks/common';
@@ -48,7 +52,6 @@ const frameworkRegex =
 const hooks = getHooks();
 const isDev = !isEnvProduction();
 
-
 const gduEntryPath = join(GDU_ROOT, 'entry');
 
 const ourCodePaths = [
@@ -57,7 +60,6 @@ const ourCodePaths = [
 	CALLING_WORKSPACE_ROOT && join(CALLING_WORKSPACE_ROOT, 'packages'),
 	/@autoguru[/\\]/,
 ].filter(Boolean);
-
 
 const fileMask = isDev ? '[name]' : '[name]-[contenthash:8]';
 
@@ -166,9 +168,9 @@ const baseOptions: Configuration = {
 						],
 					},
 					{
-						use: [MiniCssExtractPlugin.loader, 'css-loader']
-					}
-				]
+						use: [MiniCssExtractPlugin.loader, 'css-loader'],
+					},
+				],
 			},
 			{
 				test: /\.(js|mjs|jsx|ts|tsx)$/,
@@ -286,21 +288,29 @@ const baseOptions: Configuration = {
 		!isDev && new GuruBuildManifest(),
 
 		// Read defaults
-		...getConfigsDirs().flatMap(configsDir => [new Dotenv({
-			path: path.resolve(configsDir, '.env.defaults'),
-		}), // Read env
+		...getConfigsDirs().flatMap((configsDir) => [
 			new Dotenv({
-				path: path.resolve(configsDir, `.env.${process.env.APP_ENV || 'dev'}`),
+				path: path.resolve(configsDir, '.env.defaults'),
+			}), // Read env
+			new Dotenv({
+				path: path.resolve(
+					configsDir,
+					`.env.${process.env.APP_ENV || 'dev'}`,
+				),
 			}),
 		]),
 	].filter(Boolean),
 };
 
-const buildEnvs = process.env.APP_ENV ? [process.env.APP_ENV] : ['dev', 'uat', 'test', 'preprod', 'prod'];
+const buildEnvs = process.env.APP_ENV
+	? [process.env.APP_ENV]
+	: ['dev', 'uat', 'test', 'preprod', 'prod'];
 
 const { outputPath } = getGuruConfig();
 
-const makeWebpackConfig = (buildEnv: typeof buildEnvs[number]): Configuration => ({
+const makeWebpackConfig = (
+	buildEnv: typeof buildEnvs[number],
+): Configuration => ({
 	name: buildEnv,
 
 	output: {
@@ -315,6 +325,10 @@ const makeWebpackConfig = (buildEnv: typeof buildEnvs[number]): Configuration =>
 	},
 });
 
-const buildConfigs = (): Configuration[] => buildEnvs.map(buildEnv => ({ ...baseOptions, ...makeWebpackConfig(buildEnv) }));
+const buildConfigs = (): Configuration[] =>
+	buildEnvs.map((buildEnv) => ({
+		...baseOptions,
+		...makeWebpackConfig(buildEnv),
+	}));
 
 export default buildConfigs;

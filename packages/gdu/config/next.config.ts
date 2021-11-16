@@ -6,6 +6,8 @@ import { isEnvProduction } from '../lib/misc';
 import Dotenv from 'dotenv-webpack';
 import { createVanillaExtractPlugin } from '@vanilla-extract/next-plugin';
 
+import { TreatPlugin } from 'treat/webpack-plugin';
+import MiniCssExtractPlugin from 'next/dist/compiled/mini-css-extract-plugin';
 import NTM from 'next-transpile-modules';
 import { getConfigsDirs } from '../utils/configs';
 
@@ -31,9 +33,15 @@ export const createNextJSConfig = () => {
 				esmExternals: true,
 				externalDir: true,
 			},
-			webpack: (
-				defaultConfig,
-			) => {
+			webpack: (defaultConfig) => {
+				//defaultConfig.plugins.push(new MiniCssExtractPlugin());
+
+				defaultConfig.plugins.push(
+					new TreatPlugin({
+						outputLoaders: [MiniCssExtractPlugin.loader],
+						outputCSS: false,
+					}),
+				);
 
 				defaultConfig.plugins.push(
 					new DefinePlugin({
@@ -41,13 +49,19 @@ export const createNextJSConfig = () => {
 					}),
 				);
 
-				getConfigsDirs().flatMap(configsDir => [new Dotenv({
-					path: path.resolve(configsDir, '.env.defaults'),
-				}), // Read env
-					new Dotenv({
-						path: path.resolve(configsDir, `.env.${process.env.APP_ENV || 'dev'}`),
-					}),
-				]).forEach(plugin => defaultConfig.plugins.push(plugin));
+				getConfigsDirs()
+					.flatMap((configsDir) => [
+						new Dotenv({
+							path: path.resolve(configsDir, '.env.defaults'),
+						}), // Read env
+						new Dotenv({
+							path: path.resolve(
+								configsDir,
+								`.env.${process.env.APP_ENV || 'dev'}`,
+							),
+						}),
+					])
+					.forEach((plugin) => defaultConfig.plugins.push(plugin));
 
 				// ONLY ONE COPY OF EACH
 				defaultConfig.resolve.alias['react'] = resolve(

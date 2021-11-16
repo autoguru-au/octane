@@ -7,7 +7,7 @@ import { PROJECT_ROOT } from '../../lib/roots';
 
 const { debug } = diary('gdu:commands:start');
 
-export default async ({ port: incomingPort, /*env: configEnvironment*/ }) => {
+export default async ({ port: incomingPort /*env: configEnvironment*/ }) => {
 	debug('running action with %O', { port: incomingPort });
 
 	const { port = incomingPort, ...otherConfig } =
@@ -22,6 +22,6 @@ export default async ({ port: incomingPort, /*env: configEnvironment*/ }) => {
 		await runSSR.runNextJS(resolvedConfig);
 	} else if (resolvedConfig?.type === 'spa') {
 		const runSPA = await import('./runSPA');
-		await runSPA.runSPA(resolvedConfig/*, configEnvironment*/);
+		await runSPA.runSPA(resolvedConfig /*, configEnvironment*/);
 	}
 };
