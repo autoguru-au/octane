@@ -4,57 +4,80 @@ import path, { resolve } from 'path';
 import { DefinePlugin } from 'webpack';
 import { isEnvProduction } from '../lib/misc';
 import Dotenv from 'dotenv-webpack';
-import { createVanillaExtractPlugin } from '@vanilla-extract/next-plugin';
-
-import { TreatPlugin } from 'treat/webpack-plugin';
-import MiniCssExtractPlugin from 'next/dist/compiled/mini-css-extract-plugin';
+//import MiniCssExtractPlugin from 'next/dist/compiled/mini-css-extract-plugin';
 import NTM from 'next-transpile-modules';
 import { getConfigsDirs } from '../utils/configs';
+import { VanillaExtractPlugin } from '@vanilla-extract/webpack-plugin';
+import { getGlobalCssLoader } from 'next/dist/build/webpack/config/blocks/css/loaders';
 
-const withVanillaExtract = createVanillaExtractPlugin();
 const withTM = NTM([
 	'@autoguru/themes',
 	'@autoguru/overdrive',
 	'@autoguru/icons',
 	'@autoguru/components',
+	'@autoguru/fleet',
 	'@autoguru/relay',
 	'@autoguru/auth',
 	'@autoguru/components',
+	'@autoguru/layout',
 	'@popperjs/core',
 ]);
 
 export const createNextJSConfig = () => {
 	const isDev = !isEnvProduction();
 
-	return withVanillaExtract(
-		withTM({
-			reactStrictMode: true,
-			experimental: {
-				esmExternals: true,
-				externalDir: true,
-			},
-			images: {
-				domains: ['cdn.autoguru.com.au'],
-			},
-			webpack: (defaultConfig) => {
-				//defaultConfig.plugins.push(new MiniCssExtractPlugin());
+	return withTM({
+		reactStrictMode: true,
+		experimental: {
+			esmExternals: false,
+			externalDir: false,
+		},
+		images: {
+			domains: ['cdn.autoguru.com.au'],
+		},
+		webpack: (defaultConfig, options) => {
+			//defaultConfig.plugins.push(new MiniCssExtractPlugin());
 
-				defaultConfig.plugins.push(
-					new TreatPlugin({
-						outputLoaders: [MiniCssExtractPlugin.loader],
-						outputCSS: false,
-					}),
-				);
+			const { dev, isServer } = options;
 
-				defaultConfig.plugins.push(
-					new DefinePlugin({
-						__DEV__: isDev, // TODO: Make this real
-					}),
-				);
+			const cssRules = defaultConfig.module.rules.find(
+				(rule) =>
+					Array.isArray(rule.oneOf) &&
+					rule.oneOf.some(
+						({ test }) =>
+							typeof test === 'object' &&
+							typeof test.test === 'function' &&
+							test.test('filename.css'),
+					),
+			).oneOf;
 
-				getConfigsDirs()
-					.flatMap((configsDir) => [
-						new Dotenv({
+			cssRules.unshift({
+				test: /\.vanilla\.css$/i,
+				sideEffects: true,
+				use: getGlobalCssLoader(
+					// @ts-ignore
+					{
+						assetPrefix: defaultConfig.assetPrefix,
+						isClient: !isServer,
+						isServer,
+						isDevelopment: dev,
+						future: defaultConfig.future || {},
+						experimental: defaultConfig.experimental || {},
+					},
+					[],
+					[],
+				),
+			});
+
+			defaultConfig.plugins.push(
+				new DefinePlugin({
+					__DEV__: isDev, // TODO: Make this real
+				}),
+			);
+
+			getConfigsDirs()
+				.flatMap((configsDir) => [
+					new Dotenv({
 							path: path.resolve(configsDir, '.env.defaults'),
 						}), // Read env
 						new Dotenv({
@@ -73,29 +96,26 @@ export const createNextJSConfig = () => {
 					'node_modules/react/',
 				);
 
-				defaultConfig.resolve.alias['react-dom'] = resolve(
-					PROJECT_ROOT,
-					'../../',
-					'node_modules/react-dom/',
-				);
-				defaultConfig.resolve.alias['@autoguru/icons'] = resolve(
-					PROJECT_ROOT,
-					'../../',
-					'node_modules/@autoguru/icons/',
-				);
-				defaultConfig.resolve.alias['react-treat'] = resolve(
-					PROJECT_ROOT,
-					'../../',
-					'node_modules/react-treat/',
-				);
-				defaultConfig.resolve.alias['treat'] = resolve(
-					PROJECT_ROOT,
-					'../../',
-					'node_modules/treat/',
-				);
+			defaultConfig.resolve.alias['react-dom'] = resolve(
+				PROJECT_ROOT,
+				'../../',
+				'node_modules/react-dom/',
+			);
+			defaultConfig.resolve.alias['@autoguru/icons'] = resolve(
+				PROJECT_ROOT,
+				'../../',
+				'node_modules/@autoguru/icons/',
+			);
+			defaultConfig.resolve.alias['next'] = resolve(
+				PROJECT_ROOT,
+				'../../',
+				'node_modules/next/',
+			);
 
-				return defaultConfig;
-			},
-		}),
-	);
+
+			defaultConfig.plugins.push(new VanillaExtractPlugin());
+
+			return defaultConfig;
+		},
+	});
 };

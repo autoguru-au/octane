@@ -1,5 +1,11 @@
 # gdu
 
+## 4.0.0-next.13
+
+### Patch Changes
+
+-   Adds fleet
+
 ## 4.0.0-next.12
 
 ### Patch Changes
