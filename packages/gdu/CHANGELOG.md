@@ -1,5 +1,11 @@
 # gdu
 
+## 4.0.0-next.12
+
+### Patch Changes
+
+-   2adfc80: Adds AG cdn to next image domains
+
 ## 4.0.0-next.11
 
 ### Patch Changes
