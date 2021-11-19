@@ -33,6 +33,9 @@ export const createNextJSConfig = () => {
 				esmExternals: true,
 				externalDir: true,
 			},
+			images: {
+				domains: ['cdn.autoguru.com.au'],
+			},
 			webpack: (defaultConfig) => {
 				//defaultConfig.plugins.push(new MiniCssExtractPlugin());
 
