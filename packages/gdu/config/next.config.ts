@@ -6,6 +6,9 @@ import { isEnvProduction } from '../lib/misc';
 import Dotenv from 'dotenv-webpack';
 import NTM from 'next-transpile-modules';
 import { getConfigsDirs } from '../utils/configs';
+import { createVanillaExtractPlugin } from '@vanilla-extract/next-plugin';
+
+const withVanillaExtract = createVanillaExtractPlugin();
 
 export const withTM = NTM([
 	'@autoguru/themes',
@@ -19,9 +22,7 @@ export const withTM = NTM([
 	'@autoguru/layout',
 	'@popperjs/core',
 ]);
-
 export const createNextJSConfig = () => {
-
 	const isDev = !isEnvProduction();
 
 	return {
@@ -82,4 +83,5 @@ export const createNextJSConfig = () => {
 	};
 };
 
-export const createNextJSTranspiledConfig = () => withTM(createNextJSConfig());
+export const createNextJSTranspiledConfig = () =>
+	withVanillaExtract(withTM(createNextJSConfig()));
