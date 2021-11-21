@@ -4,13 +4,10 @@ import path, { resolve } from 'path';
 import { DefinePlugin } from 'webpack';
 import { isEnvProduction } from '../lib/misc';
 import Dotenv from 'dotenv-webpack';
-//import MiniCssExtractPlugin from 'next/dist/compiled/mini-css-extract-plugin';
 import NTM from 'next-transpile-modules';
 import { getConfigsDirs } from '../utils/configs';
-import { VanillaExtractPlugin } from '@vanilla-extract/webpack-plugin';
-import { getGlobalCssLoader } from 'next/dist/build/webpack/config/blocks/css/loaders';
 
-const withTM = NTM([
+export const withTM = NTM([
 	'@autoguru/themes',
 	'@autoguru/overdrive',
 	'@autoguru/icons',
@@ -24,9 +21,10 @@ const withTM = NTM([
 ]);
 
 export const createNextJSConfig = () => {
+
 	const isDev = !isEnvProduction();
 
-	return withTM({
+	return {
 		reactStrictMode: true,
 		experimental: {
 			esmExternals: false,
@@ -35,66 +33,33 @@ export const createNextJSConfig = () => {
 		images: {
 			domains: ['cdn.autoguru.com.au'],
 		},
-		webpack: (defaultConfig, options) => {
-			//defaultConfig.plugins.push(new MiniCssExtractPlugin());
-
-			const { dev, isServer } = options;
-
-			const cssRules = defaultConfig.module.rules.find(
-				(rule) =>
-					Array.isArray(rule.oneOf) &&
-					rule.oneOf.some(
-						({ test }) =>
-							typeof test === 'object' &&
-							typeof test.test === 'function' &&
-							test.test('filename.css'),
-					),
-			).oneOf;
-
-			cssRules.unshift({
-				test: /\.vanilla\.css$/i,
-				sideEffects: true,
-				use: getGlobalCssLoader(
-					// @ts-ignore
-					{
-						assetPrefix: defaultConfig.assetPrefix,
-						isClient: !isServer,
-						isServer,
-						isDevelopment: dev,
-						future: defaultConfig.future || {},
-						experimental: defaultConfig.experimental || {},
-					},
-					[],
-					[],
-				),
-			});
-
+		webpack: (defaultConfig) => {
 			defaultConfig.plugins.push(
 				new DefinePlugin({
-					__DEV__: isDev, // TODO: Make this real
+					__DEV__: isDev,
 				}),
 			);
 
 			getConfigsDirs()
 				.flatMap((configsDir) => [
 					new Dotenv({
-							path: path.resolve(configsDir, '.env.defaults'),
-						}), // Read env
-						new Dotenv({
-							path: path.resolve(
-								configsDir,
-								`.env.${process.env.APP_ENV || 'dev'}`,
-							),
-						}),
-					])
-					.forEach((plugin) => defaultConfig.plugins.push(plugin));
+						path: path.resolve(configsDir, '.env.defaults'),
+					}), // Read env
+					new Dotenv({
+						path: path.resolve(
+							configsDir,
+							`.env.${process.env.APP_ENV || 'dev'}`,
+						),
+					}),
+				])
+				.forEach((plugin) => defaultConfig.plugins.push(plugin));
 
-				// ONLY ONE COPY OF EACH
-				defaultConfig.resolve.alias['react'] = resolve(
-					PROJECT_ROOT,
-					'../../',
-					'node_modules/react/',
-				);
+			// ONLY ONE COPY OF EACH
+			defaultConfig.resolve.alias['react'] = resolve(
+				PROJECT_ROOT,
+				'../../',
+				'node_modules/react/',
+			);
 
 			defaultConfig.resolve.alias['react-dom'] = resolve(
 				PROJECT_ROOT,
@@ -112,10 +77,9 @@ export const createNextJSConfig = () => {
 				'node_modules/next/',
 			);
 
-
-			defaultConfig.plugins.push(new VanillaExtractPlugin());
-
 			return defaultConfig;
 		},
-	});
+	};
 };
+
+export const createNextJSTranspiledConfig = () => withTM(createNextJSConfig());
