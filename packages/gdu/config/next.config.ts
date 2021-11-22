@@ -1,12 +1,14 @@
 /* eslint-disable unicorn/prefer-prototype-methods */
-import { PROJECT_ROOT } from '../lib/roots';
 import path, { resolve } from 'path';
-import { DefinePlugin } from 'webpack';
-import { isEnvProduction } from '../lib/misc';
+
+import { createVanillaExtractPlugin } from '@vanilla-extract/next-plugin';
 import Dotenv from 'dotenv-webpack';
 import NTM from 'next-transpile-modules';
+import { DefinePlugin } from 'webpack';
+
+import { isEnvProduction } from '../lib/misc';
+import { PROJECT_ROOT } from '../lib/roots';
 import { getConfigsDirs } from '../utils/configs';
-import { createVanillaExtractPlugin } from '@vanilla-extract/next-plugin';
 
 const withVanillaExtract = createVanillaExtractPlugin();
 
@@ -33,6 +35,7 @@ export const createNextJSConfig = () => {
 		},
 		images: {
 			domains: ['cdn.autoguru.com.au'],
+			formats: ['image/webp'],
 		},
 		webpack: (defaultConfig) => {
 			defaultConfig.plugins.push(
@@ -49,7 +52,11 @@ export const createNextJSConfig = () => {
 					new Dotenv({
 						path: path.resolve(
 							configsDir,
-							`.env.${process.env.APP_ENV || 'dev'}`,
+							`.env.${
+								process.env.APP_ENV || isEnvProduction()
+									? 'prod'
+									: 'dev'
+							}`,
 						),
 					}),
 				])

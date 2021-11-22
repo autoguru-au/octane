@@ -1,9 +1,11 @@
 import { join } from 'path';
+
 import { createLogger } from '@autoguru/utilities';
-import { GuruConfig } from '../../lib/config';
-import { GDU_ROOT, PROJECT_ROOT } from '../../lib/roots';
 import execa from 'execa';
 import { blue, dim } from 'kleur';
+
+import { GuruConfig } from '../../lib/config';
+import { GDU_ROOT, PROJECT_ROOT } from '../../lib/roots';
 
 const logger = createLogger('build');
 export const buildSSR = async (guruConfig: GuruConfig) => {

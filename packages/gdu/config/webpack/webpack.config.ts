@@ -1,11 +1,13 @@
 import path, { join, resolve } from 'path';
+
+import { VanillaExtractPlugin } from '@vanilla-extract/webpack-plugin';
 import browsers from 'browserslist-config-autoguru';
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import Dotenv from 'dotenv-webpack';
+import envCI from 'env-ci';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
 import { TreatPlugin } from 'treat/webpack-plugin';
-import { VanillaExtractPlugin } from '@vanilla-extract/webpack-plugin';
 import { TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
 import { Configuration, DefinePlugin } from 'webpack';
 
@@ -16,12 +18,11 @@ import {
 	GDU_ROOT,
 	PROJECT_ROOT,
 } from '../../lib/roots';
+import { getConfigsDirs } from '../../utils/configs';
 import { getHooks } from '../../utils/hooks';
 
 import { commonLoaders } from './blocks/common';
 import { GuruBuildManifest } from './plugins/GuruBuildManifest';
-import { getConfigsDirs } from '../../utils/configs';
-import envCI from 'env-ci';
 
 const { branch = 'null', commit = 'null' } = envCI();
 
@@ -72,6 +73,11 @@ const baseOptions: Configuration = {
 			join(gduEntryPath, '/polyfill.js'),
 			join(gduEntryPath, '/spa/client.js'),
 		].filter(Boolean),
+	},
+	experiments: {
+		// @ts-ignore
+		// cacheUnaffected: true,
+		layers: true,
 	},
 	cache: {
 		type: 'filesystem',
@@ -285,7 +291,6 @@ const baseOptions: Configuration = {
 			chunkFilename: `chunks/${fileMask}.css`,
 			ignoreOrder: true,
 		}),
-		!isDev && new GuruBuildManifest(),
 
 		// Read defaults
 		...getConfigsDirs().flatMap((configsDir) => [
@@ -295,10 +300,19 @@ const baseOptions: Configuration = {
 			new Dotenv({
 				path: path.resolve(
 					configsDir,
-					`.env.${process.env.APP_ENV || 'dev'}`,
+					`.env.${
+						process.env.APP_ENV || isEnvProduction()
+							? 'prod'
+							: 'dev'
+					}`,
 				),
 			}),
 		]),
+		!isDev &&
+			new GuruBuildManifest({
+				outputDir: resolve(PROJECT_ROOT, 'dist', process.env.APP_ENV),
+				includeChunks: false,
+			}),
 	].filter(Boolean),
 };
 

@@ -1,5 +1,17 @@
 # gdu
 
+## 4.0.0-next.16
+
+### Patch Changes
+
+-   GDU: Fixes build manifest plugin
+
+## 4.0.0-next.15
+
+### Patch Changes
+
+-   GDU Assumed prod env fro build commands
+
 ## 4.0.0-next.14
 
 ### Patch Changes

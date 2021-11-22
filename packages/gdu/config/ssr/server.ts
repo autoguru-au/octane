@@ -1,8 +1,9 @@
 import { createLogger } from '@autoguru/utilities';
-import { GDU_ROOT, PROJECT_ROOT } from '../../lib/roots';
 import execa from 'execa';
 import { blue, dim } from 'kleur';
+
 import { isEnvProduction } from '../../lib/misc';
+import { GDU_ROOT, PROJECT_ROOT } from '../../lib/roots';
 
 const logger = createLogger('server');
 
