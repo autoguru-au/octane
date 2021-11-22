@@ -1,5 +1,11 @@
 # gdu
 
+## 4.0.0-next.18
+
+### Patch Changes
+
+-   GDU: Puts prod artifacts in folder when building for multiple envs
+
 ## 4.0.0-next.17
 
 ### Patch Changes

@@ -64,7 +64,7 @@ const ourCodePaths = [
 
 const fileMask = isDev ? '[name]' : '[name]-[contenthash:8]';
 
-const baseOptions = (buildEnv): Configuration => ({
+const baseOptions = (buildEnv, isMultiEnv: boolean): Configuration => ({
 	context: PROJECT_ROOT,
 	mode: isDev ? 'development' : 'production',
 	entry: {
@@ -306,7 +306,7 @@ const baseOptions = (buildEnv): Configuration => ({
 		!isDev &&
 			new GuruBuildManifest({
 				outputDir:
-					buildEnv === 'prod'
+					!isMultiEnv && buildEnv === 'prod'
 						? resolve(PROJECT_ROOT, 'dist')
 						: resolve(PROJECT_ROOT, 'dist', buildEnv),
 				includeChunks: false,
@@ -322,11 +322,14 @@ const { outputPath } = getGuruConfig();
 
 const makeWebpackConfig = (
 	buildEnv: typeof buildEnvs[number],
+	isMultiEnv: boolean,
 ): Configuration => ({
 	name: buildEnv,
 
 	output: {
-		path: `${outputPath}/${buildEnv === 'prod' ? '' : buildEnv}`,
+		path: `${outputPath}/${
+			!isMultiEnv && buildEnv === 'prod' ? '' : buildEnv
+		}`,
 		publicPath: isDev ? '/' : getGuruConfig()?.publicPath ?? '/',
 		filename: `${fileMask}.js`,
 		chunkFilename: `chunks/${fileMask}.js`,
@@ -339,8 +342,8 @@ const makeWebpackConfig = (
 
 const buildConfigs = (): Configuration[] =>
 	buildEnvs.map((buildEnv) => ({
-		...baseOptions(buildEnv),
-		...makeWebpackConfig(buildEnv),
+		...baseOptions(buildEnv, buildEnvs.length > 1),
+		...makeWebpackConfig(buildEnv, buildEnvs.length > 1),
 	}));
 
 export default buildConfigs;
