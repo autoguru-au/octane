@@ -4,8 +4,6 @@ import { join, resolve } from 'path';
 
 import { Compiler } from 'webpack';
 
-import { PROJECT_ROOT } from '../../../lib/roots';
-
 interface Asset {
 	js: string[];
 	css: string[];
@@ -36,7 +34,7 @@ const defaultOptions = {
 	// group chunks by extension
 	chunkGroupName: (filename) =>
 		/\.([\da-z]+(\.map)?)(\?.*)?$/.exec(filename)[1],
-	outputDir: resolve(PROJECT_ROOT, 'dist', process.env.APP_ENV),
+	outputDir: process.cwd(),
 	filename: 'build-manifest.json',
 	// generate contents to save to manifest file
 	objectToString: (result) => JSON.stringify(result),
@@ -84,6 +82,7 @@ export class GuruBuildManifest {
 						);
 				});
 			});
+			if (!this.options.includeChunks) this.result.chunks = void 0;
 			this.saveJson();
 		});
 	}

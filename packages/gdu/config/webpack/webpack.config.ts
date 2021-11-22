@@ -64,7 +64,7 @@ const ourCodePaths = [
 
 const fileMask = isDev ? '[name]' : '[name]-[contenthash:8]';
 
-const baseOptions: Configuration = {
+const baseOptions = (buildEnv): Configuration => ({
 	context: PROJECT_ROOT,
 	mode: isDev ? 'development' : 'production',
 	entry: {
@@ -90,7 +90,6 @@ const baseOptions: Configuration = {
 		},
 	},
 	devtool: isDev ? 'eval-cheap-module-source-map' : 'source-map',
-	bail: !isDev || !process.env.APP_ENV,
 	resolve: {
 		extensions: ['.tsx', '.ts', '.mjs', '.jsx', '.js', '.json'],
 		plugins: [
@@ -300,21 +299,20 @@ const baseOptions: Configuration = {
 			new Dotenv({
 				path: path.resolve(
 					configsDir,
-					`.env.${
-						process.env.APP_ENV || isEnvProduction()
-							? 'prod'
-							: 'dev'
-					}`,
+					`.env.${process.env.APP_ENV || (isDev ? 'dev' : buildEnv)}`,
 				),
 			}),
 		]),
 		!isDev &&
 			new GuruBuildManifest({
-				outputDir: resolve(PROJECT_ROOT, 'dist', process.env.APP_ENV),
+				outputDir:
+					buildEnv === 'prod'
+						? resolve(PROJECT_ROOT, 'dist')
+						: resolve(PROJECT_ROOT, 'dist', buildEnv),
 				includeChunks: false,
 			}),
 	].filter(Boolean),
-};
+});
 
 const buildEnvs = process.env.APP_ENV
 	? [process.env.APP_ENV]
@@ -328,7 +326,7 @@ const makeWebpackConfig = (
 	name: buildEnv,
 
 	output: {
-		path: `${outputPath}/${buildEnv}`,
+		path: `${outputPath}/${buildEnv === 'prod' ? '' : buildEnv}`,
 		publicPath: isDev ? '/' : getGuruConfig()?.publicPath ?? '/',
 		filename: `${fileMask}.js`,
 		chunkFilename: `chunks/${fileMask}.js`,
@@ -341,7 +339,7 @@ const makeWebpackConfig = (
 
 const buildConfigs = (): Configuration[] =>
 	buildEnvs.map((buildEnv) => ({
-		...baseOptions,
+		...baseOptions(buildEnv),
 		...makeWebpackConfig(buildEnv),
 	}));
 
