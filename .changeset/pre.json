@@ -14,6 +14,7 @@
     "@autoguru/utilities": "1.1.0"
   },
   "changesets": [
+    "afraid-bees-exist",
     "angry-chicken-build",
     "bright-cameras-compare",
     "forty-beers-march",

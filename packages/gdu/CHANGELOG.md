@@ -1,5 +1,11 @@
 # gdu
 
+## 4.0.0-next.19
+
+### Patch Changes
+
+-   Fixes ssr builds
+
 ## 4.0.0-next.18
 
 ### Patch Changes
