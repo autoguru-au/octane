@@ -13,15 +13,11 @@ import { Configuration, DefinePlugin } from 'webpack';
 
 import { getGuruConfig, getProjectName } from '../../lib/config';
 import { isEnvProduction } from '../../lib/misc';
-import {
-	CALLING_WORKSPACE_ROOT,
-	GDU_ROOT,
-	PROJECT_ROOT,
-} from '../../lib/roots';
-import { getConfigsDirs } from '../../utils/configs';
+import { CALLING_WORKSPACE_ROOT, GDU_ROOT, PROJECT_ROOT } from '../../lib/roots';
+import { getBuildEnvs, getConfigsDirs } from '../../utils/configs';
 import { getHooks } from '../../utils/hooks';
 
-import { commonLoaders } from './blocks/common';
+//import { commonLoaders } from './blocks/common';
 import { GuruBuildManifest } from './plugins/GuruBuildManifest';
 
 const { branch = 'null', commit = 'null' } = envCI();
@@ -62,6 +58,7 @@ const ourCodePaths = [
 	/@autoguru[/\\]/,
 ].filter(Boolean);
 
+
 const fileMask = isDev ? '[name]' : '[name]-[contenthash:8]';
 
 const baseOptions = (buildEnv, isMultiEnv: boolean): Configuration => ({
@@ -75,14 +72,12 @@ const baseOptions = (buildEnv, isMultiEnv: boolean): Configuration => ({
 		].filter(Boolean),
 	},
 	experiments: {
-		// @ts-ignore
-		// cacheUnaffected: true,
 		layers: true,
 	},
 	cache: {
 		type: 'filesystem',
 		cacheLocation: resolve(PROJECT_ROOT, '.build_cache'),
-		allowCollectingMemory: true,
+		allowCollectingMemory: isDev ? true : false,
 		buildDependencies: {
 			// This makes all dependencies of this file - build dependencies
 			config: [__filename],
@@ -106,10 +101,13 @@ const baseOptions = (buildEnv, isMultiEnv: boolean): Configuration => ({
 		minimize: !isDev,
 		concatenateModules: !isDev,
 		splitChunks: {
-			maxAsyncRequests: Number.POSITIVE_INFINITY,
-			maxInitialRequests: Number.POSITIVE_INFINITY,
-			minSize: 20_000,
-			chunks: 'all',
+			chunks: 'async',
+			minSize: 20000,
+			minRemainingSize: 0,
+			minChunks: 1,
+			maxAsyncRequests: 30,
+			maxInitialRequests: 30,
+			enforceSizeThreshold: 50000,
 			cacheGroups: {
 				default: false,
 				defaultVendors: false,
@@ -156,7 +154,7 @@ const baseOptions = (buildEnv, isMultiEnv: boolean): Configuration => ({
 	module: {
 		strictExportPresence: true,
 		rules: [
-			...commonLoaders().before,
+			//...commonLoaders().before,
 			{
 				test: /\.css$/i,
 				oneOf: [
@@ -173,6 +171,7 @@ const baseOptions = (buildEnv, isMultiEnv: boolean): Configuration => ({
 						],
 					},
 					{
+						test: /^((?!\.vanilla)[\S\s])*\.css$/i, // Targets only CSS that is not vanilla css
 						use: [MiniCssExtractPlugin.loader, 'css-loader'],
 					},
 				],
@@ -314,14 +313,11 @@ const baseOptions = (buildEnv, isMultiEnv: boolean): Configuration => ({
 	].filter(Boolean),
 });
 
-const buildEnvs = process.env.APP_ENV
-	? [process.env.APP_ENV]
-	: ['dev', 'uat', 'test', 'preprod', 'prod'];
-
 const { outputPath } = getGuruConfig();
 
+type BuildEnv =  ReturnType<typeof getBuildEnvs>[number];
 const makeWebpackConfig = (
-	buildEnv: typeof buildEnvs[number],
+	buildEnv: BuildEnv,
 	isMultiEnv: boolean,
 ): Configuration => ({
 	name: buildEnv,
@@ -340,10 +336,12 @@ const makeWebpackConfig = (
 	},
 });
 
-const buildConfigs = (): Configuration[] =>
-	buildEnvs.map((buildEnv) => ({
+const buildConfigs = (): Configuration[] => {
+	const buildEnvs = getBuildEnvs();
+	return buildEnvs.map((buildEnv) => ({
 		...baseOptions(buildEnv, buildEnvs.length > 1),
 		...makeWebpackConfig(buildEnv, buildEnvs.length > 1),
-	}));
+	}))
+};
 
 export default buildConfigs;

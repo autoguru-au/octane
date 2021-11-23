@@ -24,7 +24,7 @@ export const withTM = NTM([
 	'@autoguru/layout',
 	'@popperjs/core',
 ]);
-export const createNextJSConfig = () => {
+export const createNextJSConfig = (buildEnv) => {
 	const isDev = !isEnvProduction();
 
 	return {
@@ -43,24 +43,18 @@ export const createNextJSConfig = () => {
 					__DEV__: isDev,
 				}),
 			);
-
-			getConfigsDirs()
-				.flatMap((configsDir) => [
-					new Dotenv({
-						path: path.resolve(configsDir, '.env.defaults'),
-					}), // Read env
-					new Dotenv({
-						path: path.resolve(
-							configsDir,
-							`.env.${
-								process.env.APP_ENV || isEnvProduction()
-									? 'prod'
-									: 'dev'
-							}`,
-						),
-					}),
-				])
-				.forEach((plugin) => defaultConfig.plugins.push(plugin));
+			// Read defaults
+		getConfigsDirs().flatMap((configsDir) => [
+				new Dotenv({
+					path: path.resolve(configsDir, '.env.defaults'),
+				}), // Read env
+				new Dotenv({
+					path: path.resolve(
+						configsDir,
+						`.env.${process.env.APP_ENV || (isDev ? 'dev' : buildEnv)}`,
+					),
+				}),
+			]).forEach((plugin) => defaultConfig.plugins.push(plugin));
 
 			// ONLY ONE COPY OF EACH
 			defaultConfig.resolve.alias['react'] = resolve(
@@ -91,4 +85,4 @@ export const createNextJSConfig = () => {
 };
 
 export const createNextJSTranspiledConfig = () =>
-	withVanillaExtract(withTM(createNextJSConfig()));
+	withVanillaExtract(withTM(createNextJSConfig('uat')));
