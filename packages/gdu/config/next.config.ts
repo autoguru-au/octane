@@ -26,8 +26,10 @@ export const withTM = NTM([
 ]);
 export const createNextJSConfig = (buildEnv) => {
 	const isDev = !isEnvProduction();
+	const env = process.env.APP_ENV || (isDev ? 'dev' : buildEnv);
 
 	return {
+		distDir: `dist/${env}`,
 		reactStrictMode: true,
 		experimental: {
 			esmExternals: false,
@@ -44,17 +46,16 @@ export const createNextJSConfig = (buildEnv) => {
 				}),
 			);
 			// Read defaults
-		getConfigsDirs().flatMap((configsDir) => [
-				new Dotenv({
-					path: path.resolve(configsDir, '.env.defaults'),
-				}), // Read env
-				new Dotenv({
-					path: path.resolve(
-						configsDir,
-						`.env.${process.env.APP_ENV || (isDev ? 'dev' : buildEnv)}`,
-					),
-				}),
-			]).forEach((plugin) => defaultConfig.plugins.push(plugin));
+			getConfigsDirs()
+				.flatMap((configsDir) => [
+					new Dotenv({
+						path: path.resolve(configsDir, '.env.defaults'),
+					}), // Read env
+					new Dotenv({
+						path: path.resolve(configsDir, `.env.${env}`),
+					}),
+				])
+				.forEach((plugin) => defaultConfig.plugins.push(plugin));
 
 			// ONLY ONE COPY OF EACH
 			defaultConfig.resolve.alias['react'] = resolve(

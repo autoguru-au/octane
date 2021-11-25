@@ -13,7 +13,11 @@ import { Configuration, DefinePlugin } from 'webpack';
 
 import { getGuruConfig, getProjectName } from '../../lib/config';
 import { isEnvProduction } from '../../lib/misc';
-import { CALLING_WORKSPACE_ROOT, GDU_ROOT, PROJECT_ROOT } from '../../lib/roots';
+import {
+	CALLING_WORKSPACE_ROOT,
+	GDU_ROOT,
+	PROJECT_ROOT,
+} from '../../lib/roots';
 import { getBuildEnvs, getConfigsDirs } from '../../utils/configs';
 import { getHooks } from '../../utils/hooks';
 
@@ -57,7 +61,6 @@ const ourCodePaths = [
 	CALLING_WORKSPACE_ROOT && join(CALLING_WORKSPACE_ROOT, 'packages'),
 	/@autoguru[/\\]/,
 ].filter(Boolean);
-
 
 const fileMask = isDev ? '[name]' : '[name]-[contenthash:8]';
 
@@ -315,7 +318,7 @@ const baseOptions = (buildEnv, isMultiEnv: boolean): Configuration => ({
 
 const { outputPath } = getGuruConfig();
 
-type BuildEnv =  ReturnType<typeof getBuildEnvs>[number];
+type BuildEnv = ReturnType<typeof getBuildEnvs>[number];
 const makeWebpackConfig = (
 	buildEnv: BuildEnv,
 	isMultiEnv: boolean,
@@ -341,7 +344,7 @@ const buildConfigs = (): Configuration[] => {
 	return buildEnvs.map((buildEnv) => ({
 		...baseOptions(buildEnv, buildEnvs.length > 1),
 		...makeWebpackConfig(buildEnv, buildEnvs.length > 1),
-	}))
+	}));
 };
 
 export default buildConfigs;

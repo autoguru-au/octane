@@ -1,5 +1,11 @@
 # gdu
 
+## 4.0.0-next.20
+
+### Patch Changes
+
+-   Add multi env build support for nextJS apps
+
 ## 4.0.0-next.19
 
 ### Patch Changes
