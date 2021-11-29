@@ -31,7 +31,6 @@ const localhost = '0.0.0.0';
 const hosts = ['localhost', localhost];
 export const runSPA = async (
 	guruConfig: GuruConfig,
-	// environmentName: string,
 ) => {
 	const hooks = getHooks();
 	console.log(`${cyan('Starting dev server...')}`);
