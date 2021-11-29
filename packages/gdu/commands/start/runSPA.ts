@@ -1,14 +1,13 @@
 import { existsSync } from 'fs';
 import { join } from 'path';
 
-import { RuntimeConfigsPlugin } from 'configs-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { blue, bold, cyan, red } from 'kleur';
 import dedent from 'ts-dedent';
 import webpack, { Configuration } from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 
-import { makeWebpackConfig } from '../../config/webpack/webpack.config';
+import webpackConfigs from '../../config/webpack/webpack.config';
 import { getProjectName, GuruConfig } from '../../lib/config';
 import { PROJECT_ROOT } from '../../lib/roots';
 import { getHooks } from '../../utils/hooks';
@@ -32,17 +31,14 @@ const localhost = '0.0.0.0';
 const hosts = ['localhost', localhost];
 export const runSPA = async (
 	guruConfig: GuruConfig,
-	environmentName: string,
 ) => {
 	const hooks = getHooks();
 	console.log(`${cyan('Starting dev server...')}`);
 
 	// eslint-disable-next-line unicorn/prefer-prototype-methods
-	const webpackConfig: Configuration = hooks.webpackConfig.call(
-		makeWebpackConfig({
-			isDevServer: true,
-		}),
-	);
+	const webpackConfig: Configuration = hooks.webpackConfig
+		.call(webpackConfigs())
+		.find(({ name }) => name === process.env.APP_ENV);
 
 	const consumerHtmlTemplate = getConsumerHtmlTemplate(guruConfig);
 
@@ -62,16 +58,6 @@ export const runSPA = async (
 
 					let thisEnvChunk;
 
-					RuntimeConfigsPlugin.getHooks(compilation).configChunks.tap(
-						'guru',
-						(configs, configChunks) => {
-							const idx = configs.findIndex(
-								(item) => item.name === environmentName,
-							);
-							thisEnvChunk = configChunks[idx];
-						},
-					);
-
 					htmlWebpackHooks.alterAssetTags.tap('guru', (cfg) => {
 						if (thisEnvChunk) {
 							for (const file of thisEnvChunk.files
@@ -86,6 +72,7 @@ export const runSPA = async (
 												.publicPath || ''
 										}${file}`,
 									},
+									meta: { plugin: 'html-webpack-plugin' },
 								});
 							}
 						}
@@ -133,20 +120,11 @@ export const runSPA = async (
 	});
 
 	const devServer = new WebpackDevServer(compiler, {
-		contentBase: join(PROJECT_ROOT, 'public'),
-		publicPath: '/',
+		static: join(PROJECT_ROOT, 'public'),
 		host: hosts[0],
 		allowedHosts: hosts,
-		overlay: true,
-		stats: 'errors-only',
-		serveIndex: false,
 		historyApiFallback: true,
 		hot: true,
-		inline: true,
-		watchOptions: {
-			aggregateTimeout: 300,
-			poll: 1000,
-		},
 	});
 
 	devServer.listen(guruConfig.port, localhost, (err) => {

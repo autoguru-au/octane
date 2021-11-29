@@ -1,5 +1,11 @@
 # browserslist-config-autoguru
 
+## 2.0.1
+
+### Patch Changes
+
+-   Upgrades browserlist
+
 ## 2.0.0
 
 ### Major Changes

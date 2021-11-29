@@ -1,6 +1,6 @@
 import bugger from 'debug';
 import { yellow } from 'kleur';
-import { Compiler } from 'webpack';
+import { Compiler, MultiCompiler } from 'webpack';
 
 const debug = bugger('gdu:webpack:compile');
 
@@ -25,8 +25,16 @@ const done = (resolve, reject) => (err, stats) => {
 	resolve();
 };
 
-export const run = async (compiler: Compiler) =>
-	new Promise((resolve, reject) => compiler.run(done(resolve, reject)));
+export const run = async (compiler: Compiler | MultiCompiler) =>
+	new Promise((resolve, reject) =>
+		compiler.run((err, stats) => {
+			compiler.close((err2) => {
+				console.log(stats);
+				resolve(err || err2);
+			});
+			done(resolve, reject);
+		}),
+	);
 
 export const watch = async (compiler: Compiler) =>
 	new Promise((resolve, reject) => compiler.watch({}, done(resolve, reject)));
