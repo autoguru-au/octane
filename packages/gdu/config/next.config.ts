@@ -1,115 +1,89 @@
 /* eslint-disable unicorn/prefer-prototype-methods */
-import { join } from 'path';
+import path, { resolve } from 'path';
 
-import browsers from 'browserslist-config-autoguru';
-import { getClientStyleLoader } from 'next/dist/build/webpack/config/blocks/css/loaders/client';
-import { TreatPlugin } from 'treat/webpack-plugin';
-import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
-import { Configuration, DefinePlugin } from 'webpack';
+import { createVanillaExtractPlugin } from '@vanilla-extract/next-plugin';
+import Dotenv from 'dotenv-webpack';
+import NTM from 'next-transpile-modules';
+import { DefinePlugin } from 'webpack';
 
-import { getGuruConfig } from '../lib/config';
 import { isEnvProduction } from '../lib/misc';
-import { CALLING_WORKSPACE_ROOT, PROJECT_ROOT } from '../lib/roots';
-import { getHooks } from '../utils/hooks';
+import { PROJECT_ROOT } from '../lib/roots';
+import { getConfigsDirs } from '../utils/configs';
 
-export const createNextJSConfig = () => {
-	const hooks = getHooks();
+const withVanillaExtract = createVanillaExtractPlugin();
+
+export const withTM = NTM([
+	'@autoguru/themes',
+	'@autoguru/overdrive',
+	'@autoguru/icons',
+	'@autoguru/components',
+	'@autoguru/fleet',
+	'@autoguru/relay',
+	'@autoguru/auth',
+	'@autoguru/components',
+	'@autoguru/layout',
+	'@popperjs/core',
+]);
+export const createNextJSConfig = (buildEnv) => {
 	const isDev = !isEnvProduction();
+	const env = process.env.APP_ENV || (isDev ? 'dev' : buildEnv);
 
-	const nextJsConfig = {
-		poweredByHeader: false,
-		generateEtags: false,
+	return {
+		distDir: `dist/${env}`,
+		reactStrictMode: true,
+		experimental: {
+			esmExternals: false,
+			externalDir: false,
+		},
+		images: {
+			domains: ['cdn.autoguru.com.au'],
+			formats: ['image/webp'],
+		},
+		webpack: (defaultConfig) => {
+			defaultConfig.plugins.push(
+				new DefinePlugin({
+					__DEV__: isDev,
+				}),
+			);
+			// Read defaults
+			getConfigsDirs()
+				.flatMap((configsDir) => [
+					new Dotenv({
+						path: path.resolve(configsDir, '.env.defaults'),
+					}), // Read env
+					new Dotenv({
+						path: path.resolve(configsDir, `.env.${env}`),
+					}),
+				])
+				.forEach((plugin) => defaultConfig.plugins.push(plugin));
 
-		pageExtensions: ['tsx', 'ts'],
-
-		assetPrefix: getGuruConfig()?.publicPath,
-
-		publicRuntimeConfig: {},
-
-		webpack(originalConfig: Configuration, nextConfig) {
-			const guruConfig = getGuruConfig();
-
-			const ourCodePaths = [
-				...guruConfig?.srcPaths.map((item) => join(PROJECT_ROOT, item)),
-				CALLING_WORKSPACE_ROOT &&
-					join(CALLING_WORKSPACE_ROOT, 'packages'),
-				/@autoguru[/\\]/,
-			].filter(Boolean);
-
-			originalConfig.resolve.alias['@babel/runtime-corejs2'] =
-				'@babel/runtime-corejs3';
-			originalConfig.resolve.plugins.push(new TsconfigPathsPlugin());
-
-			// Yes... sadly next does some silly things.
-			originalConfig.plugins.push(
-				new (class {
-					apply(compiler) {
-						// TODO: Abstract this, to mimic the same as what SPA webpack builds have
-						compiler.options.plugins.push(
-							new DefinePlugin({
-								__DEV__: JSON.stringify(isDev),
-							}),
-							new TreatPlugin({
-								outputCSS: !nextConfig.isServer,
-								outputLoaders: [
-									!nextConfig.isServer
-										? getClientStyleLoader({
-												isDevelopment: isDev,
-												assetPrefix:
-													nextConfig.config
-														.assetPrefix,
-										  })
-										: '',
-								],
-								minify: !isDev,
-								browsers,
-							}),
-						);
-
-						const oldLoader = compiler.options.module.rules[0];
-
-						const babelConfig = hooks.babelConfig.call(
-							// eslint-disable-next-line unicorn/prefer-module
-							require('./babel.config')(guruConfig),
-						);
-
-						// Have to rip out react-refresh due to treat
-						let use = oldLoader.use;
-						if (Array.isArray(use)) {
-							use = use[1];
-						}
-						use.options = {
-							...use.options,
-							hasReactRefresh: false,
-							overrides: [babelConfig],
-						};
-
-						compiler.options.module.rules[0] = {
-							...oldLoader,
-							include: [...oldLoader.include, ...ourCodePaths],
-							exclude(path) {
-								const orig =
-									oldLoader === null || oldLoader === void 0
-										? void 0
-										: oldLoader.exclude(path);
-								return orig
-									? !ourCodePaths.some((r) => {
-											if (r instanceof RegExp) {
-												return r.test(path);
-											}
-											return path.includes(r);
-									  })
-									: false;
-							},
-							use,
-						};
-					}
-				})(),
+			// ONLY ONE COPY OF EACH
+			defaultConfig.resolve.alias['react'] = resolve(
+				PROJECT_ROOT,
+				'../../',
+				'node_modules/react/',
 			);
 
-			return hooks.webpackConfig.call(originalConfig);
+			defaultConfig.resolve.alias['react-dom'] = resolve(
+				PROJECT_ROOT,
+				'../../',
+				'node_modules/react-dom/',
+			);
+			defaultConfig.resolve.alias['@autoguru/icons'] = resolve(
+				PROJECT_ROOT,
+				'../../',
+				'node_modules/@autoguru/icons/',
+			);
+			defaultConfig.resolve.alias['next'] = resolve(
+				PROJECT_ROOT,
+				'../../',
+				'node_modules/next/',
+			);
+
+			return defaultConfig;
 		},
 	};
-
-	return hooks.nextJSConfig.call(nextJsConfig);
 };
+
+export const createNextJSTranspiledConfig = () =>
+	withVanillaExtract(withTM(createNextJSConfig('uat')));
