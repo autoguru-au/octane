@@ -1,5 +1,40 @@
 # gdu
 
+## 4.0.0
+
+### Major Changes
+
+-   Upgrades browserlist
+-   a08a3f9: GDU: Upgrades babel
+-   2486c59: GDU: Applies caching to babel
+-   2486c59: GDU fixed build commads
+
+### Patch Changes
+
+-   cdd95c9: Fixes ssr builds
+-   7c65b2c: GDU: Uses dotenv for env variables
+-   7b7fecc: Upgrades webpack dependencies
+-   c0130be: GDU: Puts prod artifacts in folder when building for multiple envs
+-   2adfc80: Adds AG cdn to next image domains
+-   0185749: GDU: Improves build maniset plugin
+-   7f3b1ac: Add multi env build support for nextJS apps
+-   3acac86: GDU: Fixes build manifest plugin
+-   f7d42ea: Adds fleet
+-   4288672: GDU: Exposes naked nextjs configs
+-   3acac86: GDU Assumed prod env fro build commands
+-   1f93d6c: GDU: Support vanilla extract
+-   33c60da: GDU: Moves build cache to project root level
+-   2750501: GDU: Allows app level configs
+-   33c60da: GDU uses APP_ENV instead of NODE_ENV for environment configs
+-   94bb85b: Fixes for ssr apps
+-   6c1f212: GDU: Fixed config file paths
+-   9a144dc: GDU: Uses next cli dev command to start dev server
+-   2486c59: GDU Updated GuruBuildManifest plugin
+-   7c65b2c: Dev server: Removed invalid options
+-   61f1da4: GDU upgrades webpack dependency to v5
+-   Updated dependencies [undefined]
+    -   browserslist-config-autoguru@2.0.1
+
 ## 4.0.0-next.20
 
 ### Patch Changes

@@ -1,4 +1,3 @@
-// import { RuntimeConfigsPlugin } from 'configs-webpack-plugin';
 import fs from 'fs';
 import { join, resolve } from 'path';
 

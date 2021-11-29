@@ -21,7 +21,6 @@ import {
 import { getBuildEnvs, getConfigsDirs } from '../../utils/configs';
 import { getHooks } from '../../utils/hooks';
 
-//import { commonLoaders } from './blocks/common';
 import { GuruBuildManifest } from './plugins/GuruBuildManifest';
 
 const { branch = 'null', commit = 'null' } = envCI();
@@ -157,7 +156,6 @@ const baseOptions = (buildEnv, isMultiEnv: boolean): Configuration => ({
 	module: {
 		strictExportPresence: true,
 		rules: [
-			//...commonLoaders().before,
 			{
 				test: /\.css$/i,
 				oneOf: [
