@@ -1,3 +1,5 @@
+/* eslint-disable unicorn/prefer-module */
+/* eslint-disable unicorn/prefer-prototype-methods */
 import path, { join, resolve } from 'path';
 
 import { VanillaExtractPlugin } from '@vanilla-extract/webpack-plugin';
@@ -104,12 +106,12 @@ const baseOptions = (buildEnv, isMultiEnv: boolean): Configuration => ({
 		concatenateModules: !isDev,
 		splitChunks: {
 			chunks: 'async',
-			minSize: 20000,
+			minSize: 20_000,
 			minRemainingSize: 0,
 			minChunks: 1,
 			maxAsyncRequests: 30,
 			maxInitialRequests: 30,
-			enforceSizeThreshold: 50000,
+			enforceSizeThreshold: 50_000,
 			cacheGroups: {
 				default: false,
 				defaultVendors: false,
