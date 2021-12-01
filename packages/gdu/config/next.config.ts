@@ -31,13 +31,20 @@ export const createNextJSConfig = (buildEnv) => {
 	return {
 		distDir: `dist/${env}`,
 		reactStrictMode: true,
+		swcMinify: true, // Seems to negatively affect lighthouse
 		experimental: {
-			esmExternals: false,
-			externalDir: false,
+			concurrentFeatures: false,//Set to true when we get rid of getInitialProps usage in ssr app
 		},
 		images: {
-			domains: ['cdn.autoguru.com.au'],
-			formats: ['image/webp'],
+			domains: [
+				'cdn.autoguru.com.au',
+				'cdn-dev.autoguru.com.au',
+				'cdn-test.autoguru.com.au',
+				'cdn-uat.autoguru.com.au',
+				'cdn-preprod.autoguru.com.au',
+			],
+			formats: ['image/avif', 'image/webp'],
+			imageSizes: [16, 32, 48, 64, 96, 128, 256, 384, 512],
 		},
 		webpack: (defaultConfig) => {
 			defaultConfig.plugins.push(
