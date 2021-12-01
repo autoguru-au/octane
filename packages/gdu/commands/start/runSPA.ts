@@ -11,7 +11,6 @@ import webpackConfigs from '../../config/webpack/webpack.config';
 import { getProjectName, GuruConfig } from '../../lib/config';
 import { PROJECT_ROOT } from '../../lib/roots';
 import { getHooks } from '../../utils/hooks';
-/* eslint-disable unicorn/prefer-module */
 const getConsumerHtmlTemplate = (
 	guruConfig: GuruConfig,
 ): string | undefined => {
@@ -29,9 +28,7 @@ const getConsumerHtmlTemplate = (
 
 const localhost = '0.0.0.0';
 const hosts = ['localhost', localhost];
-export const runSPA = async (
-	guruConfig: GuruConfig,
-) => {
+export const runSPA = async (guruConfig: GuruConfig) => {
 	const hooks = getHooks();
 	console.log(`${cyan('Starting dev server...')}`);
 

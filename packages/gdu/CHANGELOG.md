@@ -1,5 +1,11 @@
 # gdu
 
+## 4.0.1
+
+### Patch Changes
+
+-   GDU: Supports artifact directory for relay generated files
+
 ## 4.0.0
 
 ### Major Changes

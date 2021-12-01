@@ -33,7 +33,7 @@ export const createNextJSConfig = (buildEnv) => {
 		reactStrictMode: true,
 		swcMinify: true, // Seems to negatively affect lighthouse
 		experimental: {
-			concurrentFeatures: false,//Set to true when we get rid of getInitialProps usage in ssr app
+			concurrentFeatures: false, //Set to true when we get rid of getInitialProps usage in ssr app
 		},
 		images: {
 			domains: [
