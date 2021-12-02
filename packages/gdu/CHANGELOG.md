@@ -1,5 +1,11 @@
 # gdu
 
+## 4.0.2
+
+### Patch Changes
+
+-   GDU: Fixes spa relay artifact resoluton
+
 ## 4.0.1
 
 ### Patch Changes
