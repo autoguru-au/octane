@@ -32,7 +32,6 @@ export const createNextJSConfig = (buildEnv) => {
 		distDir: `dist/${env}`,
 		reactStrictMode: true,
 		swcMinify: true,
-		skipTypescriptChecking: true,
 		experimental: {
 			concurrentFeatures: false,
 			serverComponents: false,

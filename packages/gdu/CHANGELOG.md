@@ -1,5 +1,11 @@
 # gdu
 
+## 4.0.3
+
+### Patch Changes
+
+-   SSR apps: Get changes to their nextjs config defaults
+
 ## 4.0.2
 
 ### Patch Changes
