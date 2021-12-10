@@ -31,9 +31,20 @@ export const createNextJSConfig = (buildEnv) => {
 	return {
 		distDir: `dist/${env}`,
 		reactStrictMode: true,
-		swcMinify: true, // Seems to negatively affect lighthouse
+		swcMinify: true,
+		skipTypescriptChecking: true,
 		experimental: {
-			concurrentFeatures: false, //Set to true when we get rid of getInitialProps usage in ssr app
+			concurrentFeatures: false,
+			serverComponents: false,
+		},
+		i18n: {
+			locales: ["en"],
+			defaultLocale: "en",
+		},
+		typescript: {// Skip type checking at build time to save time. Type checking done automatically in PRs
+			transpileOnly: true,
+			ignoreDevErrors: true,
+			ignoreBuildErrors: true,
 		},
 		images: {
 			domains: [
