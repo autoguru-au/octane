@@ -103,4 +103,4 @@ export const createNextJSConfig = (buildEnv) => {
 };
 
 export const createNextJSTranspiledConfig = () =>
-	withVanillaExtract(withTM(createNextJSConfig('uat')));
+	withVanillaExtract(withTM(createNextJSConfig('prod')));

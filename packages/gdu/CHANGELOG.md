@@ -1,5 +1,11 @@
 # gdu
 
+## 4.0.4
+
+### Patch Changes
+
+-   GDU: Passes on app and node envs to build command
+
 ## 4.0.3
 
 ### Patch Changes
