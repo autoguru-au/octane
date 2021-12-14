@@ -28,12 +28,14 @@ export const withTM = NTM([
 export const createNextJSConfig = (buildEnv) => {
 	const isDev = !isEnvProduction();
 	const env = process.env.APP_ENV || (isDev ? 'dev' : buildEnv);
+	const assetPrefix= isDev ? '' : getGuruConfig()?.publicPath
 
+	console.log({assetPrefix, isDev});
 	return {
-		distDir: `dist/${env}`,
+		distDir: `dist/${env}/${assetPrefix}`,
 		reactStrictMode: true,
 		swcMinify: true,
-		assetPrefix: isDev ? null : getGuruConfig()?.publicPath,
+		assetPrefix,
 		experimental: {
 			concurrentFeatures: false,
 			serverComponents: false,

@@ -1,5 +1,11 @@
 # gdu
 
+## 4.0.7
+
+### Patch Changes
+
+-   GDU: sets unique ourput dirs
+
 ## 4.0.6
 
 ### Patch Changes

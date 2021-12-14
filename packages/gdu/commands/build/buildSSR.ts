@@ -18,7 +18,7 @@ export const buildSSR = async (guruConfig: GuruConfig) => {
 			extendEnv: true,
 			// @ts-ignore
 			env: {
-				NODE_ENV: process.env.NODE_ENV || 'production',
+				NODE_ENV: 'production',
 				APP_ENV: process.env.APP_ENV || 'prod',
 			},
 		})
