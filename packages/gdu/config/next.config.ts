@@ -9,6 +9,7 @@ import { DefinePlugin } from 'webpack';
 import { isEnvProduction } from '../lib/misc';
 import { PROJECT_ROOT } from '../lib/roots';
 import { getConfigsDirs } from '../utils/configs';
+import { getGuruConfig } from '../lib/config';
 
 const withVanillaExtract = createVanillaExtractPlugin();
 
@@ -32,15 +33,17 @@ export const createNextJSConfig = (buildEnv) => {
 		distDir: `dist/${env}`,
 		reactStrictMode: true,
 		swcMinify: true,
+		assetPrefix: isDev ? null : getGuruConfig()?.publicPath,
 		experimental: {
 			concurrentFeatures: false,
 			serverComponents: false,
 		},
 		i18n: {
-			locales: ["en"],
-			defaultLocale: "en",
+			locales: ['en'],
+			defaultLocale: 'en',
 		},
-		typescript: {// Skip type checking at build time to save time. Type checking done automatically in PRs
+		typescript: {
+			// Skip type checking at build time to save time. Type checking done automatically in PRs
 			transpileOnly: true,
 			ignoreDevErrors: true,
 			ignoreBuildErrors: true,

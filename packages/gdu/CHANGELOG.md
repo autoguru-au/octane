@@ -1,5 +1,11 @@
 # gdu
 
+## 4.0.5
+
+### Patch Changes
+
+-   GDU: Sets public asset paths
+
 ## 4.0.4
 
 ### Patch Changes

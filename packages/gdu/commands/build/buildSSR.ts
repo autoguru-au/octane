@@ -17,7 +17,10 @@ export const buildSSR = async (guruConfig: GuruConfig) => {
 			localDir: GDU_ROOT,
 			extendEnv: true,
 			// @ts-ignore
-			env: { NODE_ENV:  process.env.NODE_ENV ||  'production' , APP_ENV:  process.env.APP_ENV||'prod' },
+			env: {
+				NODE_ENV: process.env.NODE_ENV || 'production',
+				APP_ENV: process.env.APP_ENV || 'prod',
+			},
 		})
 		.then(
 			(result) => {
