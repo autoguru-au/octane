@@ -331,7 +331,7 @@ const makeWebpackConfig = (
 		}`,
 		publicPath: isDev
 			? '/'
-			: `https://static-mfe-${buildEnv}.autoguru.io` ?? '/',
+			: (buildEnv === 'prod'?'#{PUBLIC_PATH_BASE}':`https://static-mfe-${buildEnv}.autoguru.io`),
 		filename: `${fileMask}.js`,
 		chunkFilename: `chunks/${fileMask}.js`,
 		hashFunction: 'sha256',

@@ -1,5 +1,11 @@
 # gdu
 
+## 4.0.6
+
+### Patch Changes
+
+-   GDU: sets octopus var for prod public path
+
 ## 4.0.5
 
 ### Patch Changes
