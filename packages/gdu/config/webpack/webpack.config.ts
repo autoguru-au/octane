@@ -13,7 +13,11 @@ import { TreatPlugin } from 'treat/webpack-plugin';
 import { TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
 import { Configuration, DefinePlugin } from 'webpack';
 
-import { getGuruConfig, getProjectName } from '../../lib/config';
+import {
+	getGuruConfig,
+	getProjectFolderName,
+	getProjectName,
+} from '../../lib/config';
 import { isEnvProduction } from '../../lib/misc';
 import {
 	CALLING_WORKSPACE_ROOT,
@@ -70,7 +74,6 @@ const baseOptions = (buildEnv, isMultiEnv: boolean): Configuration => ({
 	mode: isDev ? 'development' : 'production',
 	entry: {
 		main: [
-			!isDev && join(gduEntryPath, '/spa/set-public-path.js'),
 			join(gduEntryPath, '/polyfill.js'),
 			join(gduEntryPath, '/spa/client.js'),
 		].filter(Boolean),
@@ -331,7 +334,9 @@ const makeWebpackConfig = (
 		}`,
 		publicPath: isDev
 			? '/'
-			: (buildEnv === 'prod'?'#{PUBLIC_PATH_BASE}':`https://static-mfe-${buildEnv}.autoguru.io`),
+			: buildEnv === 'prod'
+			? `#{PUBLIC_PATH_BASE}/${getProjectFolderName()}/`
+			: `https://static-mfe-${buildEnv}.autoguru.io/${getProjectFolderName()}/`,
 		filename: `${fileMask}.js`,
 		chunkFilename: `chunks/${fileMask}.js`,
 		hashFunction: 'sha256',
