@@ -1,5 +1,23 @@
 # gdu
 
+## 4.0.10
+
+### Patch Changes
+
+-   GDU: Fixes prod env public path
+
+## 4.0.9
+
+### Patch Changes
+
+-   GDU: Fixes spa public path for prod env
+
+## 4.0.8
+
+### Patch Changes
+
+-   GDU: Fixes public path for prod builds
+
 ## 4.0.7
 
 ### Patch Changes
