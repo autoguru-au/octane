@@ -1,5 +1,11 @@
 # browserslist-config-autoguru
 
+## 2.1.1
+
+### Patch Changes
+
+-   28835a1: browserslist-config-autoguru: Updates browsers list
+
 ## 2.0.1
 
 ### Patch Changes
