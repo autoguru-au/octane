@@ -1,5 +1,11 @@
 # gdu
 
+## 4.1.0
+
+### Minor Changes
+
+-   300f5ee: Bumped up to 4.1.0
+
 ## 4.0.1
 
 ### Patch Changes
