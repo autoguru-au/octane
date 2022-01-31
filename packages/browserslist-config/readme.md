@@ -15,15 +15,18 @@ extends browserslist-config-autoguru
 ### Maintenance
 
 To keep us up to date:
+
 1. From the root octane directory:
     1. Run `npx browserslist@latest --update-db`
 1. From the browserlist-config directory:
-    1. Update package.json with latest [browserslist](https://www.npmjs.com/package/browserslist) version
+    1. Update package.json with latest
+       [browserslist](https://www.npmjs.com/package/browserslist) version
     1. Run `yarn`
     1. Run tests `yarn run jest -u`
 1. Push changes and release
 1. Bump consumers to use the new release (like Retail)
-1. Bump versions in Retail's old-browser.js file (which configures the out of date banner) based on the latest jest snapshot
+1. Bump versions in Retail's old-browser.js file (which configures the out of
+   date banner) based on the latest jest snapshot
 
 ### Support
 

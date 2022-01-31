@@ -29,9 +29,7 @@ const getConsumerHtmlTemplate = (
 
 const localhost = '0.0.0.0';
 const hosts = ['localhost', localhost];
-export const runSPA = async (
-	guruConfig: GuruConfig,
-) => {
+export const runSPA = async (guruConfig: GuruConfig) => {
 	const hooks = getHooks();
 	console.log(`${cyan('Starting dev server...')}`);
 

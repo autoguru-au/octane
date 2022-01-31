@@ -25,10 +25,9 @@ export const withTM = NTM([
 	'@popperjs/core',
 ]);
 
-
 const allowedScriptSources = [
-	'\'self\'',
-	'\'unsafe-inline\'',
+	"'self'",
+	"'unsafe-inline'",
 	'*.autoguru.com.au',
 	'*.googletagmanager.com',
 	'*.google-analytics.com',
@@ -46,25 +45,21 @@ const allowedScriptSources = [
 ].join(' ');
 
 const allowedStyleSources = [
-	'\'self\'',
-	'\'unsafe-inline\'',
+	"'self'",
+	"'unsafe-inline'",
 	'https://*.autoguru.com.au',
 	'https://*.googleapis.com',
 ].join(' ');
 
 const allowedIFrameSources = [
-	'\'self\'',
+	"'self'",
 	'https://www.youtube.com',
 	'https://www.google.com',
 ].join(' ');
 
-const allowedImageSources = [
-	'\'self\'',
-].join(' ');
+const allowedImageSources = ["'self'"].join(' ');
 
-const allowedDataDomains = [
-	'https://*',
-].join(' ');
+const allowedDataDomains = ['https://*'].join(' ');
 
 const allowedFontSources = [
 	'https://*.autoguru.com.au',
@@ -72,14 +67,9 @@ const allowedFontSources = [
 	'https://*.gstatic.com',
 ].join(' ');
 
-const allowedDataSources = [
-	'\'self\'',
-	'blob:',
-].join(' ');
+const allowedDataSources = ["'self'", 'blob:'].join(' ');
 
-const allowedObjectSources = [
-	'\'none\'',
-].join(' ');
+const allowedObjectSources = ["'none'"].join(' ');
 
 const securityHeaders = [
 	{
@@ -112,18 +102,32 @@ export const createNextJSConfig = (buildEnv) => {
 			externalDir: false,
 		},
 		images: {
-			domains: ['cdn.autoguru.com.au'],
 			formats: ['image/avif', 'image/webp'],
+			deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+			imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+			domains: [
+				'www.autoguru.com.au',
+				'dev.autoguru.com.au',
+				'test.autoguru.com.au',
+				'uat.autoguru.com.au',
+				'preprod.autoguru.com.au',
+				'cdn.autoguru.com.au',
+				'cdn-dev.autoguru.com.au',
+				'cdn-test.autoguru.com.au',
+				'cdn-uat.autoguru.com.au',
+				'cdn-preprod.autoguru.com.au',
+			],
 		},
 		async headers() {
 			return isDev
-				? [] : [
-					{
-						// Apply these headers to all routes in your application.
-						source: '/(.*)',
-						headers: securityHeaders,
-					},
-				];
+				? []
+				: [
+						{
+							// Apply these headers to all routes in your application.
+							source: '/(.*)',
+							headers: securityHeaders,
+						},
+				  ];
 		},
 		webpack: (defaultConfig) => {
 			defaultConfig.plugins.push(
