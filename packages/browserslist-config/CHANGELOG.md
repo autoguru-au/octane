@@ -1,5 +1,12 @@
 # browserslist-config-autoguru
 
+## 2.1.2
+
+### Patch Changes
+
+-   2ccb884: GDU: Updates nextjs default configs browserslist-config-autoguru:
+    Updates browserlist db
+
 ## 2.1.1
 
 ### Patch Changes
