@@ -24,6 +24,82 @@ export const withTM = NTM([
 	'@autoguru/layout',
 	'@popperjs/core',
 ]);
+
+
+const allowedScriptSources = [
+	'\'self\'',
+	'\'unsafe-inline\'',
+	'*.autoguru.com.au',
+	'*.googletagmanager.com',
+	'*.google-analytics.com',
+	'*.google.com',
+	'*.google.com.au',
+	'*.gstatic.com',
+	'*.googleadservices.com',
+	'*.heapanalytics.com',
+	'*.doubleclick.net',
+	'*.mapbox.com',
+	'*.quantserve.com',
+	'*.wisepops.com',
+	'*.tvsquared.com',
+	'*.quantcount.com',
+].join(' ');
+
+const allowedStyleSources = [
+	'\'self\'',
+	'\'unsafe-inline\'',
+	'https://*.autoguru.com.au',
+	'https://*.googleapis.com',
+].join(' ');
+
+const allowedIFrameSources = [
+	'\'self\'',
+	'https://www.youtube.com',
+	'https://www.google.com',
+].join(' ');
+
+const allowedImageSources = [
+	'\'self\'',
+].join(' ');
+
+const allowedDataDomains = [
+	'https://*',
+].join(' ');
+
+const allowedFontSources = [
+	'https://*.autoguru.com.au',
+	'https://*.googleapis.com',
+	'https://*.gstatic.com',
+].join(' ');
+
+const allowedDataSources = [
+	'\'self\'',
+	'blob:',
+].join(' ');
+
+const allowedObjectSources = [
+	'\'none\'',
+].join(' ');
+
+const securityHeaders = [
+	{
+		key: 'X-DNS-Prefetch-Control',
+		value: 'on',
+	},
+	{
+		key: 'X-XSS-Protection',
+		value: '1; mode=block',
+	},
+	{
+		key: 'X-Frame-Options',
+		value: 'SAMEORIGIN https://*.autoguru.com.au',
+	},
+	{
+		key: 'Content-Security-Policy',
+		value: `frame-ancestors https://*.autoguru.com.au; frame-src ${allowedIFrameSources}; style-src ${allowedStyleSources}; img-src ${allowedImageSources} data: ${allowedDataDomains}; font-src ${allowedFontSources}; worker-src ${allowedDataSources}; child-src ${allowedDataSources}; object-src ${allowedObjectSources}';connect-src ${allowedScriptSources}; script-src-elem ${allowedScriptSources}; script-src ${allowedScriptSources};`,
+	},
+];
+
 export const createNextJSConfig = (buildEnv) => {
 	const isDev = !isEnvProduction();
 	const env = process.env.APP_ENV || (isDev ? 'dev' : buildEnv);
@@ -37,7 +113,17 @@ export const createNextJSConfig = (buildEnv) => {
 		},
 		images: {
 			domains: ['cdn.autoguru.com.au'],
-			formats: ['image/webp'],
+			formats: ['image/avif', 'image/webp'],
+		},
+		async headers() {
+			return isDev
+				? [] : [
+					{
+						// Apply these headers to all routes in your application.
+						source: '/(.*)',
+						headers: securityHeaders,
+					},
+				];
 		},
 		webpack: (defaultConfig) => {
 			defaultConfig.plugins.push(
