@@ -1,5 +1,11 @@
 # gdu
 
+## 4.1.1
+
+### Patch Changes
+
+-   0ed2f24: GDU: Updates nextjs image settings
+
 ## 4.1.0
 
 ### Minor Changes
