@@ -37,6 +37,7 @@ const allowedScriptSources = [
 	'*.gstatic.com',
 	'*.googleadservices.com',
 	'*.heapanalytics.com',
+	'heapanalytics.com',
 	'*.doubleclick.net',
 	'*.mapbox.com',
 	'*.quantserve.com',
@@ -87,7 +88,7 @@ export const defaultSecurityHeaders = [
 	},
 	{
 		key: 'Content-Security-Policy',
-		value: `frame-ancestors https://*.autoguru.com.au; frame-src ${allowedIFrameSources}; style-src ${allowedStyleSources}; img-src ${allowedImageSources} data: ${allowedDataDomains}; font-src ${allowedFontSources}; worker-src ${allowedDataSources}; child-src ${allowedDataSources}; object-src ${allowedObjectSources}';connect-src ${allowedScriptSources}; script-src-elem ${allowedScriptSources}; script-src ${allowedScriptSources};`,
+		value: `frame-ancestors https://*.autoguru.com.au; frame-src ${allowedIFrameSources}; style-src ${allowedStyleSources}; img-src ${allowedImageSources} data: ${allowedDataDomains}; font-src ${allowedFontSources}; worker-src ${allowedDataSources}; child-src ${allowedDataSources}; object-src ${allowedObjectSources};connect-src ${allowedScriptSources}; script-src-elem ${allowedScriptSources}; script-src ${allowedScriptSources};`,
 	},
 ];
 
