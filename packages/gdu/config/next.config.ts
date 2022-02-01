@@ -71,7 +71,7 @@ const allowedDataSources = ["'self'", 'blob:'].join(' ');
 
 const allowedObjectSources = ["'none'"].join(' ');
 
-const securityHeaders = [
+export const defaultSecurityHeaders = [
 	{
 		key: 'X-DNS-Prefetch-Control',
 		value: 'on',
@@ -117,17 +117,6 @@ export const createNextJSConfig = (buildEnv) => {
 				'cdn-uat.autoguru.com.au',
 				'cdn-preprod.autoguru.com.au',
 			],
-		},
-		async headers() {
-			return isDev
-				? []
-				: [
-						{
-							// Apply these headers to all routes in your application.
-							source: '/(.*)',
-							headers: securityHeaders,
-						},
-				  ];
 		},
 		webpack: (defaultConfig) => {
 			defaultConfig.plugins.push(
