@@ -1,5 +1,11 @@
 # gdu
 
+## 4.1.4
+
+### Patch Changes
+
+-   4051e30: GDU: Updates CSP rules
+
 ## 4.1.3
 
 ### Patch Changes
