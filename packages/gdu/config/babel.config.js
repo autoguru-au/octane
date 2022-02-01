@@ -2,6 +2,8 @@
 const { join } = require('path');
 
 const browsers = require('browserslist-config-autoguru');
+
+const { PROJECT_ROOT } = require('../lib/roots');
 module.exports = (guruConfig) => {
 	let hasRelay = false;
 
@@ -48,6 +50,13 @@ module.exports = (guruConfig) => {
 					haste: false,
 					isDevVariable: '__DEV__',
 					eagerESModules: true,
+					artifactDirectory: join(
+						PROJECT_ROOT,
+						'../../',
+						'packages',
+						'relay',
+						'__generated__',
+					),
 				},
 			],
 			require.resolve('babel-plugin-treat'),

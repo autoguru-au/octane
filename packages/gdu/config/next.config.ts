@@ -6,6 +6,7 @@ import Dotenv from 'dotenv-webpack';
 import NTM from 'next-transpile-modules';
 import { DefinePlugin } from 'webpack';
 
+import { getGuruConfig } from '../lib/config';
 import { isEnvProduction } from '../lib/misc';
 import { PROJECT_ROOT } from '../lib/roots';
 import { getConfigsDirs } from '../utils/configs';
@@ -93,13 +94,22 @@ export const defaultSecurityHeaders = [
 export const createNextJSConfig = (buildEnv) => {
 	const isDev = !isEnvProduction();
 	const env = process.env.APP_ENV || (isDev ? 'dev' : buildEnv);
+	const assetPrefix = isDev ? '' : getGuruConfig()?.publicPath ?? '';
 
 	return {
 		distDir: `dist/${env}`,
 		reactStrictMode: true,
-		experimental: {
-			esmExternals: false,
-			externalDir: false,
+		swcMinify: true,
+		assetPrefix,
+		i18n: {
+			locales: ['en'],
+			defaultLocale: 'en',
+		},
+		typescript: {
+			// Skip type checking at build time to save time. Type checking done automatically in PRs
+			transpileOnly: true,
+			ignoreDevErrors: true,
+			ignoreBuildErrors: true,
 		},
 		images: {
 			formats: ['image/avif', 'image/webp'],
@@ -165,4 +175,4 @@ export const createNextJSConfig = (buildEnv) => {
 };
 
 export const createNextJSTranspiledConfig = () =>
-	withVanillaExtract(withTM(createNextJSConfig('uat')));
+	withVanillaExtract(withTM(createNextJSConfig('prod')));
