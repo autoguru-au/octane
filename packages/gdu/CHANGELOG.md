@@ -1,5 +1,11 @@
 # gdu
 
+## 4.1.3
+
+### Patch Changes
+
+-   82c5a03: GDU Updates nextjs configs
+
 ## 4.1.2
 
 ### Patch Changes
