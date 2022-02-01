@@ -1,5 +1,11 @@
 # gdu
 
+## 4.1.2
+
+### Patch Changes
+
+-   7346bab: Separately exports nextjs security header
+
 ## 4.1.1
 
 ### Patch Changes
