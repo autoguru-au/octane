@@ -11,7 +11,6 @@ import webpackConfigs from '../../config/webpack/webpack.config';
 import { getProjectName, GuruConfig } from '../../lib/config';
 import { PROJECT_ROOT } from '../../lib/roots';
 import { getHooks } from '../../utils/hooks';
-/* eslint-disable unicorn/prefer-module */
 const getConsumerHtmlTemplate = (
 	guruConfig: GuruConfig,
 ): string | undefined => {

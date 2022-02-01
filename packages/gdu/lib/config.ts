@@ -1,4 +1,4 @@
-import { isAbsolute, join } from 'path';
+import { isAbsolute, join, basename } from 'path';
 
 import { diary } from 'diary';
 
@@ -86,3 +86,6 @@ export const decorateConfig = (guruConfig: Partial<GuruConfig>): GuruConfig => {
 
 export const getProjectName = (location = PROJECT_ROOT) =>
 	require(join(getGuruConfig(location).__configPath, './package.json')).name;
+
+export const getProjectFolderName = (location = PROJECT_ROOT) =>
+	basename(join(getGuruConfig(location).__configPath));
