@@ -104,6 +104,7 @@ export const runSPA = async (guruConfig: GuruConfig) => {
 
 			  Local:            ${blue(`http://${hosts[0]}:${guruConfig.port}/`)}
 			  On Your Network:  ${blue(
+				// eslint-disable-next-line unicorn/prefer-module
 					`http://${require('ip').address()}:${guruConfig.port}/`,
 				)}
 

@@ -6,10 +6,10 @@ import Dotenv from 'dotenv-webpack';
 import NTM from 'next-transpile-modules';
 import { DefinePlugin } from 'webpack';
 
+import { getGuruConfig } from '../lib/config';
 import { isEnvProduction } from '../lib/misc';
 import { PROJECT_ROOT } from '../lib/roots';
 import { getConfigsDirs } from '../utils/configs';
-import { getGuruConfig } from '../lib/config';
 
 const withVanillaExtract = createVanillaExtractPlugin();
 
