@@ -1,23 +1,17 @@
 // eslint-disable-next-line unicorn/prefer-module
 module.exports = [
 	'> 0.50% in au',
-
 	'last 2 chrome versions',
-	'not chrome < 69', // > 0.50% in au, adds this explicitly.
 
 	'last 2 firefox versions',
 	'last 4 opera versions',
-
-	'edge >= 17',
-	'safari >= 11',
-
+	'last 4 edge versions',
+	'last 4 safari versions',
 	'not ios_saf < 11',
+	'last 6 samsung versions',
 
-	'samsung >= 6',
-	'not samsung <= 4', // > 0.50% in au, adds this explicitly.
-	'and_chr > 56',
-	'and_ff >= 64',
-
+	'last 2 and_chr versions',
+	'last 2 and_ff versions',
 	'not ie 11',
 	'not op_mini all',
 	'not dead',
