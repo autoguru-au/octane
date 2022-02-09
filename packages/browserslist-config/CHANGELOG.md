@@ -1,5 +1,11 @@
 # browserslist-config-autoguru
 
+## 2.1.3
+
+### Patch Changes
+
+-   17eff6c: browserslist-config-autoguru: Gets updated browser versions
+
 ## 2.1.2
 
 ### Patch Changes
