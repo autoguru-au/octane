@@ -1,5 +1,4 @@
-'use strict';
-
+/* eslint-disable unicorn/prefer-module */
 const replacer = (filepath) => filepath.replace(/\\/g, '/');
 
 /**

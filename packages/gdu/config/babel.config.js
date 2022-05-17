@@ -1,6 +1,8 @@
 /* eslint-disable unicorn/prefer-module */
 const { join } = require('path');
+
 const browsers = require('browserslist-config-autoguru');
+
 const { PROJECT_ROOT } = require('../lib/roots');
 
 module.exports = (guruConfig) => {
