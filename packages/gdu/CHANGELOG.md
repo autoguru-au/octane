@@ -1,5 +1,12 @@
 # gdu
 
+## 4.1.5
+
+### Patch Changes
+
+-   ead0754: gdu: fix graph artifact paths for win32 for relay babel
+-   3a831fa: GDU: Defaults dev ans APP_ENV value
+
 ## 4.1.4
 
 ### Patch Changes
