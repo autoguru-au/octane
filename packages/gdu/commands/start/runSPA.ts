@@ -33,9 +33,12 @@ export const runSPA = async (guruConfig: GuruConfig) => {
 	console.log(`${cyan('Starting dev server...')}`);
 
 	// eslint-disable-next-line unicorn/prefer-prototype-methods
+	const appEnv = process.env.APP_ENV || 'dev';
+
+	// eslint-disable-next-line unicorn/prefer-prototype-methods
 	const webpackConfig: Configuration = hooks.webpackConfig
 		.call(webpackConfigs())
-		.find(({ name }) => name === process.env.APP_ENV);
+		.find(({ name }) => name === appEnv);
 
 	const consumerHtmlTemplate = getConsumerHtmlTemplate(guruConfig);
 
@@ -104,7 +107,7 @@ export const runSPA = async (guruConfig: GuruConfig) => {
 
 			  Local:            ${blue(`http://${hosts[0]}:${guruConfig.port}/`)}
 			  On Your Network:  ${blue(
-				// eslint-disable-next-line unicorn/prefer-module
+					// eslint-disable-next-line unicorn/prefer-module
 					`http://${require('ip').address()}:${guruConfig.port}/`,
 				)}
 

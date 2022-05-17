@@ -61,7 +61,7 @@ module.exports = (guruConfig) => {
 				},
 			],
 			require.resolve('babel-plugin-treat'),
-			[ require.resolve('./pathNormaliser'), ],
+			[require.resolve('./pathNormaliser')],
 		].filter(Boolean),
 	};
 };
