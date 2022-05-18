@@ -1,5 +1,11 @@
 # gdu
 
+## 4.1.6
+
+### Patch Changes
+
+-   763283d: update relay babel version
+
 ## 4.1.5
 
 ### Patch Changes
