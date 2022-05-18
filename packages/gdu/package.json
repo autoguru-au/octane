@@ -38,7 +38,7 @@
 		"@vanilla-extract/next-plugin": "^1.0.1",
 		"@vanilla-extract/webpack-plugin": "^2.1.0",
 		"babel-loader": "^8.2.2",
-		"babel-plugin-relay": "^11.0.2",
+		"babel-plugin-relay": "^13.2.0",
 		"babel-plugin-treat": "^1.6.2",
 		"browserslist-config-autoguru": "^2.1.2",
 		"clean-webpack-plugin": "^4.0.0-alpha.0",
