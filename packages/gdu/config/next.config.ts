@@ -140,9 +140,13 @@ export const createNextJSConfig = (buildEnv) => {
 				.flatMap((configsDir) => [
 					new Dotenv({
 						path: path.resolve(configsDir, '.env.defaults'),
+						prefix: 'process.env.',
+						ignoreStub: true,
 					}), // Read env
 					new Dotenv({
 						path: path.resolve(configsDir, `.env.${env}`),
+						prefix: 'process.env.',
+						ignoreStub: true,
 					}),
 				])
 				.forEach((plugin) => defaultConfig.plugins.push(plugin));
