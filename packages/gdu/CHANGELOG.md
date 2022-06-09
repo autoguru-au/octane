@@ -1,5 +1,11 @@
 # gdu
 
+## 4.1.7
+
+### Patch Changes
+
+-   e914b89: GDU: Supports NextJS v 12.1.x
+
 ## 4.1.6
 
 ### Patch Changes
