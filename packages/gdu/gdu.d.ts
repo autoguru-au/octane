@@ -20,11 +20,12 @@ declare namespace NodeJS {
 		 * Will be set to true when building for a browser
 		 */
 		readonly browser: boolean;
-	}
-
-	interface ProcessEnv {
-		readonly NODE_ENV: 'development' | 'production';
-		readonly APP_ENV: 'dev' | 'test' | 'uat' | 'preprod' | 'prod' | string;
+		readonly env: {
+			APP_ENV: 'dev' | 'test' | 'uat' | 'preprod' | 'prod' | string;
+			GITHUB_ACTIONS: string;
+			GITHUB_REF: string;
+			NODE_ENV: 'development' | 'production';
+		};
 	}
 }
 

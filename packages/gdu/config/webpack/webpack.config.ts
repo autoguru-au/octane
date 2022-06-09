@@ -300,12 +300,16 @@ const baseOptions = (buildEnv, isMultiEnv: boolean): Configuration => ({
 		...getConfigsDirs().flatMap((configsDir) => [
 			new Dotenv({
 				path: path.resolve(configsDir, '.env.defaults'),
+				prefix: 'process.env.',
+				ignoreStub: true,
 			}), // Read env
 			new Dotenv({
 				path: path.resolve(
 					configsDir,
 					`.env.${process.env.APP_ENV || (isDev ? 'dev' : buildEnv)}`,
 				),
+				prefix: 'process.env.',
+				ignoreStub: true,
 			}),
 		]),
 		!isDev &&
