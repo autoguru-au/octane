@@ -26,52 +26,143 @@ export const withTM = NTM([
 	'@popperjs/core',
 ]);
 
-const allowedScriptSources = [
-	"'self'",
-	"'unsafe-inline'",
-	'*.autoguru.com.au',
-	'*.googletagmanager.com',
-	'*.google-analytics.com',
-	'*.google.com',
-	'*.google.com.au',
-	'*.gstatic.com',
-	'*.googleadservices.com',
-	'*.heapanalytics.com',
-	'heapanalytics.com',
-	'*.doubleclick.net',
-	'*.mapbox.com',
-	'*.quantserve.com',
-	'*.wisepops.com',
-	'*.tvsquared.com',
-	'*.quantcount.com',
-].join(' ');
+type CSPKey =
+	| 'frame-ancestors'
+	| 'frame-src'
+	| 'style-src'
+	| 'img-src'
+	| 'font-src'
+	| 'worker-src'
+	| 'child-src'
+	| 'object-src'
+	| 'connect-src'
+	| 'script-src-elem'
+	| 'script-src';
 
-const allowedStyleSources = [
-	"'self'",
-	"'unsafe-inline'",
-	'https://*.autoguru.com.au',
-	'https://*.googleapis.com',
-].join(' ');
+interface CSPItem {
+	key: CSPKey;
+	values: string[];
+}
 
-const allowedIFrameSources = [
-	"'self'",
-	'https://www.youtube.com',
-	'https://www.google.com',
-].join(' ');
+export const CSPDefaultsList: CSPItem[] = [
+	{
+		key: 'frame-ancestors',
+		values: ['https://*.autoguru.com.au'],
+	},
+	{
+		key: 'frame-src',
+		values: ["'self'", 'https://www.youtube.com', 'https://www.google.com'],
+	},
+	{
+		key: 'style-src',
+		values: [
+			"'self'",
+			"'unsafe-inline'",
+			'https://*.autoguru.com.au',
+			'https://*.googleapis.com',
+		],
+	},
+	{
+		key: 'img-src',
+		values: [
+			"'self'",
+			'data:',
+			'https://*.autoguru.com.au',
+			'https://*.googletagmanager.com',
+			'https://*.google-analytics.com',
+			'https://*.google.com',
+			'https://*.google.com.au',
+			'https://*.gstatic.com',
+		],
+	},
+	{
+		key: 'font-src',
+		values: [
+			'https://*.autoguru.com.au',
+			'https://*.googleapis.com',
+			'https://*.gstatic.com',
+		],
+	},
+	{
+		key: 'worker-src',
+		values: ["'self'", 'blob:'],
+	},
+	{
+		key: 'child-src',
+		values: ["'self'", 'blob:'],
+	},
+	{
+		key: 'object-src',
+		values: ["'none'"],
+	},
+	{
+		key: 'connect-src',
+		values: [
+			"'self'",
+			'*.autoguru.com.au',
+			'https://*.googletagmanager.com',
+			'https://*.google-analytics.com',
+			'https://*.google.com',
+			'https://*.google.com.au',
+			'https://*.gstatic.com',
+			'https://*.googleadservices.com',
+			'https://*.heapanalytics.com',
+			'https://*.doubleclick.net',
+			'https://*.mapbox.com',
+			'https://*.quantserve.com',
+			'https://*.wisepops.com',
+			'https://*.tvsquared.com',
+			'https://*.quantcount.com',
+		],
+	},
+	{
+		key: 'script-src-elem',
+		values: [
+			"'self'",
+			"'unsafe-inline'",
+			'https://*.autoguru.com.au',
+			'https://*.google-analytics.com',
+			'https://*.googletagmanager.com',
+			'https://*.gstatic.com',
+			'https://*.google.com',
+			'https://*.google.com.au',
+			'https://*.gstatic.com',
+			'https://*.googleadservices.com',
+			'https://*.heapanalytics.com',
+			'https://*.doubleclick.net',
+			'https://*.mapbox.com',
+			'https://*.quantserve.com',
+			'https://*.wisepops.com',
+			'https://*.tvsquared.com',
+			'https://*.quantcount.com',
+		],
+	},
+	{
+		key: 'script-src',
+		values: [
+			"'self'",
+			"'unsafe-eval'",
+			'https://*.autoguru.com.au',
+			'https://*.googletagmanager.com',
+			'https://*.google.com.au',
+			'https://*.gstatic.com',
+			'https://*.heapanalytics.com',
+			'https://*.quantserve.com',
+			'https://*.wisepops.com',
+			'https://*.tvsquared.com',
+			'https://*.quantcount.com',
+		],
+	},
+];
 
-const allowedImageSources = ["'self'"].join(' ');
-
-const allowedDataDomains = ['https://*'].join(' ');
-
-const allowedFontSources = [
-	'https://*.autoguru.com.au',
-	'https://*.googleapis.com',
-	'https://*.gstatic.com',
-].join(' ');
-
-const allowedDataSources = ["'self'", 'blob:'].join(' ');
-
-const allowedObjectSources = ["'none'"].join(' ');
+export const generateCSP = (cspList: CSPItem[]): string =>
+	cspList.reduce(
+		(policies, csp, currentIndex) =>
+			`${policies}${currentIndex !== 0 ? '; ' : ''}${
+				csp.key
+			} ${csp.values.join(' ')}`,
+		'',
+	);
 
 export const defaultSecurityHeaders = [
 	{
@@ -85,10 +176,6 @@ export const defaultSecurityHeaders = [
 	{
 		key: 'X-Frame-Options',
 		value: 'SAMEORIGIN https://*.autoguru.com.au',
-	},
-	{
-		key: 'Content-Security-Policy',
-		value: `frame-ancestors https://*.autoguru.com.au; frame-src ${allowedIFrameSources}; style-src ${allowedStyleSources}; img-src ${allowedImageSources} data: ${allowedDataDomains}; font-src ${allowedFontSources}; worker-src ${allowedDataSources}; child-src ${allowedDataSources}; object-src ${allowedObjectSources};connect-src ${allowedScriptSources}; script-src-elem ${allowedScriptSources}; script-src ${allowedScriptSources};`,
 	},
 ];
 
@@ -113,6 +200,7 @@ export const createNextJSConfig = (buildEnv) => {
 			ignoreBuildErrors: true,
 		},
 		images: {
+			minimumCacheTTL: 3_153_600_000,
 			formats: ['image/avif', 'image/webp'],
 			deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
 			imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
