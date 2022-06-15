@@ -1,5 +1,11 @@
 # gdu
 
+## 4.2.2
+
+### Patch Changes
+
+-   463ae35: GDU: Updates CSPs
+
 ## 4.2.1
 
 ### Patch Changes
