@@ -71,6 +71,7 @@ export const CSPDefaultsList: CSPItem[] = [
 			'https://*.googletagmanager.com',
 			'https://*.google-analytics.com',
 			'https://*.heapanalytics.com/',
+			'https://heapanalytics.com/',
 			'https://*.tvsquared.com',
 			'https://*.google.com',
 			'https://*.google.com.au',
