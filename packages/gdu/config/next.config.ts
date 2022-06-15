@@ -70,6 +70,8 @@ export const CSPDefaultsList: CSPItem[] = [
 			'https://*.autoguru.com.au',
 			'https://*.googletagmanager.com',
 			'https://*.google-analytics.com',
+			'https://*.heapanalytics.com/',
+			'https://*.tvsquared.com',
 			'https://*.google.com',
 			'https://*.google.com.au',
 			'https://*.gstatic.com',
