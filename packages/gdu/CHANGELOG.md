@@ -1,5 +1,11 @@
 # gdu
 
+## 4.2.1
+
+### Patch Changes
+
+-   44db1eb: GDU: Updates csp rules
+
 ## 4.2.0
 
 ### Minor Changes
