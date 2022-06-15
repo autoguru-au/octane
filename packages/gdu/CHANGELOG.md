@@ -1,5 +1,11 @@
 # gdu
 
+## 4.2.0
+
+### Minor Changes
+
+-   c19b309: SSR CSP rules: Are made modifiable by users
+
 ## 4.1.7
 
 ### Patch Changes
