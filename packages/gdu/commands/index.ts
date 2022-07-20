@@ -50,6 +50,16 @@ export default (app: Sade) => {
 		.example('start -p 80')
 		.action(deferredAction(async () => import('./start'), IS_NOT_ROOT));
 
+	// === BROWSERS
+	app.command('generateBrowsers')
+		.describe('Builds a regex of supported browser user agents')
+		.action(
+			deferredAction(
+				async () => import('./generateBrowsers'),
+				IS_NOT_ROOT,
+			),
+		);
+
 	// === BUILD
 	app.command('build')
 		.describe('Builds the target app ready for production')

@@ -10,7 +10,7 @@ import { projectInfo } from './terminal';
 
 const { debug } = diary('gdu:configure');
 
-const WRAP_BANNER = (extra) =>
+export const WRAP_BANNER = (extra) =>
 	`/** THIS FILE IS GENERATED, ALL CHANGES WILL NOT PERSIST **/\n${extra}`;
 
 export const configure = async (app_location) => {

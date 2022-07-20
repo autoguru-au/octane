@@ -6,6 +6,7 @@ import { projectInfo } from '../../lib/terminal';
 
 import { buildSPA } from './buildSPA';
 import { buildSSR } from './buildSSR';
+import { buildSupportedBrowsers } from '../generateBrowsers';
 
 export default async () => {
 	setEnvProd(true);
@@ -13,6 +14,8 @@ export default async () => {
 	const guruConfig = getGuruConfig();
 
 	banner('Building');
+
+	await buildSupportedBrowsers();
 
 	let stats;
 	if (guruConfig?.type === 'ssr') {
