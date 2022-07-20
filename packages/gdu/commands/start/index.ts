@@ -4,6 +4,7 @@ import { banner } from '../../lib/banner';
 import { getGuruConfig, GuruConfig } from '../../lib/config';
 import { isEnvProduction } from '../../lib/misc';
 import { PROJECT_ROOT } from '../../lib/roots';
+import { buildSupportedBrowsers } from '../generateBrowsers';
 
 const { debug } = diary('gdu:commands:start');
 
@@ -14,6 +15,8 @@ export default async ({ port: incomingPort /*env: configEnvironment*/ }) => {
 		getGuruConfig(PROJECT_ROOT) || ({} as any);
 
 	const resolvedConfig: GuruConfig = { port, ...otherConfig };
+
+	await buildSupportedBrowsers();
 
 	if (!isEnvProduction()) banner('Starting');
 
