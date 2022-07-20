@@ -1,5 +1,17 @@
 # gdu
 
+## 5.0.0
+
+### Minor Changes
+
+-   2553ae9: gdu: Generates supported browsers UA regex
+    browserslist-config-autoguru: Upgrades browserlist version
+
+### Patch Changes
+
+-   Updated dependencies [2553ae9]
+    -   browserslist-config-autoguru@2.2.0
+
 ## 4.2.2
 
 ### Patch Changes
