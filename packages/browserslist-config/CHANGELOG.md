@@ -1,5 +1,11 @@
 # browserslist-config-autoguru
 
+## 2.1.4
+
+### Patch Changes
+
+-   e386918: Updates browserslit db
+
 ## 2.1.3
 
 ### Patch Changes
