@@ -1,5 +1,11 @@
 # gdu
 
+## 5.0.1
+
+### Patch Changes
+
+-   494e9f5: GDU: Gets browserslist-useragent-regexp as a dependency,
+
 ## 5.0.0
 
 ### Minor Changes
