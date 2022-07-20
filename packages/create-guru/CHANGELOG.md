@@ -1,5 +1,12 @@
 # create-guru
 
+## 5.0.0
+
+### Patch Changes
+
+-   Updated dependencies [2553ae9]
+    -   gdu@5.0.0
+
 ## 4.0.0-next.0
 
 ### Patch Changes
