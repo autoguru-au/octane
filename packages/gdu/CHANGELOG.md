@@ -1,5 +1,11 @@
 # gdu
 
+## 5.0.2
+
+### Patch Changes
+
+-   5cc1453: NextJS config: Adds new csp rule
+
 ## 5.0.1
 
 ### Patch Changes
