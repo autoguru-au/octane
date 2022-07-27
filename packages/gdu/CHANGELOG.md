@@ -1,5 +1,11 @@
 # gdu
 
+## 5.0.4
+
+### Patch Changes
+
+-   3546a42: gdu: Reverts webpack version
+
 ## 5.0.3
 
 ### Patch Changes
