@@ -1,5 +1,11 @@
 # gdu
 
+## 5.0.3
+
+### Patch Changes
+
+-   9bb25bf: Webpack config: Fixes next 12.2.x caused webpack errors
+
 ## 5.0.2
 
 ### Patch Changes
