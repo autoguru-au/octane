@@ -130,7 +130,7 @@ export const runSPA = async (guruConfig: GuruConfig) => {
 
 	devServer.listen(guruConfig.port, localhost, (err) => {
 		if (err) {
-			console.log(red(err));
+			console.log(red(err.message));
 		}
 	});
 };

@@ -99,6 +99,8 @@ const baseOptions = (buildEnv, isMultiEnv: boolean): Configuration => ({
 		},
 		extensions: ['.tsx', '.ts', '.mjs', '.jsx', '.js', '.json'],
 		plugins: [
+			// TODO: Remove the ignore when plugin is fixed it's types
+			// @ts-ignore
 			new TsconfigPathsPlugin({
 				configFile: join(PROJECT_ROOT, 'tsconfig.json'),
 			}),
