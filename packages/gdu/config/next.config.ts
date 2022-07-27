@@ -76,6 +76,7 @@ export const CSPDefaultsList: CSPItem[] = [
 			'https://*.google.com',
 			'https://*.google.com.au',
 			'https://*.gstatic.com',
+			'https://*.quantserve.com',
 		],
 	},
 	{

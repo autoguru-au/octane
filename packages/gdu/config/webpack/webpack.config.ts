@@ -11,7 +11,7 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
 import { TreatPlugin } from 'treat/webpack-plugin';
 import { TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
-import { Configuration, DefinePlugin } from 'webpack';
+import { Configuration, DefinePlugin, IgnorePlugin } from 'webpack';
 
 import {
 	getGuruConfig,
@@ -93,6 +93,10 @@ const baseOptions = (buildEnv, isMultiEnv: boolean): Configuration => ({
 	},
 	devtool: isDev ? 'eval-cheap-module-source-map' : 'source-map',
 	resolve: {
+		fallback: {
+			path: false,
+			util: false,
+		},
 		extensions: ['.tsx', '.ts', '.mjs', '.jsx', '.js', '.json'],
 		plugins: [
 			new TsconfigPathsPlugin({
@@ -227,7 +231,8 @@ const baseOptions = (buildEnv, isMultiEnv: boolean): Configuration => ({
 					},
 					// node_modules stuff
 					{
-						exclude: /@babel(?:\/|\\{1,2})runtime/,
+						exclude:
+							/(@babel(?:\/|\\{1,2})runtime)|(\/node_modules\/next\/)/,
 						use: [
 							{
 								loader: require.resolve('babel-loader'),
@@ -265,7 +270,13 @@ const baseOptions = (buildEnv, isMultiEnv: boolean): Configuration => ({
 		],
 	},
 	plugins: [
+		new IgnorePlugin({
+			checkResource(resource) {
+				return /(\/next\/)/.test(resource);
+			},
+		}),
 		!isDev && new CleanWebpackPlugin(),
+
 		new DefinePlugin({
 			'process.browser': JSON.stringify(true),
 			'process.env.NODE_ENV': JSON.stringify(

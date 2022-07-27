@@ -3,10 +3,10 @@ import { getGuruConfig } from '../../lib/config';
 import { genGithubOutputs } from '../../lib/githubOutputs';
 import { setEnvProd } from '../../lib/misc';
 import { projectInfo } from '../../lib/terminal';
+import { buildSupportedBrowsers } from '../generateBrowsers';
 
 import { buildSPA } from './buildSPA';
 import { buildSSR } from './buildSSR';
-import { buildSupportedBrowsers } from '../generateBrowsers';
 
 export default async () => {
 	setEnvProd(true);
