@@ -1,5 +1,11 @@
 # @autoguru/utilities
 
+## 1.1.1
+
+### Patch Changes
+
+-   8390261: GDU: Upgrades to webpak 5.7.x
+
 ## 1.1.0
 
 ### Minor Changes

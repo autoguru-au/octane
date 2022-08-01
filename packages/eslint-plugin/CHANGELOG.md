@@ -1,5 +1,11 @@
 # @autoguru/eslint-plugin
 
+## 1.3.1
+
+### Patch Changes
+
+-   ebee6d4: GDU: Adds CSP rules @autoguru/eslint-plugin: Adds nextjs defaults
+
 ## 1.3.0
 
 ### Minor Changes
