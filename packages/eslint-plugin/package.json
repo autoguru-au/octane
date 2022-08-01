@@ -30,6 +30,7 @@
 		"access": "public"
 	},
 	"devDependencies": {
+    "@next/eslint-plugin-next": "^12.2.3",
 		"@types/eslint": "^7.2.13",
 		"eslint": "^7.28.0",
 		"eslint-plugin-jest": "^24.3.6"
