@@ -14,7 +14,7 @@ export const wrapAction =
 
 let prodEnv = process.env.NODE_ENV === 'production';
 
-export const isEnvProduction = () => prodEnv;
+export const isProductionBuild = () => prodEnv;
 
 export const setEnvProd = (which) => {
 	if (which === true) {

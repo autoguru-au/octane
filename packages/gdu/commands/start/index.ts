@@ -2,7 +2,7 @@ import { diary } from 'diary';
 
 import { banner } from '../../lib/banner';
 import { getGuruConfig, GuruConfig } from '../../lib/config';
-import { isEnvProduction } from '../../lib/misc';
+import { isProductionBuild } from '../../lib/misc';
 import { PROJECT_ROOT } from '../../lib/roots';
 import { buildSupportedBrowsers } from '../generateBrowsers';
 
@@ -18,7 +18,7 @@ export default async ({ port: incomingPort /*env: configEnvironment*/ }) => {
 
 	await buildSupportedBrowsers();
 
-	if (!isEnvProduction()) banner('Starting');
+	if (!isProductionBuild()) banner('Starting');
 
 	if (resolvedConfig?.type === 'ssr') {
 		const runSSR = await import('./runSSR');

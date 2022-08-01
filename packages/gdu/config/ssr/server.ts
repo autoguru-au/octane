@@ -2,7 +2,7 @@ import { createLogger } from '@autoguru/utilities';
 import execa from 'execa';
 import { blue, dim } from 'kleur';
 
-import { isEnvProduction } from '../../lib/misc';
+import { isProductionBuild } from '../../lib/misc';
 import { GDU_ROOT, PROJECT_ROOT } from '../../lib/roots';
 
 const logger = createLogger('server');
@@ -10,7 +10,7 @@ const logger = createLogger('server');
 export const run = async (port: number) => {
 	const start = Date.now();
 	execa
-		.command(`next ${isEnvProduction() ? 'start' : 'dev'} -p ${port}`, {
+		.command(`next ${isProductionBuild() ? 'start' : 'dev'} -p ${port}`, {
 			stdio: 'inherit',
 			cwd: PROJECT_ROOT,
 			localDir: GDU_ROOT,

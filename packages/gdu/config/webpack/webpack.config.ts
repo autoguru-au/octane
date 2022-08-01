@@ -18,7 +18,7 @@ import {
 	getProjectFolderName,
 	getProjectName,
 } from '../../lib/config';
-import { isEnvProduction } from '../../lib/misc';
+import { isProductionBuild } from '../../lib/misc';
 import {
 	CALLING_WORKSPACE_ROOT,
 	GDU_ROOT,
@@ -56,7 +56,7 @@ const frameworkRegex =
 	/(?<!node_modules.*)[/\\]node_modules[/\\](react|react-dom|scheduler|prop-types|use-subscription|relay-runtime|react-relay)[/\\]/;
 
 const hooks = getHooks();
-const isDev = !isEnvProduction();
+const isDev = !isProductionBuild();
 
 const gduEntryPath = join(GDU_ROOT, 'entry');
 
@@ -294,7 +294,7 @@ const baseOptions = (buildEnv, isMultiEnv: boolean): Configuration => ({
 		new TreatPlugin({
 			outputLoaders: [
 				{
-					loader: isEnvProduction()
+					loader: isProductionBuild()
 						? MiniCssExtractPlugin.loader
 						: require.resolve('style-loader'),
 				},

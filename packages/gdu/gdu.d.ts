@@ -21,7 +21,14 @@ declare namespace NodeJS {
 		 */
 		readonly browser: boolean;
 		readonly env: {
-			APP_ENV: 'dev' | 'test' | 'uat' | 'preprod' | 'prod' | string;
+			APP_ENV:
+				| 'dev'
+				| 'test'
+				| 'uat'
+				| 'preprod'
+				| 'prod'
+				| 'dockerprod'
+				| string;
 			GITHUB_ACTIONS: string;
 			GITHUB_REF: string;
 			NODE_ENV: 'development' | 'production';
