@@ -7,7 +7,7 @@ import NTM from 'next-transpile-modules';
 import { DefinePlugin } from 'webpack';
 
 import { getGuruConfig } from '../lib/config';
-import { isEnvProduction } from '../lib/misc';
+import { isProductionBuild } from '../lib/misc';
 import { PROJECT_ROOT } from '../lib/roots';
 import { getConfigsDirs } from '../utils/configs';
 
@@ -51,7 +51,13 @@ export const CSPDefaultsList: CSPItem[] = [
 	},
 	{
 		key: 'frame-src',
-		values: ["'self'", 'https://www.youtube.com', 'https://www.google.com'],
+		values: [
+			"'self'",
+			'https://www.youtube.com',
+			'https://www.google.com',
+			'https://*.doubleclick.net',
+			'https://*.googleadservices.com',
+		],
 	},
 	{
 		key: 'style-src',
@@ -60,6 +66,7 @@ export const CSPDefaultsList: CSPItem[] = [
 			"'unsafe-inline'",
 			'https://*.autoguru.com.au',
 			'https://*.googleapis.com',
+			'https://*.googleadservices.com',
 		],
 	},
 	{
@@ -75,6 +82,7 @@ export const CSPDefaultsList: CSPItem[] = [
 			'https://*.tvsquared.com',
 			'https://*.google.com',
 			'https://*.google.com.au',
+			'https://*.googleadservices.com',
 			'https://*.gstatic.com',
 			'https://*.quantserve.com',
 		],
@@ -147,6 +155,7 @@ export const CSPDefaultsList: CSPItem[] = [
 			"'self'",
 			"'unsafe-eval'",
 			'https://*.autoguru.com.au',
+			'https://*.googleadservices.com',
 			'https://*.googletagmanager.com',
 			'https://*.google.com.au',
 			'https://*.gstatic.com',
@@ -183,24 +192,31 @@ export const defaultSecurityHeaders = [
 	},
 ];
 
+const productionEnvs = new Set([
+	'prod',
+	'dockerprod',
+	'preprod',
+]);
+
 export const createNextJSConfig = (buildEnv) => {
-	const isDev = !isEnvProduction();
+	const isDev = !isProductionBuild();
 	const env = process.env.APP_ENV || (isDev ? 'dev' : buildEnv);
+	const isProductionSite = productionEnvs.has(process.env.APP_ENV);
 	const assetPrefix = isDev ? '' : getGuruConfig()?.publicPath ?? '';
 
 	return {
 		distDir: `dist/${env}`,
-		reactStrictMode: true,
+		reactStrictMode: !isProductionSite,
 		swcMinify: true,
+		poweredByHeader: !isProductionSite,
 		assetPrefix,
 		i18n: {
 			locales: ['en'],
 			defaultLocale: 'en',
 		},
+
 		typescript: {
 			// Skip type checking at build time to save time. Type checking done automatically in PRs
-			transpileOnly: true,
-			ignoreDevErrors: true,
 			ignoreBuildErrors: true,
 		},
 		images: {

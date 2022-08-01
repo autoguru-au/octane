@@ -88,6 +88,7 @@
 	},
 	"devDependencies": {
 		"@babel/core": "^7.15.0",
+		"@next/eslint-plugin-next": "^12.2.3",
 		"@types/babel-types": "^7.0.10",
 		"@types/glob": "^7.1.4",
 		"@types/node": "^16.4.13",
