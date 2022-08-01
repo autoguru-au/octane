@@ -1,5 +1,14 @@
 # gdu
 
+## 5.0.5
+
+### Patch Changes
+
+-   ebee6d4: GDU: Adds CSP rules @autoguru/eslint-plugin: Adds nextjs defaults
+-   8390261: GDU: Upgrades to webpak 5.7.x
+-   Updated dependencies [8390261]
+    -   @autoguru/utilities@1.1.1
+
 ## 5.0.4
 
 ### Patch Changes
