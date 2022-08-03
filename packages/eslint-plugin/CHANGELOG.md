@@ -1,5 +1,11 @@
 # @autoguru/eslint-plugin
 
+## 1.3.2
+
+### Patch Changes
+
+-   ae9cd96: Removes next eslint
+
 ## 1.3.1
 
 ### Patch Changes
