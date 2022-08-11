@@ -1,5 +1,11 @@
 # browserslist-config-autoguru
 
+## 2.2.1
+
+### Patch Changes
+
+-   8499104: Updates browserlist db
+
 ## 2.2.0
 
 ### Minor Changes
