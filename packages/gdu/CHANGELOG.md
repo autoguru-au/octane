@@ -1,5 +1,15 @@
 # gdu
 
+## 5.2.0
+
+### Minor Changes
+
+-   2f2ca0f: GDU: Generates docs from feature graph schema
+
+### Patch Changes
+
+-   2f2ca0f: Automatically serves schema diff
+
 ## 5.1.0
 
 ### Minor Changes
