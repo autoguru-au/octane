@@ -19,21 +19,20 @@ export interface EndpointExtension extends GraphQLConfigExtension {
 const normalise = (
 	patterns: EndpointExtension['schemaNormaliserPatterns'],
 	rawSchema: string,
-) =>{
-	if(typeof rawSchema !== 'string')
-		return rawSchema;
-	const schema = rawSchema.replaceAll('`', '\'');
+) => {
+	if (typeof rawSchema !== 'string') return rawSchema;
+	const schema = rawSchema.replaceAll('`', "'");
 	return Array.isArray(patterns)
 		? patterns.reduce(
-			(schemaStr, normaliser) =>
-				schemaStr.replace(
-					new RegExp(normaliser.pattern, normaliser.flags),
-					normaliser.replacer,
-				),
-			schema,
-		)
+				(schemaStr, normaliser) =>
+					schemaStr.replace(
+						new RegExp(normaliser.pattern, normaliser.flags),
+						normaliser.replacer,
+					),
+				schema,
+		  )
 		: schema;
-}
+};
 
 export default async (options) => {
 	const graphQLConfig = await loadConfig({
@@ -57,7 +56,7 @@ export default async (options) => {
 
 	if (response?.ok || response?.body) {
 		await writeFileAsync(
-			options.schemaPath || config.schema as string,
+			options.schemaPath || (config.schema as string),
 			normalise(
 				endpointConfig.schemaNormaliserPatterns,
 				await response.text(),

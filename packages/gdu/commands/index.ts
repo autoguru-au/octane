@@ -77,10 +77,7 @@ export default (app: Sade) => {
 			'-e, --endpoint',
 			'The endpoint name to retrieve the schema from.',
 		)
-		.option(
-			'-s, --schemaPath',
-			'The path to write schema file to.',
-		)
+		.option('-s, --schemaPath', 'The path to write schema file to.')
 		.example('graphql-schema')
 		.action(deferredAction(async () => import('./graphqlSchema')));
 
@@ -89,10 +86,8 @@ export default (app: Sade) => {
 			'-e, --endpoint',
 			'The endpoint name to retrieve the schema from.',
 		)
-		.option(
-			'-s, --schemaPath',
-			'The path to write schema file to.',
-		)
+		.option('-s, --schemaPath', 'The path to write schema file to.')
+		.option('-p, --port', 'Port number to serve the docs over.')
 		.example('graphql-schema')
 		.action(deferredAction(async () => import('./graphqlDoc')));
 
@@ -101,18 +96,13 @@ export default (app: Sade) => {
 			'-e, --endpoint',
 			'The endpoint name to retrieve the schema from.',
 		)
-		.option(
-			'-s, --schemaPath',
-			'The path to write schema file to.',
-		)
+		.option('-s, --schemaPath', 'The path to write schema file to.')
 		.option(
 			'-c, --compareEndpoint',
 			'The endpoint name to retrieve compare schema from.',
 		)
-		.option(
-			'-cs, --compareSchemaPath',
-			'The path to write schema file to.',
-		)
+		.option('-cs, --compareSchemaPath', 'The path to write schema file to.')
+		.option('-p, --port', 'Port number to serve the diff over.')
 		.example('graphql-diff')
 		.action(deferredAction(async () => import('./graphqlDiff')));
 
