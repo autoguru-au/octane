@@ -1,3 +1,5 @@
+/* eslint-disable unicorn/prefer-module */
+
 import http from 'http';
 import { join } from 'path';
 
@@ -26,7 +28,6 @@ export default async (options) => {
 		);
 	}
 	const path = config.schema as string;
-	const folderIndex = path.lastIndexOf('/');
 
 	const schemaPath = options.schemaPath || path;
 
@@ -36,39 +37,23 @@ export default async (options) => {
 		schemaPath,
 	}); // Fetch feature schema
 
-	const folderPath = path.slice(0, folderIndex + 1);
-	const compareSchemaPath =
-		options.compareSchemaPath ||
-		`${folderPath}compare-${path.slice(folderIndex + 1, path.length)}`;
-	await graphqlSchema({
-		// Fetch compare schema
-		...options,
-		e: options.c,
-		endpoint: options.compareEndpoint,
-		s: compareSchemaPath,
-		schemaPath: compareSchemaPath,
-	}); // Fetch Schema
-
 	execa
-		.command(
-			`graphql-schema-diff ${compareSchemaPath} ${schemaPath} --create-html-output`,
-			{
-				stdio: 'inherit',
-				cwd: PROJECT_ROOT,
-				localDir: PROJECT_ROOT,
-				extendEnv: true,
-			},
-		)
+		.command(`graphdoc -s ${schemaPath} -o ./doc/schema  --force`, {
+			stdio: 'inherit',
+			cwd: PROJECT_ROOT,
+			localDir: PROJECT_ROOT,
+			extendEnv: true,
+		})
 		.then(
 			(result) => {
 				console.log(`${green('SUCCESS!')}`, result);
 				console.log(
-					`${green('Schemas Diff document generated under')} ${blue(
-						'./schemaDiff/index.html',
+					`${green('Schema docs generated under')} ${blue(
+						'./doc/schema',
 					)}`,
 				);
 
-				const staticSitePath = join(PROJECT_ROOT, 'schemaDiff');
+				const staticSitePath = join(PROJECT_ROOT, 'doc', 'schema');
 				const file = new Server(staticSitePath);
 				const port = options.port || 8080;
 				const url = `http://localhost:${port}`;
@@ -80,8 +65,7 @@ export default async (options) => {
 						.resume();
 				}).listen(port);
 
-				console.log(`View diff under ${url}`);
-
+				console.log(`View docs under ${url}`);
 				open(url);
 			},
 			(error) => {

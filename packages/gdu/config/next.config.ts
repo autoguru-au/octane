@@ -192,11 +192,7 @@ export const defaultSecurityHeaders = [
 	},
 ];
 
-const productionEnvs = new Set([
-	'prod',
-	'dockerprod',
-	'preprod',
-]);
+const productionEnvs = new Set(['prod', 'dockerprod', 'preprod']);
 
 export const createNextJSConfig = (buildEnv) => {
 	const isDev = !isProductionBuild();
