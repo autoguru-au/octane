@@ -1,5 +1,11 @@
 # gdu
 
+## 5.1.0
+
+### Minor Changes
+
+-   91aa4e3: Adds schema diff generation command
+
 ## 5.0.5
 
 ### Patch Changes
