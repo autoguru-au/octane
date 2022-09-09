@@ -84,6 +84,18 @@ export default (app: Sade) => {
 		.example('graphql-schema')
 		.action(deferredAction(async () => import('./graphqlSchema')));
 
+	app.command('graphql-doc')
+		.option(
+			'-e, --endpoint',
+			'The endpoint name to retrieve the schema from.',
+		)
+		.option(
+			'-s, --schemaPath',
+			'The path to write schema file to.',
+		)
+		.example('graphql-schema')
+		.action(deferredAction(async () => import('./graphqlDoc')));
+
 	app.command('graphql-diff')
 		.option(
 			'-e, --endpoint',
