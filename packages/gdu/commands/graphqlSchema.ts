@@ -5,7 +5,7 @@ import fetch from 'node-fetch';
 import { writeFileAsync } from '../lib/io';
 import { CALLING_WORKSPACE_ROOT } from '../lib/roots';
 
-interface EndpointExtension extends GraphQLConfigExtension {
+export interface EndpointExtension extends GraphQLConfigExtension {
 	url: string;
 	method: 'GET' | 'POST';
 	headers: Record<string, string>;
@@ -19,17 +19,21 @@ interface EndpointExtension extends GraphQLConfigExtension {
 const normalise = (
 	patterns: EndpointExtension['schemaNormaliserPatterns'],
 	rawSchema: string,
-) =>
-	Array.isArray(patterns) && typeof rawSchema === 'string'
+) =>{
+	if(typeof rawSchema !== 'string')
+		return rawSchema;
+	const schema = rawSchema.replaceAll('`', '\'');
+	return Array.isArray(patterns)
 		? patterns.reduce(
-				(schema, normaliser) =>
-					schema.replace(
-						new RegExp(normaliser.pattern, normaliser.flags),
-						normaliser.replacer,
-					),
-				rawSchema,
-		  )
-		: rawSchema;
+			(schemaStr, normaliser) =>
+				schemaStr.replace(
+					new RegExp(normaliser.pattern, normaliser.flags),
+					normaliser.replacer,
+				),
+			schema,
+		)
+		: schema;
+}
 
 export default async (options) => {
 	const graphQLConfig = await loadConfig({
@@ -53,7 +57,7 @@ export default async (options) => {
 
 	if (response?.ok || response?.body) {
 		await writeFileAsync(
-			config.schema as string,
+			options.schemaPath || config.schema as string,
 			normalise(
 				endpointConfig.schemaNormaliserPatterns,
 				await response.text(),

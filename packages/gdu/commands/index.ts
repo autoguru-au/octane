@@ -77,8 +77,32 @@ export default (app: Sade) => {
 			'-e, --endpoint',
 			'The endpoint name to retrieve the schema from.',
 		)
+		.option(
+			'-s, --schemaPath',
+			'The path to write schema file to.',
+		)
 		.example('graphql-schema')
 		.action(deferredAction(async () => import('./graphqlSchema')));
+
+	app.command('graphql-diff')
+		.option(
+			'-e, --endpoint',
+			'The endpoint name to retrieve the schema from.',
+		)
+		.option(
+			'-s, --schemaPath',
+			'The path to write schema file to.',
+		)
+		.option(
+			'-c, --compareEndpoint',
+			'The endpoint name to retrieve compare schema from.',
+		)
+		.option(
+			'-cs, --compareSchemaPath',
+			'The path to write schema file to.',
+		)
+		.example('graphql-diff')
+		.action(deferredAction(async () => import('./graphqlDiff')));
 
 	app.command('test').action(NOT_READY); // CMD: test
 	app.command('lint').action(NOT_READY); // CMD: lint
