@@ -1,5 +1,11 @@
 # browserslist-config-autoguru
 
+## 2.2.2
+
+### Patch Changes
+
+-   1f4007c: browserlist: gets updated db
+
 ## 2.2.1
 
 ### Patch Changes
