@@ -23,6 +23,8 @@ To keep us up to date:
        [browserslist](https://www.npmjs.com/package/browserslist) version
     1. Run `yarn`
     1. Run tests `yarn run jest -u`
+
+1. Add changeset using `yarn changeset` and follow steps
 1. Push changes and release
 1. Bump consumers to use the new release (like Retail)
 1. Bump versions in Retail's old-browser.js file (which configures the out of
