@@ -206,11 +206,6 @@ export const createNextJSConfig = (buildEnv) => {
 		swcMinify: true,
 		poweredByHeader: !isProductionSite,
 		assetPrefix,
-		i18n: {
-			locales: ['en'],
-			defaultLocale: 'en',
-		},
-
 		typescript: {
 			// Skip type checking at build time to save time. Type checking done automatically in PRs
 			ignoreBuildErrors: true,
