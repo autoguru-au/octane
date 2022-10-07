@@ -1,5 +1,11 @@
 # gdu
 
+## 5.2.1
+
+### Patch Changes
+
+-   2bc381f: NextJS Configs: Removes INTL
+
 ## 5.2.0
 
 ### Minor Changes
