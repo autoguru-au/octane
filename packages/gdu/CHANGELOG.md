@@ -1,5 +1,11 @@
 # gdu
 
+## 5.2.2
+
+### Patch Changes
+
+-   63fda53: gdu: Adds autoguru aws package to next configs
+
 ## 5.2.1
 
 ### Patch Changes
