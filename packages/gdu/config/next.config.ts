@@ -21,6 +21,7 @@ export const withTM = NTM([
 	'@autoguru/fleet',
 	'@autoguru/relay',
 	'@autoguru/auth',
+	'@autoguru/aws',
 	'@autoguru/components',
 	'@autoguru/layout',
 	'@popperjs/core',
@@ -204,6 +205,7 @@ export const createNextJSConfig = (buildEnv) => {
 		distDir: `dist/${env}`,
 		reactStrictMode: !isProductionSite,
 		swcMinify: true,
+		generateEtags: true,
 		poweredByHeader: !isProductionSite,
 		assetPrefix,
 		typescript: {
