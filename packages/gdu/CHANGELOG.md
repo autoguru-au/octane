@@ -1,5 +1,13 @@
 # gdu
 
+## 5.2.3
+
+### Patch Changes
+
+-   190b389: Adds i18n to next configs
+-   Updated dependencies [658158a]
+    -   browserslist-config-autoguru@2.2.3
+
 ## 5.2.2
 
 ### Patch Changes
