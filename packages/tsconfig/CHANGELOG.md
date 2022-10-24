@@ -1,5 +1,11 @@
 # @autoguru/tsconfig
 
+## 1.0.80
+
+### Patch Changes
+
+-   eec2b71: GDU: generates better dev tools source mapping
+
 ## 1.0.79
 
 ### Patch Changes

@@ -1,5 +1,13 @@
 # gdu
 
+## 5.2.4
+
+### Patch Changes
+
+-   eec2b71: GDU: generates better dev tools source mapping
+-   Updated dependencies [eec2b71]
+    -   @autoguru/tsconfig@1.0.80
+
 ## 5.2.3
 
 ### Patch Changes
