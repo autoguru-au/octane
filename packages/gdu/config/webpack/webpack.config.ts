@@ -11,7 +11,12 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
 import { TreatPlugin } from 'treat/webpack-plugin';
 import { TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
-import { Configuration, DefinePlugin, IgnorePlugin } from 'webpack';
+import {
+	Configuration,
+	DefinePlugin,
+	IgnorePlugin,
+	SourceMapDevToolPlugin,
+} from 'webpack';
 
 import {
 	getGuruConfig,
@@ -91,7 +96,6 @@ const baseOptions = (buildEnv, isMultiEnv: boolean): Configuration => ({
 			// By default webpack and loaders are build dependencies
 		},
 	},
-	devtool: isDev ? 'eval-cheap-module-source-map' : 'source-map',
 	resolve: {
 		fallback: {
 			path: false,
@@ -271,6 +275,7 @@ const baseOptions = (buildEnv, isMultiEnv: boolean): Configuration => ({
 			},
 		],
 	},
+	devtool: isDev && 'source-map',
 	plugins: [
 		new IgnorePlugin({
 			checkResource(resource) {
@@ -278,7 +283,6 @@ const baseOptions = (buildEnv, isMultiEnv: boolean): Configuration => ({
 			},
 		}),
 		!isDev && new CleanWebpackPlugin(),
-
 		new DefinePlugin({
 			'process.browser': JSON.stringify(true),
 			'process.env.NODE_ENV': JSON.stringify(
@@ -333,6 +337,10 @@ const baseOptions = (buildEnv, isMultiEnv: boolean): Configuration => ({
 						: resolve(PROJECT_ROOT, 'dist', buildEnv),
 				includeChunks: false,
 			}),
+		new SourceMapDevToolPlugin({
+			test: [/.ts$/, /.tsx$/],
+			exclude: [/.css.ts$/, frameworkRegex],
+		}),
 	].filter(Boolean),
 });
 

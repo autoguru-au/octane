@@ -55,6 +55,7 @@ export const configure = async (app_location) => {
 		compilerOptions: {
 			baseUrl: './',
 			rootDir: './',
+			sourceMap: true,
 			jsx: 'preserve',
 			outDir: './dist',
 			strict: true,
