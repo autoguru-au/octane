@@ -1,5 +1,11 @@
 # browserslist-config-autoguru
 
+## 2.2.5
+
+### Patch Changes
+
+-   3068e69: Updated browserslist db
+
 ## 2.2.4
 
 ### Patch Changes
