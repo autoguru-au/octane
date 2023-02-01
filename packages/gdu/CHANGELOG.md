@@ -1,5 +1,11 @@
 # gdu
 
+## 5.2.6
+
+### Patch Changes
+
+-   07a5384: NextJS Upgrade
+
 ## 5.2.5
 
 ### Patch Changes
