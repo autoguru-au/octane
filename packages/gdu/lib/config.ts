@@ -10,7 +10,7 @@ const { debug } = diary('gdu:config');
 const readCache = new Map();
 
 export interface GuruConfig {
-	type: 'ssr' | 'spa';
+	type: 'ssr' | 'spa' | 'web-component';
 	isRoot?: boolean;
 	port?: number;
 	publicPath?: string;

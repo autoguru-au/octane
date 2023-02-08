@@ -7,7 +7,7 @@ import dedent from 'ts-dedent';
 import webpack, { Configuration } from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 
-import webpackConfigs from '../../config/webpack/webpack.config';
+import webpackConfigs from '../../config/webpack';
 import { getProjectName, GuruConfig } from '../../lib/config';
 import { PROJECT_ROOT } from '../../lib/roots';
 import { getHooks } from '../../utils/hooks';
@@ -37,7 +37,7 @@ export const runSPA = async (guruConfig: GuruConfig) => {
 
 	// eslint-disable-next-line unicorn/prefer-prototype-methods
 	const webpackConfig: Configuration = hooks.webpackConfig
-		.call(webpackConfigs())
+		.call(webpackConfigs(guruConfig))
 		.find(({ name }) => name === appEnv);
 
 	const consumerHtmlTemplate = getConsumerHtmlTemplate(guruConfig);
