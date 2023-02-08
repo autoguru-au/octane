@@ -26,5 +26,8 @@ export default async ({ port: incomingPort /*env: configEnvironment*/ }) => {
 	} else if (resolvedConfig?.type === 'spa') {
 		const runSPA = await import('./runSPA');
 		await runSPA.runSPA(resolvedConfig /*, configEnvironment*/);
+	} else if (resolvedConfig?.type === 'web-component') {
+		const runWebComponents = await import('./runWebComponents');
+		await runWebComponents.runWebComponents(resolvedConfig /*, configEnvironment*/);
 	}
 };

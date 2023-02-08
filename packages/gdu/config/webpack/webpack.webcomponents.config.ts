@@ -143,8 +143,7 @@ export const makeWebComponentsWebpackConfig = (name: string): Configuration => (
 						use: ["style-loader", 'css-loader'],
 					},
 				],
-			},
-			{
+			}, {
 				test: /\.(js|mjs|jsx|ts|tsx)$/,
 				oneOf: [
 					// our stuff
