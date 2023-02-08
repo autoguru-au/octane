@@ -13,7 +13,7 @@ export const buildWebComponents = async (guruConfig: GuruConfig) => {
 		makeWebpackConfig(guruConfig),
 	);
 
-	console.log(webpackConfigs);
+	console.log((webpackConfigs[0].entry as any).main);
 	const compiler = webpack(webpackConfigs);
 	run(compiler);
 
