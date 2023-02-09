@@ -65,9 +65,10 @@ export const decorateConfig = (guruConfig: Partial<GuruConfig>): GuruConfig => {
 	const project_root = guruConfig.__configPath;
 
 	guruConfig.srcPaths =
-		guruConfig.srcPaths ?? Boolean(guruConfig.type === 'ssr')
+		guruConfig.srcPaths ||
+		(Boolean(guruConfig.type === 'ssr')
 			? ['./pages/', './components/', './scenes/']
-			: ['./src/'];
+			: ['./src/']);
 
 	guruConfig.outputPath =
 		guruConfig.outputPath ??

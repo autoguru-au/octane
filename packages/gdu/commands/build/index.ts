@@ -1,11 +1,12 @@
-import {banner} from '../../lib/banner';
-import {getGuruConfig} from '../../lib/config';
-import {genGithubOutputs} from '../../lib/githubOutputs';
-import {setEnvProd} from '../../lib/misc';
-import {projectInfo} from '../../lib/terminal';
-import {buildSupportedBrowsers} from '../generateBrowsers';
-import {buildSSR} from './buildSSR';
-import {buildWebComponents} from './buildWebComponents';
+import { banner } from '../../lib/banner';
+import { getGuruConfig } from '../../lib/config';
+import { genGithubOutputs } from '../../lib/githubOutputs';
+import { setEnvProd } from '../../lib/misc';
+import { projectInfo } from '../../lib/terminal';
+import { buildSupportedBrowsers } from '../generateBrowsers';
+
+import { buildSSR } from './buildSSR';
+import { buildWebComponents } from './buildWebComponents';
 
 export default async () => {
 	setEnvProd(true);
@@ -21,10 +22,10 @@ export default async () => {
 		case 'spa':
 			stats = await buildSSR(guruConfig);
 			break;
-		case "ssr":
+		case 'ssr':
 			stats = await buildSSR(guruConfig);
 			break;
-		case "web-component":
+		case 'web-component':
 			stats = await buildWebComponents(guruConfig);
 			break;
 	}
