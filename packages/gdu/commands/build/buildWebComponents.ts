@@ -5,7 +5,7 @@ import { GuruConfig } from '../../lib/config';
 import { run } from '../../lib/runWebpack';
 import { getHooks } from '../../utils/hooks';
 
-export const buildSPA = async (guruConfig: GuruConfig) => {
+export const buildWebComponents = async (guruConfig: GuruConfig) => {
 	const hooks = getHooks();
 
 	// eslint-disable-next-line unicorn/prefer-prototype-methods

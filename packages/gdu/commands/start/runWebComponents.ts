@@ -28,17 +28,19 @@ const getConsumerHtmlTemplate = (
 
 const localhost = '0.0.0.0';
 const hosts = ['localhost', localhost];
-export const runSPA = async (guruConfig: GuruConfig) => {
+export const runWebComponents = async (guruConfig: GuruConfig, component) => {
 	const hooks = getHooks();
 	console.log(`${cyan('Starting dev server...')}`);
 
 	// eslint-disable-next-line unicorn/prefer-prototype-methods
-	const appEnv = process.env.APP_ENV || 'dev';
+	const webpackConfig: Configuration = hooks.webpackConfig.call(
+		webpackConfigs(guruConfig),
+	)[0];
 
-	// eslint-disable-next-line unicorn/prefer-prototype-methods
-	const webpackConfig: Configuration = hooks.webpackConfig
-		.call(webpackConfigs(guruConfig))
-		.find(({ name }) => name === appEnv);
+	if (!component)
+		throw new Error(
+			`'COMPONENT' environment variable is not defined. This is the tag name for your web component`,
+		);
 
 	const consumerHtmlTemplate = getConsumerHtmlTemplate(guruConfig);
 
@@ -80,17 +82,15 @@ export const runSPA = async (guruConfig: GuruConfig) => {
 						return cfg;
 					});
 
-					if (consumerHtmlTemplate === undefined) {
-						htmlWebpackHooks.beforeEmit.tapAsync(
-							'guru',
-							(data, cb) => {
-								const segs = data.html.split('<body>');
-								data.html =
-									`${segs[0]}<div id='app'></div>` + segs[1];
-								cb(null, data);
-							},
-						);
-					}
+					//if (consumerHtmlTemplate === undefined) {
+					htmlWebpackHooks.beforeEmit.tapAsync('guru', (data, cb) => {
+						const segs = data.html.split('<body>');
+						data.html =
+							`${segs[0]}<main class='tag-wrapper'><${component} /></main>` +
+							segs[1];
+						cb(null, data);
+					});
+					//}
 				});
 			}
 		})(),

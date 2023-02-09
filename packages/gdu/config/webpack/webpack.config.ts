@@ -74,7 +74,7 @@ const ourCodePaths = [
 
 const fileMask = isDev ? '[name]' : '[name]-[contenthash:8]';
 
-const baseOptions = (buildEnv, isMultiEnv: boolean): Configuration => ({
+export const baseOptions = (buildEnv, isMultiEnv: boolean): Configuration => ({
 	context: PROJECT_ROOT,
 	mode: isDev ? 'development' : 'production',
 	entry: {
@@ -347,7 +347,7 @@ const baseOptions = (buildEnv, isMultiEnv: boolean): Configuration => ({
 const { outputPath } = getGuruConfig();
 
 type BuildEnv = ReturnType<typeof getBuildEnvs>[number];
-const makeWebpackConfig = (
+export const makeWebpackConfig = (
 	buildEnv: BuildEnv,
 	isMultiEnv: boolean,
 ): Configuration => ({
@@ -370,13 +370,3 @@ const makeWebpackConfig = (
 		pathinfo: false,
 	},
 });
-
-const buildConfigs = (): Configuration[] => {
-	const buildEnvs = getBuildEnvs();
-	return buildEnvs.map((buildEnv) => ({
-		...baseOptions(buildEnv, buildEnvs.length > 1),
-		...makeWebpackConfig(buildEnv, buildEnvs.length > 1),
-	}));
-};
-
-export default buildConfigs;

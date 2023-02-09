@@ -5,8 +5,8 @@ import { setEnvProd } from '../../lib/misc';
 import { projectInfo } from '../../lib/terminal';
 import { buildSupportedBrowsers } from '../generateBrowsers';
 
-import { buildSPA } from './buildSPA';
 import { buildSSR } from './buildSSR';
+import { buildWebComponents } from './buildWebComponents';
 
 export default async () => {
 	setEnvProd(true);
@@ -18,10 +18,16 @@ export default async () => {
 	await buildSupportedBrowsers();
 
 	let stats;
-	if (guruConfig?.type === 'ssr') {
-		stats = await buildSSR(guruConfig);
-	} else if (guruConfig?.type === 'spa') {
-		stats = await buildSPA(guruConfig);
+	switch (guruConfig?.type) {
+		case 'spa':
+			stats = await buildSSR(guruConfig);
+			break;
+		case 'ssr':
+			stats = await buildSSR(guruConfig);
+			break;
+		case 'web-component':
+			stats = await buildWebComponents(guruConfig);
+			break;
 	}
 
 	if (typeof stats !== 'undefined') {
