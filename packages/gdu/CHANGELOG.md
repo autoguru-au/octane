@@ -1,5 +1,11 @@
 # gdu
 
+## 5.3.0
+
+### Minor Changes
+
+-   059b16e: Adds web components support
+
 ## 5.2.6
 
 ### Patch Changes
