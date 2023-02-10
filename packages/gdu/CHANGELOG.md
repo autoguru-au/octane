@@ -1,5 +1,11 @@
 # gdu
 
+## 5.3.1
+
+### Patch Changes
+
+-   3d7be0e: Fixed prod web components build
+
 ## 5.3.0
 
 ### Minor Changes
