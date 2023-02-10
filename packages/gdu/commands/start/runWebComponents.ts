@@ -7,10 +7,11 @@ import dedent from 'ts-dedent';
 import webpack, { Configuration } from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 
-import webpackConfigs from '../../config/webpack';
+import { makeWebComponentsWebpackConfig } from '../../config/webpack/webpack.webcomponents.config';
 import { getProjectName, GuruConfig } from '../../lib/config';
 import { PROJECT_ROOT } from '../../lib/roots';
 import { getHooks } from '../../utils/hooks';
+
 const getConsumerHtmlTemplate = (
 	guruConfig: GuruConfig,
 ): string | undefined => {
@@ -34,7 +35,7 @@ export const runWebComponents = async (guruConfig: GuruConfig, component) => {
 
 	// eslint-disable-next-line unicorn/prefer-prototype-methods
 	const webpackConfig: Configuration = hooks.webpackConfig.call(
-		webpackConfigs(guruConfig),
+		makeWebComponentsWebpackConfig('WEB_COMPONENTS', true),
 	)[0];
 
 	if (!component)

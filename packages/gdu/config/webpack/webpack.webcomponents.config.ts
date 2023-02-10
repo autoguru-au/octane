@@ -47,7 +47,6 @@ const terserOptions = {
 };
 
 const hooks = getHooks();
-const isDev = !isProductionBuild();
 
 const frameworkRegex =
 	/(?<!node_modules.*)[/\\]node_modules[/\\](react|react-dom|scheduler|prop-types|use-subscription|relay-runtime|react-relay)[/\\]/;
@@ -59,8 +58,6 @@ const ourCodePaths = [
 	/@autoguru[/\\]/,
 ].filter(Boolean);
 
-const fileMask = isDev ? '[name]' : '[name]-[contenthash:8]';
-
 const { outputPath } = getGuruConfig();
 
 const getDirectories = (source) =>
@@ -68,7 +65,11 @@ const getDirectories = (source) =>
 		.filter((dirent) => dirent.isDirectory())
 		.map((dirent) => dirent.name);
 
-export const makeWebComponentsWebpackConfig = (name: string): Configuration => {
+export const makeWebComponentsWebpackConfig = (
+	name: string,
+	isDev = false,
+): Configuration => {
+	const fileMask = isDev ? '[name]' : '[name]-[contenthash:8]';
 	const componentPaths: Array<{
 		name: string;
 		path: string | any;
@@ -93,7 +94,7 @@ export const makeWebComponentsWebpackConfig = (name: string): Configuration => {
 		output: {
 			path: outputPath,
 			publicPath: '/',
-			filename: `${fileMask}.js`,
+			filename: '[name].js',
 			chunkFilename: `chunks/${fileMask}.js`,
 			hashFunction: 'sha256',
 			crossOriginLoading: 'anonymous',
