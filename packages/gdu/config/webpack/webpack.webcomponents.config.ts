@@ -1,24 +1,29 @@
 /* eslint-disable unicorn/prefer-module */
 /* eslint-disable unicorn/prefer-prototype-methods */
-import {readdirSync} from 'fs';
-import {join, resolve} from 'path';
+import { readdirSync } from 'fs';
+import { join, resolve } from 'path';
 
-import {VanillaExtractPlugin} from '@vanilla-extract/webpack-plugin';
+import { VanillaExtractPlugin } from '@vanilla-extract/webpack-plugin';
 import browsers from 'browserslist-config-autoguru';
-import {CleanWebpackPlugin} from 'clean-webpack-plugin';
+import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import envCI from 'env-ci';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
-import {TreatPlugin} from 'treat/webpack-plugin';
-import {TsconfigPathsPlugin} from 'tsconfig-paths-webpack-plugin';
-import {Configuration, DefinePlugin, IgnorePlugin, SourceMapDevToolPlugin,} from 'webpack';
+import { TreatPlugin } from 'treat/webpack-plugin';
+import { TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
+import {
+	Configuration,
+	DefinePlugin,
+	IgnorePlugin,
+	SourceMapDevToolPlugin,
+} from 'webpack';
 
-import {getGuruConfig, getProjectName} from '../../lib/config';
-import {isProductionBuild} from '../../lib/misc';
-import {CALLING_WORKSPACE_ROOT, PROJECT_ROOT} from '../../lib/roots';
-import {getHooks} from '../../utils/hooks';
+import { getGuruConfig, getProjectName } from '../../lib/config';
+import { isProductionBuild } from '../../lib/misc';
+import { CALLING_WORKSPACE_ROOT, PROJECT_ROOT } from '../../lib/roots';
+import { getHooks } from '../../utils/hooks';
 
-const {branch = 'null', commit = 'null'} = envCI();
+const { branch = 'null', commit = 'null' } = envCI();
 
 const terserOptions = {
 	ie8: false,
@@ -53,10 +58,10 @@ const ourCodePaths = [
 	/@autoguru[/\\]/,
 ].filter(Boolean);
 
-const {outputPath} = getGuruConfig();
+const { outputPath } = getGuruConfig();
 
 const getDirectories = (source) =>
-	readdirSync(source, {withFileTypes: true})
+	readdirSync(source, { withFileTypes: true })
 		.filter((dirent) => dirent.isDirectory())
 		.map((dirent) => dirent.name);
 
@@ -71,22 +76,39 @@ const componentPaths: Array<{
 );
 
 const buildCssLayersFromEntryPoints = () => {
-	return componentPaths.map(({name}) => (
-		{
-			issuerLayer: name,
-			use: [
-				'style-loader',
-				{
-					loader: require.resolve('css-loader'),
-					options: {
-						url: true, // Required as image imports should be handled via JS/TS import statements
+	return componentPaths.map(({ name: elementName }) => ({
+		issuerLayer: elementName,
+		use: [
+			{
+				loader: require.resolve('style-loader'),
+				options: {
+					injectType: 'singletonStyleTag',
+					attributes: {
+						'data-style-for': elementName,
+					},
+					insert: async (styleTag) => {
+						const styleTarget = styleTag.dataset.styleFor;
+						const undefinedElements = Array.from(
+							document.querySelectorAll(
+								`${styleTarget}:not(:defined)`,
+							),
+						);
+						const promises = [...undefinedElements].map((button) =>
+							customElements.whenDefined(button.localName),
+						);
+						// Wait for all the instances to be upgraded
+						await Promise.all(promises);
+						undefinedElements.forEach((element) => {
+							const parent = element.shadowRoot;
+							if (parent) parent.append(styleTag);
+						});
 					},
 				},
-			],
-		}
-	))
-}
-
+			},
+			'css-loader',
+		],
+	}));
+};
 
 export const makeWebComponentsWebpackConfig = (
 	name: string,

@@ -10,7 +10,10 @@ export const buildWebComponents = async (guruConfig: GuruConfig) => {
 
 	// eslint-disable-next-line unicorn/prefer-prototype-methods
 	const webpackConfigs: Configuration[] = hooks.webpackConfig.call(
-		makeWebComponentsWebpackConfig('TEST_WEB_COMPONENTS', false),
+		makeWebComponentsWebpackConfig(
+			guruConfig.type || 'web-components',
+			false,
+		),
 	);
 
 	const compiler = webpack(webpackConfigs);
