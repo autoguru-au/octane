@@ -1,5 +1,11 @@
 # gdu
 
+## 5.3.3
+
+### Patch Changes
+
+-   3cd0aa9: gdu: Allows shadow shadow dom web components
+
 ## 5.3.2
 
 ### Patch Changes
