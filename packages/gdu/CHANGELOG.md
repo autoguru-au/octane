@@ -1,5 +1,11 @@
 # gdu
 
+## 5.3.2
+
+### Patch Changes
+
+-   9ca42f1: Fixes web-components start command
+
 ## 5.3.1
 
 ### Patch Changes
