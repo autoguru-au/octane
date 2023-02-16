@@ -1,5 +1,11 @@
 # gdu
 
+## 5.3.4
+
+### Patch Changes
+
+-   ca0623c: GDU: Adds storybook support for web components
+
 ## 5.3.3
 
 ### Patch Changes
