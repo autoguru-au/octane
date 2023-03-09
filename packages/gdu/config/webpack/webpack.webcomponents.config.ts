@@ -65,18 +65,19 @@ const getDirectories = (source) =>
 		.filter((dirent) => dirent.isDirectory())
 		.map((dirent) => dirent.name);
 
-const componentPaths: Array<{
+const getComponentPaths = (): Array<{
 	name: string;
 	path: string | any;
-}> = getGuruConfig().srcPaths.flatMap((current) =>
-	getDirectories(join(PROJECT_ROOT, current)).map((dir) => ({
-		name: dir,
-		path: join(PROJECT_ROOT, current, dir),
-	})),
-);
+}> =>
+	getGuruConfig().srcPaths.flatMap((current) =>
+		getDirectories(join(PROJECT_ROOT, current)).map((dir) => ({
+			name: dir,
+			path: join(PROJECT_ROOT, current, dir),
+		})),
+	);
 
 const buildCssLayersFromEntryPoints = () => {
-	return componentPaths.map(({ name: elementName }) => ({
+	return getComponentPaths().map(({ name: elementName }) => ({
 		issuerLayer: elementName,
 		use: [
 			{
@@ -120,7 +121,7 @@ export const makeWebComponentsWebpackConfig = (
 		name,
 		context: PROJECT_ROOT,
 		mode: isDev ? 'development' : 'production',
-		entry: componentPaths.reduce(
+		entry: getComponentPaths().reduce(
 			(map, item) => ({
 				...map,
 				[item.name]: {
