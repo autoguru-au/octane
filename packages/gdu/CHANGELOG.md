@@ -1,5 +1,11 @@
 # gdu
 
+## 5.3.5
+
+### Patch Changes
+
+-   6c53e9f: GDU: Upgrades nextjs version
+
 ## 5.3.4
 
 ### Patch Changes
