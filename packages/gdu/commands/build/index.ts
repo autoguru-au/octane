@@ -7,6 +7,7 @@ import { buildSupportedBrowsers } from '../generateBrowsers';
 
 import { buildSSR } from './buildSSR';
 import { buildWebComponents } from './buildWebComponents';
+import {buildSPA} from "./buildSPA";
 
 export default async () => {
 	setEnvProd(true);
@@ -20,7 +21,7 @@ export default async () => {
 	let stats;
 	switch (guruConfig?.type) {
 		case 'spa':
-			stats = await buildSSR(guruConfig);
+			stats = await buildSPA(guruConfig);
 			break;
 		case 'ssr':
 			stats = await buildSSR(guruConfig);
