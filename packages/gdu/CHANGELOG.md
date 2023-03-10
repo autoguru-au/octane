@@ -1,5 +1,11 @@
 # gdu
 
+## 5.3.7
+
+### Patch Changes
+
+-   47cab02: GDU: Fixed SPA builds
+
 ## 5.3.6
 
 ### Patch Changes
