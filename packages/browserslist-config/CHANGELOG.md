@@ -1,5 +1,11 @@
 # browserslist-config-autoguru
 
+## 2.2.6
+
+### Patch Changes
+
+-   9c7db18: DB Update
+
 ## 2.2.5
 
 ### Patch Changes

@@ -1,5 +1,16 @@
 # gdu
 
+## 5.4.0
+
+### Minor Changes
+
+-   9c7db18: Adds basePath support for nextJS apps
+
+### Patch Changes
+
+-   Updated dependencies [9c7db18]
+    -   browserslist-config-autoguru@2.2.6
+
 ## 5.3.7
 
 ### Patch Changes
