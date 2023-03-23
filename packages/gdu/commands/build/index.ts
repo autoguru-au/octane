@@ -5,9 +5,9 @@ import { setEnvProd } from '../../lib/misc';
 import { projectInfo } from '../../lib/terminal';
 import { buildSupportedBrowsers } from '../generateBrowsers';
 
+import { buildSPA } from './buildSPA';
 import { buildSSR } from './buildSSR';
 import { buildWebComponents } from './buildWebComponents';
-import {buildSPA} from "./buildSPA";
 
 export default async () => {
 	setEnvProd(true);

@@ -13,6 +13,7 @@ export interface GuruConfig {
 	type: 'ssr' | 'spa' | 'web-component';
 	isRoot?: boolean;
 	port?: number;
+	basePath?: string;
 	publicPath?: string;
 	outputPath: string;
 	srcPaths?: string[];

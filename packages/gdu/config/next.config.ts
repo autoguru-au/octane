@@ -199,7 +199,9 @@ export const createNextJSConfig = (buildEnv) => {
 	const isDev = !isProductionBuild();
 	const env = process.env.APP_ENV || (isDev ? 'dev' : buildEnv);
 	const isProductionSite = productionEnvs.has(process.env.APP_ENV);
-	const assetPrefix = isDev ? '' : getGuruConfig()?.publicPath ?? '';
+	const guruConfig = getGuruConfig();
+	const assetPrefix = isDev ? '' : guruConfig?.publicPath ?? '';
+	const basePath = isDev ? '' : guruConfig?.basePath ?? '';
 
 	return {
 		distDir: `dist/${env}`,
@@ -208,6 +210,7 @@ export const createNextJSConfig = (buildEnv) => {
 		generateEtags: true,
 		poweredByHeader: !isProductionSite,
 		assetPrefix,
+		basePath,
 		i18n: {
 			locales: ['en'],
 			defaultLocale: 'en',
