@@ -1,5 +1,11 @@
 # gdu
 
+## 5.4.1
+
+### Patch Changes
+
+-   73c96cc: Fixes ssr dev builds
+
 ## 5.4.0
 
 ### Minor Changes
