@@ -201,7 +201,7 @@ export const createNextJSConfig = (buildEnv) => {
 	const isProductionSite = productionEnvs.has(process.env.APP_ENV);
 	const guruConfig = getGuruConfig();
 	const assetPrefix = isDev ? '' : guruConfig?.publicPath ?? '';
-	const basePath = isDev ? '' : guruConfig?.basePath ?? '';
+	const basePath = guruConfig?.basePath ?? '';
 
 	return {
 		distDir: `dist/${env}`,
