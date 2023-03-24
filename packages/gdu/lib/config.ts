@@ -15,6 +15,7 @@ export interface GuruConfig {
 	port?: number;
 	basePath?: string;
 	publicPath?: string;
+	distributionId?: string;
 	outputPath: string;
 	srcPaths?: string[];
 	__configPath: string;
