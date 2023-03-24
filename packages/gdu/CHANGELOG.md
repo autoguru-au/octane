@@ -1,5 +1,11 @@
 # gdu
 
+## 5.4.2
+
+### Patch Changes
+
+-   09a0e30: Added distributionId to GuruConfig type
+
 ## 5.4.1
 
 ### Patch Changes
