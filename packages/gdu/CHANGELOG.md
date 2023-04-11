@@ -1,5 +1,11 @@
 # gdu
 
+## 5.4.3
+
+### Patch Changes
+
+-   360dcc1: GDU: Fixed ssr development mode starts
+
 ## 5.4.2
 
 ### Patch Changes
