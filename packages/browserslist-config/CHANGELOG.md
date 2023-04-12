@@ -1,5 +1,13 @@
 # browserslist-config-autoguru
 
+## 2.2.7
+
+### Patch Changes
+
+-   84b14c8: GDU: Defaults dev as start command APP_ENV
+
+    browserslist-config-autoguru: Updates browserlist db
+
 ## 2.2.6
 
 ### Patch Changes
