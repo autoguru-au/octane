@@ -1,7 +1,9 @@
 import findUp from 'find-up';
 
-export const getBuildEnvs = () =>
-	process.env.APP_ENV ? [process.env.APP_ENV] : ['uat', 'preprod', 'prod'];
+import { APP_ENV } from '../gdu';
+
+export const getBuildEnvs = (env: APP_ENV) =>
+	env ? [env] : ['uat', 'preprod', 'prod'];
 export const getConfigsDirs = () =>
 	[
 		findUp.sync('.gdu_config', { type: 'directory' }),
