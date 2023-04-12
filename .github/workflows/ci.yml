@@ -6,6 +6,8 @@ jobs:
   test:
     name: Lint & Test
     runs-on: ubuntu-latest
+    if: |
+        !contains(github.ref, 'changeset')
     env:
       TZ: Australia/Brisbane
       CI: true
