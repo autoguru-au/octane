@@ -1,5 +1,16 @@
 # gdu
 
+## 5.4.4
+
+### Patch Changes
+
+-   84b14c8: GDU: Defaults dev as start command APP_ENV
+
+    browserslist-config-autoguru: Updates browserlist db
+
+-   Updated dependencies [84b14c8]
+    -   browserslist-config-autoguru@2.2.7
+
 ## 5.4.3
 
 ### Patch Changes
