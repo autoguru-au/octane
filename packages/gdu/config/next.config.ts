@@ -211,6 +211,9 @@ export const createNextJSConfig = (buildEnv) => {
 		poweredByHeader: !isProductionSite,
 		assetPrefix,
 		basePath,
+		experimental: {
+			isrMemoryCacheSize: 0,
+		},
 		i18n: {
 			locales: ['en'],
 			defaultLocale: 'en',
