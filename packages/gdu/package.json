@@ -1,6 +1,6 @@
 {
 	"name": "gdu",
-	"version": "5.4.4",
+	"version": "5.4.5",
 	"private": false,
 	"description": "AutoGuru's development toolkit",
 	"homepage": "https://github.com/autoguru-au/octane/tree/master/packages/gdu#readme",
