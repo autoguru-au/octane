@@ -1,5 +1,11 @@
 # gdu
 
+## 5.4.7
+
+### Patch Changes
+
+-   5ac91a1: GDU: Fixes file paths on windows
+
 ## 5.4.6
 
 ### Patch Changes
