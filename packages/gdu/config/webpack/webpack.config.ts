@@ -79,8 +79,9 @@ export const baseOptions = (buildEnv, isMultiEnv: boolean): Configuration => ({
 	mode: isDev ? 'development' : 'production',
 	entry: {
 		main: [
-			join(gduEntryPath, '/polyfill.js'),
-			join(gduEntryPath, '/spa/client.js'),
+			join(gduEntryPath, 'polyfill.js'),
+
+			join(gduEntryPath, 'spa', 'client.js'),
 		].filter(Boolean),
 	},
 	experiments: {
