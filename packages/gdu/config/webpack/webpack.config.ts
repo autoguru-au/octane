@@ -98,6 +98,7 @@ export const baseOptions = (buildEnv, isMultiEnv: boolean): Configuration => ({
 		},
 	},
 	resolve: {
+		preferRelative: true,
 		fallback: {
 			path: false,
 			util: false,

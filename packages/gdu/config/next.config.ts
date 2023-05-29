@@ -284,6 +284,7 @@ export const createNextJSConfig = (buildEnv) => {
 				'../../',
 				'node_modules/next/',
 			);
+			defaultConfig.resolve.preferRelative = true;
 
 			return defaultConfig;
 		},
