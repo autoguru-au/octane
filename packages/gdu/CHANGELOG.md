@@ -1,5 +1,11 @@
 # gdu
 
+## 5.4.6
+
+### Patch Changes
+
+-   856d5e3: GDU: Fixed SSR builds on windows
+
 ## 5.4.5
 
 ### Patch Changes
