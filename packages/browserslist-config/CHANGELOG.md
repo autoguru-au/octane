@@ -1,5 +1,11 @@
 # browserslist-config-autoguru
 
+## 2.2.8
+
+### Patch Changes
+
+-   b6f3313: Upgrades broswerlist
+
 ## 2.2.7
 
 ### Patch Changes
