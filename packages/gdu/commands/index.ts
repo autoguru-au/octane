@@ -108,7 +108,9 @@ export default (app: Sade) => {
 		.action(deferredAction(async () => import('./graphqlDiff')));
 
 	app.command('test').action(NOT_READY); // CMD: test
-	app.command('lint').action(NOT_READY); // CMD: lint
+	app.command('lint')
+		.describe('Check the target app for linting errors')
+		.action(deferredAction(async () => import('./lint'), IS_NOT_ROOT));
 
 	app.command('gh-actions')
 		.describe('A command to create GitHub actions things')
