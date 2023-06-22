@@ -50,7 +50,7 @@ export default async () => {
 		);
 
 	execa
-		.command(`eslint --fix --quiet  \"{*,src/**/*}.{ts,tsx,js}\"`, {
+		.command(`eslint --fix  ${PROJECT_ROOT}{*,src/**/*}.{ts,tsx,js}`, {
 			stdio: 'inherit',
 			cwd: PROJECT_ROOT,
 			localDir: GDU_ROOT,
