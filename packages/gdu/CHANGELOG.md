@@ -1,5 +1,11 @@
 # gdu
 
+## 5.5.0
+
+### Minor Changes
+
+-   2cfe854: Adds linting and formatting
+
 ## 5.4.7
 
 ### Patch Changes
