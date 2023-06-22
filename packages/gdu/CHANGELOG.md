@@ -1,5 +1,11 @@
 # gdu
 
+## 5.5.1
+
+### Patch Changes
+
+-   1129ac6: Fixes mfe linting
+
 ## 5.5.0
 
 ### Minor Changes
