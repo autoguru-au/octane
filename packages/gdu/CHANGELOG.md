@@ -1,5 +1,11 @@
 # gdu
 
+## 5.5.2
+
+### Patch Changes
+
+-   034e185: GDU: Enables dockerprod env for ssr apps
+
 ## 5.5.1
 
 ### Patch Changes
