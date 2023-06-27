@@ -1,5 +1,11 @@
 # gdu
 
+## 5.5.3
+
+### Patch Changes
+
+-   76620a9: Adds new prettier ignores
+
 ## 5.5.2
 
 ### Patch Changes
