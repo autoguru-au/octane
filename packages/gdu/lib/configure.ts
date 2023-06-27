@@ -32,6 +32,12 @@ export const configure = async (app_location) => {
 		'.browserslistrc',
 	];
 
+	const prettireIgnorePatterns = [
+		...gitIgnorePatterns,
+		'browsers.ts',
+		'tsconfig.json',
+	];
+
 	if (guruConfig?.type === 'ssr') {
 		gitIgnorePatterns.push('.next/');
 	}
@@ -47,7 +53,7 @@ export const configure = async (app_location) => {
 	await ensureGitignore({
 		filepath: join(app_location, '.prettierignore'),
 		comment: 'autoguru-au:gdu managed',
-		patterns: gitIgnorePatterns,
+		patterns: prettireIgnorePatterns,
 	});
 
 	const tsConfig = {
