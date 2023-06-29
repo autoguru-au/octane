@@ -8,7 +8,7 @@ import { buildSupportedBrowsers } from '../generateBrowsers';
 
 const { debug } = diary('gdu:commands:start');
 
-export default async ({ port: incomingPort, component, debugTool }) => {
+export default async ({ port: incomingPort, component, debug:debugTool }) => {
 	debug('running action with %O', { port: incomingPort });
 
 	const { port = incomingPort, ...otherConfig } =
