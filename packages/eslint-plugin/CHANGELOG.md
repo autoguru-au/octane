@@ -1,5 +1,11 @@
 # @autoguru/eslint-plugin
 
+## 1.4.0
+
+### Minor Changes
+
+-   de55945: Adds sonarjs eslint rules to AutoGuru typescript eslint
+
 ## 1.3.2
 
 ### Patch Changes

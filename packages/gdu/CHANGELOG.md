@@ -1,5 +1,11 @@
 # gdu
 
+## 5.6.1
+
+### Patch Changes
+
+-   f98f7d7: Shortend mfe start debug command
+
 ## 5.6.0
 
 ### Minor Changes
