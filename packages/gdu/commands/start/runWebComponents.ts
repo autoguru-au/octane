@@ -23,8 +23,7 @@ const getConsumerHtmlTemplate = (
 	} finally {
 	}
 
-	// @ts-ignore
-	return;
+	return void 0;
 };
 
 const localhost = '0.0.0.0';

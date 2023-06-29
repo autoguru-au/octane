@@ -4,6 +4,7 @@ module.exports = {
 		'plugin:@typescript-eslint/eslint-recommended',
 		'plugin:@typescript-eslint/recommended',
 		'plugin:import/typescript',
+		'plugin:sonarjs/recommended',
 	],
 
 	parser: '@typescript-eslint/parser',
@@ -25,9 +26,9 @@ module.exports = {
 		'@typescript-eslint/indent': 'off',
 		'@typescript-eslint/no-require-imports': 'off',
 		'@typescript-eslint/ban-types': 'off', // Complains about Omit so cya
+		'sonarjs/no-duplicate-string': 'warn',
 		'@typescript-eslint/no-explicit-any': 'warn',
 		'@typescript-eslint/ban-ts-comment': 'warn',
-
 		'@typescript-eslint/no-use-before-define': 'warn',
 	},
 };

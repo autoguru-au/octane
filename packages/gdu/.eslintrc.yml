@@ -14,6 +14,8 @@ overrides:
           - 'plugin:@autoguru/typescript'
       rules:
           unicorn/no-process-exit: off # TODO: Investigate why this rule cant exist at the root
+          sonarjs/cognitive-complexity: warn
+          sonarjs/no-nested-template-literals: warn
           '@typescript-eslint/no-var-requires': off
           '@typescript-eslint/ban-ts-ignore': 'off'
           'unicorn/prefer-node-protocol': 'off'
