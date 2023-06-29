@@ -8,7 +8,7 @@ import { buildSupportedBrowsers } from '../generateBrowsers';
 
 const { debug } = diary('gdu:commands:start');
 
-export default async ({ port: incomingPort, component }) => {
+export default async ({ port: incomingPort, component, debugTool }) => {
 	debug('running action with %O', { port: incomingPort });
 
 	const { port = incomingPort, ...otherConfig } =
@@ -25,7 +25,7 @@ export default async ({ port: incomingPort, component }) => {
 		await runSSR.runNextJS(resolvedConfig);
 	} else if (resolvedConfig?.type === 'spa') {
 		const runSPA = await import('./runSPA');
-		await runSPA.runSPA(resolvedConfig);
+		await runSPA.runSPA(resolvedConfig, debugTool);
 	} else if (resolvedConfig?.type === 'web-component') {
 		const runWebComponents = await import('./runWebComponents');
 		await runWebComponents.runWebComponents(resolvedConfig, component);

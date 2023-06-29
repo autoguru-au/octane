@@ -2,6 +2,7 @@
  * Will be set to true when a local development environment is currently running.
  */
 declare const __DEV__: boolean;
+declare const __DEBUG__: boolean;
 
 /**
  * Houses the name of the built app (package.json's name property)

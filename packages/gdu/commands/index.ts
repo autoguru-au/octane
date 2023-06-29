@@ -47,7 +47,11 @@ export default (app: Sade) => {
 		.describe('Starts a development server')
 		.option('-p, --port', 'Specify a port to start at', 8080)
 		.option('-c, --component', 'Specify the web component to start', 8080)
-		.option('--env', 'Run a specific environment', 'dev')
+		.option(
+			'-dt, --debug-tool',
+			'Enables debug ui when available in the mfe app.',
+			false,
+		)
 		.example('start -p 80')
 		.action(deferredAction(async () => import('./start'), IS_NOT_ROOT));
 

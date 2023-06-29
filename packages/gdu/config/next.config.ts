@@ -195,7 +195,7 @@ export const defaultSecurityHeaders = [
 
 const productionEnvs = new Set(['prod', 'dockerprod', 'preprod']);
 
-export const createNextJSConfig = (buildEnv) => {
+export const createNextJSConfig = (buildEnv, isDebug=false) => {
 	const isDev = !isProductionBuild();
 	const env = process.env.APP_ENV || (isDev ? 'dev' : buildEnv);
 	const isProductionSite = productionEnvs.has(process.env.APP_ENV);
@@ -246,6 +246,11 @@ export const createNextJSConfig = (buildEnv) => {
 					__DEV__: isDev,
 				}),
 			);
+			defaultConfig.plugins.push(
+				new DefinePlugin({
+					__DEBUG__: isDebug,
+				}),
+			);
 			// Read defaults
 			getConfigsDirs()
 				.flatMap((configsDir) => [
@@ -291,5 +296,5 @@ export const createNextJSConfig = (buildEnv) => {
 	};
 };
 
-export const createNextJSTranspiledConfig = () =>
-	withVanillaExtract(withTM(createNextJSConfig('prod')));
+export const createNextJSTranspiledConfig = (isDebug=false) =>
+	withVanillaExtract(withTM(createNextJSConfig('prod', isDebug)));

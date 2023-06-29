@@ -1,11 +1,13 @@
+import {createLogger} from "@autoguru/utilities";
+import execa from "execa";
+import {dim} from "kleur";
+
 import {banner} from '../../lib/banner';
 import {getGuruConfig} from '../../lib/config';
 import {setEnvProd} from '../../lib/misc';
-import {projectInfo} from '../../lib/terminal';
-import execa from "execa";
 import {GDU_ROOT, PROJECT_ROOT} from "../../lib/roots";
-import {dim} from "kleur";
-import {createLogger} from "@autoguru/utilities";
+import {projectInfo} from '../../lib/terminal';
+
 
 const logger = createLogger('build');
 export default async () => {

@@ -114,6 +114,7 @@ const buildCssLayersFromEntryPoints = () => {
 export const makeWebComponentsWebpackConfig = (
 	name: string,
 	isDev = false,
+	isDebug = false,
 ): Configuration => {
 	const fileMask = isDev ? '[name]' : '[name]-[contenthash:8]';
 
@@ -292,6 +293,7 @@ export const makeWebComponentsWebpackConfig = (
 				),
 				__NO_SHADOW__: false,
 				__DEV__: JSON.stringify(isDev),
+				__DEBUG__: JSON.stringify(isDebug),
 				__GDU_APP_NAME__: JSON.stringify(getProjectName()),
 				__GDU_BUILD_INFO__: JSON.stringify({
 					commit,
