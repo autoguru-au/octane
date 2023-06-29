@@ -1,5 +1,11 @@
 # @autoguru/babel-preset
 
+## 1.3.0
+
+### Minor Changes
+
+-   52b168b: Adds debug-tool flag to mfe start command
+
 ## 1.2.0
 
 ### Minor Changes
