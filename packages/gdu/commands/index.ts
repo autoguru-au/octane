@@ -48,7 +48,7 @@ export default (app: Sade) => {
 		.option('-p, --port', 'Specify a port to start at', 8080)
 		.option('-c, --component', 'Specify the web component to start', 8080)
 		.option(
-			'-dt, --debug-tool',
+			'-d, --debug',
 			'Enables debug ui when available in the mfe app.',
 			false,
 		)
