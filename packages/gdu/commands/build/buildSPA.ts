@@ -10,7 +10,7 @@ export const buildSPA = async (guruConfig: GuruConfig) => {
 
 	// eslint-disable-next-line unicorn/prefer-prototype-methods
 	const webpackConfigs: Configuration[] = hooks.webpackConfig.call(
-		makeWebpackConfig(),
+		makeWebpackConfig(void 0, false),
 	);
 
 	const compiler = webpack(webpackConfigs);

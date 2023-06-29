@@ -50,6 +50,7 @@ module.exports = (guruConfig) => {
 				{
 					haste: false,
 					isDevVariable: '__DEV__',
+					isDebugVariable: '__DEBUG__',
 					eagerESModules: true,
 					artifactDirectory: join(
 						PROJECT_ROOT,

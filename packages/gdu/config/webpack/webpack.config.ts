@@ -74,7 +74,7 @@ const ourCodePaths = [
 
 const fileMask = isDev ? '[name]' : '[name]-[contenthash:8]';
 
-export const baseOptions = (buildEnv, isMultiEnv: boolean): Configuration => ({
+export const baseOptions = (buildEnv, isMultiEnv: boolean, isDebug = false): Configuration => ({
 	context: PROJECT_ROOT,
 	mode: isDev ? 'development' : 'production',
 	entry: {
@@ -291,6 +291,7 @@ export const baseOptions = (buildEnv, isMultiEnv: boolean): Configuration => ({
 				isDev ? 'development' : 'production',
 			),
 			__DEV__: JSON.stringify(isDev),
+			__DEBUG__: JSON.stringify(isDebug),
 			__GDU_APP_NAME__: JSON.stringify(getProjectName()),
 			__GDU_BUILD_INFO__: JSON.stringify({
 				commit,

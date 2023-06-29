@@ -2,7 +2,7 @@ import { existsSync } from 'fs';
 import { join } from 'path';
 
 import HtmlWebpackPlugin from 'html-webpack-plugin';
-import { blue, bold, cyan, red } from 'kleur';
+import { blue, bold, cyan, red, magenta } from 'kleur';
 import dedent from 'ts-dedent';
 import webpack, { Configuration } from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
@@ -28,16 +28,16 @@ const getConsumerHtmlTemplate = (
 
 const localhost = '0.0.0.0';
 const hosts = ['localhost', localhost];
-export const runSPA = async (guruConfig: GuruConfig) => {
+export const runSPA = async (guruConfig: GuruConfig, isDebug) => {
 	const hooks = getHooks();
-	console.log(`${cyan('Starting dev server...')}`);
+	console.log(`${cyan('Starting dev server...')}${isDebug?magenta(' DEBUG MODE'):''}`);
 
 	// eslint-disable-next-line unicorn/prefer-prototype-methods
 	const appEnv = process.env.APP_ENV || 'dev';
 
 	// eslint-disable-next-line unicorn/prefer-prototype-methods
 	const webpackConfig: Configuration = hooks.webpackConfig
-		.call(webpackConfigs(appEnv))
+		.call(webpackConfigs(appEnv, isDebug))
 		.find(({ name }) => name === appEnv);
 
 	const consumerHtmlTemplate = getConsumerHtmlTemplate(guruConfig);
