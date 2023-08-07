@@ -1,31 +1,13 @@
 /* eslint-disable unicorn/prefer-prototype-methods */
-import path, { resolve } from 'path';
-
-import { createVanillaExtractPlugin } from '@vanilla-extract/next-plugin';
+import path, {resolve} from 'path';
 import Dotenv from 'dotenv-webpack';
-import NTM from 'next-transpile-modules';
-import { DefinePlugin } from 'webpack';
+import {DefinePlugin} from 'webpack';
 
-import { getGuruConfig } from '../lib/config';
-import { isProductionBuild } from '../lib/misc';
-import { PROJECT_ROOT } from '../lib/roots';
-import { getConfigsDirs } from '../utils/configs';
+import {getGuruConfig} from '../lib/config';
+import {isProductionBuild} from '../lib/misc';
+import {PROJECT_ROOT} from '../lib/roots';
+import {getConfigsDirs} from '../utils/configs';
 
-const withVanillaExtract = createVanillaExtractPlugin();
-
-export const withTM = NTM([
-	'@autoguru/themes',
-	'@autoguru/overdrive',
-	'@autoguru/icons',
-	'@autoguru/components',
-	'@autoguru/fleet',
-	'@autoguru/relay',
-	'@autoguru/auth',
-	'@autoguru/aws',
-	'@autoguru/components',
-	'@autoguru/layout',
-	'@popperjs/core',
-]);
 
 type CSPKey =
 	| 'frame-ancestors'
@@ -76,6 +58,7 @@ export const CSPDefaultsList: CSPItem[] = [
 			"'self'",
 			'data:',
 			'https://*.autoguru.com.au',
+			'https://*.autoguru.au',
 			'https://*.googletagmanager.com',
 			'https://*.google-analytics.com',
 			'https://*.heapanalytics.com/',
@@ -195,7 +178,7 @@ export const defaultSecurityHeaders = [
 
 const productionEnvs = new Set(['prod', 'dockerprod', 'preprod']);
 
-export const createNextJSConfig = (buildEnv, isDebug=false) => {
+export const createNextJSConfig = (buildEnv, transpilePackages = [] as string[], isDebug = false) => {
 	const isDev = !isProductionBuild();
 	const env = process.env.APP_ENV || (isDev ? 'dev' : buildEnv);
 	const isProductionSite = productionEnvs.has(process.env.APP_ENV);
@@ -209,6 +192,7 @@ export const createNextJSConfig = (buildEnv, isDebug=false) => {
 		swcMinify: true,
 		generateEtags: true,
 		poweredByHeader: !isProductionSite,
+		transpilePackages,
 		assetPrefix,
 		basePath,
 		experimental: {
@@ -295,6 +279,3 @@ export const createNextJSConfig = (buildEnv, isDebug=false) => {
 		},
 	};
 };
-
-export const createNextJSTranspiledConfig = (isDebug=false) =>
-	withVanillaExtract(withTM(createNextJSConfig('prod', isDebug)));

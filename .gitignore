@@ -1,3 +1,7 @@
+
+# yarn cache
+.yarn/cache
+
 # Editors
 .vscode/
 .idea/
