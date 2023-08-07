@@ -1,6 +1,7 @@
 {
 	"name": "gdu",
 	"version": "5.6.1",
+	"private": false,
 	"description": "AutoGuru's development toolkit",
 	"homepage": "https://github.com/autoguru-au/octane/tree/master/packages/gdu#readme",
 	"repository": "https://github.com/autoguru-au/octane/tree/master/packages/gdu",
@@ -13,7 +14,9 @@
 		"entry/",
 		"gdu.d.ts"
 	],
-	"bin": "./bin/gdu.js",
+	"bin": {
+		"gdu": "./bin/gdu.js"
+	},
 	"types": "./dist/main.d.ts",
 	"main": "./dist/main.js",
 	"scripts": {
@@ -47,7 +50,6 @@
 		"css-loader": "^6.7.1",
 		"cssnano": "^4.1.10",
 		"date-fns": "^2.17.0",
-		"debug": "^4.3.4",
 		"deepmerge": "^4.2.2",
 		"diary": "^0.0.12",
 		"dotenv-webpack": "^7.1.0",
@@ -68,7 +70,8 @@
 		"kleur": "^4.1.4",
 		"mini-css-extract-plugin": "^2.4.2",
 		"mkdirp": "^1.0.4",
-		"next": "^13.4.12",
+		"next": "^13.3.4",
+		"next-transpile-modules": "^10.0.0",
 		"node-fetch": "^2.6.1",
 		"node-static": "^0.7.11",
 		"null-loader": "^4.0.1",
