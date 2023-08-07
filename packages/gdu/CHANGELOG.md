@@ -1,5 +1,12 @@
 # gdu
 
+## 5.7.0
+
+### Minor Changes
+
+-   52a0140: Removes next transpile module lib in favour of nextjs builtin
+    solution
+
 ## 5.6.1
 
 ### Patch Changes
