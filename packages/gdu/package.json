@@ -47,6 +47,7 @@
 		"css-loader": "^6.7.1",
 		"cssnano": "^4.1.10",
 		"date-fns": "^2.17.0",
+		"debug": "^4.3.4",
 		"deepmerge": "^4.2.2",
 		"diary": "^0.0.12",
 		"dotenv-webpack": "^7.1.0",
