@@ -1,5 +1,11 @@
 # @autoguru/eslint-plugin
 
+## 1.5.0
+
+### Minor Changes
+
+-   05747b1: Added nx workspaces
+
 ## 1.4.0
 
 ### Minor Changes

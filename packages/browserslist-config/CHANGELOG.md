@@ -1,5 +1,11 @@
 # browserslist-config-autoguru
 
+## 2.3.0
+
+### Minor Changes
+
+-   05747b1: Added nx workspaces
+
 ## 2.2.8
 
 ### Patch Changes

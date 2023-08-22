@@ -1,5 +1,16 @@
 # @autoguru/jest-preset
 
+## 1.2.0
+
+### Minor Changes
+
+-   05747b1: Added nx workspaces
+
+### Patch Changes
+
+-   Updated dependencies [05747b1]
+    -   @autoguru/babel-preset@1.4.0
+
 ## 1.1.0
 
 ### Minor Changes

@@ -1,5 +1,11 @@
 # @autoguru/tsconfig
 
+## 1.1.0
+
+### Minor Changes
+
+-   05747b1: Added nx workspaces
+
 ## 1.0.80
 
 ### Patch Changes

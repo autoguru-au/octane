@@ -1,5 +1,19 @@
 # gdu
 
+## 6.0.0
+
+### Minor Changes
+
+-   05747b1: Added nx workspaces
+
+### Patch Changes
+
+-   Updated dependencies [05747b1]
+    -   @autoguru/babel-preset@1.4.0
+    -   browserslist-config-autoguru@2.3.0
+    -   @autoguru/tsconfig@1.1.0
+    -   @autoguru/utilities@1.2.0
+
 ## 5.7.1
 
 ### Patch Changes
