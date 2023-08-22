@@ -1,5 +1,11 @@
 # gdu
 
+## 5.7.1
+
+### Patch Changes
+
+-   ac8171b: Dependency updates
+
 ## 5.7.0
 
 ### Minor Changes
