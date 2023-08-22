@@ -20,14 +20,25 @@ export default async ({ port: incomingPort, component, debug:debugTool }) => {
 
 	if (!isProductionBuild()) banner('Starting');
 
-	if (resolvedConfig?.type === 'ssr') {
+	switch (resolvedConfig?.type) {
+	case 'ssr': {
 		const runSSR = await import('./runSSR');
 		await runSSR.runNextJS(resolvedConfig);
-	} else if (resolvedConfig?.type === 'spa') {
+	
+	break;
+	}
+	case 'spa': {
 		const runSPA = await import('./runSPA');
 		await runSPA.runSPA(resolvedConfig, debugTool);
-	} else if (resolvedConfig?.type === 'web-component') {
+	
+	break;
+	}
+	case 'web-component': {
 		const runWebComponents = await import('./runWebComponents');
 		await runWebComponents.runWebComponents(resolvedConfig, component);
+	
+	break;
+	}
+	// No default
 	}
 };
