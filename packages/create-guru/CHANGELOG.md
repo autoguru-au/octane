@@ -1,5 +1,13 @@
 # create-guru
 
+## 5.7.1
+
+### Patch Changes
+
+-   ac8171b: Dependency updates
+-   Updated dependencies [ac8171b]
+    -   gdu@5.7.1
+
 ## 5.0.0
 
 ### Patch Changes
