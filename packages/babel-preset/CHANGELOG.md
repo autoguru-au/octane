@@ -1,5 +1,11 @@
 # @autoguru/babel-preset
 
+## 1.4.0
+
+### Minor Changes
+
+-   05747b1: Added nx workspaces
+
 ## 1.3.0
 
 ### Minor Changes

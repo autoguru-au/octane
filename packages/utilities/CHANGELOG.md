@@ -1,5 +1,11 @@
 # @autoguru/utilities
 
+## 1.2.0
+
+### Minor Changes
+
+-   05747b1: Added nx workspaces
+
 ## 1.1.1
 
 ### Patch Changes

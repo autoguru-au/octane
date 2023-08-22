@@ -1,5 +1,16 @@
 # create-guru
 
+## 6.0.0
+
+### Minor Changes
+
+-   05747b1: Added nx workspaces
+
+### Patch Changes
+
+-   Updated dependencies [05747b1]
+    -   gdu@6.0.0
+
 ## 5.7.1
 
 ### Patch Changes
