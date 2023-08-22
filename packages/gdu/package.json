@@ -1,7 +1,6 @@
 {
 	"name": "gdu",
 	"version": "5.7.0",
-	"private": false,
 	"description": "AutoGuru's development toolkit",
 	"homepage": "https://github.com/autoguru-au/octane/tree/master/packages/gdu#readme",
 	"repository": "https://github.com/autoguru-au/octane/tree/master/packages/gdu",
@@ -14,9 +13,7 @@
 		"entry/",
 		"gdu.d.ts"
 	],
-	"bin": {
-		"gdu": "./bin/gdu.js"
-	},
+	"bin": "./bin/gdu.js",
 	"types": "./dist/main.d.ts",
 	"main": "./dist/main.js",
 	"scripts": {
@@ -36,11 +33,11 @@
 		"@graphql-cli/generate": "^4.1.0",
 		"@graphql-inspector/diff-command": "^3.3.0",
 		"@graphql-tools/json-file-loader": "^6.2.6",
-		"@vanilla-extract/babel-plugin": "^1.1.6",
-		"@vanilla-extract/css": "^1.7.2",
+		"@vanilla-extract/babel-plugin": "^1.2.0",
+		"@vanilla-extract/css": "^1.9.1",
 		"@vanilla-extract/dynamic": "^2.0.2",
 		"@vanilla-extract/next-plugin": "^2.1.1",
-		"@vanilla-extract/webpack-plugin": "^2.1.10",
+		"@vanilla-extract/webpack-plugin": "^2.2.0",
 		"babel-loader": "^8.2.2",
 		"babel-plugin-relay": "^13.2.0",
 		"babel-plugin-treat": "^1.6.2",
@@ -49,7 +46,7 @@
 		"core-js": "^3.9.1",
 		"css-loader": "^6.7.1",
 		"cssnano": "^4.1.10",
-		"date-fns": "^2.17.0",
+		"date-fns": "^2.29.3",
 		"deepmerge": "^4.2.2",
 		"diary": "^0.0.12",
 		"dotenv-webpack": "^7.1.0",
