@@ -8060,7 +8060,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "create-guru@workspace:packages/create-guru"
   dependencies:
-    gdu: ^5.0.0
+    gdu: ^5.7.1
     mri: ^1.1.6
   bin:
     create-guru: ./index.js
@@ -11154,7 +11154,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"gdu@^5.0.0, gdu@workspace:packages/gdu":
+"gdu@^5.7.1, gdu@workspace:packages/gdu":
   version: 0.0.0-use.local
   resolution: "gdu@workspace:packages/gdu"
   dependencies:
