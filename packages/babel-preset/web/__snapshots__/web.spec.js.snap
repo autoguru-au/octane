@@ -43,7 +43,11 @@ const objectB = _objectSpread(_objectSpread({}, objectA), {}, {
   [d]: 'd'
 });
 
-function test(firstArg, ...args) {
+function test(firstArg) {
+  for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+    args[_key - 1] = arguments[_key];
+  }
+
   const [, test2] = args;
   console.log(firstArg, args[0], test2);
 }
@@ -94,7 +98,11 @@ const objectB = _objectSpread(_objectSpread({}, objectA), {}, {
   [d]: 'd'
 });
 
-function test(firstArg, ...args) {
+function test(firstArg) {
+  for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+    args[_key - 1] = arguments[_key];
+  }
+
   const [, test2] = args;
   console.log(firstArg, args[0], test2);
 }
@@ -165,7 +173,11 @@ const objectB = _objectSpread(_objectSpread({}, objectA), {}, {
   [d]: 'd'
 });
 
-function test(firstArg, ...args) {
+function test(firstArg) {
+  for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+    args[_key - 1] = arguments[_key];
+  }
+
   const [, test2] = args;
   console.log(firstArg, args[0], test2);
 }
