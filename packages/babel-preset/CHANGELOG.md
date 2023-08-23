@@ -1,5 +1,11 @@
 # @autoguru/babel-preset
 
+## 1.4.1
+
+### Patch Changes
+
+-   cfe4e91: Set defined babel preset dependencies
+
 ## 1.4.0
 
 ### Minor Changes
