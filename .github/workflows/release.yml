@@ -12,12 +12,13 @@ jobs:
       - uses: actions/checkout@main
         with:
           fetch-depth: 0
-      - name: Yarn cache
-        uses: actions/cache@v1
-        with:
-          path: node_modules/
-          key: ${{ hashFiles('yarn.lock') }}
-      - run: yarn install
+      -   name: 📥 Install Monorepo Dependencies
+          uses: ./.github/actions/yarn-nm-install
+          with:
+              cwd: '.'
+              enable-corepack: false
+              cache-node-modules: true
+              cache-install-state: true
       - name: Create Release or Publish
         uses: changesets/action@master
         with:

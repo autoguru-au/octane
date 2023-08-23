@@ -1,13 +1,12 @@
-import {createLogger} from "@autoguru/utilities";
-import execa from "execa";
-import {dim} from "kleur";
+import { createLogger } from '@autoguru/utilities';
+import execa from 'execa';
+import { dim } from 'kleur';
 
-import {banner} from '../../lib/banner';
-import {getGuruConfig} from '../../lib/config';
-import {setEnvProd} from '../../lib/misc';
-import {GDU_ROOT, PROJECT_ROOT} from "../../lib/roots";
-import {projectInfo} from '../../lib/terminal';
-
+import { banner } from '../../lib/banner';
+import { getGuruConfig } from '../../lib/config';
+import { setEnvProd } from '../../lib/misc';
+import { GDU_ROOT, PROJECT_ROOT } from '../../lib/roots';
+import { projectInfo } from '../../lib/terminal';
 
 const logger = createLogger('build');
 export default async () => {
@@ -19,24 +18,24 @@ export default async () => {
 
 	const start = Date.now();
 	execa
-		.command(`yarn tsc --project tsconfig.json --noEmit --skipLibCheck --skipDefaultLibCheck --noImplicitReturns`, {
-			stdio: 'inherit',
-			cwd: PROJECT_ROOT,
-			localDir: GDU_ROOT,
-			extendEnv: true,
-			// @ts-ignore
-			env: {
-				NODE_ENV: 'production',
-				APP_ENV: process.env.APP_ENV || 'prod',
+		.command(
+			`yarn tsc --project tsconfig.json --noEmit --skipLibCheck --skipDefaultLibCheck --noImplicitReturns`,
+			{
+				stdio: 'inherit',
+				cwd: PROJECT_ROOT,
+				localDir: GDU_ROOT,
+				extendEnv: true,
+				// @ts-ignore
+				env: {
+					NODE_ENV: 'production',
+					APP_ENV: process.env.APP_ENV || 'prod',
+				},
 			},
-		})
+		)
 		.then(
 			() => {
-
 				projectInfo(`${appName} ✅`);
-				console.log(
-					`${dim('SUCCESS!')}`,
-				);
+				console.log(`${dim('SUCCESS!')}`);
 			},
 			(error) => {
 				logger.error('response', {
@@ -65,11 +64,8 @@ export default async () => {
 		})
 		.then(
 			() => {
-
 				projectInfo(`${appName} ✅`);
-				console.log(
-					`${dim('SUCCESS!')}`,
-				);
+				console.log(`${dim('SUCCESS!')}`);
 			},
 			(error) => {
 				logger.error('response', {

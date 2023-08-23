@@ -74,7 +74,11 @@ const ourCodePaths = [
 
 const fileMask = isDev ? '[name]' : '[name]-[contenthash:8]';
 
-export const baseOptions = (buildEnv, isMultiEnv: boolean, isDebug = false): Configuration => ({
+export const baseOptions = (
+	buildEnv,
+	isMultiEnv: boolean,
+	isDebug = false,
+): Configuration => ({
 	context: PROJECT_ROOT,
 	mode: isDev ? 'development' : 'production',
 	entry: {
