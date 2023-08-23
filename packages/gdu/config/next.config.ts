@@ -231,6 +231,11 @@ export const createNextJSConfig = (
 		webpack: (defaultConfig) => {
 			defaultConfig.plugins.push(
 				new DefinePlugin({
+					__MOUNT_DOM_ID__: guruConfig.mountDOMId,
+				}),
+			);
+			defaultConfig.plugins.push(
+				new DefinePlugin({
 					__DEV__: isDev,
 				}),
 			);
