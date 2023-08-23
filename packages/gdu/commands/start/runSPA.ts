@@ -29,7 +29,11 @@ const localhost = '0.0.0.0';
 const hosts = ['localhost', localhost];
 export const runSPA = async (guruConfig: GuruConfig, isDebug) => {
 	const hooks = getHooks();
-	console.log(`${cyan('Starting dev server...')}${isDebug?magenta(' DEBUG MODE'):''}`);
+	console.log(
+		`${cyan('Starting dev server...')}${
+			isDebug ? magenta(' DEBUG MODE') : ''
+		}`,
+	);
 
 	// eslint-disable-next-line unicorn/prefer-prototype-methods
 	const appEnv = process.env.APP_ENV || 'dev';

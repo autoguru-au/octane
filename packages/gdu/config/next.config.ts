@@ -1,14 +1,13 @@
 /* eslint-disable unicorn/prefer-prototype-methods */
-import path, {resolve} from 'path';
+import path, { resolve } from 'path';
 
 import Dotenv from 'dotenv-webpack';
-import {DefinePlugin} from 'webpack';
+import { DefinePlugin } from 'webpack';
 
-import {getGuruConfig} from '../lib/config';
-import {isProductionBuild} from '../lib/misc';
-import {PROJECT_ROOT} from '../lib/roots';
-import {getConfigsDirs} from '../utils/configs';
-
+import { getGuruConfig } from '../lib/config';
+import { isProductionBuild } from '../lib/misc';
+import { PROJECT_ROOT } from '../lib/roots';
+import { getConfigsDirs } from '../utils/configs';
 
 type CSPKey =
 	| 'frame-ancestors'
@@ -179,7 +178,11 @@ export const defaultSecurityHeaders = [
 
 const productionEnvs = new Set(['prod', 'dockerprod', 'preprod']);
 
-export const createNextJSConfig = (buildEnv, transpilePackages = [] as string[], isDebug = false) => {
+export const createNextJSConfig = (
+	buildEnv,
+	transpilePackages = [] as string[],
+	isDebug = false,
+) => {
 	const isDev = !isProductionBuild();
 	const env = process.env.APP_ENV || (isDev ? 'dev' : buildEnv);
 	const isProductionSite = productionEnvs.has(process.env.APP_ENV);

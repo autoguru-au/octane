@@ -8,7 +8,7 @@ import { buildSupportedBrowsers } from '../generateBrowsers';
 
 const { debug } = diary('gdu:commands:start');
 
-export default async ({ port: incomingPort, component, debug:debugTool }) => {
+export default async ({ port: incomingPort, component, debug: debugTool }) => {
 	debug('running action with %O', { port: incomingPort });
 
 	const { port = incomingPort, ...otherConfig } =
@@ -21,24 +21,24 @@ export default async ({ port: incomingPort, component, debug:debugTool }) => {
 	if (!isProductionBuild()) banner('Starting');
 
 	switch (resolvedConfig?.type) {
-	case 'ssr': {
-		const runSSR = await import('./runSSR');
-		await runSSR.runNextJS(resolvedConfig);
-	
-	break;
-	}
-	case 'spa': {
-		const runSPA = await import('./runSPA');
-		await runSPA.runSPA(resolvedConfig, debugTool);
-	
-	break;
-	}
-	case 'web-component': {
-		const runWebComponents = await import('./runWebComponents');
-		await runWebComponents.runWebComponents(resolvedConfig, component);
-	
-	break;
-	}
-	// No default
+		case 'ssr': {
+			const runSSR = await import('./runSSR');
+			await runSSR.runNextJS(resolvedConfig);
+
+			break;
+		}
+		case 'spa': {
+			const runSPA = await import('./runSPA');
+			await runSPA.runSPA(resolvedConfig, debugTool);
+
+			break;
+		}
+		case 'web-component': {
+			const runWebComponents = await import('./runWebComponents');
+			await runWebComponents.runWebComponents(resolvedConfig, component);
+
+			break;
+		}
+		// No default
 	}
 };

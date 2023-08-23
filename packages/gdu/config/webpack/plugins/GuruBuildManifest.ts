@@ -154,9 +154,6 @@ export class GuruBuildManifest {
 	 */
 	_normalizeOutputDir(outputDir) {
 		const removedRelativePrefix = outputDir.replace(/^\.\//, '');
-		return removedRelativePrefix.replace(
-			process.cwd(),
-			'',
-		);
+		return removedRelativePrefix.replace(process.cwd(), '');
 	}
 }
