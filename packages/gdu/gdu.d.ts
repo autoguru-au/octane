@@ -2,6 +2,7 @@
  * Will be set to true when a local development environment is currently running.
  */
 declare const __DEV__: boolean;
+declare const __MOUNT_DOM_ID__: string;
 declare const __DEBUG__: boolean;
 
 /**

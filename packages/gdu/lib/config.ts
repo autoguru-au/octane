@@ -11,6 +11,7 @@ const readCache = new Map();
 
 export interface GuruConfig {
 	type: 'ssr' | 'spa' | 'web-component';
+	mountDOMId: string;
 	isRoot?: boolean;
 	port?: number;
 	basePath?: string;

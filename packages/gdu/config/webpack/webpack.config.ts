@@ -1,38 +1,25 @@
 /* eslint-disable unicorn/prefer-module */
 /* eslint-disable unicorn/prefer-prototype-methods */
-import path, { join, resolve } from 'path';
+import path, {join, resolve} from 'path';
 
-import { VanillaExtractPlugin } from '@vanilla-extract/webpack-plugin';
+import {VanillaExtractPlugin} from '@vanilla-extract/webpack-plugin';
 import browsers from 'browserslist-config-autoguru';
-import { CleanWebpackPlugin } from 'clean-webpack-plugin';
+import {CleanWebpackPlugin} from 'clean-webpack-plugin';
 import Dotenv from 'dotenv-webpack';
 import envCI from 'env-ci';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
-import { TreatPlugin } from 'treat/webpack-plugin';
-import { TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
-import {
-	Configuration,
-	DefinePlugin,
-	IgnorePlugin,
-	SourceMapDevToolPlugin,
-} from 'webpack';
+import {TreatPlugin} from 'treat/webpack-plugin';
+import {TsconfigPathsPlugin} from 'tsconfig-paths-webpack-plugin';
+import {Configuration, DefinePlugin, IgnorePlugin, SourceMapDevToolPlugin,} from 'webpack';
 
-import {
-	getGuruConfig,
-	getProjectFolderName,
-	getProjectName,
-} from '../../lib/config';
-import { isProductionBuild } from '../../lib/misc';
-import {
-	CALLING_WORKSPACE_ROOT,
-	GDU_ROOT,
-	PROJECT_ROOT,
-} from '../../lib/roots';
-import { getBuildEnvs, getConfigsDirs } from '../../utils/configs';
-import { getHooks } from '../../utils/hooks';
+import {getGuruConfig, getProjectFolderName, getProjectName,} from '../../lib/config';
+import {isProductionBuild} from '../../lib/misc';
+import {CALLING_WORKSPACE_ROOT, GDU_ROOT, PROJECT_ROOT,} from '../../lib/roots';
+import {getBuildEnvs, getConfigsDirs} from '../../utils/configs';
+import {getHooks} from '../../utils/hooks';
 
-import { GuruBuildManifest } from './plugins/GuruBuildManifest';
+import {GuruBuildManifest} from './plugins/GuruBuildManifest';
 
 const { branch = 'null', commit = 'null' } = envCI();
 
@@ -78,265 +65,268 @@ export const baseOptions = (
 	buildEnv,
 	isMultiEnv: boolean,
 	isDebug = false,
-): Configuration => ({
-	context: PROJECT_ROOT,
-	mode: isDev ? 'development' : 'production',
-	entry: {
-		main: [
-			join(gduEntryPath, 'polyfill.js'),
+): Configuration => {
+	const guruConfig = getGuruConfig();
+	return {
+		context: PROJECT_ROOT,
+		mode: isDev ? 'development' : 'production',
+		entry: {
+			main: [
+				join(gduEntryPath, 'polyfill.js'),
 
-			join(gduEntryPath, 'spa', 'client.js'),
-		].filter(Boolean),
-	},
-	experiments: {
-		layers: true,
-	},
-	cache: {
-		type: 'filesystem',
-		cacheLocation: resolve(PROJECT_ROOT, '.build_cache'),
-		allowCollectingMemory: isDev ? true : false,
-		buildDependencies: {
-			// This makes all dependencies of this file - build dependencies
-			config: [__filename],
-			// By default webpack and loaders are build dependencies
+				join(gduEntryPath, 'spa', 'client.js'),
+			].filter(Boolean),
 		},
-	},
-	resolve: {
-		preferRelative: true,
-		fallback: {
-			path: false,
-			util: false,
+		experiments: {
+			layers: true,
 		},
-		extensions: ['.tsx', '.ts', '.mjs', '.jsx', '.js', '.json'],
-		plugins: [
-			// TODO: Remove the ignore when plugin is fixed it's types
-			// @ts-ignore
-			new TsconfigPathsPlugin({
-				configFile: join(PROJECT_ROOT, 'tsconfig.json'),
-			}),
-		],
-		alias: {
-			__GDU_CONSUMER_CLIENT__: join(PROJECT_ROOT, 'src/client.tsx'),
-		},
-	},
-	optimization: {
-		nodeEnv: false,
-		minimize: !isDev,
-		concatenateModules: !isDev,
-		splitChunks: {
-			chunks: 'async',
-			minSize: 20_000,
-			minRemainingSize: 0,
-			minChunks: 1,
-			maxAsyncRequests: 30,
-			maxInitialRequests: 30,
-			enforceSizeThreshold: 50_000,
-			cacheGroups: {
-				default: false,
-				defaultVendors: false,
-				lib: {
-					test: /(?!.*gdu)[/\\]node_modules[/\\]/,
-					priority: 30,
-					minChunks: 1,
-					reuseExistingChunk: true,
-				},
-				framework: {
-					chunks: 'all',
-					name: 'framework',
-					test: frameworkRegex,
-					priority: 40,
-					enforce: true,
-				},
-				// For things that are shared by at least 2+ chunks.
-				common: {
-					name: 'common',
-					minChunks: 2,
-					priority: 20,
-					reuseExistingChunk: true,
-				},
-				// AutoGuru related assets here
-				guru: {
-					test: /@autoguru[/\\]/,
-					priority: 99,
-					reuseExistingChunk: true,
-					enforce: true,
-				},
+		cache: {
+			type: 'filesystem',
+			cacheLocation: resolve(PROJECT_ROOT, '.build_cache'),
+			allowCollectingMemory: isDev ? true : false,
+			buildDependencies: {
+				// This makes all dependencies of this file - build dependencies
+				config: [__filename],
+				// By default webpack and loaders are build dependencies
 			},
 		},
-		moduleIds: isDev ? 'named' : 'deterministic',
-		runtimeChunk: {
-			name: 'runtime',
+		resolve: {
+			preferRelative: true,
+			fallback: {
+				path: false,
+				util: false,
+			},
+			extensions: ['.tsx', '.ts', '.mjs', '.jsx', '.js', '.json'],
+			plugins: [
+				// TODO: Remove the ignore when plugin is fixed it's types
+				// @ts-ignore
+				new TsconfigPathsPlugin({
+					configFile: join(PROJECT_ROOT, 'tsconfig.json'),
+				}),
+			],
+			alias: {
+				__GDU_CONSUMER_CLIENT__: join(PROJECT_ROOT, 'src/client.tsx'),
+			},
 		},
-		minimizer: [
-			new TerserPlugin({
-				parallel: true,
-				terserOptions,
-			}),
-		],
-	},
-	module: {
-		strictExportPresence: true,
-		rules: [
-			{
-				test: /\.css$/i,
-				oneOf: [
-					{
-						test: /\.vanilla\.css$/i, // Targets only CSS files generated by vanilla-extract
-						use: [
-							MiniCssExtractPlugin.loader,
-							{
-								loader: require.resolve('css-loader'),
-								options: {
-									url: true, // Required as image imports should be handled via JS/TS import statements
+		optimization: {
+			nodeEnv: false,
+			minimize: !isDev,
+			concatenateModules: !isDev,
+			splitChunks: {
+				chunks: 'async',
+				minSize: 20_000,
+				minRemainingSize: 0,
+				minChunks: 1,
+				maxAsyncRequests: 30,
+				maxInitialRequests: 30,
+				enforceSizeThreshold: 50_000,
+				cacheGroups: {
+					default: false,
+					defaultVendors: false,
+					lib: {
+						test: /(?!.*gdu)[/\\]node_modules[/\\]/,
+						priority: 30,
+						minChunks: 1,
+						reuseExistingChunk: true,
+					},
+					framework: {
+						chunks: 'all',
+						name: 'framework',
+						test: frameworkRegex,
+						priority: 40,
+						enforce: true,
+					},
+					// For things that are shared by at least 2+ chunks.
+					common: {
+						name: 'common',
+						minChunks: 2,
+						priority: 20,
+						reuseExistingChunk: true,
+					},
+					// AutoGuru related assets here
+					guru: {
+						test: /@autoguru[/\\]/,
+						priority: 99,
+						reuseExistingChunk: true,
+						enforce: true,
+					},
+				},
+			},
+			moduleIds: isDev ? 'named' : 'deterministic',
+			runtimeChunk: {
+				name: 'runtime',
+			},
+			minimizer: [
+				new TerserPlugin({
+					parallel: true,
+					terserOptions,
+				}),
+			],
+		},
+		module: {
+			strictExportPresence: true,
+			rules: [
+				{
+					test: /\.css$/i,
+					oneOf: [
+						{
+							test: /\.vanilla\.css$/i, // Targets only CSS files generated by vanilla-extract
+							use: [
+								MiniCssExtractPlugin.loader,
+								{
+									loader: require.resolve('css-loader'),
+									options: {
+										url: true, // Required as image imports should be handled via JS/TS import statements
+									},
 								},
-							},
-						],
-					},
-					{
-						test: /^((?!\.vanilla)[\S\s])*\.css$/i, // Targets only CSS that is not vanilla css
-						use: [MiniCssExtractPlugin.loader, 'css-loader'],
-					},
-				],
-			},
-			{
-				test: /\.(js|mjs|jsx|ts|tsx)$/,
-				oneOf: [
-					// our stuff
-					{
-						include: ourCodePaths,
-						exclude(path) {
-							// TODO: Temp, remove this
-							if (path.includes('@autoguru/utilities')) {
-								return true;
-							}
-
-							const ourCode = ourCodePaths.some((item) => {
-								if (item instanceof RegExp) {
-									return item.test(path);
+							],
+						},
+						{
+							test: /^((?!\.vanilla)[\S\s])*\.css$/i, // Targets only CSS that is not vanilla css
+							use: [MiniCssExtractPlugin.loader, 'css-loader'],
+						},
+					],
+				},
+				{
+					test: /\.(js|mjs|jsx|ts|tsx)$/,
+					oneOf: [
+						// our stuff
+						{
+							include: ourCodePaths,
+							exclude(path) {
+								// TODO: Temp, remove this
+								if (path.includes('@autoguru/utilities')) {
+									return true;
 								}
 
-								return path.includes(item);
-							});
+								const ourCode = ourCodePaths.some((item) => {
+									if (item instanceof RegExp) {
+										return item.test(path);
+									}
 
-							return ourCode
-								? false
-								: path.includes('node_modules');
-						},
-						use: [
-							{
-								loader: require.resolve('babel-loader'),
-								options: {
-									cacheCompression: false,
-									cacheDirectory: true,
-									babelrc: false,
-									envName: isDev
-										? 'development'
-										: 'production',
-									...hooks.babelConfig.call(
-										require('../babel.config')(
-											getGuruConfig(),
-										),
-									),
-								},
+									return path.includes(item);
+								});
+
+								return ourCode
+									? false
+									: path.includes('node_modules');
 							},
-						],
-					},
-					// node_modules stuff
-					{
-						exclude:
-							/(@babel(?:\/|\\{1,2})runtime)|(\/node_modules\/next\/)/,
-						use: [
-							{
-								loader: require.resolve('babel-loader'),
-								options: {
-									cacheCompression: false,
-									cacheDirectory: true,
-									babelrc: false,
-									envName: isDev
-										? 'development'
-										: 'production',
-									presets: [
-										[
-											require.resolve(
-												'@babel/preset-env',
+							use: [
+								{
+									loader: require.resolve('babel-loader'),
+									options: {
+										cacheCompression: false,
+										cacheDirectory: true,
+										babelrc: false,
+										envName: isDev
+											? 'development'
+											: 'production',
+										...hooks.babelConfig.call(
+											require('../babel.config')(
+												getGuruConfig(),
 											),
-											{
-												useBuiltIns: false,
-												modules: false,
-												exclude: [
-													'transform-typeof-symbol',
-												],
-												loose: false,
-												shippedProposals: true,
-												spec: true,
-												targets: browsers,
-											},
-										],
-									],
+										),
+									},
 								},
-							},
-						],
-					},
-				],
-			},
-		],
-	},
-	devtool: isDev && 'source-map',
-	plugins: [
-		new IgnorePlugin({
-			checkResource(resource) {
-				return /(\/next\/)/.test(resource);
-			},
-		}),
-		!isDev && new CleanWebpackPlugin(),
-		new DefinePlugin({
-			'process.browser': JSON.stringify(true),
-			'process.env.NODE_ENV': JSON.stringify(
-				isDev ? 'development' : 'production',
-			),
-			__DEV__: JSON.stringify(isDev),
-			__DEBUG__: JSON.stringify(isDebug),
-			__GDU_APP_NAME__: JSON.stringify(getProjectName()),
-			__GDU_BUILD_INFO__: JSON.stringify({
-				commit,
-				branch,
-			}),
-		}),
-		new TreatPlugin({
-			outputLoaders: [
-				{
-					loader: isProductionBuild()
-						? MiniCssExtractPlugin.loader
-						: require.resolve('style-loader'),
+							],
+						},
+						// node_modules stuff
+						{
+							exclude:
+								/(@babel(?:\/|\\{1,2})runtime)|(\/node_modules\/next\/)/,
+							use: [
+								{
+									loader: require.resolve('babel-loader'),
+									options: {
+										cacheCompression: false,
+										cacheDirectory: true,
+										babelrc: false,
+										envName: isDev
+											? 'development'
+											: 'production',
+										presets: [
+											[
+												require.resolve(
+													'@babel/preset-env',
+												),
+												{
+													useBuiltIns: false,
+													modules: false,
+													exclude: [
+														'transform-typeof-symbol',
+													],
+													loose: false,
+													shippedProposals: true,
+													spec: true,
+													targets: browsers,
+												},
+											],
+										],
+									},
+								},
+							],
+						},
+					],
 				},
 			],
-			minify: !isDev,
-			browsers,
-		}),
-		new VanillaExtractPlugin(),
-		new MiniCssExtractPlugin({
-			filename: `${fileMask}.css`,
-			chunkFilename: `chunks/${fileMask}.css`,
-			ignoreOrder: true,
-		}),
-
-		// Read defaults
-		...getConfigsDirs().flatMap((configsDir) => [
-			new Dotenv({
-				path: path.resolve(configsDir, '.env.defaults'),
-				prefix: 'process.env.',
-				ignoreStub: true,
-			}), // Read env
-			new Dotenv({
-				path: path.resolve(
-					configsDir,
-					`.env.${process.env.APP_ENV || (isDev ? 'dev' : buildEnv)}`,
-				),
-				prefix: 'process.env.',
-				ignoreStub: true,
+		},
+		devtool: isDev && 'source-map',
+		plugins: [
+			new IgnorePlugin({
+				checkResource(resource) {
+					return /(\/next\/)/.test(resource);
+				},
 			}),
-		]),
-		!isDev &&
+			!isDev && new CleanWebpackPlugin(),
+			new DefinePlugin({
+				'process.browser': JSON.stringify(true),
+				'process.env.NODE_ENV': JSON.stringify(
+					isDev ? 'development' : 'production',
+				),
+				__DEV__: JSON.stringify(isDev),
+				__MOUNT_DOM_ID__: guruConfig.mountDOMId,
+				__DEBUG__: JSON.stringify(isDebug),
+				__GDU_APP_NAME__: JSON.stringify(getProjectName()),
+				__GDU_BUILD_INFO__: JSON.stringify({
+					commit,
+					branch,
+				}),
+			}),
+			new TreatPlugin({
+				outputLoaders: [
+					{
+						loader: isProductionBuild()
+							? MiniCssExtractPlugin.loader
+							: require.resolve('style-loader'),
+					},
+				],
+				minify: !isDev,
+				browsers,
+			}),
+			new VanillaExtractPlugin(),
+			new MiniCssExtractPlugin({
+				filename: `${fileMask}.css`,
+				chunkFilename: `chunks/${fileMask}.css`,
+				ignoreOrder: true,
+			}),
+
+			// Read defaults
+			...getConfigsDirs().flatMap((configsDir) => [
+				new Dotenv({
+					path: path.resolve(configsDir, '.env.defaults'),
+					prefix: 'process.env.',
+					ignoreStub: true,
+				}), // Read env
+				new Dotenv({
+					path: path.resolve(
+						configsDir,
+						`.env.${process.env.APP_ENV || (isDev ? 'dev' : buildEnv)}`,
+					),
+					prefix: 'process.env.',
+					ignoreStub: true,
+				}),
+			]),
+			!isDev &&
 			new GuruBuildManifest({
 				outputDir:
 					!isMultiEnv && buildEnv === 'prod'
@@ -344,12 +334,13 @@ export const baseOptions = (
 						: resolve(PROJECT_ROOT, 'dist', buildEnv),
 				includeChunks: false,
 			}),
-		new SourceMapDevToolPlugin({
-			test: [/.ts$/, /.tsx$/],
-			exclude: [/.css.ts$/, frameworkRegex],
-		}),
-	].filter(Boolean),
-});
+			new SourceMapDevToolPlugin({
+				test: [/.ts$/, /.tsx$/],
+				exclude: [/.css.ts$/, frameworkRegex],
+			}),
+		].filter(Boolean),
+	}
+};
 
 const { outputPath } = getGuruConfig();
 
