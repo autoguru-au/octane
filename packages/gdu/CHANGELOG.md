@@ -1,5 +1,11 @@
 # gdu
 
+## 6.1.0
+
+### Minor Changes
+
+-   c91fc69: GDU: Adds a utility to expose mfe app names on the page
+
 ## 6.0.1
 
 ### Patch Changes
