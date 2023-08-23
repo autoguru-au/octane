@@ -1,5 +1,13 @@
 # gdu
 
+## 6.0.1
+
+### Patch Changes
+
+-   cfe4e91: Set defined babel preset dependencies
+-   Updated dependencies [cfe4e91]
+    -   @autoguru/babel-preset@1.4.1
+
 ## 6.0.0
 
 ### Minor Changes
