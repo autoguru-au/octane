@@ -1,5 +1,11 @@
 # gdu
 
+## 6.1.1
+
+### Patch Changes
+
+-   1abd8ff: Null checks mount point before attaching data
+
 ## 6.1.0
 
 ### Minor Changes
