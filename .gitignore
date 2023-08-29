@@ -6,6 +6,7 @@
 # Git things
 # yarn cache
 .yarn/cache
+.yarn/ci-cache
 # Node things
 node_modules/
 *.log*
