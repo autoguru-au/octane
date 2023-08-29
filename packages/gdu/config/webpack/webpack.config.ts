@@ -121,8 +121,6 @@ export const baseOptions = (
 				minSize: 20_000,
 				minRemainingSize: 0,
 				minChunks: 1,
-				maxAsyncRequests: 30,
-				maxInitialRequests: 30,
 				enforceSizeThreshold: 50_000,
 				cacheGroups: {
 					default: false,
