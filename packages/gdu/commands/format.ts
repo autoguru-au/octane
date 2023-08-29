@@ -5,7 +5,7 @@ import { resolvePathFromCaller } from '../lib/resolve';
 import { GDU_ROOT, PROJECT_ROOT } from '../lib/roots';
 /* eslint-disable unicorn/prefer-module */
 export default (options) => {
-	console.log(`${cyan('&&&&&&Formatting with prettier...')}`);
+	console.log(`${cyan('Formatting with prettier...')}`);
 
 	const shouldWrite =
 		options['list-different'] === 'false' && options.write === 'true';
