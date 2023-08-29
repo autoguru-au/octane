@@ -1,13 +1,13 @@
 /* eslint-disable unicorn/prefer-prototype-methods */
-import path, { resolve } from 'path';
+import path, {resolve} from 'path';
 
 import Dotenv from 'dotenv-webpack';
-import { DefinePlugin } from 'webpack';
+import {DefinePlugin} from 'webpack';
 
-import { getGuruConfig } from '../lib/config';
-import { isProductionBuild } from '../lib/misc';
-import { PROJECT_ROOT } from '../lib/roots';
-import { getConfigsDirs } from '../utils/configs';
+import {getGuruConfig} from '../lib/config';
+import {isProductionBuild} from '../lib/misc';
+import {PROJECT_ROOT} from '../lib/roots';
+import {getConfigsDirs} from '../utils/configs';
 
 type CSPKey =
 	| 'frame-ancestors'
@@ -283,7 +283,21 @@ export const createNextJSConfig = (
 				'node_modules/next/',
 			);
 			defaultConfig.resolve.preferRelative = true;
-
+			defaultConfig.optimization.splitChunks = {
+				...(defaultConfig.optimization?.splitChunks || {}),
+				cacheGroups: {
+					...(defaultConfig.optimization?.splitChunks?.cacheGroups || {}),
+					// AutoGuru MFE configs
+					mfeConfigs: {
+						chunks: 'all',
+						test: /packages[/\\]global-configs/,
+						name: 'mfe-configs',
+						priority: 80,
+						reuseExistingChunk: true,
+						enforce: true,
+					},
+				}
+			}
 			return defaultConfig;
 		},
 	};
