@@ -1,5 +1,11 @@
 # gdu
 
+## 6.1.3
+
+### Patch Changes
+
+-   4b1e738: Removes optimisations not helpful in http2 context
+
 ## 6.1.2
 
 ### Patch Changes
