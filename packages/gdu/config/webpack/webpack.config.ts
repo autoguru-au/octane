@@ -44,8 +44,12 @@ const terserOptions = {
 	mangle: { safari10: true },
 };
 
+const vendorRegex =
+	/(?<!node_modules.*)[/\\]node_modules[/\\](scheduler|prop-types|use-subscription)[/\\]/;
+const relayRegex =
+	/(?<!node_modules.*)[/\\]node_modules[/\\](relay-runtime|react-relay)[/\\]/;
 const frameworkRegex =
-	/(?<!node_modules.*)[/\\]node_modules[/\\](react|react-dom|scheduler|prop-types|use-subscription|relay-runtime|react-relay)[/\\]/;
+	/(?<!node_modules.*)[/\\]node_modules[/\\](react|react-dom)[/\\]/;
 
 const hooks = getHooks();
 const isDev = !isProductionBuild();
@@ -123,19 +127,6 @@ export const baseOptions = (
 				cacheGroups: {
 					default: false,
 					defaultVendors: false,
-					lib: {
-						test: /(?!.*gdu)[/\\]node_modules[/\\]/,
-						priority: 30,
-						minChunks: 1,
-						reuseExistingChunk: true,
-					},
-					framework: {
-						chunks: 'all',
-						name: 'framework',
-						test: frameworkRegex,
-						priority: 40,
-						enforce: true,
-					},
 					// For things that are shared by at least 2+ chunks.
 					common: {
 						name: 'common',
@@ -143,10 +134,49 @@ export const baseOptions = (
 						priority: 20,
 						reuseExistingChunk: true,
 					},
+					lib: {
+						test: /(?!.*gdu)[/\\]node_modules[/\\]/,
+						priority: 30,
+						minChunks: 1,
+						reuseExistingChunk: true,
+					},
+					relay: {
+						chunks: 'all',
+						name: 'relay',
+						test: relayRegex,
+						priority: 40,
+						reuseExistingChunk: true,
+						enforce: true,
+					},
+					vendor: {
+						chunks: 'all',
+						name: 'vendor',
+						test: vendorRegex,
+						priority: 50,
+						reuseExistingChunk: true,
+						enforce: true,
+					},
+					framework: {
+						chunks: 'all',
+						name: 'framework',
+						test: frameworkRegex,
+						priority: 60,
+						reuseExistingChunk: true,
+						enforce: true,
+					},
 					// AutoGuru related assets here
 					guru: {
 						test: /@autoguru[/\\]/,
-						priority: 99,
+						priority: 70,
+						reuseExistingChunk: true,
+						enforce: true,
+					},
+					// AutoGuru MFE configs
+					mfeConfigs: {
+						chunks: 'all',
+						test: /packages[/\\]global-configs/,
+						name: 'mfe-configs',
+						priority: 80,
 						reuseExistingChunk: true,
 						enforce: true,
 					},
