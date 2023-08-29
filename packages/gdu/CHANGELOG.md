@@ -1,5 +1,13 @@
 # gdu
 
+## 6.1.2
+
+### Patch Changes
+
+-   dda70ca: Creates a chunk with predictable name for MFE app configs
+-   Updated dependencies [dda70ca]
+    -   browserslist-config-autoguru@2.3.1
+
 ## 6.1.1
 
 ### Patch Changes

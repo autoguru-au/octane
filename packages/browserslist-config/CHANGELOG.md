@@ -1,5 +1,11 @@
 # browserslist-config-autoguru
 
+## 2.3.1
+
+### Patch Changes
+
+-   dda70ca: Updates database
+
 ## 2.3.0
 
 ### Minor Changes
