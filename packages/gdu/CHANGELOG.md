@@ -1,5 +1,11 @@
 # gdu
 
+## 6.1.5
+
+### Patch Changes
+
+-   8de86a6: Null checks mfe mount point
+
 ## 6.1.4
 
 ### Patch Changes
