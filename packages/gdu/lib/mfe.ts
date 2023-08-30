@@ -3,7 +3,7 @@ export const getMfeMountPoint = (
 	projectName: string,
 ): HTMLElement => {
 	const point:HTMLElement = typeof mountDomId === 'string' ? document.querySelector('#' + mountDomId) : mountDomId;
-	if(typeof point === 'object'){
+	if(point && typeof point === 'object'){
 		point.dataset.mfeAppName = projectName;
 		point.setAttribute('__MFE_APP_ROOT__', '');
 	}
