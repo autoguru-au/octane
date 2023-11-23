@@ -1,5 +1,11 @@
 # gdu
 
+## 6.1.6
+
+### Patch Changes
+
+-   68d7946: Updates default ignore files
+
 ## 6.1.5
 
 ### Patch Changes
