@@ -26,6 +26,9 @@ export const configure = async (app_location) => {
 		'dist*/',
 		'.build_cache*/',
 		'.cache/',
+		'.nx/',
+		'.next/',
+		'.yarn/',
 		'node_modules/',
 		'coverage/',
 		'/*.xml',
@@ -46,7 +49,7 @@ export const configure = async (app_location) => {
 	await ensureGitignore({
 		filepath: join(app_location, '.gitignore'),
 		comment: 'autoguru-au:gdu managed',
-		patterns: [...gitIgnorePatterns, 'tsconfig.json'],
+		patterns: [...gitIgnorePatterns],
 	});
 
 	// Writes prettierignore
