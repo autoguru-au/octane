@@ -1,5 +1,11 @@
 # gdu
 
+## 6.1.7
+
+### Patch Changes
+
+-   629efab: Adds google api to scp allowed list
+
 ## 6.1.6
 
 ### Patch Changes
