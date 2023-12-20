@@ -1,25 +1,38 @@
 /* eslint-disable unicorn/prefer-module */
 /* eslint-disable unicorn/prefer-prototype-methods */
-import path, {join, resolve} from 'path';
+import path, { join, resolve } from 'path';
 
-import {VanillaExtractPlugin} from '@vanilla-extract/webpack-plugin';
+import { VanillaExtractPlugin } from '@vanilla-extract/webpack-plugin';
 import browsers from 'browserslist-config-autoguru';
-import {CleanWebpackPlugin} from 'clean-webpack-plugin';
+import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import Dotenv from 'dotenv-webpack';
 import envCI from 'env-ci';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
-import {TreatPlugin} from 'treat/webpack-plugin';
-import {TsconfigPathsPlugin} from 'tsconfig-paths-webpack-plugin';
-import {Configuration, DefinePlugin, IgnorePlugin, SourceMapDevToolPlugin,} from 'webpack';
+import { TreatPlugin } from 'treat/webpack-plugin';
+import { TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
+import {
+	Configuration,
+	DefinePlugin,
+	IgnorePlugin,
+	SourceMapDevToolPlugin,
+} from 'webpack';
 
-import {getGuruConfig, getProjectFolderName, getProjectName,} from '../../lib/config';
-import {isProductionBuild} from '../../lib/misc';
-import {CALLING_WORKSPACE_ROOT, GDU_ROOT, PROJECT_ROOT,} from '../../lib/roots';
-import {getBuildEnvs, getConfigsDirs} from '../../utils/configs';
-import {getHooks} from '../../utils/hooks';
+import {
+	getGuruConfig,
+	getProjectFolderName,
+	getProjectName,
+} from '../../lib/config';
+import { isProductionBuild } from '../../lib/misc';
+import {
+	CALLING_WORKSPACE_ROOT,
+	GDU_ROOT,
+	PROJECT_ROOT,
+} from '../../lib/roots';
+import { getBuildEnvs, getConfigsDirs } from '../../utils/configs';
+import { getHooks } from '../../utils/hooks';
 
-import {GuruBuildManifest} from './plugins/GuruBuildManifest';
+import { GuruBuildManifest } from './plugins/GuruBuildManifest';
 
 const { branch = 'null', commit = 'null' } = envCI();
 
@@ -348,26 +361,28 @@ export const baseOptions = (
 				new Dotenv({
 					path: path.resolve(
 						configsDir,
-						`.env.${process.env.APP_ENV || (isDev ? 'dev' : buildEnv)}`,
+						`.env.${
+							process.env.APP_ENV || (isDev ? 'dev' : buildEnv)
+						}`,
 					),
 					prefix: 'process.env.',
 					ignoreStub: true,
 				}),
 			]),
 			!isDev &&
-			new GuruBuildManifest({
-				outputDir:
-					!isMultiEnv && buildEnv === 'prod'
-						? resolve(PROJECT_ROOT, 'dist')
-						: resolve(PROJECT_ROOT, 'dist', buildEnv),
-				includeChunks: false,
-			}),
+				new GuruBuildManifest({
+					outputDir:
+						!isMultiEnv && buildEnv === 'prod'
+							? resolve(PROJECT_ROOT, 'dist')
+							: resolve(PROJECT_ROOT, 'dist', buildEnv),
+					includeChunks: false,
+				}),
 			new SourceMapDevToolPlugin({
 				test: [/.ts$/, /.tsx$/],
 				exclude: [/.css.ts$/, frameworkRegex],
 			}),
 		].filter(Boolean),
-	}
+	};
 };
 
 const { outputPath } = getGuruConfig();

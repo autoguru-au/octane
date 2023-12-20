@@ -1,13 +1,13 @@
 /* eslint-disable unicorn/prefer-prototype-methods */
-import path, {resolve} from 'path';
+import path, { resolve } from 'path';
 
 import Dotenv from 'dotenv-webpack';
-import {DefinePlugin} from 'webpack';
+import { DefinePlugin } from 'webpack';
 
-import {getGuruConfig} from '../lib/config';
-import {isProductionBuild} from '../lib/misc';
-import {PROJECT_ROOT} from '../lib/roots';
-import {getConfigsDirs} from '../utils/configs';
+import { getGuruConfig } from '../lib/config';
+import { isProductionBuild } from '../lib/misc';
+import { PROJECT_ROOT } from '../lib/roots';
+import { getConfigsDirs } from '../utils/configs';
 
 type CSPKey =
 	| 'frame-ancestors'
@@ -100,6 +100,7 @@ export const CSPDefaultsList: CSPItem[] = [
 			'https://*.google-analytics.com',
 			'https://*.google.com',
 			'https://*.google.com.au',
+			'https://*.googleapis.com',
 			'https://*.gstatic.com',
 			'https://*.googleadservices.com',
 			'https://*.heapanalytics.com',
@@ -119,6 +120,7 @@ export const CSPDefaultsList: CSPItem[] = [
 			'https://*.autoguru.com.au',
 			'https://*.google-analytics.com',
 			'https://*.googletagmanager.com',
+			'https://*.googleapis.com',
 			'https://*.gstatic.com',
 			'https://*.google.com',
 			'https://*.google.com.au',
@@ -140,6 +142,7 @@ export const CSPDefaultsList: CSPItem[] = [
 			"'unsafe-eval'",
 			'https://*.autoguru.com.au',
 			'https://*.googleadservices.com',
+			'https://*.googleapis.com',
 			'https://*.googletagmanager.com',
 			'https://*.google.com.au',
 			'https://*.gstatic.com',
@@ -286,7 +289,8 @@ export const createNextJSConfig = (
 			defaultConfig.optimization.splitChunks = {
 				...(defaultConfig.optimization?.splitChunks || {}),
 				cacheGroups: {
-					...(defaultConfig.optimization?.splitChunks?.cacheGroups || {}),
+					...(defaultConfig.optimization?.splitChunks?.cacheGroups ||
+						{}),
 					// AutoGuru MFE configs
 					mfeConfigs: {
 						chunks: 'all',
@@ -296,8 +300,8 @@ export const createNextJSConfig = (
 						reuseExistingChunk: true,
 						enforce: true,
 					},
-				}
-			}
+				},
+			};
 			return defaultConfig;
 		},
 	};
