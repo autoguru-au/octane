@@ -1,5 +1,11 @@
 # gdu
 
+## 6.1.8
+
+### Patch Changes
+
+-   27409b5: Allows images from googleapi
+
 ## 6.1.7
 
 ### Patch Changes
