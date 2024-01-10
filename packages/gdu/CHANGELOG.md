@@ -1,5 +1,11 @@
 # gdu
 
+## 6.1.9
+
+### Patch Changes
+
+-   c92fca4: Adds all AG domain to allowed frame-src csp
+
 ## 6.1.8
 
 ### Patch Changes
