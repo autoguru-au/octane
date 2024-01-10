@@ -36,6 +36,7 @@ export const CSPDefaultsList: CSPItem[] = [
 		key: 'frame-src',
 		values: [
 			"'self'",
+			'https://*.autoguru.com.au',
 			'https://www.youtube.com',
 			'https://www.google.com',
 			'https://*.doubleclick.net',
