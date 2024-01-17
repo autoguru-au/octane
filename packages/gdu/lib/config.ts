@@ -10,7 +10,12 @@ const { debug } = diary('gdu:config');
 const readCache = new Map();
 
 export interface GuruConfig {
-	type: 'ssr' | 'spa' | 'serverless' | 'serverless-resource' | 'web-component';
+	type:
+		| 'ssr'
+		| 'spa'
+		| 'serverless'
+		| 'serverless-resource'
+		| 'web-component';
 	mountDOMId: string;
 	octopusPackageId: string;
 	octopusProjectName: string;
