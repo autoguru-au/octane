@@ -10,12 +10,14 @@ interface Asset {
 
 interface Manifest {
 	hash: string;
+	mountDOMId: string;
 	assets: Asset;
 	chunks: Asset;
 }
 
 const emptyResults: Manifest = {
 	hash: '',
+	mountDOMId: '',
 	assets: {
 		js: [],
 		css: [],
@@ -39,6 +41,7 @@ const defaultOptions = {
 	objectToString: (result) => JSON.stringify(result),
 	includeChunks: true,
 	publicPath: '',
+	mountDOMId: '',
 };
 
 export class GuruBuildManifest {
@@ -57,6 +60,7 @@ export class GuruBuildManifest {
 		compiler.hooks.emit.tap(pluginName, (compilation) => {
 			this.result = { ...emptyResults };
 			this.result.hash = compilation.hash;
+			this.result.mountDOMId = this.options.mountDOMId;
 			compilation.chunks.forEach((chunk) => {
 				chunk.files.forEach((filename) => {
 					if (
