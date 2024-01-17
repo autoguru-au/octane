@@ -1,5 +1,11 @@
 # gdu
 
+## 6.2.0
+
+### Minor Changes
+
+-   a20dd54: GDU: Adds mountDOMId to build manifest files
+
 ## 6.1.9
 
 ### Patch Changes
