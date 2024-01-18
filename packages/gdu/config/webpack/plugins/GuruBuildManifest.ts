@@ -8,7 +8,7 @@ interface Asset {
 	css: string[];
 }
 
-interface Manifest {
+export interface Manifest {
 	hash: string;
 	mountDOMId: string;
 	assets: Asset;
