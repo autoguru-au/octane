@@ -1,5 +1,11 @@
 # gdu
 
+## 6.2.1
+
+### Patch Changes
+
+-   cd04aab: GDU: Exports manifest type
+
 ## 6.2.0
 
 ### Minor Changes
