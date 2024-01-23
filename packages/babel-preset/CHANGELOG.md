@@ -1,5 +1,12 @@
 # @autoguru/babel-preset
 
+## 1.4.2
+
+### Patch Changes
+
+-   83d487a: Updated @autoguru/babel-preset to v1.0.1 Updated
+    browserslist-config-autoguru to v1.0.1
+
 ## 1.4.1
 
 ### Patch Changes
