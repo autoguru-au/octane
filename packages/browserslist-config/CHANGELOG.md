@@ -1,11 +1,5 @@
 # browserslist-config-autoguru
 
-## 2.3.2
-
-### Patch Changes
-
--   9fd5e37:
-
 ## 2.3.1
 
 ### Patch Changes
