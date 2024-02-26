@@ -1,5 +1,11 @@
 # gdu
 
+## 7.0.1
+
+### Patch Changes
+
+-   07b5a1b: Fixes mount call in build manifest
+
 ## 7.0.0
 
 ### Major Changes
