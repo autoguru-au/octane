@@ -1,5 +1,16 @@
 # gdu
 
+## 6.3.0
+
+### Minor Changes
+
+-   abdae76: Enables single mfe being mounted multiple times on hte same page
+
+### Patch Changes
+
+-   Updated dependencies [abdae76]
+    -   browserslist-config-autoguru@2.3.3
+
 ## 6.2.1
 
 ### Patch Changes
