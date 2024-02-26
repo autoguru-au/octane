@@ -11,7 +11,7 @@
 		"postinstall": "manypkg check",
 		"lint": "eslint \"packages/**/*.{js,jsx,ts,tsx}\" --quiet --fix",
 		"plop": "plop",
-		"build:all": "yarn workspace @autoguru/utilities build && nx run-many --target=build --all",
+		"build:all": "nx run-many --target=build --all",
 		"release": "yarn run build:all && changeset publish",
 		"test": "jest"
 	},
