@@ -1,5 +1,11 @@
 # gdu
 
+## 6.4.1
+
+### Patch Changes
+
+-   5e380c0: Fixes release
+
 ## 6.4.0
 
 ### Minor Changes
