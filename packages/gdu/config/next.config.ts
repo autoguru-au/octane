@@ -238,6 +238,9 @@ export const createNextJSConfig = (
 				new DefinePlugin({
 					__MOUNT_DOM_ID__: guruConfig.mountDOMId,
 				}),
+				new DefinePlugin({
+					__MOUNT_DOM_CLASS__: guruConfig.mountDOMClass,
+				}),
 			);
 			defaultConfig.plugins.push(
 				new DefinePlugin({

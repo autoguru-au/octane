@@ -326,6 +326,7 @@ export const baseOptions = (
 				),
 				__DEV__: JSON.stringify(isDev),
 				__MOUNT_DOM_ID__: guruConfig.mountDOMId,
+				__MOUNT_DOM_CLASS__: guruConfig.mountDOMClass,
 				__DEBUG__: JSON.stringify(isDebug),
 				__GDU_APP_NAME__: JSON.stringify(getProjectName()),
 				__GDU_BUILD_INFO__: JSON.stringify({
