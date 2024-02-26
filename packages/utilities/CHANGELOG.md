@@ -4,7 +4,7 @@
 
 ### Patch Changes
 
--   9fd5e37:
+-   d2f88e8:
 
 ## 1.2.0
 

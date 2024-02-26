@@ -4,8 +4,8 @@
 
 ### Patch Changes
 
--   9fd5e37:
--   Updated dependencies [9fd5e37]
+-   d2f88e8:
+-   Updated dependencies [d2f88e8]
     -   @autoguru/babel-preset@1.4.2
     -   browserslist-config-autoguru@2.3.2
     -   @autoguru/utilities@1.2.1
