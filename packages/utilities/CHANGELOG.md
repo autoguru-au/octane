@@ -1,5 +1,11 @@
 # @autoguru/utilities
 
+## 1.2.1
+
+### Patch Changes
+
+-   9fd5e37:
+
 ## 1.2.0
 
 ### Minor Changes
