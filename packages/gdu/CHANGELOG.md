@@ -1,5 +1,11 @@
 # gdu
 
+## 7.0.0
+
+### Major Changes
+
+-   6611a33: gdu: Add mount dom class to build manifest
+
 ## 6.4.2
 
 ### Patch Changes
