@@ -16,7 +16,8 @@ export interface GuruConfig {
 		| 'serverless'
 		| 'serverless-resource'
 		| 'web-component';
-	mountDOMId: string;
+	mountDOMId?: string;
+	mountDOMClass?: string;
 	octopusPackageId: string;
 	octopusProjectName: string;
 	isRoot?: boolean;

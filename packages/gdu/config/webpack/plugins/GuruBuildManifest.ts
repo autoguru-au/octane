@@ -19,6 +19,7 @@ export interface Manifest {
 const emptyResults: Manifest = {
 	hash: '',
 	mountDOMId: '',
+	mountDomClass: '',
 	assets: {
 		js: [],
 		css: [],
@@ -43,6 +44,7 @@ const defaultOptions = {
 	includeChunks: true,
 	publicPath: '',
 	mountDOMId: '',
+	mountDomClass: '',
 };
 
 export class GuruBuildManifest {
@@ -62,6 +64,7 @@ export class GuruBuildManifest {
 			this.result = { ...emptyResults };
 			this.result.hash = compilation.hash;
 			this.result.mountDOMId = this.options.mountDOMId;
+			this.result.mountDomClass = this.options.mountDomClass;
 			compilation.chunks.forEach((chunk) => {
 				chunk.files.forEach((filename) => {
 					if (
