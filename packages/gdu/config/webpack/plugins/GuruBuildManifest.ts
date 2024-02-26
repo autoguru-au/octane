@@ -10,7 +10,8 @@ interface Asset {
 
 export interface Manifest {
 	hash: string;
-	mountDOMId: string;
+	mountDOMId?: string;
+	mountDomClass?: string;
 	assets: Asset;
 	chunks: Asset;
 }
