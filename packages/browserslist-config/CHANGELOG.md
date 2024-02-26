@@ -1,24 +1,5 @@
 # browserslist-config-autoguru
 
-## 2.3.4
-
-### Patch Changes
-
--   9fe797b: Updates browserlist db
--   9fe797b:
-
-## 2.3.3
-
-### Patch Changes
-
--   abdae76: Updates browserlist db
-
-## 2.3.2
-
-### Patch Changes
-
--   bd9ff2e: Updates browserlist db
-
 ## 2.3.1
 
 ### Patch Changes

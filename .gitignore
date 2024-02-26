@@ -6,7 +6,7 @@
 # yarn cache
 .yarn/cache
 .yarn/ci-cache
-.yarn/**/install-state.gz
+.yarn/install-state.gz
 # Node things
 node_modules/
 *.log*

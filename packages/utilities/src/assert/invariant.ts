@@ -1,6 +1,6 @@
 
 const isProduction: boolean = process.env.NODE_ENV === 'production';
-const prefix: string = 'Invariant failed';
+const prefix = 'Invariant failed';
 
 const invariant = (
 	condition: any,
