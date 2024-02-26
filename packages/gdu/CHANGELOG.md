@@ -1,5 +1,18 @@
 # gdu
 
+## 6.4.0
+
+### Minor Changes
+
+-   9fe797b: Enables single mfe being mounted multiple times on hte same page
+
+### Patch Changes
+
+-   9fe797b:
+-   Updated dependencies [9fe797b]
+-   Updated dependencies [9fe797b]
+    -   browserslist-config-autoguru@2.3.4
+
 ## 6.3.0
 
 ### Minor Changes
