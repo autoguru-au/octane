@@ -106,7 +106,7 @@
 	},
 	"peerDependencies": {
 		"@types/node": ">=10",
-		"browserslist-config-autoguru": ">=2.3.4"
+		"browserslist-config-autoguru": ">=2.3.1"
 	},
 	"engines": {
 		"node": ">=16.8.0"

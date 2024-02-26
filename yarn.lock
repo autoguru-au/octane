@@ -130,7 +130,6 @@ __metadata:
   dependencies:
     "@autoguru/eslint-plugin": "*"
     "@autoguru/jest-preset": "*"
-    tiny-invariant: ^1.0.6
     tiny-warning: ^1.0.3
     tsdx: ^0.14.1
     typescript: ^4.4.3
@@ -7067,9 +7066,9 @@ __metadata:
   linkType: hard
 
 "caniuse-lite@npm:^1.0.0, caniuse-lite@npm:^1.0.30000981, caniuse-lite@npm:^1.0.30001109, caniuse-lite@npm:^1.0.30001181, caniuse-lite@npm:^1.0.30001219, caniuse-lite@npm:^1.0.30001400, caniuse-lite@npm:^1.0.30001406, caniuse-lite@npm:^1.0.30001449, caniuse-lite@npm:^1.0.30001517":
-  version: 1.0.30001589
-  resolution: "caniuse-lite@npm:1.0.30001589"
-  checksum: 7a6e6c4fb14c2bd0103a8f744bdd8701c1a5f19162f4a7600b89e25bc86d689f82204dc135f3a1dcd1a53050caa04fd0bb39b7df88698a6b90f189ec48900689
+  version: 1.0.30001524
+  resolution: "caniuse-lite@npm:1.0.30001524"
+  checksum: 35d662a62f5e6be3c2d2141f1f30b3428ec72c5756cbd9fc723e33606846f28a515fd30f1e8b56e506c63fe0755f6eb7e3548dc6eefd53c5591b1a3bd28fee98
   languageName: node
   linkType: hard
 
@@ -11048,7 +11047,7 @@ __metadata:
     whatwg-fetch: ^3.6.2
   peerDependencies:
     "@types/node": ">=10"
-    browserslist-config-autoguru: ">=2.3.4"
+    browserslist-config-autoguru: ">=2.3.1"
   bin:
     gdu: ./bin/gdu.js
   languageName: unknown
@@ -20543,13 +20542,6 @@ __metadata:
     globalyzer: 0.1.0
     globrex: ^0.1.2
   checksum: 2d800da5731df66b6f84eaa2024ebf7cd0c6e13b8334d5ea4ab902f38eeffa03455f465109cf79a2d4fc324c4a569c3cb83809e3380dac82a7689f5d46ac7dfe
-  languageName: node
-  linkType: hard
-
-"tiny-invariant@npm:^1.0.6":
-  version: 1.1.0
-  resolution: "tiny-invariant@npm:1.1.0"
-  checksum: 27d29bbb9e1d1d86e25766711c28ad91af6d67c87d561167077ac7fbce5212b97bbfe875e70bc369808e075748c825864c9b61f0e9f8652275ec86bcf4dcc924
   languageName: node
   linkType: hard
 
