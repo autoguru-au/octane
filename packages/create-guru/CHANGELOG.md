@@ -1,5 +1,12 @@
 # create-guru
 
+## 7.0.0
+
+### Patch Changes
+
+-   Updated dependencies [6611a33]
+    -   gdu@7.0.0
+
 ## 6.0.0
 
 ### Minor Changes
