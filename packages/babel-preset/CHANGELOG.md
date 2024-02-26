@@ -1,5 +1,11 @@
 # @autoguru/babel-preset
 
+## 1.4.2
+
+### Patch Changes
+
+-   d2f88e8:
+
 ## 1.4.1
 
 ### Patch Changes

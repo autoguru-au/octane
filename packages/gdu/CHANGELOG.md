@@ -1,5 +1,15 @@
 # gdu
 
+## 6.4.2
+
+### Patch Changes
+
+-   d2f88e8:
+-   Updated dependencies [d2f88e8]
+    -   @autoguru/babel-preset@1.4.2
+    -   browserslist-config-autoguru@2.3.2
+    -   @autoguru/utilities@1.2.1
+
 ## 6.4.1
 
 ### Patch Changes
