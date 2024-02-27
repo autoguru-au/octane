@@ -5,12 +5,12 @@ import { GuruConfig } from '../../lib/config';
 import { run } from '../../lib/runWebpack';
 import { getHooks } from '../../utils/hooks';
 
-export const buildSPA = async (guruConfig: GuruConfig) => {
+export const buildSPA = async (guruConfig: GuruConfig, tenant: string) => {
 	const hooks = getHooks();
 
 	// eslint-disable-next-line unicorn/prefer-prototype-methods
 	const webpackConfigs: Configuration[] = hooks.webpackConfig.call(
-		makeWebpackConfig(void 0, false),
+		makeWebpackConfig(void 0, false, tenant),
 	);
 
 	const compiler = webpack(webpackConfigs);

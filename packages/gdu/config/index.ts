@@ -1,2 +1,1 @@
-export {Manifest} from "./webpack/plugins/GuruBuildManifest";
-
+export { Manifest } from './webpack/plugins/GuruBuildManifest';
