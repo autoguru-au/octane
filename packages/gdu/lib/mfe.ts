@@ -13,20 +13,24 @@ interface Props {
 	 * The name of the MFE
 	 */
 	projectName: string;
-
 }
 
 export const getMfeMountPoint = ({
-									 mountDomId,
-									 mountDomClass,
-									 projectName,
-								 }: Props): HTMLElement | null => {
-	invariant(mountDomId || mountDomClass, 'You must provide a mountDomId or mountDomClass');
+	mountDomId,
+	mountDomClass,
+	projectName,
+}: Props): HTMLElement | null => {
+	invariant(
+		mountDomId || mountDomClass,
+		'You must provide a mountDomId or mountDomClass',
+	);
 	let point: HTMLElement | null = null;
 	if (typeof mountDomId === 'string') {
 		point = document.querySelector('#' + mountDomId);
 	} else if (typeof mountDomClass === 'string') {
-		const elements = Array.from(document.querySelectorAll('.' + mountDomClass));
+		const elements = Array.from(
+			document.querySelectorAll('.' + mountDomClass),
+		);
 		for (const element of elements) {
 			if (element.childNodes.length === 0) {
 				point = element as HTMLElement;

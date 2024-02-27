@@ -20,6 +20,7 @@ export interface GuruConfig {
 	mountDOMClass?: string;
 	octopusPackageId: string;
 	octopusProjectName: string;
+	isTenanted?: boolean;
 	isRoot?: boolean;
 	port?: number;
 	basePath?: string;

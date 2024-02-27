@@ -68,6 +68,7 @@ export default (app: Sade) => {
 	// === BUILD
 	app.command('build')
 		.describe('Builds the target app ready for production')
+		.option('-t, --tenant', 'Tenant to build the mfe for', '')
 		.action(deferredAction(async () => import('./build'), IS_NOT_ROOT));
 
 	// === FORMAT

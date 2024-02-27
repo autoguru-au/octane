@@ -9,19 +9,19 @@ import { buildSPA } from './buildSPA';
 import { buildSSR } from './buildSSR';
 import { buildWebComponents } from './buildWebComponents';
 
-export default async () => {
+export default async ({ tenant }) => {
 	setEnvProd(true);
 
 	const guruConfig = getGuruConfig();
 
-	banner('Building');
+	banner(tenant ? `Building for tenant: ${tenant}` : 'Building untenanted');
 
 	await buildSupportedBrowsers();
 
 	let stats;
 	switch (guruConfig?.type) {
 		case 'spa':
-			stats = await buildSPA(guruConfig);
+			stats = await buildSPA(guruConfig, tenant);
 			break;
 		case 'ssr':
 			stats = await buildSSR(guruConfig);

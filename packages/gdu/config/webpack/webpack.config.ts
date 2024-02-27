@@ -388,29 +388,67 @@ export const baseOptions = (
 	};
 };
 
-const { outputPath } = getGuruConfig();
-
 type BuildEnv = ReturnType<typeof getBuildEnvs>[number];
+
+const getPublicPath = ({
+	buildEnv,
+	isTenanted,
+	tenant,
+	isDev,
+	projectFolderName,
+}: {
+	buildEnv: BuildEnv;
+	isTenanted: boolean;
+	tenant?: string;
+	isDev: boolean;
+	projectFolderName: string;
+}): string => {
+	if (isDev) return '/';
+
+	if (buildEnv === 'prod') {
+		if (isTenanted) {
+			const prodTenant = tenant || '#{AutoGuru.Tenant}';
+			const prodAppPath = isTenanted
+				? `${prodTenant}/${projectFolderName}`
+				: `${projectFolderName}`;
+			return `#{PUBLIC_PATH_BASE}/${prodAppPath}/`;
+		} else {
+			return `#{PUBLIC_PATH_BASE}/${projectFolderName}/`;
+		}
+	}
+
+	const folderPath = tenant
+		? `${tenant}/${projectFolderName}`
+		: `${projectFolderName}`;
+
+	return `https://static-mfe-${buildEnv}.autoguru.io/${folderPath}/`;
+};
 export const makeWebpackConfig = (
 	buildEnv: BuildEnv,
 	isMultiEnv: boolean,
-): Configuration => ({
-	name: buildEnv,
+	tenant?: string,
+): Configuration => {
+	const { outputPath, isTenanted } = getGuruConfig();
+	return {
+		name: buildEnv,
 
-	output: {
-		path: `${outputPath}/${
-			!isMultiEnv && buildEnv === 'prod' ? '' : buildEnv
-		}`,
-		publicPath: isDev
-			? '/'
-			: buildEnv === 'prod'
-			? `#{PUBLIC_PATH_BASE}/${getProjectFolderName()}/`
-			: `https://static-mfe-${buildEnv}.autoguru.io/${getProjectFolderName()}/`,
-		filename: `${fileMask}.js`,
-		chunkFilename: `chunks/${fileMask}.js`,
-		hashFunction: 'sha256',
-		crossOriginLoading: 'anonymous',
-		sourceMapFilename: 'sourceMaps/[file].map',
-		pathinfo: false,
-	},
-});
+		output: {
+			path: `${outputPath}/${
+				!isMultiEnv && buildEnv === 'prod' ? '' : buildEnv
+			}`,
+			publicPath: getPublicPath({
+				buildEnv,
+				tenant,
+				isDev,
+				projectFolderName: getProjectFolderName(),
+				isTenanted,
+			}),
+			filename: `${fileMask}.js`,
+			chunkFilename: `chunks/${fileMask}.js`,
+			hashFunction: 'sha256',
+			crossOriginLoading: 'anonymous',
+			sourceMapFilename: 'sourceMaps/[file].map',
+			pathinfo: false,
+		},
+	};
+};
