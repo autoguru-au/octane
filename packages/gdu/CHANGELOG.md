@@ -1,5 +1,13 @@
 # gdu
 
+## 7.0.3
+
+### Patch Changes
+
+-   0659085: GDU: Added support for building for a tenant
+-   Updated dependencies [0659085]
+    -   @autoguru/utilities@1.1.2
+
 ## 7.0.2
 
 ### Patch Changes

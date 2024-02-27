@@ -1,5 +1,11 @@
 # @autoguru/utilities
 
+## 1.1.2
+
+### Patch Changes
+
+-   0659085: GDU: Added support for building for a tenant
+
 ## 1.2.1
 
 ### Patch Changes
