@@ -1,5 +1,11 @@
 # gdu
 
+## 7.0.2
+
+### Patch Changes
+
+-   fda5f51: Fix: Fixes mount class name
+
 ## 7.0.1
 
 ### Patch Changes
