@@ -14,40 +14,56 @@ interface Props {
 	 */
 	projectName: string;
 }
+
+const queryShadowRoot = (
+	wrapElement: Array<Element>,
+	selector: string,
+): Array<Element> | null => {
+	//Find element with no shadow root
+	if (wrapElement && wrapElement.length > 0) {
+		for (const element of wrapElement) {
+			if (element.childNodes.length === 0) {
+				return Array.from(element.querySelectorAll(selector));
+			}
+		}
+	}
+	if (
+		wrapElement &&
+		// @ts-ignore
+		wrapElement.firstChild &&
+		// @ts-ignore
+		wrapElement.firstChild.shadowRoot
+	) {
+		// @ts-ignore
+		return wrapElement.firstChild.shadowRoot.querySelectorAll(selector);
+	}
+	return null;
+};
 export const getMfeMountPoint = ({
-									 mountDOMId,
-									 mountDOMClass,
-									 projectName,
-								 }: Props): HTMLElement | null => {
+	mountDOMId,
+	mountDOMClass,
+	projectName,
+}: Props): HTMLElement | null => {
 	invariant(
 		mountDOMId || mountDOMClass,
 		'You must provide a mountDOMId or mountDOMClass',
 	);
 	let point: HTMLElement | null = null;
+	const wrapElements = Array.from(
+		document.querySelectorAll(`.${mountDOMId || mountDOMClass}-wrap`),
+	);
 	if (typeof mountDOMId === 'string') {
-		point = document.querySelector('#' + mountDOMId);
+		point =
+			queryShadowRoot(wrapElements, '#' + mountDOMId) ||
+			document.querySelector('#' + mountDOMId)[0];
 	} else if (typeof mountDOMClass === 'string') {
-		const wrapElement = document.querySelector(`.${mountDOMClass}-wrap`);
-		// @ts-ignore
-		if (wrapElement && wrapElement.firstChild && wrapElement.firstChild.shadowRoot) {
-			const elements = Array.from(// @ts-ignore
-				wrapElement.firstChild.shadowRoot.querySelectorAll('.' + mountDOMClass),
-			);
-			for (const element of elements) {// @ts-ignore
-				if (element.childNodes.length === 0) {
-					point = element as HTMLElement;
-					break;
-				}
-			}
-		} else {
-			const elements = Array.from(
-				document.querySelectorAll('.' + mountDOMClass),
-			);
-			for (const element of elements) {
-				if (element.childNodes.length === 0) {
-					point = element as HTMLElement;
-					break;
-				}
+		const elements =
+			queryShadowRoot(wrapElements, '.' + mountDOMClass) ||
+			Array.from(document.querySelectorAll('.' + mountDOMClass));
+		for (const element of elements) {
+			if (element.childNodes.length === 0) {
+				point = element as HTMLElement;
+				break;
 			}
 		}
 	} else {
