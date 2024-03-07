@@ -3,6 +3,7 @@
  */
 declare const __DEV__: boolean;
 declare const __MOUNT_DOM_ID__: string;
+declare const __MOUNT_DOM_CLASS__: string;
 declare const __DEBUG__: boolean;
 
 /**
