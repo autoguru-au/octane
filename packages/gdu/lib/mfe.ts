@@ -19,8 +19,7 @@ const queryShadowRoot = (wrapElement: Array<Element>, selector: string) => {
 	//Find element with no shadow root
 	if (wrapElement && wrapElement.length > 0) {
 		for (const element of wrapElement) {
-			// @ts-ignore
-			if (
+			if (// @ts-ignore
 				element.firstChild.shadowRoot.firstChild.childNodes.length === 0
 			) {
 				// @ts-ignore
