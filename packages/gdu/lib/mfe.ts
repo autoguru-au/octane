@@ -15,29 +15,21 @@ interface Props {
 	projectName: string;
 }
 
-const queryShadowRoot = (
-	wrapElement: Array<Element>,
-	selector: string,
-): Array<Element> | null => {
+const queryShadowRoot = (wrapElement: Array<Element>, selector: string) => {
 	//Find element with no shadow root
 	if (wrapElement && wrapElement.length > 0) {
 		for (const element of wrapElement) {
-			if (element.childNodes.length === 0) {
-				return Array.from(element.querySelectorAll(selector));
+			// @ts-ignore
+			if (
+				element.firstChild.shadowRoot.firstChild.childNodes.length === 0
+			) {
+				// @ts-ignore
+				return element.firstChild.shadowRoot.querySelector(selector);
 			}
 		}
+	} else {
+		return null;
 	}
-	if (
-		wrapElement &&
-		// @ts-ignore
-		wrapElement.firstChild &&
-		// @ts-ignore
-		wrapElement.firstChild.shadowRoot
-	) {
-		// @ts-ignore
-		return wrapElement.firstChild.shadowRoot.querySelectorAll(selector);
-	}
-	return null;
 };
 export const getMfeMountPoint = ({
 	mountDOMId,
@@ -48,6 +40,7 @@ export const getMfeMountPoint = ({
 		mountDOMId || mountDOMClass,
 		'You must provide a mountDOMId or mountDOMClass',
 	);
+	debugger;
 	let point: HTMLElement | null = null;
 	const wrapElements = Array.from(
 		document.querySelectorAll(`.${mountDOMId || mountDOMClass}-wrap`),
@@ -55,7 +48,7 @@ export const getMfeMountPoint = ({
 	if (typeof mountDOMId === 'string') {
 		point =
 			queryShadowRoot(wrapElements, '#' + mountDOMId) ||
-			document.querySelector('#' + mountDOMId)[0];
+			document.querySelector('#' + mountDOMId);
 	} else if (typeof mountDOMClass === 'string') {
 		const elements =
 			queryShadowRoot(wrapElements, '.' + mountDOMClass) ||
