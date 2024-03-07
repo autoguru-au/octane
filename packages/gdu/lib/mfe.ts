@@ -19,7 +19,8 @@ const queryShadowRoot = (wrapElement: Array<Element>, selector: string) => {
 	//Find element with no shadow root
 	if (wrapElement && wrapElement.length > 0) {
 		for (const element of wrapElement) {
-			if (// @ts-ignore
+			if (
+				// @ts-ignore
 				element.firstChild.shadowRoot.firstChild.childNodes.length === 0
 			) {
 				// @ts-ignore
@@ -39,7 +40,7 @@ export const getMfeMountPoint = ({
 		mountDOMId || mountDOMClass,
 		'You must provide a mountDOMId or mountDOMClass',
 	);
-	debugger;
+
 	let point: HTMLElement | null = null;
 	const wrapElements = Array.from(
 		document.querySelectorAll(`.${mountDOMId || mountDOMClass}-wrap`),
@@ -50,7 +51,7 @@ export const getMfeMountPoint = ({
 			document.querySelector('#' + mountDOMId);
 	} else if (typeof mountDOMClass === 'string') {
 		const elements =
-			queryShadowRoot(wrapElements, '.' + mountDOMClass) ||
+			[queryShadowRoot(wrapElements, '.' + mountDOMClass)] ||
 			Array.from(document.querySelectorAll('.' + mountDOMClass));
 		for (const element of elements) {
 			if (element.childNodes.length === 0) {
