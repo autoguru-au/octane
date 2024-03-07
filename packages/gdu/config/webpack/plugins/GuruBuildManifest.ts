@@ -11,7 +11,7 @@ interface Asset {
 export interface Manifest {
 	hash: string;
 	mountDOMId?: string;
-	mountDomClass?: string;
+	mountDOMClass?: string;
 	assets: Asset;
 	chunks: Asset;
 }
@@ -19,7 +19,7 @@ export interface Manifest {
 const emptyResults: Manifest = {
 	hash: '',
 	mountDOMId: '',
-	mountDomClass: '',
+	mountDOMClass: '',
 	assets: {
 		js: [],
 		css: [],
@@ -44,7 +44,7 @@ const defaultOptions = {
 	includeChunks: true,
 	publicPath: '',
 	mountDOMId: '',
-	mountDomClass: '',
+	mountDOMClass: '',
 };
 
 export class GuruBuildManifest {
@@ -64,7 +64,7 @@ export class GuruBuildManifest {
 			this.result = { ...emptyResults };
 			this.result.hash = compilation.hash;
 			this.result.mountDOMId = this.options.mountDOMId;
-			this.result.mountDomClass = this.options.mountDomClass;
+			this.result.mountDOMClass = this.options.mountDOMClass;
 			compilation.chunks.forEach((chunk) => {
 				chunk.files.forEach((filename) => {
 					if (

@@ -373,7 +373,7 @@ export const baseOptions = (
 			!isDev &&
 				new GuruBuildManifest({
 					mountDOMId: guruConfig.mountDOMId,
-					mountDomClass: guruConfig.mountDOMClass,
+					mountDOMClass: guruConfig.mountDOMClass,
 					outputDir:
 						!isMultiEnv && buildEnv === 'prod'
 							? resolve(PROJECT_ROOT, 'dist')
