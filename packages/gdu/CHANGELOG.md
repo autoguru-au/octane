@@ -1,5 +1,11 @@
 # gdu
 
+## 7.1.3
+
+### Patch Changes
+
+-   c9cdb49: GDU: shadowed mounting fix
+
 ## 7.1.2
 
 ### Patch Changes
