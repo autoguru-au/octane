@@ -1,5 +1,11 @@
 # gdu
 
+## 7.1.2
+
+### Patch Changes
+
+-   b29d206: gdu: Fixes mfe mounting
+
 ## 7.1.1
 
 ### Patch Changes
