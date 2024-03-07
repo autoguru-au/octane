@@ -1,5 +1,11 @@
 # gdu
 
+## 7.1.0
+
+### Minor Changes
+
+-   0cc8dd8: GDU: Get ability to mount MFEs inside shadow doms
+
 ## 7.0.3
 
 ### Patch Changes
