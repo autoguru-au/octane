@@ -1,5 +1,11 @@
 # gdu
 
+## 7.1.1
+
+### Patch Changes
+
+-   6adf595: GDU: Imprved shadowed mfe mounting
+
 ## 7.1.0
 
 ### Minor Changes
