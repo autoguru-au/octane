@@ -218,7 +218,6 @@ export const baseOptions = (
 									loader: require.resolve('css-loader'),
 									options: {
 										url: true, // Required as image imports should be handled via JS/TS import statements
-										exportType: "css-style-sheet",
 									},
 								},
 							],
