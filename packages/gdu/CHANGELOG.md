@@ -1,5 +1,11 @@
 # gdu
 
+## 7.2.0
+
+### Minor Changes
+
+-   84b502d: GDU: Includes chunk assets in build manifest
+
 ## 7.1.3
 
 ### Patch Changes
