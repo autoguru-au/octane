@@ -218,7 +218,6 @@ export const baseOptions = (
 									loader: require.resolve('css-loader'),
 									options: {
 										url: true, // Required as image imports should be handled via JS/TS import statements
-										exportType: "css-style-sheet",
 									},
 								},
 							],
@@ -379,7 +378,7 @@ export const baseOptions = (
 						!isMultiEnv && buildEnv === 'prod'
 							? resolve(PROJECT_ROOT, 'dist')
 							: resolve(PROJECT_ROOT, 'dist', buildEnv),
-					includeChunks: true,
+					includeChunks: false,
 				}),
 			new SourceMapDevToolPlugin({
 				test: [/.ts$/, /.tsx$/],
