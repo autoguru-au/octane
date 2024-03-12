@@ -1,5 +1,11 @@
 # gdu
 
+## 7.2.2
+
+### Patch Changes
+
+-   c111073: GDU: Null checks shadow root
+
 ## 7.2.1
 
 ### Patch Changes
