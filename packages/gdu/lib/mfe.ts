@@ -21,7 +21,7 @@ const queryShadowRoot = (wrapElement: Array<Element>, selector: string) => {
 		for (const element of wrapElement) {
 			if (
 				// @ts-ignore
-				element.firstChild.shadowRoot.firstChild.childNodes.length === 0
+				!(element.firstChild?.shadowRoot?.firstChild?.childNodes?.length)
 			) {
 				// @ts-ignore
 				return element.firstChild.shadowRoot.querySelector(selector);
@@ -54,7 +54,7 @@ export const getMfeMountPoint = ({
 			[queryShadowRoot(wrapElements, '.' + mountDOMClass)] ||
 			Array.from(document.querySelectorAll('.' + mountDOMClass));
 		for (const element of elements) {
-			if (element.childNodes.length === 0) {
+			if (element && !(element?.childNodes?.length)) {
 				point = element as HTMLElement;
 				break;
 			}
