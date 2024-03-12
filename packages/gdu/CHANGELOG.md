@@ -1,5 +1,11 @@
 # gdu
 
+## 7.2.1
+
+### Patch Changes
+
+-   8c7bca2: Reverts css-loader to default export type
+
 ## 7.2.0
 
 ### Minor Changes
