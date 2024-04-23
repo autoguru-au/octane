@@ -204,9 +204,7 @@ export const createNextJSConfig = (
 		transpilePackages,
 		assetPrefix,
 		basePath,
-		experimental: {
-			isrMemoryCacheSize: 0,
-		},
+		cacheMaxMemorySize: 0,
 		i18n: {
 			locales: ['en'],
 			defaultLocale: 'en',
