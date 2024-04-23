@@ -1,5 +1,11 @@
 # gdu
 
+## 7.3.0
+
+### Minor Changes
+
+-   dd3816a: Change variable chache in next.config to adapt to NextJs 14
+
 ## 7.2.2
 
 ### Patch Changes
