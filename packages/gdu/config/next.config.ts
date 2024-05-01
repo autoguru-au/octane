@@ -4,7 +4,7 @@ import path, { resolve } from 'path';
 import Dotenv from 'dotenv-webpack';
 import { DefinePlugin } from 'webpack';
 
-import { getGuruConfig } from '../lib/config';
+import { getGuruConfig, getProjectName } from '../lib/config';
 import { isProductionBuild } from '../lib/misc';
 import { PROJECT_ROOT } from '../lib/roots';
 import { getConfigsDirs } from '../utils/configs';
@@ -112,6 +112,7 @@ export const CSPDefaultsList: CSPItem[] = [
 			'https://*.wisepops.com',
 			'https://*.tvsquared.com',
 			'https://*.quantcount.com',
+			'https://*.nr-data.net',
 		],
 	},
 	{
@@ -234,15 +235,15 @@ export const createNextJSConfig = (
 		webpack: (defaultConfig) => {
 			defaultConfig.plugins.push(
 				new DefinePlugin({
+					'process.browser': JSON.stringify(true),
+					'process.env.NODE_ENV': JSON.stringify(
+						isDev ? 'development' : 'production',
+					),
+					__DEV__: JSON.stringify(isDev),
 					__MOUNT_DOM_ID__: guruConfig.mountDOMId,
-				}),
-				new DefinePlugin({
 					__MOUNT_DOM_CLASS__: guruConfig.mountDOMClass,
-				}),
-			);
-			defaultConfig.plugins.push(
-				new DefinePlugin({
-					__DEV__: isDev,
+					__DEBUG__: JSON.stringify(isDebug),
+					__GDU_APP_NAME__: JSON.stringify(getProjectName()),
 				}),
 			);
 			defaultConfig.plugins.push(
