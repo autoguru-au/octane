@@ -1,5 +1,15 @@
 # @autoguru/utilities
 
+## 1.2.0
+
+### Minor Changes
+
+-   8297630: Dependency upgrades
+
+### Patch Changes
+
+-   8297630: Dependency upgrades
+
 ## 1.1.2
 
 ### Patch Changes
