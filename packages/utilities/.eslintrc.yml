@@ -16,4 +16,4 @@ overrides:
           'unicorn/prefer-node-protocol': 'off'
       parser: '@typescript-eslint/parser'
       parserOptions:
-          tsconfigRootDir: './packages/gdu/'
+          tsconfigRootDir: './packages/utilities/'

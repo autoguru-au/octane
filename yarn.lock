@@ -138,6 +138,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@autoguru/utilities@workspace:packages/utilities"
   dependencies:
+    "@autoguru/eslint-plugin": "*"
+    "@autoguru/jest-preset": "*"
     "@babel/core": ^7.15.0
     "@next/eslint-plugin-next": ^12.2.3
     "@types/babel-types": ^7.0.10
@@ -147,6 +149,7 @@ __metadata:
     "@types/sade": ^1.7.3
     "@types/webpack": ^5.28.5
     "@typescript-eslint/eslint-plugin": ^7.8.0
+    "@typescript-eslint/parser": ^7.8.0
     babel-plugin-macros: ^3.1.0
     browserslist-config-autoguru: "*"
     tiny-invariant: ^1.0.6
@@ -3996,12 +3999,12 @@ __metadata:
   linkType: hard
 
 "@types/eslint@npm:^7.2.13":
-  version: 7.2.13
-  resolution: "@types/eslint@npm:7.2.13"
+  version: 7.29.0
+  resolution: "@types/eslint@npm:7.29.0"
   dependencies:
     "@types/estree": "*"
     "@types/json-schema": "*"
-  checksum: 6dac9f9d7d155c90a6eba104718e1adb43c3e4020ea75ab8f5094db8603617473a4ac6f7ddeb2c670822860b869a7e3871406a82425ec470965cdfc1f3dd3ad0
+  checksum: df13991c554954353ce8f3bb03e19da6cc71916889443d68d178d4f858b561ba4cc4a4f291c6eb9eebb7f864b12b9b9313051b3a8dfea3e513dadf3188a77bdf
   languageName: node
   linkType: hard
 

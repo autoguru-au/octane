@@ -9,7 +9,6 @@
 		"declaration": true,
 		"target": "es2019",
 		"module": "commonjs",
-		"esModuleInterop": true,
 		"importHelpers": false,
 		"noEmitHelpers": false,
 		"skipLibCheck": true,
