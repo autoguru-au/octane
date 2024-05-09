@@ -61,7 +61,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@autoguru/babel-preset@^1.4.0, @autoguru/babel-preset@^1.4.2, @autoguru/babel-preset@workspace:packages/babel-preset":
+"@autoguru/babel-preset@^1.5.0, @autoguru/babel-preset@workspace:packages/babel-preset":
   version: 0.0.0-use.local
   resolution: "@autoguru/babel-preset@workspace:packages/babel-preset"
   dependencies:
@@ -120,7 +120,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@autoguru/jest-preset@workspace:packages/jest-preset"
   dependencies:
-    "@autoguru/babel-preset": ^1.4.0
+    "@autoguru/babel-preset": ^1.5.0
     "@babel/core": ^7.15.0
     "@babel/preset-typescript": ^7.24.1
     babel-jest: ^26.6.3
@@ -128,13 +128,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@autoguru/tsconfig@1.1.0, @autoguru/tsconfig@workspace:packages/tsconfig":
+"@autoguru/tsconfig@1.2.0, @autoguru/tsconfig@workspace:packages/tsconfig":
   version: 0.0.0-use.local
   resolution: "@autoguru/tsconfig@workspace:packages/tsconfig"
   languageName: unknown
   linkType: soft
 
-"@autoguru/utilities@^1.1.2, @autoguru/utilities@workspace:packages/utilities":
+"@autoguru/utilities@^1.2.0, @autoguru/utilities@workspace:packages/utilities":
   version: 0.0.0-use.local
   resolution: "@autoguru/utilities@workspace:packages/utilities"
   dependencies:
@@ -7373,7 +7373,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "create-guru@workspace:packages/create-guru"
   dependencies:
-    gdu: ^7.0.0
+    gdu: ^8.0.0
     mri: ^1.1.6
   bin:
     create-guru: ./index.js
@@ -10220,14 +10220,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"gdu@^7.0.0, gdu@workspace:packages/gdu":
+"gdu@^8.0.0, gdu@workspace:packages/gdu":
   version: 0.0.0-use.local
   resolution: "gdu@workspace:packages/gdu"
   dependencies:
     "@2fd/graphdoc": ^2.4.0
-    "@autoguru/babel-preset": ^1.4.2
-    "@autoguru/tsconfig": 1.1.0
-    "@autoguru/utilities": ^1.1.2
+    "@autoguru/babel-preset": ^1.5.0
+    "@autoguru/tsconfig": 1.2.0
+    "@autoguru/utilities": ^1.2.0
     "@babel/core": ^7.15.0
     "@babel/helper-plugin-utils": ^7.24.5
     "@babel/preset-env": ^7.24.5
@@ -10306,7 +10306,7 @@ __metadata:
     whatwg-fetch: ^3.6.2
   peerDependencies:
     "@types/node": ">=10"
-    browserslist-config-autoguru: ">=2.3.2"
+    browserslist-config-autoguru: ">=2.4.0"
   bin:
     gdu: ./bin/gdu.js
   languageName: unknown
