@@ -199,7 +199,6 @@ export const createNextJSConfig = (
 	return {
 		distDir: `dist/${env}`,
 		reactStrictMode: !isProductionSite,
-		swcMinify: true,
 		generateEtags: true,
 		poweredByHeader: !isProductionSite,
 		transpilePackages,
@@ -235,7 +234,7 @@ export const createNextJSConfig = (
 		webpack: (defaultConfig) => {
 			defaultConfig.plugins.push(
 				new DefinePlugin({
-					'process.browser': JSON.stringify(true),
+					'process.__browser__': JSON.stringify(true),
 					'process.env.NODE_ENV': JSON.stringify(
 						isDev ? 'development' : 'production',
 					),

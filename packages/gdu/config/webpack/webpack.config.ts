@@ -320,7 +320,7 @@ export const baseOptions = (
 			}),
 			!isDev && new CleanWebpackPlugin(),
 			new DefinePlugin({
-				'process.browser': JSON.stringify(true),
+				'process.__browser__': JSON.stringify(true),
 				'process.env.NODE_ENV': JSON.stringify(
 					isDev ? 'development' : 'production',
 				),
