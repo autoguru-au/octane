@@ -39,7 +39,7 @@ const printPayload = <T>(payload: Payload<T>) => {
 		decorated.message = error.message;
 
 		// @ts-ignore
-		if (!process.browser)
+		if (!process.__browser__)
 			decorated.payload = Object.assign({}, decorated.payload, {
 				stackTrace: error?.stack,
 			});
@@ -48,7 +48,7 @@ const printPayload = <T>(payload: Payload<T>) => {
 	const logMethod = getConsoleMethod(payload);
 
 	// @ts-ignore
-	if (process.browser) {
+	if (process.__browser__) {
 		logMethod(`${decorated.type} :: ${decorated.message}`, decorated);
 	} else {
 		logMethod(JSON.stringify(decorated));

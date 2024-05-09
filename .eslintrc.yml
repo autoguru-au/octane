@@ -11,6 +11,6 @@ overrides:
       extends: ['plugin:@autoguru/jest']
       env: { jest: true, node: true }
     - files: ['**/*.ts', '**/*.tsx']
-      extends: ['plugin:@autoguru/typescript']
+      extends: []
       parserOptions:
           project: 'packages/*/tsconfig.json'

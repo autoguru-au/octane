@@ -1,6 +1,8 @@
 {
 	"extends": "./base.json",
 	"compilerOptions": {
+		"allowSyntheticDefaultImports": true,
+		"esModuleInterop": true,
 		"sourceMap": true,
 		"lib": ["dom", "esnext"]
 	}
