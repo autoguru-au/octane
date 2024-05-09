@@ -1,6 +1,6 @@
 {
 	"name": "gdu",
-	"version": "7.3.1",
+	"version": "8.0.0",
 	"description": "AutoGuru's development toolkit",
 	"homepage": "https://github.com/autoguru-au/octane/tree/master/packages/gdu#readme",
 	"repository": "https://github.com/autoguru-au/octane/tree/master/packages/gdu",
@@ -23,9 +23,9 @@
 	},
 	"dependencies": {
 		"@2fd/graphdoc": "^2.4.0",
-		"@autoguru/babel-preset": "^1.4.2",
-		"@autoguru/tsconfig": "1.1.0",
-		"@autoguru/utilities": "^1.1.2",
+		"@autoguru/babel-preset": "^1.5.0",
+		"@autoguru/tsconfig": "1.2.0",
+		"@autoguru/utilities": "^1.2.0",
 		"@babel/helper-plugin-utils": "^7.24.5",
 		"@babel/preset-env": "^7.24.5",
 		"@babel/preset-react": "^7.24.1",
@@ -107,7 +107,7 @@
 	},
 	"peerDependencies": {
 		"@types/node": ">=10",
-		"browserslist-config-autoguru": ">=2.3.2"
+		"browserslist-config-autoguru": ">=2.4.0"
 	},
 	"engines": {
 		"node": ">=16.8.0"

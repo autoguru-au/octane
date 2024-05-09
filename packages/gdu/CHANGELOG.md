@@ -1,5 +1,22 @@
 # gdu
 
+## 8.0.0
+
+### Minor Changes
+
+-   8297630: Dependency upgrades
+
+### Patch Changes
+
+-   8297630: Dependency upgrades
+-   8297630: gdu: Updates nextjs webpack configs
+-   Updated dependencies [8297630]
+-   Updated dependencies [8297630]
+    -   @autoguru/babel-preset@1.5.0
+    -   @autoguru/tsconfig@1.2.0
+    -   @autoguru/utilities@1.2.0
+    -   browserslist-config-autoguru@2.4.0
+
 ## 7.3.1
 
 ### Patch Changes

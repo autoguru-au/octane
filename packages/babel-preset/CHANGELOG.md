@@ -1,5 +1,15 @@
 # @autoguru/babel-preset
 
+## 1.5.0
+
+### Minor Changes
+
+-   8297630: Dependency upgrades
+
+### Patch Changes
+
+-   8297630: Dependency upgrades
+
 ## 1.4.2
 
 ### Patch Changes

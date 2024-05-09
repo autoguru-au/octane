@@ -1,5 +1,11 @@
 # browserslist-config-autoguru
 
+## 2.4.0
+
+### Minor Changes
+
+-   8297630: Dependency upgrades
+
 ## 2.3.2
 
 ### Patch Changes

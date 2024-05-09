@@ -1,5 +1,14 @@
 # create-guru
 
+## 8.0.0
+
+### Patch Changes
+
+-   Updated dependencies [8297630]
+-   Updated dependencies [8297630]
+-   Updated dependencies [8297630]
+    -   gdu@8.0.0
+
 ## 7.0.0
 
 ### Patch Changes

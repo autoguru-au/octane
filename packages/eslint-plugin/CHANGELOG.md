@@ -1,5 +1,11 @@
 # @autoguru/eslint-plugin
 
+## 1.6.0
+
+### Minor Changes
+
+-   8297630: Dependency upgrades
+
 ## 1.5.0
 
 ### Minor Changes
