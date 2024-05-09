@@ -21,10 +21,17 @@
 		"tiny-warning": "^1.0.3"
 	},
 	"devDependencies": {
-		"@autoguru/eslint-plugin": "*",
-		"@autoguru/jest-preset": "*",
-		"@typescript-eslint/parser": "^7.8.0",
-		"tsdx": "^0.14.1",
+		"@babel/core": "^7.15.0",
+		"@next/eslint-plugin-next": "^12.2.3",
+		"@types/babel-types": "^7.0.10",
+		"@types/glob": "^7.1.4",
+		"@types/node": "^16.4.13",
+		"@types/node-fetch": "^2.5.12",
+		"@types/sade": "^1.7.3",
+		"@types/webpack": "^5.28.5",
+		"@typescript-eslint/eslint-plugin": "^7.8.0",
+		"babel-plugin-macros": "^3.1.0",
+		"browserslist-config-autoguru": "*",
 		"typescript": "5.3.3"
 	},
 	"publishConfig": {
