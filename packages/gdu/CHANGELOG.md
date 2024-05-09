@@ -1,5 +1,11 @@
 # gdu
 
+## 7.3.1
+
+### Patch Changes
+
+-   e65c942: gdu: Updates nextjs webpack configs
+
 ## 7.3.0
 
 ### Minor Changes
