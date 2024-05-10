@@ -1,5 +1,11 @@
 # gdu
 
+## 8.0.1
+
+### Patch Changes
+
+-   bbcfb1b: GDU: Upgrades webpack dev server
+
 ## 8.0.0
 
 ### Minor Changes
