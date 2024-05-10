@@ -1,5 +1,11 @@
 # @autoguru/jest-preset
 
+## 1.3.1
+
+### Patch Changes
+
+-   bbcfb1b: GDU: Upgrades webpack dev server
+
 ## 1.3.0
 
 ### Minor Changes
