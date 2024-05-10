@@ -87,7 +87,7 @@
 		"tsconfig-paths-webpack-plugin": "^3.5.2",
 		"url-loader": "^4.1.1",
 		"webpack": "5.90.0",
-		"webpack-dev-server": "^4.9.3",
+		"webpack-dev-server": "^5.0.4",
 		"whatwg-fetch": "^3.6.2"
 	},
 	"devDependencies": {

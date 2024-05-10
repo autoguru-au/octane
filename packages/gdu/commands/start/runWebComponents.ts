@@ -130,11 +130,12 @@ export const runWebComponents = async (guruConfig: GuruConfig, component) => {
 		allowedHosts: hosts,
 		historyApiFallback: true,
 		hot: true,
+		port: guruConfig.port,
 	});
 
-	devServer.listen(guruConfig.port, localhost, (err) => {
-		if (err) {
-			console.log(red(err.message));
+	devServer.start().catch((error) => {
+		if (error) {
+			console.log(red(error.message));
 		}
 	});
 };
