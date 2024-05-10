@@ -35,13 +35,6 @@ export default (app: Sade) => {
 		.example('scaffold spa new-app')
 		.action(deferredAction(async () => import('./scaffold')));
 
-	// === CONFIGURE
-	app.command('configure')
-		.describe(
-			'Sets up the gdu project, creating tsconfig gitignore files etc..',
-		)
-		.action(deferredAction(async () => import('./configure'), IS_NOT_ROOT));
-
 	// === START
 	app.command('start')
 		.describe('Starts a development server')
