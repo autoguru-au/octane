@@ -89,8 +89,6 @@ export const baseOptions = (
 		mode: isDev ? 'development' : 'production',
 		entry: {
 			main: [
-				join(gduEntryPath, 'polyfill.js'),
-
 				join(gduEntryPath, 'spa', 'client.js'),
 			].filter(Boolean),
 		},

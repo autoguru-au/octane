@@ -2,7 +2,6 @@ import sade from 'sade';
 import { AsyncSeriesWaterfallHook, SyncWaterfallHook } from 'tapable';
 
 import configureCommands from './commands';
-import './polyfill';
 import { registerHooks } from './utils/hooks';
 
 const app = sade('gdu').option('--debug', 'Enable debug mode');
