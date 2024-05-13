@@ -13,7 +13,7 @@ export default async () => {
 	setEnvProd(true);
 
 	const guruConfig = getGuruConfig();
-	const appName = guruConfig.publicPath.replace(/^\//, '');
+	const appName = guruConfig.octopusProjectName;
 	banner(`Linting ${appName}`);
 
 	const start = Date.now();

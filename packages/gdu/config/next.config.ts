@@ -2,7 +2,7 @@
 import path, { resolve } from 'path';
 
 import Dotenv from 'dotenv-webpack';
-import { DefinePlugin } from 'webpack';
+import { DefinePlugin, IgnorePlugin } from 'webpack';
 
 import { getGuruConfig, getProjectName } from '../lib/config';
 import { isProductionBuild } from '../lib/misc';
@@ -193,7 +193,6 @@ export const createNextJSConfig = (
 	const env = process.env.APP_ENV || (isDev ? 'dev' : buildEnv);
 	const isProductionSite = productionEnvs.has(process.env.APP_ENV);
 	const guruConfig = getGuruConfig();
-	const assetPrefix = isDev ? '' : guruConfig?.publicPath ?? '';
 	const basePath = !isDev ? guruConfig?.basePath ?? '' : '';
 
 	return {
@@ -202,7 +201,6 @@ export const createNextJSConfig = (
 		generateEtags: true,
 		poweredByHeader: !isProductionSite,
 		transpilePackages,
-		assetPrefix,
 		basePath,
 		cacheMaxMemorySize: 0,
 		i18n: {
@@ -232,6 +230,11 @@ export const createNextJSConfig = (
 			],
 		},
 		webpack: (defaultConfig) => {
+			defaultConfig.plugins.push(
+				new IgnorePlugin({
+					resourceRegExp: /^@newrelic\/browser-agent$/,
+				})
+			);
 			defaultConfig.plugins.push(
 				new DefinePlugin({
 					'process.__browser__': JSON.stringify(true),
