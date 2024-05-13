@@ -1,5 +1,11 @@
 # gdu
 
+## 8.1.0
+
+### Minor Changes
+
+-   cf41862: Removes nextjs asset prefix
+
 ## 8.0.1
 
 ### Patch Changes
