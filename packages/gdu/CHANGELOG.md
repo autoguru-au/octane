@@ -1,5 +1,11 @@
 # gdu
 
+## 8.1.1
+
+### Patch Changes
+
+-   0df14b4: Screaming frog crawl flagging security issues
+
 ## 8.1.0
 
 ### Minor Changes
