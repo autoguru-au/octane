@@ -1,5 +1,11 @@
 # gdu
 
+## 8.1.2
+
+### Patch Changes
+
+-   9c7ae76: Fix WebPackDevServer changing the order of props
+
 ## 8.1.1
 
 ### Patch Changes
