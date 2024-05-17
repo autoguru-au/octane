@@ -1,13 +1,14 @@
 {
 	"extends": "@autoguru/tsconfig/base",
 	"compilerOptions": {
+		"allowSyntheticDefaultImports": true,
+		"esModuleInterop": true,
 		"outDir": "./dist",
 		"baseUrl": "./",
 		"rootDir": "./",
 		"declaration": true,
 		"target": "es2019",
 		"module": "commonjs",
-		"esModuleInterop": true,
 		"importHelpers": false,
 		"noEmitHelpers": false,
 		"skipLibCheck": true,

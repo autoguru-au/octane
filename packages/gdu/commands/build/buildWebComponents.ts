@@ -1,5 +1,6 @@
 import webpack, { Configuration } from 'webpack';
 
+// eslint-disable-next-line import/extensions
 import { makeWebComponentsWebpackConfig } from '../../config/webpack/webpack.webcomponents.config';
 import { GuruConfig } from '../../lib/config';
 import { run } from '../../lib/runWebpack';

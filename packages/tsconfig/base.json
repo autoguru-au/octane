@@ -1,6 +1,8 @@
 {
 	"compileOnSave": true,
 	"compilerOptions": {
+		"allowSyntheticDefaultImports": true,
+		"esModuleInterop": true,
 		"allowJs": false,
 		"allowSyntheticDefaultImports": true,
 		"allowUnreachableCode": false,
@@ -32,7 +34,6 @@
 		"strict": true,
 		"strictBindCallApply": true,
 		"strictNullChecks": false,
-		"suppressImplicitAnyIndexErrors": true,
 		"target": "esnext"
 	}
 }

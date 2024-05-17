@@ -89,8 +89,6 @@ export const baseOptions = (
 		mode: isDev ? 'development' : 'production',
 		entry: {
 			main: [
-				join(gduEntryPath, 'polyfill.js'),
-
 				join(gduEntryPath, 'spa', 'client.js'),
 			].filter(Boolean),
 		},
@@ -320,7 +318,7 @@ export const baseOptions = (
 			}),
 			!isDev && new CleanWebpackPlugin(),
 			new DefinePlugin({
-				'process.browser': JSON.stringify(true),
+				'process.__browser__': JSON.stringify(true),
 				'process.env.NODE_ENV': JSON.stringify(
 					isDev ? 'development' : 'production',
 				),

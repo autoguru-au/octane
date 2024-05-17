@@ -8,11 +8,12 @@ env:
     node: true
 
 overrides:
-    - files: ['**/*.ts', '**/*.tsx']
-      extends:
-          - 'plugin:@autoguru/typescript'
-      parser: '@typescript-eslint/parser'
+    - files: ['**/*.{ts,tsx}', '*.ts']
       rules:
+          unicorn/no-process-exit: off # TODO: Investigate why this rule cant exist at the root
+          '@typescript-eslint/no-var-requires': off
           '@typescript-eslint/ban-ts-ignore': 'off'
+          'unicorn/prefer-node-protocol': 'off'
+      parser: '@typescript-eslint/parser'
       parserOptions:
           tsconfigRootDir: './packages/utilities/'

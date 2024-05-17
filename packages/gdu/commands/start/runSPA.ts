@@ -129,11 +129,12 @@ export const runSPA = async (guruConfig: GuruConfig, isDebug) => {
 		allowedHosts: hosts,
 		historyApiFallback: true,
 		hot: true,
+		port: guruConfig.port,
 	}, compiler);
 
-	devServer.listen(guruConfig.port, localhost, (err) => {
-		if (err) {
-			console.log(red(err.message));
+	devServer.start().catch((error) => {
+		if (error) {
+			console.log(red(error.message));
 		}
 	});
 };

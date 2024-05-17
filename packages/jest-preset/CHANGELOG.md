@@ -1,5 +1,24 @@
 # @autoguru/jest-preset
 
+## 1.3.1
+
+### Patch Changes
+
+-   bbcfb1b: GDU: Upgrades webpack dev server
+
+## 1.3.0
+
+### Minor Changes
+
+-   8297630: Dependency upgrades
+
+### Patch Changes
+
+-   8297630: Dependency upgrades
+-   Updated dependencies [8297630]
+-   Updated dependencies [8297630]
+    -   @autoguru/babel-preset@1.5.0
+
 ## 1.2.0
 
 ### Minor Changes

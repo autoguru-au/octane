@@ -66,7 +66,6 @@ export const getGuruConfig = (location = PROJECT_ROOT): GuruConfig | null => {
 		readCache.set(normalizePath, storeThis);
 
 		return storeThis;
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	} catch {
 		debug('no guru config @ %o', normalizePath);
 		return null;

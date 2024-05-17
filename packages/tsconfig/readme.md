@@ -12,6 +12,8 @@ yarn add --dev @autoguru/tsconfig
 {
 	"extends": "@autoguru/tsconfig",
 	"compilerOptions": {
+		"allowSyntheticDefaultImports": true,
+		"esModuleInterop": true,
 		"outDir": "./dist",
 		"baseUrl": "./src",
 		"rootDir": "./src"

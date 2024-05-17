@@ -7,6 +7,7 @@ import dedent from 'ts-dedent';
 import webpack, { Configuration } from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 
+// eslint-disable-next-line import/extensions
 import { makeWebComponentsWebpackConfig } from '../../config/webpack/webpack.webcomponents.config';
 import { getProjectName, GuruConfig } from '../../lib/config';
 import { PROJECT_ROOT } from '../../lib/roots';
@@ -129,11 +130,12 @@ export const runWebComponents = async (guruConfig: GuruConfig, component) => {
 		allowedHosts: hosts,
 		historyApiFallback: true,
 		hot: true,
+		port: guruConfig.port,
 	});
 
-	devServer.listen(guruConfig.port, localhost, (err) => {
-		if (err) {
-			console.log(red(err.message));
+	devServer.start().catch((error) => {
+		if (error) {
+			console.log(red(error.message));
 		}
 	});
 };

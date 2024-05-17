@@ -2,7 +2,7 @@
 import path, { resolve } from 'path';
 
 import Dotenv from 'dotenv-webpack';
-import { DefinePlugin } from 'webpack';
+import { DefinePlugin, IgnorePlugin } from 'webpack';
 
 import { getGuruConfig, getProjectName } from '../lib/config';
 import { isProductionBuild } from '../lib/misc';
@@ -180,6 +180,22 @@ export const defaultSecurityHeaders = [
 		key: 'X-Frame-Options',
 		value: 'SAMEORIGIN https://*.autoguru.com.au',
 	},
+	{
+		key: 'Strict-Transport-Security',
+		value: 'max-age=63072000; includeSubDomains; preload',
+	},
+	{
+		key: 'X-Content-Type-Options',
+		value: 'nosniff',
+	},
+	{
+		key: 'X-Frame-Options',
+		value: 'SAMEORIGIN',
+	},
+	{
+		key: 'Referrer-Policy',
+		value: 'strict-origin-when-cross-origin',
+	},
 ];
 
 const productionEnvs = new Set(['prod', 'dockerprod', 'preprod']);
@@ -193,17 +209,14 @@ export const createNextJSConfig = (
 	const env = process.env.APP_ENV || (isDev ? 'dev' : buildEnv);
 	const isProductionSite = productionEnvs.has(process.env.APP_ENV);
 	const guruConfig = getGuruConfig();
-	const assetPrefix = isDev ? '' : guruConfig?.publicPath ?? '';
 	const basePath = !isDev ? guruConfig?.basePath ?? '' : '';
 
 	return {
 		distDir: `dist/${env}`,
 		reactStrictMode: !isProductionSite,
-		swcMinify: true,
 		generateEtags: true,
 		poweredByHeader: !isProductionSite,
 		transpilePackages,
-		assetPrefix,
 		basePath,
 		cacheMaxMemorySize: 0,
 		i18n: {
@@ -234,8 +247,13 @@ export const createNextJSConfig = (
 		},
 		webpack: (defaultConfig) => {
 			defaultConfig.plugins.push(
+				new IgnorePlugin({
+					resourceRegExp: /^@newrelic\/browser-agent$/,
+				})
+			);
+			defaultConfig.plugins.push(
 				new DefinePlugin({
-					'process.browser': JSON.stringify(true),
+					'process.__browser__': JSON.stringify(true),
 					'process.env.NODE_ENV': JSON.stringify(
 						isDev ? 'development' : 'production',
 					),
