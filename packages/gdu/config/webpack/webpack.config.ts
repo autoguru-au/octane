@@ -61,8 +61,6 @@ const vendorRegex =
 	/(?<!node_modules.*)[/\\]node_modules[/\\](scheduler|prop-types|use-subscription)[/\\]/;
 const relayRegex =
 	/(?<!node_modules.*)[/\\]node_modules[/\\](relay-runtime|react-relay)[/\\]/;
-const frameworkRegex =
-	/(?<!node_modules.*)[/\\]node_modules[/\\](react|react-dom)[/\\]/;
 
 const hooks = getHooks();
 const isDev = !isProductionBuild();
@@ -162,14 +160,6 @@ export const baseOptions = (
 						name: 'vendor',
 						test: vendorRegex,
 						priority: 50,
-						reuseExistingChunk: true,
-						enforce: true,
-					},
-					framework: {
-						chunks: 'all',
-						name: 'framework',
-						test: frameworkRegex,
-						priority: 60,
 						reuseExistingChunk: true,
 						enforce: true,
 					},
@@ -379,8 +369,7 @@ export const baseOptions = (
 					includeChunks: true,
 				}),
 			new SourceMapDevToolPlugin({
-				test: [/.ts$/, /.tsx$/],
-				exclude: [/.css.ts$/, frameworkRegex],
+				test: [/.ts$/, /.tsx$/]
 			}),
 		].filter(Boolean),
 	};
@@ -447,6 +436,10 @@ export const makeWebpackConfig = (
 			crossOriginLoading: 'anonymous',
 			sourceMapFilename: 'sourceMaps/[file].map',
 			pathinfo: false,
+		},
+		externals: {
+			react: 'React',
+			'react-dom': 'ReactDOM'
 		},
 	};
 };

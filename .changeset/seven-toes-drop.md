@@ -1,0 +1,5 @@
+---
+'gdu': major
+---
+
+react external
