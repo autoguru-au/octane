@@ -1,5 +1,12 @@
 # create-guru
 
+## 9.0.0-beta.0
+
+### Patch Changes
+
+-   Updated dependencies [c0ebf44]
+    -   gdu@9.0.0-beta.0
+
 ## 8.0.0
 
 ### Patch Changes

@@ -12,5 +12,7 @@
     "@autoguru/tsconfig": "1.2.0",
     "@autoguru/utilities": "1.2.0"
   },
-  "changesets": []
+  "changesets": [
+    "seven-toes-drop"
+  ]
 }
