@@ -1,11 +1,5 @@
 # gdu
 
-## 9.0.0-beta.0
-
-### Major Changes
-
--   c0ebf44: react external
-
 ## 8.1.2
 
 ### Patch Changes
