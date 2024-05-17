@@ -1,5 +1,11 @@
 # gdu
 
+## 9.0.0-beta.1
+
+### Patch Changes
+
+-   Force release
+
 ## 9.0.0-beta.0
 
 ### Major Changes
