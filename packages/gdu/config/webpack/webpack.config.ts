@@ -303,7 +303,16 @@ export const baseOptions = (
 		plugins: [
 			new IgnorePlugin({
 				checkResource(resource) {
-					return /(\/next\/)/.test(resource);
+					const isNextResource = /\/next\//.test(resource);
+					const isPropTypesPackage = /^prop-types$/.test(resource);
+
+					if (isDev)
+						return isNextResource;
+
+					return (
+						isNextResource ||
+						isPropTypesPackage
+					);
 				},
 			}),
 			!isDev && new CleanWebpackPlugin(),
