@@ -1,5 +1,16 @@
 # create-guru
 
+## 9.0.0-beta.2
+
+### Major Changes
+
+-   2e01490: avoid type-props in prod
+
+### Patch Changes
+
+-   Updated dependencies [2e01490]
+    -   gdu@9.0.0-beta.2
+
 ## 9.0.0-beta.0
 
 ### Patch Changes
