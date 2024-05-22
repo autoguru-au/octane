@@ -9,11 +9,12 @@ const buildConfigs = (
 	env = process.env.APP_ENV,
 	isDebug: boolean,
 	tenant?: string,
+	standalone?: boolean,
 ): Configuration[] => {
 	const buildEnvs = getBuildEnvs(env);
 	return buildEnvs.map((buildEnv) => ({
 		...baseOptions(buildEnv, buildEnvs.length > 1, isDebug),
-		...makeWebpackConfig(buildEnv, buildEnvs.length > 1, tenant),
+		...makeWebpackConfig(buildEnv, buildEnvs.length > 1, tenant, standalone),
 	}));
 };
 

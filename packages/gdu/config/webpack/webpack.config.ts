@@ -423,6 +423,7 @@ export const makeWebpackConfig = (
 	buildEnv: BuildEnv,
 	isMultiEnv: boolean,
 	tenant?: string,
+	standalone?: boolean,
 ): Configuration => {
 	const { outputPath, isTenanted } = getGuruConfig();
 	return {
@@ -446,9 +447,9 @@ export const makeWebpackConfig = (
 			sourceMapFilename: 'sourceMaps/[file].map',
 			pathinfo: false,
 		},
-		externals: {
+		externals: standalone ? {} : {
 			react: 'React',
 			'react-dom': 'ReactDOM'
 		},
-	};
+	}
 };
