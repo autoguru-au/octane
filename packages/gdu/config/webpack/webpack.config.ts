@@ -61,6 +61,8 @@ const vendorRegex =
 	/(?<!node_modules.*)[/\\]node_modules[/\\](scheduler|prop-types|use-subscription)[/\\]/;
 const relayRegex =
 	/(?<!node_modules.*)[/\\]node_modules[/\\](relay-runtime|react-relay)[/\\]/;
+const frameworkRegex =
+	/(?<!node_modules.*)[/\\]node_modules[/\\](react|react-dom)[/\\]/;
 
 const hooks = getHooks();
 const isDev = !isProductionBuild();
@@ -80,6 +82,7 @@ export const baseOptions = (
 	buildEnv,
 	isMultiEnv: boolean,
 	isDebug = false,
+	standalone: boolean,
 ): Configuration => {
 	const guruConfig = getGuruConfig();
 	return {
@@ -163,6 +166,14 @@ export const baseOptions = (
 						reuseExistingChunk: true,
 						enforce: true,
 					},
+					framework: standalone ? {
+						chunks: 'all',
+						name: 'framework',
+						test: frameworkRegex,
+						priority: 60,
+						reuseExistingChunk: true,
+						enforce: true,
+					} : {},
 					// AutoGuru related assets here
 					guru: {
 						test: /@autoguru[/\\]/,
@@ -378,6 +389,7 @@ export const baseOptions = (
 					includeChunks: true,
 				}),
 			new SourceMapDevToolPlugin({
+				exclude: standalone ? [/.css.ts$/, frameworkRegex] : [/.css.ts$/],
 				test: [/.ts$/, /.tsx$/]
 			}),
 		].filter(Boolean),

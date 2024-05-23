@@ -13,7 +13,7 @@ const buildConfigs = (
 ): Configuration[] => {
 	const buildEnvs = getBuildEnvs(env);
 	return buildEnvs.map((buildEnv) => ({
-		...baseOptions(buildEnv, buildEnvs.length > 1, isDebug),
+		...baseOptions(buildEnv, buildEnvs.length > 1, isDebug, standalone),
 		...makeWebpackConfig(buildEnv, buildEnvs.length > 1, tenant, standalone),
 	}));
 };
