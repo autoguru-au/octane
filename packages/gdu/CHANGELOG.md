@@ -1,5 +1,11 @@
 # gdu
 
+## 9.0.0-beta.3
+
+### Major Changes
+
+-   add standalone flag
+
 ## 9.0.0-beta.2
 
 ### Major Changes
