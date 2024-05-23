@@ -13,6 +13,7 @@
     "@autoguru/utilities": "1.2.0"
   },
   "changesets": [
+    "chatty-rockets-end",
     "lucky-hornets-cross",
     "purple-guests-walk",
     "real-rice-change",

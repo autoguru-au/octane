@@ -1,5 +1,11 @@
 # gdu
 
+## 9.0.0-beta.4
+
+### Major Changes
+
+-   Implement react-remove-prop-types
+
 ## 9.0.0-beta.3
 
 ### Major Changes

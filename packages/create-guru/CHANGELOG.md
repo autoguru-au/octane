@@ -1,5 +1,16 @@
 # create-guru
 
+## 9.0.0-beta.4
+
+### Major Changes
+
+-   Implement react-remove-prop-types
+
+### Patch Changes
+
+-   Updated dependencies [undefined]
+    -   gdu@9.0.0-beta.4
+
 ## 9.0.0-beta.3
 
 ### Major Changes
