@@ -1,5 +1,11 @@
 # gdu
 
+## 9.0.0-beta.5
+
+### Major Changes
+
+-   remove webpack config prop-types
+
 ## 9.0.0-beta.4
 
 ### Major Changes

@@ -1,5 +1,16 @@
 # create-guru
 
+## 9.0.0-beta.5
+
+### Major Changes
+
+-   remove webpack config prop-types
+
+### Patch Changes
+
+-   Updated dependencies [undefined]
+    -   gdu@9.0.0-beta.5
+
 ## 9.0.0-beta.4
 
 ### Major Changes
