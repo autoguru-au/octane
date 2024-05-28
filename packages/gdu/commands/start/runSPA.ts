@@ -123,14 +123,17 @@ export const runSPA = async (guruConfig: GuruConfig, isDebug) => {
 		}
 	});
 
-	const devServer = new WebpackDevServer( {
-		static: join(PROJECT_ROOT, 'public'),
-		host: hosts[0],
-		allowedHosts: hosts,
-		historyApiFallback: true,
-		hot: true,
-		port: guruConfig.port,
-	}, compiler);
+	const devServer = new WebpackDevServer(
+		{
+			static: join(PROJECT_ROOT, 'public'),
+			host: hosts[0],
+			allowedHosts: hosts,
+			historyApiFallback: true,
+			hot: true,
+			port: guruConfig.port,
+		},
+		compiler,
+	);
 
 	devServer.start().catch((error) => {
 		if (error) {

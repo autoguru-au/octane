@@ -89,9 +89,7 @@ export const baseOptions = (
 		context: PROJECT_ROOT,
 		mode: isDev ? 'development' : 'production',
 		entry: {
-			main: [
-				join(gduEntryPath, 'spa', 'client.js'),
-			].filter(Boolean),
+			main: [join(gduEntryPath, 'spa', 'client.js')].filter(Boolean),
 		},
 		experiments: {
 			layers: true,
@@ -166,14 +164,16 @@ export const baseOptions = (
 						reuseExistingChunk: true,
 						enforce: true,
 					},
-					framework: standalone ? {
-						chunks: 'all',
-						name: 'framework',
-						test: frameworkRegex,
-						priority: 60,
-						reuseExistingChunk: true,
-						enforce: true,
-					} : {},
+					framework: standalone
+						? {
+								chunks: 'all',
+								name: 'framework',
+								test: frameworkRegex,
+								priority: 60,
+								reuseExistingChunk: true,
+								enforce: true,
+						  }
+						: {},
 					// AutoGuru related assets here
 					guru: {
 						test: /@autoguru[/\\]/,
@@ -380,8 +380,10 @@ export const baseOptions = (
 					includeChunks: true,
 				}),
 			new SourceMapDevToolPlugin({
-				exclude: standalone ? [/.css.ts$/, frameworkRegex] : [/.css.ts$/],
-				test: [/.ts$/, /.tsx$/]
+				exclude: standalone
+					? [/.css.ts$/, frameworkRegex]
+					: [/.css.ts$/],
+				test: [/.ts$/, /.tsx$/],
 			}),
 		].filter(Boolean),
 	};
@@ -450,9 +452,11 @@ export const makeWebpackConfig = (
 			sourceMapFilename: 'sourceMaps/[file].map',
 			pathinfo: false,
 		},
-		externals: standalone ? {} : {
-			react: 'React',
-			'react-dom': 'ReactDOM'
-		},
-	}
+		externals: standalone
+			? {}
+			: {
+					react: 'React',
+					'react-dom': 'ReactDOM',
+			  },
+	};
 };
