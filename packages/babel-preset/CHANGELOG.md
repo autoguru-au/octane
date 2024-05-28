@@ -1,11 +1,5 @@
 # @autoguru/babel-preset
 
-## 2.0.0-beta.0
-
-### Major Changes
-
--   Add plugin prop-types in babel
-
 ## 1.5.0
 
 ### Minor Changes

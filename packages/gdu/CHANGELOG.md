@@ -1,52 +1,5 @@
 # gdu
 
-## 9.0.0-beta.6
-
-### Major Changes
-
--   Add plugin prop-types in babel
-
-### Patch Changes
-
--   Updated dependencies [undefined]
-    -   @autoguru/babel-preset@2.0.0-beta.0
-
-## 9.0.0-beta.5
-
-### Major Changes
-
--   remove webpack config prop-types
-
-## 9.0.0-beta.4
-
-### Major Changes
-
--   Implement react-remove-prop-types
-
-## 9.0.0-beta.3
-
-### Major Changes
-
--   add standalone flag
-
-## 9.0.0-beta.2
-
-### Major Changes
-
--   2e01490: avoid type-props in prod
-
-## 9.0.0-beta.1
-
-### Patch Changes
-
--   Force release
-
-## 9.0.0-beta.0
-
-### Major Changes
-
--   70ecedc: react external
-
 ## 8.1.2
 
 ### Patch Changes
