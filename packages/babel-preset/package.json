@@ -28,8 +28,8 @@
 		"@babel/preset-typescript": "^7.24.1",
 		"@babel/runtime-corejs3": "^7.24.5",
 		"babel-plugin-dev-expression": "^0.2.3",
-    "babel-plugin-macros": "^3.1.0",
-    "babel-plugin-transform-react-remove-prop-types": "^0.4.24"
+		"babel-plugin-macros": "^3.1.0",
+		"babel-plugin-transform-react-remove-prop-types": "^0.4.24"
 	},
 	"devDependencies": {
 		"@autoguru/jest-preset": "*",

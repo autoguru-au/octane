@@ -1,6 +1,6 @@
 {
 	"name": "gdu",
-  "version": "8.1.2",
+	"version": "8.1.2",
 	"description": "AutoGuru's development toolkit",
 	"homepage": "https://github.com/autoguru-au/octane/tree/master/packages/gdu#readme",
 	"repository": "https://github.com/autoguru-au/octane/tree/master/packages/gdu",
@@ -23,7 +23,7 @@
 	},
 	"dependencies": {
 		"@2fd/graphdoc": "^2.4.0",
-    "@autoguru/babel-preset": "^1.5.0",
+		"@autoguru/babel-preset": "^1.5.0",
 		"@autoguru/tsconfig": "1.2.0",
 		"@autoguru/utilities": "^1.2.0",
 		"@babel/helper-plugin-utils": "^7.24.5",
