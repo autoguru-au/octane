@@ -18,7 +18,7 @@
 	"dependencies": {
 		"@autoguru/eslint-plugin": "*",
 		"@changesets/cli": "^2.11.1",
-		"@manypkg/cli": "^0.17.0",
+		"@manypkg/cli": "^0.21.4",
 		"@types/node": "^16.4.13",
 		"browserslist-config-autoguru": "*",
 		"eslint": "^7.28.0",

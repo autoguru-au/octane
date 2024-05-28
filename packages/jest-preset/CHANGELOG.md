@@ -1,12 +1,5 @@
 # @autoguru/jest-preset
 
-## 1.3.2-beta.0
-
-### Patch Changes
-
--   Updated dependencies [undefined]
-    -   @autoguru/babel-preset@2.0.0-beta.0
-
 ## 1.3.1
 
 ### Patch Changes
