@@ -63,10 +63,5 @@ module.exports = (guruConfig) => {
 			],
 			[require.resolve('./pathNormaliser')],
 		].filter(Boolean),
-		env: {
-			production: {
-				plugins: [['transform-react-remove-prop-types', { removeImport: true }]],
-			},
-		},
 	};
 };

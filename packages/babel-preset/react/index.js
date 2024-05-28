@@ -21,10 +21,6 @@ module.exports = function autoGuruReactPreset(api, options = {}) {
 		plugins: [
 			!dev &&
 				require.resolve(
-					'babel-plugin-transform-react-remove-prop-types',
-				),
-			!dev &&
-				require.resolve(
 					'@babel/plugin-transform-react-constant-elements',
 				),
 			dev && experimental && require.resolve('./plugins/named-memo.js'),
