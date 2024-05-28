@@ -1,5 +1,16 @@
 # create-guru
 
+## 9.0.0-beta.6
+
+### Major Changes
+
+-   Add plugin prop-types in babel
+
+### Patch Changes
+
+-   Updated dependencies [undefined]
+    -   gdu@9.0.0-beta.6
+
 ## 9.0.0-beta.5
 
 ### Major Changes
