@@ -1,5 +1,67 @@
 # create-guru
 
+## 9.0.0-beta.6
+
+### Major Changes
+
+-   Add plugin prop-types in babel
+
+### Patch Changes
+
+-   Updated dependencies [undefined]
+    -   gdu@9.0.0-beta.6
+
+## 9.0.0-beta.5
+
+### Major Changes
+
+-   remove webpack config prop-types
+
+### Patch Changes
+
+-   Updated dependencies [undefined]
+    -   gdu@9.0.0-beta.5
+
+## 9.0.0-beta.4
+
+### Major Changes
+
+-   Implement react-remove-prop-types
+
+### Patch Changes
+
+-   Updated dependencies [undefined]
+    -   gdu@9.0.0-beta.4
+
+## 9.0.0-beta.3
+
+### Major Changes
+
+-   add standalone flag
+
+### Patch Changes
+
+-   Updated dependencies [undefined]
+    -   gdu@9.0.0-beta.3
+
+## 9.0.0-beta.2
+
+### Major Changes
+
+-   2e01490: avoid type-props in prod
+
+### Patch Changes
+
+-   Updated dependencies [2e01490]
+    -   gdu@9.0.0-beta.2
+
+## 9.0.0-beta.0
+
+### Patch Changes
+
+-   Updated dependencies [70ecedc]
+    -   gdu@9.0.0-beta.0
+
 ## 8.0.0
 
 ### Patch Changes
