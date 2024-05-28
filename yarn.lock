@@ -61,7 +61,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@autoguru/babel-preset@^2.0.0-beta.0, @autoguru/babel-preset@workspace:packages/babel-preset":
+"@autoguru/babel-preset@^1.5.0, @autoguru/babel-preset@workspace:packages/babel-preset":
   version: 0.0.0-use.local
   resolution: "@autoguru/babel-preset@workspace:packages/babel-preset"
   dependencies:
@@ -86,6 +86,7 @@ __metadata:
     "@babel/runtime-corejs3": ^7.24.5
     babel-plugin-dev-expression: ^0.2.3
     babel-plugin-macros: ^3.1.0
+    babel-plugin-transform-react-remove-prop-types: ^0.4.24
   peerDependencies:
     "@babel/core": ^7.24.5
   languageName: unknown
@@ -119,7 +120,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@autoguru/jest-preset@workspace:packages/jest-preset"
   dependencies:
-    "@autoguru/babel-preset": ^2.0.0-beta.0
+    "@autoguru/babel-preset": ^1.5.0
     "@babel/core": ^7.15.0
     "@babel/preset-typescript": ^7.24.1
     babel-jest: ^26.6.3
@@ -6127,6 +6128,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"babel-plugin-transform-react-remove-prop-types@npm:^0.4.24":
+  version: 0.4.24
+  resolution: "babel-plugin-transform-react-remove-prop-types@npm:0.4.24"
+  checksum: 54afe56d67f0d118c9da23996f39948e502a152b3f582eb6e8f163fcb76c2c1ea4e0cdd4f9fac5c0ef050eab4fe0a950b0b74aae6237bcc0d31d8fc4cc808d1a
+  languageName: node
+  linkType: hard
+
 "babel-preset-current-node-syntax@npm:^1.0.0":
   version: 1.0.1
   resolution: "babel-preset-current-node-syntax@npm:1.0.1"
@@ -7431,7 +7439,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "create-guru@workspace:packages/create-guru"
   dependencies:
-    gdu: ^9.0.0-beta.6
+    gdu: ^8.0.0
     mri: ^1.1.6
   bin:
     create-guru: ./index.js
@@ -10281,12 +10289,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"gdu@^9.0.0-beta.6, gdu@workspace:packages/gdu":
+"gdu@^8.0.0, gdu@workspace:packages/gdu":
   version: 0.0.0-use.local
   resolution: "gdu@workspace:packages/gdu"
   dependencies:
     "@2fd/graphdoc": ^2.4.0
-    "@autoguru/babel-preset": ^2.0.0-beta.0
+    "@autoguru/babel-preset": ^1.5.0
     "@autoguru/tsconfig": 1.2.0
     "@autoguru/utilities": ^1.2.0
     "@babel/core": ^7.15.0
