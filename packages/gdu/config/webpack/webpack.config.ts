@@ -61,8 +61,6 @@ const vendorRegex =
 	/(?<!node_modules.*)[/\\]node_modules[/\\](scheduler|prop-types|use-subscription)[/\\]/;
 const relayRegex =
 	/(?<!node_modules.*)[/\\]node_modules[/\\](relay-runtime|react-relay)[/\\]/;
-const frameworkRegex =
-	/(?<!node_modules.*)[/\\]node_modules[/\\](react|react-dom)[/\\]/;
 
 const hooks = getHooks();
 const isDev = !isProductionBuild();
@@ -82,14 +80,15 @@ export const baseOptions = (
 	buildEnv,
 	isMultiEnv: boolean,
 	isDebug = false,
-	standalone: boolean,
 ): Configuration => {
 	const guruConfig = getGuruConfig();
 	return {
 		context: PROJECT_ROOT,
 		mode: isDev ? 'development' : 'production',
 		entry: {
-			main: [join(gduEntryPath, 'spa', 'client.js')].filter(Boolean),
+			main: [
+				join(gduEntryPath, 'spa', 'client.js'),
+			].filter(Boolean),
 		},
 		experiments: {
 			layers: true,
@@ -164,16 +163,6 @@ export const baseOptions = (
 						reuseExistingChunk: true,
 						enforce: true,
 					},
-					framework: standalone
-						? {
-								chunks: 'all',
-								name: 'framework',
-								test: frameworkRegex,
-								priority: 60,
-								reuseExistingChunk: true,
-								enforce: true,
-						  }
-						: {},
 					// AutoGuru related assets here
 					guru: {
 						test: /@autoguru[/\\]/,
@@ -380,10 +369,7 @@ export const baseOptions = (
 					includeChunks: true,
 				}),
 			new SourceMapDevToolPlugin({
-				exclude: standalone
-					? [/.css.ts$/, frameworkRegex]
-					: [/.css.ts$/],
-				test: [/.ts$/, /.tsx$/],
+				test: [/.ts$/, /.tsx$/]
 			}),
 		].filter(Boolean),
 	};
@@ -428,7 +414,6 @@ export const makeWebpackConfig = (
 	buildEnv: BuildEnv,
 	isMultiEnv: boolean,
 	tenant?: string,
-	standalone?: boolean,
 ): Configuration => {
 	const { outputPath, isTenanted } = getGuruConfig();
 	return {
@@ -452,11 +437,9 @@ export const makeWebpackConfig = (
 			sourceMapFilename: 'sourceMaps/[file].map',
 			pathinfo: false,
 		},
-		externals: standalone
-			? {}
-			: {
-					react: 'React',
-					'react-dom': 'ReactDOM',
-			  },
+		externals: {
+			react: 'React',
+			'react-dom': 'ReactDOM'
+		},
 	};
 };
