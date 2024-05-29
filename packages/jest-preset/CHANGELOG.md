@@ -1,5 +1,17 @@
 # @autoguru/jest-preset
 
+## 2.0.0
+
+### Major Changes
+
+-   51a33af: Add react global and standalone flag
+
+### Patch Changes
+
+-   Updated dependencies [51a33af]
+-   Updated dependencies [51a33af]
+    -   @autoguru/babel-preset@2.0.0
+
 ## 1.3.1
 
 ### Patch Changes

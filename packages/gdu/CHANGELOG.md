@@ -1,5 +1,24 @@
 # gdu
 
+## 9.0.0
+
+### Major Changes
+
+-   51a33af: Implement react-remove-prop-types
+-   51a33af: avoid type-props in prod
+-   51a33af: add standalone flag
+-   51a33af: react external
+-   51a33af: remove webpack config prop-types
+-   51a33af: Add plugin prop-types in babel
+-   51a33af: Add react global and standalone flag
+
+### Patch Changes
+
+-   51a33af: Force release
+-   Updated dependencies [51a33af]
+-   Updated dependencies [51a33af]
+    -   @autoguru/babel-preset@2.0.0
+
 ## 9.0.0-beta.6
 
 ### Major Changes
