@@ -249,7 +249,7 @@ export const createNextJSConfig = (
 			defaultConfig.plugins.push(
 				new IgnorePlugin({
 					resourceRegExp: /^@newrelic\/browser-agent$/,
-				})
+				}),
 			);
 			defaultConfig.plugins.push(
 				new DefinePlugin({
