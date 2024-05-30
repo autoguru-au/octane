@@ -1,13 +1,13 @@
 {
 	"name": "create-guru",
-	"version": "9.0.0",
+	"version": "10.0.0",
 	"description": "Create a GDU project",
 	"homepage": "https://github.com/autoguru-au/octane/tree/master/packages/create-guru#readme",
 	"repository": "https://github.com/autoguru-au/octane/tree/master/packages/create-guru",
 	"license": "MIT",
 	"bin": "./index.js",
 	"dependencies": {
-		"gdu": "^9.0.0",
+		"gdu": "^10.0.0",
 		"mri": "^1.1.6"
 	},
 	"scripts": {
