@@ -1,5 +1,16 @@
 # create-guru
 
+## 10.0.0
+
+### Major Changes
+
+-   51b8d2e: Standalone flag, React global, enable sourcemaps in prod
+
+### Patch Changes
+
+-   Updated dependencies [51b8d2e]
+    -   gdu@10.0.0
+
 ## 9.0.0
 
 ### Major Changes
