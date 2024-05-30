@@ -310,7 +310,7 @@ export const baseOptions = (
 				},
 			],
 		},
-		devtool: isDev && 'source-map',
+		devtool: 'source-map',
 		plugins: [
 			new IgnorePlugin({
 				checkResource(resource) {
