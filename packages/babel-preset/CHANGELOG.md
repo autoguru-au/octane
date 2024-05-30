@@ -1,5 +1,11 @@
 # @autoguru/babel-preset
 
+## 3.0.0
+
+### Major Changes
+
+-   51b8d2e: Standalone flag, React global, enable sourcemaps in prod
+
 ## 2.0.0
 
 ### Major Changes
