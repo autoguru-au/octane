@@ -1,5 +1,11 @@
 # gdu
 
+## 9.1.0
+
+### Minor Changes
+
+-   enable sourcemaps in prod
+
 ## 9.0.0
 
 ### Major Changes
