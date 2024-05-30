@@ -1,5 +1,18 @@
 # @autoguru/babel-preset
 
+## 2.0.0
+
+### Major Changes
+
+-   51a33af: Add plugin prop-types in babel
+-   51a33af: Add react global and standalone flag
+
+## 2.0.0-beta.0
+
+### Major Changes
+
+-   Add plugin prop-types in babel
+
 ## 1.5.0
 
 ### Minor Changes

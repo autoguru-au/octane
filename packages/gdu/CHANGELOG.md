@@ -1,5 +1,77 @@
 # gdu
 
+## 9.1.0
+
+### Minor Changes
+
+-   enable sourcemaps in prod
+
+## 9.0.0
+
+### Major Changes
+
+-   51a33af: Implement react-remove-prop-types
+-   51a33af: avoid type-props in prod
+-   51a33af: add standalone flag
+-   51a33af: react external
+-   51a33af: remove webpack config prop-types
+-   51a33af: Add plugin prop-types in babel
+-   51a33af: Add react global and standalone flag
+
+### Patch Changes
+
+-   51a33af: Force release
+-   Updated dependencies [51a33af]
+-   Updated dependencies [51a33af]
+    -   @autoguru/babel-preset@2.0.0
+
+## 9.0.0-beta.6
+
+### Major Changes
+
+-   Add plugin prop-types in babel
+
+### Patch Changes
+
+-   Updated dependencies [undefined]
+    -   @autoguru/babel-preset@2.0.0-beta.0
+
+## 9.0.0-beta.5
+
+### Major Changes
+
+-   remove webpack config prop-types
+
+## 9.0.0-beta.4
+
+### Major Changes
+
+-   Implement react-remove-prop-types
+
+## 9.0.0-beta.3
+
+### Major Changes
+
+-   add standalone flag
+
+## 9.0.0-beta.2
+
+### Major Changes
+
+-   2e01490: avoid type-props in prod
+
+## 9.0.0-beta.1
+
+### Patch Changes
+
+-   Force release
+
+## 9.0.0-beta.0
+
+### Major Changes
+
+-   70ecedc: react external
+
 ## 8.1.2
 
 ### Patch Changes
