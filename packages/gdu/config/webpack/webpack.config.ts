@@ -82,7 +82,7 @@ export const baseOptions = (
 	buildEnv,
 	isMultiEnv: boolean,
 	isDebug = false,
-	standalone: boolean,
+	standalone = true,
 ): Configuration => {
 	const guruConfig = getGuruConfig();
 	return {
@@ -428,7 +428,7 @@ export const makeWebpackConfig = (
 	buildEnv: BuildEnv,
 	isMultiEnv: boolean,
 	tenant?: string,
-	standalone?: boolean,
+	standalone = true,
 ): Configuration => {
 	const { outputPath, isTenanted } = getGuruConfig();
 	return {
