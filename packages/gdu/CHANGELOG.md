@@ -1,5 +1,11 @@
 # gdu
 
+## 10.0.1
+
+### Patch Changes
+
+-   e3c7fa2: Add default standalone value
+
 ## 10.0.0
 
 ### Major Changes
