@@ -9,7 +9,7 @@ const buildConfigs = (
 	env = process.env.APP_ENV,
 	isDebug: boolean,
 	tenant?: string,
-	standalone?: boolean,
+	standalone: boolean = true,
 ): Configuration[] => {
 	const buildEnvs = getBuildEnvs(env);
 	return buildEnvs.map((buildEnv) => ({
