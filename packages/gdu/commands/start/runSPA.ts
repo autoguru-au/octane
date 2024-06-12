@@ -40,7 +40,7 @@ export const runSPA = async (guruConfig: GuruConfig, isDebug) => {
 
 	// eslint-disable-next-line unicorn/prefer-prototype-methods
 	const webpackConfig: Configuration = hooks.webpackConfig
-		.call(webpackConfigs(appEnv, isDebug, null, guruConfig.standalone))
+		.call(webpackConfigs(appEnv, isDebug, null, guruConfig?.standalone))
 		.find(({ name }) => name === appEnv);
 
 	const consumerHtmlTemplate = getConsumerHtmlTemplate(guruConfig);
