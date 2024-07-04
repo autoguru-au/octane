@@ -3,7 +3,9 @@ const { join } = require('path');
 
 const browsers = require('browserslist-config-autoguru');
 
+const { isProductionBuild } = require('../lib/misc');
 const { PROJECT_ROOT } = require('../lib/roots');
+const isDev = !isProductionBuild();
 
 module.exports = (guruConfig) => {
 	let hasRelay = false;
@@ -62,6 +64,11 @@ module.exports = (guruConfig) => {
 				},
 			],
 			[require.resolve('./pathNormaliser')],
+			!isDev && [require.resolve('babel-plugin-transform-react-remove-prop-types'),
+				{
+					removeImport: true,
+				},
+			],
 		].filter(Boolean),
 	};
 };

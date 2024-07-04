@@ -6127,6 +6127,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"babel-plugin-transform-react-remove-prop-types@npm:^0.4.24":
+  version: 0.4.24
+  resolution: "babel-plugin-transform-react-remove-prop-types@npm:0.4.24"
+  checksum: 54afe56d67f0d118c9da23996f39948e502a152b3f582eb6e8f163fcb76c2c1ea4e0cdd4f9fac5c0ef050eab4fe0a950b0b74aae6237bcc0d31d8fc4cc808d1a
+  languageName: node
+  linkType: hard
+
 "babel-preset-current-node-syntax@npm:^1.0.0":
   version: 1.0.1
   resolution: "babel-preset-current-node-syntax@npm:1.0.1"
@@ -15123,6 +15130,7 @@ __metadata:
     "@changesets/cli": ^2.11.1
     "@manypkg/cli": ^0.21.4
     "@types/node": ^16.4.13
+    babel-plugin-transform-react-remove-prop-types: ^0.4.24
     browserslist-config-autoguru: "*"
     eslint: ^7.28.0
     eslint-plugin-jest: ^24.3.6
