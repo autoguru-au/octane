@@ -393,7 +393,6 @@ type BuildEnv = ReturnType<typeof getBuildEnvs>[number];
 
 const getPublicPath = ({
 	buildEnv,
-	isTenanted,
 	tenant,
 	isDev,
 	projectFolderName,
@@ -407,15 +406,7 @@ const getPublicPath = ({
 	if (isDev) return '/';
 
 	if (buildEnv === 'prod') {
-		if (isTenanted) {
-			const prodTenant = tenant || '#{AutoGuru.Tenant}';
-			const prodAppPath = isTenanted
-				? `${prodTenant}/${projectFolderName}`
-				: `${projectFolderName}`;
-			return `#{PUBLIC_PATH_BASE}/${prodAppPath}/`;
-		} else {
-			return `#{PUBLIC_PATH_BASE}/${projectFolderName}/`;
-		}
+		return `#{PUBLIC_PATH_BASE}/${projectFolderName}/`
 	}
 
 	const folderPath = tenant
