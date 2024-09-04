@@ -1,5 +1,12 @@
 # create-guru
 
+## 11.0.0
+
+### Patch Changes
+
+-   Updated dependencies [7c7dadd]
+    -   gdu@11.0.0
+
 ## 10.0.0
 
 ### Major Changes

@@ -1,5 +1,18 @@
 # gdu
 
+## 11.0.0
+
+### Major Changes
+
+-   7c7dadd: Removes tenant from tenanted asset routes
+
+## 10.0.2
+
+### Patch Changes
+
+-   51cbd2b: Add standalone flag in build file
+-   51cbd2b: Add default standalone value
+
 ## 10.0.1
 
 ### Patch Changes
