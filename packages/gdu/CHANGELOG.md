@@ -1,5 +1,11 @@
 # gdu
 
+## 11.0.1
+
+### Patch Changes
+
+-   b73e4f5: fixes ssr apps getting process.**browser** as true
+
 ## 11.0.0
 
 ### Major Changes
