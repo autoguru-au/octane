@@ -28,6 +28,7 @@ const createLogThing =
 		});
 	};
 
+const isBrowser = typeof window !== 'undefined';
 const printPayload = <T>(payload: Payload<T>) => {
 	const decorated = {
 		...payload,
@@ -38,8 +39,7 @@ const printPayload = <T>(payload: Payload<T>) => {
 		const error = decorated?.message;
 		decorated.message = error.message;
 
-		// @ts-ignore
-		if (!process.__browser__)
+		if (!isBrowser)
 			decorated.payload = Object.assign({}, decorated.payload, {
 				stackTrace: error?.stack,
 			});
@@ -47,8 +47,7 @@ const printPayload = <T>(payload: Payload<T>) => {
 
 	const logMethod = getConsoleMethod(payload);
 
-	// @ts-ignore
-	if (process.__browser__) {
+	if (isBrowser) {
 		logMethod(`${decorated.type} :: ${decorated.message}`, decorated);
 	} else {
 		logMethod(JSON.stringify(decorated));

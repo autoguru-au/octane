@@ -210,6 +210,7 @@ export const createNextJSConfig = (
 	const isProductionSite = productionEnvs.has(process.env.APP_ENV);
 	const guruConfig = getGuruConfig();
 	const basePath = guruConfig?.basePath ?? '';
+	const assetPrefix = guruConfig?.publicPath ?? '';
 
 	return {
 		distDir: `dist/${env}`,
@@ -218,6 +219,7 @@ export const createNextJSConfig = (
 		poweredByHeader: !isProductionSite,
 		transpilePackages,
 		basePath,
+		assetPrefix,
 		cacheMaxMemorySize: 0,
 		i18n: {
 			locales: ['en'],
