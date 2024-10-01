@@ -1,5 +1,11 @@
 # @autoguru/utilities
 
+## 1.2.1
+
+### Patch Changes
+
+-   2eeafc9: logger not longer uses proccess.browser
+
 ## 1.2.0
 
 ### Minor Changes

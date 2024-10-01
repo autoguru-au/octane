@@ -1,5 +1,16 @@
 # gdu
 
+## 11.1.0
+
+### Minor Changes
+
+-   2eeafc9: Adds nextjs assetPrefix support
+
+### Patch Changes
+
+-   Updated dependencies [2eeafc9]
+    -   @autoguru/utilities@1.2.1
+
 ## 11.0.1
 
 ### Patch Changes
