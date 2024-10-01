@@ -132,7 +132,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@autoguru/utilities@^1.2.0, @autoguru/utilities@workspace:packages/utilities":
+"@autoguru/utilities@^1.2.1, @autoguru/utilities@workspace:packages/utilities":
   version: 0.0.0-use.local
   resolution: "@autoguru/utilities@workspace:packages/utilities"
   dependencies:
@@ -10288,7 +10288,7 @@ __metadata:
     "@2fd/graphdoc": ^2.4.0
     "@autoguru/babel-preset": ^3.0.0
     "@autoguru/tsconfig": 1.2.0
-    "@autoguru/utilities": ^1.2.0
+    "@autoguru/utilities": ^1.2.1
     "@babel/core": ^7.15.0
     "@babel/helper-plugin-utils": ^7.24.5
     "@babel/preset-env": ^7.24.5
