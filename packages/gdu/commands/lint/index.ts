@@ -41,7 +41,10 @@ export default async () => {
 				logger.error('response', {
 					processingTime: Date.now() - start,
 					responseHeaders: Object.fromEntries(
-						Object.entries(typeof error.getHeaders === 'function' && error.getHeaders()),
+						Object.entries(
+							typeof error.getHeaders === 'function' &&
+								error.getHeaders(),
+						),
 					),
 					url: 'incomingPath',
 					statusCode: error.statusCode,
@@ -71,7 +74,10 @@ export default async () => {
 				logger.error('response', {
 					processingTime: Date.now() - start,
 					responseHeaders: Object.fromEntries(
-						Object.entries(typeof error.getHeaders === 'function' && error.getHeaders()),
+						Object.entries(
+							typeof error.getHeaders === 'function' &&
+								error.getHeaders(),
+						),
 					),
 					url: 'incomingPath',
 					statusCode: error.statusCode,

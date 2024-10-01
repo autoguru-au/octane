@@ -406,7 +406,7 @@ const getPublicPath = ({
 	if (isDev) return '/';
 
 	if (buildEnv === 'prod') {
-		return `#{PUBLIC_PATH_BASE}/${projectFolderName}/`
+		return `#{PUBLIC_PATH_BASE}/${projectFolderName}/`;
 	}
 
 	const folderPath = tenant
