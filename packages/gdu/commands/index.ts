@@ -113,6 +113,10 @@ export default (app: Sade) => {
 	app.command('gh-actions')
 		.describe('A command to create GitHub actions things')
 		.action(deferredAction(async () => import('./gh-actions')));
+
+	app.command('generate-global-configs')
+		.describe('Generate global configs')
+		.action(deferredAction(async () => import('./global-configs'), IS_NOT_ROOT));
 };
 
 const NOT_READY = wrapAction(() => {
