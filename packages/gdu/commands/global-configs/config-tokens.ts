@@ -77,7 +77,7 @@ export default async () => {
 			return acc;
 		}, {});
 
-		const json = JSON.stringify(FILTERED_TOKENS, null, 2);
+		const data = JSON.stringify(FILTERED_TOKENS, null, 2);
 
 		fs.writeFileSync(
 			path.join(
@@ -86,7 +86,7 @@ export default async () => {
 					? `${getFileName(env)}_${tenant}.json`
 					: `${getFileName(env)}.json`,
 			),
-			json,
+			data,
 		);
 	};
 
