@@ -1,5 +1,11 @@
 # gdu
 
+## 11.2.0
+
+### Minor Changes
+
+-   cd42933: Add scripts for tokens mfe
+
 ## 11.1.0
 
 ### Minor Changes
