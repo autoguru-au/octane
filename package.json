@@ -21,6 +21,7 @@
 		"@manypkg/cli": "^0.21.4",
 		"@types/node": "^16.4.13",
 		"browserslist-config-autoguru": "*",
+		"dotenv": "^16.4.5",
 		"eslint": "^7.28.0",
 		"eslint-plugin-jest": "^24.3.6",
 		"glob": "^7.1.6",
