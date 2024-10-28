@@ -1,19 +1,15 @@
 import * as fs from 'fs';
 import * as path from 'path';
+
+import { getInterfaceKeys } from '../../lib/globalConfigs';
+
 export default async () => {
 	console.log('Global config generate tokens started');
 
 	const typeFilePath = path.resolve( 'packages', 'global-configs', 'processEnvs.d.ts');
-	const fileContent: string = fs.readFileSync(typeFilePath, 'utf-8');
+	const keys = await getInterfaceKeys(typeFilePath);
+
 	type ProcessEnvs = any;
-
-	const regex = /readonly\s+(\w+):/g;
-	let match: RegExpExecArray | null;
-	const keys: (keyof ProcessEnvs)[] = [];
-
-	while ((match = regex.exec(fileContent)) !== null) {
-		keys.push(match[1] as keyof ProcessEnvs);
-	}
 
 	const TOKENS: Record<keyof ProcessEnvs, string | undefined> = keys.reduce((acc, key) => {
 		acc[key] = `process.env.${key.toString()}`;
