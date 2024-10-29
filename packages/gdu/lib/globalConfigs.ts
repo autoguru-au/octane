@@ -31,5 +31,8 @@ export const getInterfaceKeys = async (filePath: string) => {
 }
 
 export const camelCaseToUpperSnakeCase = (str: string) => {
-	return str.replace(/([a-z])([A-Z])/g, '$1_$2').toUpperCase();
+	return str
+		.replace(/([A-Z]+)([A-Z][a-z])/g, '$1_$2') // Detects consecutive uppercase letters followed by uppercase + lowercase
+		.replace(/([a-z])([A-Z])/g, '$1_$2') // Detects changes from lowercase to uppercase
+		.toUpperCase();
 }
