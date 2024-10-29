@@ -1,5 +1,12 @@
 # gdu
 
+## 11.3.0
+
+### Minor Changes
+
+-   4ba495b: GDU: Opens up CSP rules for autoguru.com domains
+-   918d9e2: Script to generate tokens files
+
 ## 11.2.0
 
 ### Minor Changes
