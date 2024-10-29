@@ -116,6 +116,7 @@ export default (app: Sade) => {
 
 	app.command('generate-global-configs')
 		.describe('Generate global configs')
+		.option('-t, --tokens', 'Generate tokens files', '')
 		.action(deferredAction(async () => import('./global-configs'), IS_NOT_ROOT));
 };
 

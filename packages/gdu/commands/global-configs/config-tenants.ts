@@ -71,7 +71,8 @@ export default async () => {
 	if (!fs.existsSync(destinationFolder)) {
 		fs.mkdirSync(destinationFolder, { recursive: true });
 	}
-	const getEnvFile = (mfe, env: ENV, tenant?: TENANT) =>
+
+	const getEnvFiles = (mfe, env: ENV, tenant?: TENANT) => {
 		path.join(
 			process.cwd(),
 			'apps',
@@ -80,55 +81,72 @@ export default async () => {
 			tenant ? `.env.${env}_${tenant}` : `.env.${env}`,
 		);
 
-	const generateTokens = (envFile, mfe, env: ENV, tenant?: TENANT) => {
-		const fileStats = fs.statSync(envFile);
+		const locationFolder = path.join(
+			process.cwd(),
+			'apps',
+			mfe,
+			'.gdu_app_config',
+		);
+
+		const defaultEnvFile = path.join(locationFolder, `.env.defaults`);
+		const envFile = path.join(locationFolder, tenant ? `.env.${env}_${tenant}` : `.env.${env}`);
+
+		return [fs.existsSync(defaultEnvFile)?defaultEnvFile:null, envFile];
+	}
+
+	const generateTokens = (envFiles: string[], mfe, env: ENV, tenant?: TENANT) => {
+		if(!Array.isArray(envFiles)) {
+			throw new TypeError('envFile should be an array');
+		}
+		const fileStats = fs.statSync(envFiles[1]);// if the config file is empty then also ignore the defaults
 		const dirPathMfeApp = path.join(destinationFolder, `${mfe}`);
+		const filteredEnvFiles = envFiles.filter(Boolean)
 		if (!fs.existsSync(dirPathMfeApp)) {
 			fs.mkdirSync(dirPathMfeApp);
 		}
-		let data = '';
 
 		// Check if the file is empty
 		if (fileStats.size > 0) {
-			dotenv.config({ path: envFile, override: true });
+			dotenv.config({ path: filteredEnvFiles, override: true });
 
-			const fileContent = fs.readFileSync(envFile, 'utf8');
+			const fileContent = filteredEnvFiles.reduce(
+				(acc, envFile) => acc + fs.readFileSync(envFile, 'utf-8'),
+				'',
+			);
 			const FILTERED_TOKENS = Object.keys(TOKENS).reduce((acc, key) => {
 				if (fileContent.includes(key)) {
 					acc[key] = process.env[key];
 				}
 				return acc;
 			}, {});
-
-			data = JSON.stringify(FILTERED_TOKENS, null, 2);
+			fs.writeFileSync(
+				path.join(
+					dirPathMfeApp,
+					tenant ? `${env}_${tenant}.json` : `${env}.json`,
+				),
+				JSON.stringify(FILTERED_TOKENS, null, 2),
+			);
 		}
-
-		fs.writeFileSync(
-			path.join(
-				dirPathMfeApp,
-				tenant ? `${env}_${tenant}.json` : `${env}.json`,
-			),
-			data,
-		);
 	};
+
 
 	mfeProjects.forEach((mfe) => {
 		envs.forEach((env) => {
 			if (env === 'tokens') {
-				const envFile = getEnvFile(mfe, env);
+				const envFiles = getEnvFiles(mfe, env);
 				copyTokens(mfe);
-				if (fs.existsSync(envFile)) {
-					generateTokens(envFile, mfe, env);
+				if (fs.existsSync(envFiles[1])) {
+					generateTokens(envFiles, mfe, env);
 				}
 			}
 			tenants.forEach((tenant) => {
-				const envFile = getEnvFile(mfe, env, tenant);
-				if (fs.existsSync(envFile)) {
-					generateTokens(envFile, mfe, env, tenant);
+				const envFiles = getEnvFiles(mfe, env, tenant);
+				if (fs.existsSync(envFiles[1])) {
+					generateTokens(envFiles, mfe, env, tenant);
 				}
 			});
 		});
 	});
-	console.log('Global config tokens finished');
 
+	console.log('Global config tokens finished');
 }
