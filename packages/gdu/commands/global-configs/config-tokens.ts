@@ -96,7 +96,6 @@ export default async () => {
 				generateTokens(env, tenant);
 			});
 		}
-		generateTokens(env);
 	});
 	console.log('Global config tokens finished');
 
