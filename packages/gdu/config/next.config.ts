@@ -30,13 +30,17 @@ interface CSPItem {
 export const CSPDefaultsList: CSPItem[] = [
 	{
 		key: 'frame-ancestors',
-		values: ['https://*.autoguru.com.au'],
+		values: [
+			'https://*.autoguru.com.au',
+			'https://*.autoguru.com',
+		],
 	},
 	{
 		key: 'frame-src',
 		values: [
 			"'self'",
 			'https://*.autoguru.com.au',
+			'https://*.autoguru.com',
 			'https://www.youtube.com',
 			'https://www.google.com',
 			'https://*.doubleclick.net',
@@ -49,6 +53,7 @@ export const CSPDefaultsList: CSPItem[] = [
 			"'self'",
 			"'unsafe-inline'",
 			'https://*.autoguru.com.au',
+			'https://*.autoguru.com',
 			'https://*.googleapis.com',
 			'https://*.googleadservices.com',
 		],
@@ -59,6 +64,7 @@ export const CSPDefaultsList: CSPItem[] = [
 			"'self'",
 			'data:',
 			'https://*.autoguru.com.au',
+			'https://*.autoguru.com',
 			'https://*.autoguru.au',
 			'https://*.googletagmanager.com',
 			'https://*.googleapis.com',
@@ -77,6 +83,7 @@ export const CSPDefaultsList: CSPItem[] = [
 		key: 'font-src',
 		values: [
 			'https://*.autoguru.com.au',
+			'https://*.autoguru.com',
 			'https://*.googleapis.com',
 			'https://*.gstatic.com',
 		],
@@ -98,6 +105,7 @@ export const CSPDefaultsList: CSPItem[] = [
 		values: [
 			"'self'",
 			'*.autoguru.com.au',
+			'*.autoguru.com',
 			'https://*.googletagmanager.com',
 			'https://*.google-analytics.com',
 			'https://*.google.com',
@@ -121,6 +129,7 @@ export const CSPDefaultsList: CSPItem[] = [
 			"'self'",
 			"'unsafe-inline'",
 			'https://*.autoguru.com.au',
+			'https://*.autoguru.com',
 			'https://*.google-analytics.com',
 			'https://*.googletagmanager.com',
 			'https://*.googleapis.com',
@@ -144,6 +153,7 @@ export const CSPDefaultsList: CSPItem[] = [
 			"'self'",
 			"'unsafe-eval'",
 			'https://*.autoguru.com.au',
+			'https://*.autoguru.com',
 			'https://*.googleadservices.com',
 			'https://*.googleapis.com',
 			'https://*.googletagmanager.com',
@@ -234,17 +244,19 @@ export const createNextJSConfig = (
 			formats: ['image/avif', 'image/webp'],
 			deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
 			imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-			domains: [
-				'www.autoguru.com.au',
-				'dev.autoguru.com.au',
-				'test.autoguru.com.au',
-				'uat.autoguru.com.au',
-				'preprod.autoguru.com.au',
-				'cdn.autoguru.com.au',
-				'cdn-dev.autoguru.com.au',
-				'cdn-test.autoguru.com.au',
-				'cdn-uat.autoguru.com.au',
-				'cdn-preprod.autoguru.com.au',
+			remotePatterns: [
+				{
+					protocol: 'https',
+					hostname: '**.autoguru.com.au'
+				},
+				{
+					protocol: 'https',
+					hostname: '**.autoguru.com'
+				},
+				{
+					protocol: 'https',
+					hostname: '**.autoguru.co.nz'
+				},
 			],
 		},
 		webpack: (defaultConfig) => {
