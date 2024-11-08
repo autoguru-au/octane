@@ -114,6 +114,10 @@ export default (app: Sade) => {
 		.describe('A command to create GitHub actions things')
 		.action(deferredAction(async () => import('./gh-actions')));
 
+	app.command('generate-mfe-list')
+		.describe('Generate mfe list')
+		.action(deferredAction(async () => import('./mfe-list'), IS_NOT_ROOT));
+
 	app.command('generate-global-configs')
 		.describe('Generate global configs')
 		.option('-t, --tokens', 'Generate tokens files', '')
