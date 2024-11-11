@@ -64,9 +64,10 @@ export default async () => {
 	};
 
 // force delete destination folder if it exists
-	if (fs.existsSync(destinationFolder)) {
-		fs.rmSync(destinationFolder, { recursive: true });
-	}
+// TODO: Add this feautre back after AUL retirement is complete.
+	//if (fs.existsSync(destinationFolder)) {
+	//	fs.rmSync(destinationFolder, { recursive: true });
+	//}
 // create destination folder
 	if (!fs.existsSync(destinationFolder)) {
 		fs.mkdirSync(destinationFolder, { recursive: true });
