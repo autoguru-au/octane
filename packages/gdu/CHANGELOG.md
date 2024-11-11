@@ -1,5 +1,11 @@
 # gdu
 
+## 11.4.0
+
+### Minor Changes
+
+-   6efbdca: Generated mfe list file script
+
 ## 11.3.0
 
 ### Minor Changes
