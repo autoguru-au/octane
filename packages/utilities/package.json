@@ -10,7 +10,6 @@
 	],
 	"sideEffects": false,
 	"main": "./dist/index.js",
-	"module": "./dist/utilities.esm.js",
 	"types": "./dist/index.d.ts",
 	"scripts": {
 		"build": "tsc",
