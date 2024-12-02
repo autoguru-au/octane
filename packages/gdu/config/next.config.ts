@@ -208,7 +208,7 @@ export const defaultSecurityHeaders = [
 	},
 ];
 
-const productionEnvs = new Set(['prod', 'dockerprod', 'preprod']);
+const productionEnvs = new Set(['prod', 'dockerprod', 'preprod', 'shared']);
 
 export const createNextJSConfig = (
 	buildEnv,
