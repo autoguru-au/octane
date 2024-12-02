@@ -1,5 +1,11 @@
 # @autoguru/utilities
 
+## 1.2.2
+
+### Patch Changes
+
+-   db80bba: Removed unused `modules` config
+
 ## 1.2.1
 
 ### Patch Changes
