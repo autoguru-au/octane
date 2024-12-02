@@ -6,8 +6,9 @@ const tenantsList = [
 	'au',
 	'au-legacy',
 	'nz',
+	'global'
 ]
-const envs = ['dev', 'uat', 'test', 'preprod', 'prod'];
+const envs = ['dev', 'uat', 'test', 'preprod', 'prod', 'shared'];
 
 function checkTenantsEnvs(appsDir, directory) {
 	const appConfig = path.resolve(appsDir, directory, '.gdu_app_config');

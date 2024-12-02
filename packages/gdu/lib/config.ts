@@ -1,4 +1,4 @@
-import { isAbsolute, join, basename } from 'path';
+import { basename, isAbsolute, join } from 'path';
 
 import { diary } from 'diary';
 
@@ -14,7 +14,9 @@ export interface GuruConfig {
 		| 'ssr'
 		| 'spa'
 		| 'serverless'
+		| 'serverless-cdk'
 		| 'serverless-resource'
+		// @deprecated migrate serverless-resource SAM CLI stacks to AWS cdk
 		| 'web-component';
 	mountDOMId?: string;
 	mountDOMClass?: string;
