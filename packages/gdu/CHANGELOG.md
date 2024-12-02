@@ -1,5 +1,11 @@
 # gdu
 
+## 11.5.0
+
+### Minor Changes
+
+-   a44f1e5: Adds new tenant, environment and mfe types
+
 ## 11.4.0
 
 ### Minor Changes
