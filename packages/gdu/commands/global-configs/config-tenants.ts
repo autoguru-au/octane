@@ -10,6 +10,35 @@ const tenants = ['au', 'nz', 'au-legacy', 'global'];
 type ENV = (typeof envs)[number];
 type TENANT = (typeof tenants)[number] ;
 
+const environmentOffsets: Record<string, number> = {
+	dev: 1,
+	test: 1,
+	uat: 2,
+	preprod: 3,
+	prod: 1,
+	tokens: 0,
+	shared: 0,
+};
+
+const scopeOffsets: Record<string, number> = {
+	'global': 1,
+	'au': 2,
+	'nz': 3,
+	'au-legacy': 2,
+};
+
+const mfeApplicationOffset = 500;
+
+const mapLBPriority = (value: string, env: ENV, tenant?: TENANT) => {
+	const envOffset = environmentOffsets[env.toLowerCase()] ?? 0;
+	const scopeOffset = tenant ? scopeOffsets[tenant.toLowerCase()] ?? 0 : 0;
+	return (envOffset * 10000) + (scopeOffset * 1000) + (mfeApplicationOffset + parseInt(value, 10) || 0);
+}
+
+const tokenMap: Record<string, (value: string, env: ENV, tenant?: TENANT) => any> = {
+	appListenerPriority: (value, env, tenant) => mapLBPriority(value, env, tenant),
+};
+
 export default async () => {
 	console.log('Global config tenants started');
 	const TOKENS = await getTokens();
@@ -116,7 +145,14 @@ export default async () => {
 			);
 			const FILTERED_TOKENS = Object.keys(TOKENS).reduce((acc, key) => {
 				if (fileContent.includes(key)) {
-					acc[key] = process.env[key];
+					const mapperEntry = Object.keys(tokenMap).find(
+						mapKey => key.toLowerCase().startsWith(mapKey.toLowerCase()),
+					);
+					if (mapperEntry) {
+						acc[key] = tokenMap[mapperEntry](process.env[key]!, env, tenant);
+					} else {
+						acc[key] = process.env[key];
+					}
 				}
 				return acc;
 			}, {});
@@ -149,5 +185,5 @@ export default async () => {
 		});
 	});
 
-	console.log('Global config tokens finished');
+	console.log('MFE app config tokens finished');
 }
