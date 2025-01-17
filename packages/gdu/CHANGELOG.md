@@ -1,5 +1,11 @@
 # gdu
 
+## 11.6.0
+
+### Minor Changes
+
+-   be49ee0: Adds loadbalancing rule priority grouping
+
 ## 11.5.0
 
 ### Minor Changes
