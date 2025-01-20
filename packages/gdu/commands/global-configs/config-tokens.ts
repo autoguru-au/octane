@@ -5,7 +5,7 @@ import * as dotenv from 'dotenv';
 
 import { getTokens } from '../../lib/globalConfigs';
 
-const envs = ['uat', 'preprod', 'dev', 'prod_build', 'test', 'tokens', 'shared'];
+const envs = ['uat', 'preprod', 'dev', 'prod_build', 'test', 'tokens'];
 const tenants = ['au', 'nz', 'au-legacy', 'global'];
 type ENV = (typeof envs)[number];
 type TENANT = (typeof tenants)[number] ;
@@ -95,6 +95,8 @@ export default async () => {
 			tenants.forEach((tenant: TENANT) => {
 				generateTokens(env, tenant);
 			});
+		} else {
+			generateTokens(env);
 		}
 	});
 	console.log('Global config tokens finished');
