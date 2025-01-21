@@ -1,5 +1,11 @@
 # gdu
 
+## 11.6.1
+
+### Patch Changes
+
+-   4c477d2: GDU: Fixed global prod config tokens
+
 ## 11.6.0
 
 ### Minor Changes
