@@ -5,7 +5,7 @@ import * as dotenv from 'dotenv';
 
 import { getTokens } from '../../lib/globalConfigs';
 
-const envs = ['uat', 'preprod', 'dev', 'prod', 'test', 'tokens', 'shared'];
+const envs = ['uat', 'preprod', 'dev', 'prod', 'test', 'tokens'];
 const tenants = ['au', 'nz', 'au-legacy', 'global'];
 type ENV = (typeof envs)[number];
 type TENANT = (typeof tenants)[number] ;
@@ -17,7 +17,6 @@ const environmentOffsets: Record<string, number> = {
 	preprod: 3,
 	prod: 1,
 	tokens: 0,
-	shared: 0,
 };
 
 const scopeOffsets: Record<string, number> = {
