@@ -1,5 +1,11 @@
 # gdu
 
+## 11.7.0
+
+### Minor Changes
+
+-   bb27c0b: Updates MFE lb priority offset
+
 ## 11.6.1
 
 ### Patch Changes
