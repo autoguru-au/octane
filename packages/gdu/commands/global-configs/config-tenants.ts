@@ -26,7 +26,7 @@ const scopeOffsets: Record<string, number> = {
 	'au-legacy': 2,
 };
 
-const mfeApplicationOffset = 500;
+const mfeApplicationOffset = 0;
 
 const mapLBPriority = (value: string, env: ENV, tenant?: TENANT) => {
 	const envOffset = environmentOffsets[env.toLowerCase()] ?? 0;
