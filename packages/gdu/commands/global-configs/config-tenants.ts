@@ -5,10 +5,10 @@ import * as dotenv from 'dotenv';
 
 import { getTokens } from '../../lib/globalConfigs';
 
-const envs = ['uat', 'preprod', 'dev', 'prod', 'test', 'tokens'];
-const tenants = ['au', 'nz', 'au-legacy', 'global'];
+const envs = ['uat', 'preprod', 'dev', 'prod', 'test', 'tokens', 'shared'];
+const tenants = ['au', 'nz', 'global'];
 type ENV = (typeof envs)[number];
-type TENANT = (typeof tenants)[number] ;
+type TENANT = (typeof tenants)[number];
 
 const environmentOffsets: Record<string, number> = {
 	dev: 1,
@@ -17,13 +17,14 @@ const environmentOffsets: Record<string, number> = {
 	preprod: 3,
 	prod: 1,
 	tokens: 0,
+	shared: 1,
 };
 
 const scopeOffsets: Record<string, number> = {
-	'global': 1,
-	'au': 2,
-	'nz': 3,
-	'au-legacy': 2,
+	global: 1,
+	au: 2,
+	nz: 3,
+	shared: 0,
 };
 
 const mfeApplicationOffset = 0;
@@ -31,11 +32,19 @@ const mfeApplicationOffset = 0;
 const mapLBPriority = (value: string, env: ENV, tenant?: TENANT) => {
 	const envOffset = environmentOffsets[env.toLowerCase()] ?? 0;
 	const scopeOffset = tenant ? scopeOffsets[tenant.toLowerCase()] ?? 0 : 0;
-	return (envOffset * 10000) + (scopeOffset * 1000) + (mfeApplicationOffset + parseInt(value, 10) || 0);
-}
+	return (
+		envOffset * 10_000 +
+		scopeOffset * 1000 +
+		(mfeApplicationOffset + Number.parseInt(value, 10) || 0)
+	);
+};
 
-const tokenMap: Record<string, (value: string, env: ENV, tenant?: TENANT) => any> = {
-	appListenerPriority: (value, env, tenant) => mapLBPriority(value, env, tenant),
+const tokenMap: Record<
+	string,
+	(value: string, env: ENV, tenant?: TENANT) => any
+> = {
+	appListenerPriority: (value, env, tenant) =>
+		mapLBPriority(value, env, tenant),
 };
 
 export default async () => {
@@ -91,12 +100,11 @@ export default async () => {
 		}
 	};
 
-// force delete destination folder if it exists
-// TODO: Add this feautre back after AUL retirement is complete.
-	//if (fs.existsSync(destinationFolder)) {
-	//	fs.rmSync(destinationFolder, { recursive: true });
-	//}
-// create destination folder
+	// force delete destination folder if it exists
+	if (fs.existsSync(destinationFolder)) {
+		fs.rmSync(destinationFolder, { recursive: true });
+	}
+	// create destination folder
 	if (!fs.existsSync(destinationFolder)) {
 		fs.mkdirSync(destinationFolder, { recursive: true });
 	}
@@ -118,18 +126,26 @@ export default async () => {
 		);
 
 		const defaultEnvFile = path.join(locationFolder, `.env.defaults`);
-		const envFile = path.join(locationFolder, tenant ? `.env.${env}_${tenant}` : `.env.${env}`);
+		const envFile = path.join(
+			locationFolder,
+			tenant ? `.env.${env}_${tenant}` : `.env.${env}`,
+		);
 
-		return [fs.existsSync(defaultEnvFile)?defaultEnvFile:null, envFile];
-	}
+		return [fs.existsSync(defaultEnvFile) ? defaultEnvFile : null, envFile];
+	};
 
-	const generateTokens = (envFiles: string[], mfe, env: ENV, tenant?: TENANT) => {
-		if(!Array.isArray(envFiles)) {
+	const generateTokens = (
+		envFiles: string[],
+		mfe,
+		env: ENV,
+		tenant?: TENANT,
+	) => {
+		if (!Array.isArray(envFiles)) {
 			throw new TypeError('envFile should be an array');
 		}
-		const fileStats = fs.statSync(envFiles[1]);// if the config file is empty then also ignore the defaults
+		const fileStats = fs.statSync(envFiles[1]); // if the config file is empty then also ignore the defaults
 		const dirPathMfeApp = path.join(destinationFolder, `${mfe}`);
-		const filteredEnvFiles = envFiles.filter(Boolean)
+		const filteredEnvFiles = envFiles.filter(Boolean);
 		if (!fs.existsSync(dirPathMfeApp)) {
 			fs.mkdirSync(dirPathMfeApp);
 		}
@@ -144,11 +160,15 @@ export default async () => {
 			);
 			const FILTERED_TOKENS = Object.keys(TOKENS).reduce((acc, key) => {
 				if (fileContent.includes(key)) {
-					const mapperEntry = Object.keys(tokenMap).find(
-						mapKey => key.toLowerCase().startsWith(mapKey.toLowerCase()),
+					const mapperEntry = Object.keys(tokenMap).find((mapKey) =>
+						key.toLowerCase().startsWith(mapKey.toLowerCase()),
 					);
 					if (mapperEntry) {
-						acc[key] = tokenMap[mapperEntry](process.env[key]!, env, tenant);
+						acc[key] = tokenMap[mapperEntry](
+							process.env[key]!,
+							env,
+							tenant,
+						);
 					} else {
 						acc[key] = process.env[key];
 					}
@@ -164,7 +184,6 @@ export default async () => {
 			);
 		}
 	};
-
 
 	mfeProjects.forEach((mfe) => {
 		envs.forEach((env) => {
@@ -185,4 +204,4 @@ export default async () => {
 	});
 
 	console.log('MFE app config tokens finished');
-}
+};
