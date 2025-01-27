@@ -1,5 +1,12 @@
 # create-guru
 
+## 12.0.0
+
+### Patch Changes
+
+-   Updated dependencies [b10adcc]
+    -   gdu@12.0.0
+
 ## 11.0.0
 
 ### Patch Changes

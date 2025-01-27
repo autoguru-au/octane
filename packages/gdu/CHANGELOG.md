@@ -1,5 +1,11 @@
 # gdu
 
+## 12.0.0
+
+### Major Changes
+
+-   b10adcc: GDU: AU Legacy tenant is removed
+
 ## 11.7.0
 
 ### Minor Changes
