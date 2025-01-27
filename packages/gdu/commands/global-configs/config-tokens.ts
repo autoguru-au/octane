@@ -6,9 +6,10 @@ import * as dotenv from 'dotenv';
 import { getTokens } from '../../lib/globalConfigs';
 
 const envs = ['uat', 'preprod', 'dev', 'prod_build', 'test', 'tokens'];
-const tenants = ['au', 'nz', 'global'];
+const tenants = ['au', 'nz', 'au-legacy', 'global'];
 type ENV = (typeof envs)[number];
-type TENANT = (typeof tenants)[number];
+type TENANT = (typeof tenants)[number] ;
+
 
 export default async () => {
 	console.log('Global config tokens started');
@@ -37,7 +38,11 @@ export default async () => {
 	);
 
 	const copyTokens = () => {
-		const prodFile = path.join(process.cwd(), '.gdu_config', '.env.prod');
+		const prodFile = path.join(
+			process.cwd(),
+			'.gdu_config',
+			'.env.prod',
+		);
 		const tokensFile = path.join(
 			process.cwd(),
 			'.gdu_config',
@@ -67,7 +72,8 @@ export default async () => {
 		dotenv.config({ path: [defaultsFile, envFile], override: true });
 
 		const FILTERED_TOKENS = Object.keys(TOKENS).reduce((acc, key) => {
-			if (process.env[key]) acc[key] = process.env[key];
+			if (process.env[key])
+				acc[key] = process.env[key];
 			return acc;
 		}, {});
 
@@ -94,4 +100,5 @@ export default async () => {
 		}
 	});
 	console.log('Global config tokens finished');
-};
+
+}

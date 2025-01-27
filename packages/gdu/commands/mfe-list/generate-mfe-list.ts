@@ -2,14 +2,19 @@ import fs from 'fs';
 import * as path from 'path';
 const appsDir = path.resolve('apps');
 
-const tenantsList = ['au', 'nz', 'global'];
+const tenantsList = [
+	'au',
+	'au-legacy',
+	'nz',
+	'global'
+]
 const envs = ['dev', 'uat', 'test', 'preprod', 'prod', 'shared'];
 
 function checkTenantsEnvs(appsDir, directory) {
 	const appConfig = path.resolve(appsDir, directory, '.gdu_app_config');
-	const tenants = [];
+	const tenants = []
 	for (const tenant of tenantsList) {
-		const envsList = [];
+		const envsList = []
 		for (const env of envs) {
 			const tenantEnvFile = path.join(appConfig, `.env.${env}_${tenant}`);
 			if (fs.existsSync(tenantEnvFile)) {
@@ -17,7 +22,7 @@ function checkTenantsEnvs(appsDir, directory) {
 			}
 		}
 		if (envsList.length > 0) {
-			tenants[tenant] = envsList;
+			tenants[tenant] = envsList ;
 		}
 	}
 	return tenants;
@@ -40,9 +45,7 @@ async function generateMfeLists() {
 		if (fs.existsSync(configPath)) {
 			const tenants = checkTenantsEnvs(appsDir, directory);
 			// const { type, octopusProjectName } = require(configPath);
-			const { type, octopusProjectName } = (await import(
-				configPath
-			)) as OctopusConfig;
+			const { type, octopusProjectName } = (await import(configPath)) as OctopusConfig;
 
 			const mfe = {
 				name: directory,
@@ -71,18 +74,15 @@ async function generateMfeLists() {
 
 // extract tenants into tenants-list.json
 async function generateTenants() {
-	const dirPath = path.resolve('.mfe-data');
+	const dirPath = path.resolve( '.mfe-data');
 	if (!fs.existsSync(dirPath)) {
 		fs.mkdirSync(dirPath);
 	}
-	fs.writeFileSync(
-		path.join(dirPath, 'tenants-list.json'),
-		JSON.stringify(tenantsList, null, 2),
-	);
+	fs.writeFileSync(path.join(dirPath, 'tenants-list.json'), JSON.stringify(tenantsList, null, 2));
 	return tenantsList;
 }
 
 export default async () => {
 	await generateTenants();
-	await generateMfeLists();
-};
+	await generateMfeLists()
+}

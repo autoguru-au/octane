@@ -30,7 +30,10 @@ interface CSPItem {
 export const CSPDefaultsList: CSPItem[] = [
 	{
 		key: 'frame-ancestors',
-		values: ['https://*.autoguru.com.au', 'https://*.autoguru.com'],
+		values: [
+			'https://*.autoguru.com.au',
+			'https://*.autoguru.com',
+		],
 	},
 	{
 		key: 'frame-src',
@@ -244,15 +247,15 @@ export const createNextJSConfig = (
 			remotePatterns: [
 				{
 					protocol: 'https',
-					hostname: '**.autoguru.com.au',
+					hostname: '**.autoguru.com.au'
 				},
 				{
 					protocol: 'https',
-					hostname: '**.autoguru.com',
+					hostname: '**.autoguru.com'
 				},
 				{
 					protocol: 'https',
-					hostname: '**.autoguru.co.nz',
+					hostname: '**.autoguru.co.nz'
 				},
 			],
 		},
