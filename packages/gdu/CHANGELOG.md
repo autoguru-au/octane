@@ -1,5 +1,12 @@
 # gdu
 
+## 12.1.0
+
+### Minor Changes
+
+-   d1e0bb7: GDU: Filters none existing tenant/env combinations out before
+    generating config json files
+
 ## 12.0.0
 
 ### Major Changes
