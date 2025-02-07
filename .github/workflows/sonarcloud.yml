@@ -58,11 +58,10 @@ jobs:
         run: |
           sonar-scanner \
             -Dsonar.projectKey="${{ github.event.repository.name }}" \
-            -Dsonar.sources=lib/components,lib/hooks,lib/utils \
+            -Dsonar.sources=packages \
             -Dsonar.exclusions="**/node_modules/**,**/stories/**,**/*.stories.tsx" \
-            -Dsonar.tests=lib \
-            -Dsonar.test.inclusions="**/*.test.tsx" \
             -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info \
             -Dsonar.sourceEncoding=UTF-8 \
             -Dsonar.host.url="${{ secrets.SONAR_HOST_URL }}" \
             -Dsonar.login="${{ secrets.SONAR_TOKEN }}"
+      
