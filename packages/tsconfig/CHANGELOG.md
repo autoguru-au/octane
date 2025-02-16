@@ -1,5 +1,12 @@
 # @autoguru/tsconfig
 
+## 1.2.1
+
+### Patch Changes
+
+-   f8a9186: borwoerslist-config-autoguru update gdu update @autoguru/tsconfig
+    update
+
 ## 1.2.0
 
 ### Minor Changes
