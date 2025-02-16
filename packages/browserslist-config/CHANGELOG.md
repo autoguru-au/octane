@@ -1,5 +1,12 @@
 # browserslist-config-autoguru
 
+## 2.4.1
+
+### Patch Changes
+
+-   f8a9186: borwoerslist-config-autoguru update gdu update @autoguru/tsconfig
+    update
+
 ## 2.4.0
 
 ### Minor Changes

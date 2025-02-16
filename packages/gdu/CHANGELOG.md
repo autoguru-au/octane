@@ -1,5 +1,15 @@
 # gdu
 
+## 12.1.1
+
+### Patch Changes
+
+-   f8a9186: borwoerslist-config-autoguru update gdu update @autoguru/tsconfig
+    update
+-   Updated dependencies [f8a9186]
+    -   browserslist-config-autoguru@2.4.1
+    -   @autoguru/tsconfig@1.2.1
+
 ## 12.1.0
 
 ### Minor Changes
