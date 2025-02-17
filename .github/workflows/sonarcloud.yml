@@ -18,44 +18,38 @@ jobs:
       - name: Setup environment
         id: setups
         run: |
-          echo "YARN_CACHE=$(yarn cache dir)" >> $GITHUB_ENV
-          echo "NODE_VERSION=$(jq -r '.volta.node' package.json)" >> $GITHUB_ENV
-
+          echo "yarn_cache=$(yarn cache dir)" >> $GITHUB_OUTPUT
+          echo "node_version=$(jq -r '.volta.node' package.json)" >> $GITHUB_OUTPUT
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version: ${{ steps.setups.outputs.node_version }}
           check-latest: true
 
       - name: Yarn cache
         uses: actions/cache@v3
         with:
-          path: ${{ env.YARN_CACHE }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}-node-${{ env.NODE_VERSION }}
+          path: ${{ steps.setups.outputs.yarn_cache }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}-node-${{ steps.setups.outputs.node_version }}
 
       - run: yarn --immutable
 
       - name: Lint
         run: yarn lint
 
-      - name: Run Tests & Generate Coverage
+      - name: Test
         run: yarn test --no-cache --ci --coverage
 
-      - name: Validate Coverage Report
-        id: check_coverage
+      - name: Fix lcov paths
         run: |
-          if [ -f coverage/lcov.info ]; then
-            echo "COVERAGE_EXISTS=true" >> $GITHUB_ENV
-          else
-            echo "COVERAGE_EXISTS=false" >> $GITHUB_ENV
-          fi
-
+          echo "Fixing paths in lcov.info..."
+          sed -i 's#\.\./##g' coverage/lcov.info
+          echo "Fixed lcov.info paths:"
+          head -n 20 coverage/lcov.info
       - name: Install Sonar Scanner
-        if: env.COVERAGE_EXISTS == 'true'
         run: npm install -g sonar-scanner
 
-      - name: Run SonarQube Analysis
-        if: env.COVERAGE_EXISTS == 'true'
+      - name: Run SonarQube analysis
         env:
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
