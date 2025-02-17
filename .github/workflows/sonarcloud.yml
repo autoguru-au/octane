@@ -15,29 +15,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup environment
-        run: |
-          echo "YARN_CACHE_DIR=$(yarn cache dir 2>/dev/null | tr -d '\n' | tr -d '\r')" >> $GITHUB_ENV
-          NODE_VERSION=$(jq -r '.volta.node // empty' package.json 2>/dev/null | tr -d '\n' | tr -d '\r')
-          if [ -z "$NODE_VERSION" ]; then
-            echo "Error: No Node.js version found in package.json under .volta.node"
-            exit 1
-          fi
-          echo "NODE_VERSION=$NODE_VERSION" >> $GITHUB_ENV
-
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ env.NODE_VERSION }}
-
-      - name: Cache Yarn dependencies
-        uses: actions/cache@v3
-        with:
-          path: ${{ env.YARN_CACHE_DIR }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}-node-${{ env.NODE_VERSION }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-${{ env.NODE_VERSION }}-
-            ${{ runner.os }}-yarn-
+          node-version: $(jq -r '.volta.node' package.json)
 
       - run: yarn --immutable
 
