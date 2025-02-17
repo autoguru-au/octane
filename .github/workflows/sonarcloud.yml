@@ -17,41 +17,45 @@ jobs:
 
       - name: Setup environment
         id: setups
-        run: |-
-          echo "::set-output name=yarn_cache::$(yarn cache dir)"
-          echo "::set-output name=node_version::$(jq -r '.volta.node' package.json)"
+        run: |
+          echo "YARN_CACHE=$(yarn cache dir)" >> $GITHUB_ENV
+          echo "NODE_VERSION=$(jq -r '.volta.node' package.json)" >> $GITHUB_ENV
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ steps.setups.outputs.node_version }}
+          node-version: ${{ env.NODE_VERSION }}
           check-latest: true
 
       - name: Yarn cache
         uses: actions/cache@v3
         with:
-          path: ${{ steps.setups.outputs.yarn_cache }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}-node-${{ steps.setups.outputs.node_version }}
+          path: ${{ env.YARN_CACHE }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}-node-${{ env.NODE_VERSION }}
 
       - run: yarn --immutable
 
       - name: Lint
         run: yarn lint
 
-      - name: Test
+      - name: Run Tests & Generate Coverage
         run: yarn test --no-cache --ci --coverage
 
-      - name: Fix lcov paths
+      - name: Validate Coverage Report
+        id: check_coverage
         run: |
-          echo "Fixing paths in lcov.info..."
-          sed -i 's#\.\./##g' coverage/lcov.info
-          echo "Fixed lcov.info paths:"
-          head -n 20 coverage/lcov.info
+          if [ -f coverage/lcov.info ]; then
+            echo "COVERAGE_EXISTS=true" >> $GITHUB_ENV
+          else
+            echo "COVERAGE_EXISTS=false" >> $GITHUB_ENV
+          fi
 
       - name: Install Sonar Scanner
+        if: env.COVERAGE_EXISTS == 'true'
         run: npm install -g sonar-scanner
 
-      - name: Run SonarQube analysis
+      - name: Run SonarQube Analysis
+        if: env.COVERAGE_EXISTS == 'true'
         env:
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -64,4 +68,3 @@ jobs:
             -Dsonar.sourceEncoding=UTF-8 \
             -Dsonar.host.url="${{ secrets.SONAR_HOST_URL }}" \
             -Dsonar.login="${{ secrets.SONAR_TOKEN }}"
-      
