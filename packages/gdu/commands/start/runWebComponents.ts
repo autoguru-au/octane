@@ -124,14 +124,17 @@ export const runWebComponents = async (guruConfig: GuruConfig, component) => {
 		}
 	});
 
-	const devServer = new WebpackDevServer(compiler, {
-		static: join(PROJECT_ROOT, 'public'),
-		host: hosts[0],
-		allowedHosts: hosts,
-		historyApiFallback: true,
-		hot: true,
-		port: guruConfig.port,
-	});
+	const devServer = new WebpackDevServer(
+		compiler as any,
+		{
+			static: join(PROJECT_ROOT, 'public'),
+			host: hosts[0],
+			allowedHosts: hosts,
+			historyApiFallback: true,
+			hot: true,
+			port: guruConfig.port,
+		} as any,
+	);
 
 	devServer.start().catch((error) => {
 		if (error) {

@@ -8,6 +8,10 @@ import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import Dotenv from 'dotenv-webpack';
 import envCI from 'env-ci';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import {
+	defineReactCompilerLoaderOption,
+	reactCompilerLoader,
+} from 'react-compiler-webpack';
 import TerserPlugin from 'terser-webpack-plugin';
 import { TreatPlugin } from 'treat/webpack-plugin';
 import { TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
@@ -206,6 +210,16 @@ export const baseOptions = (
 		module: {
 			strictExportPresence: true,
 			rules: [
+				{
+					test: /\.[cm]?[jt]sx?$/i,
+					exclude: /node_modules/,
+					use: [
+						{
+							loader: reactCompilerLoader,
+							options: defineReactCompilerLoaderOption({}),
+						},
+					],
+				},
 				{
 					test: /\.css$/i,
 					oneOf: [
@@ -443,11 +457,13 @@ export const makeWebpackConfig = (
 			sourceMapFilename: 'sourceMaps/[file].map',
 			pathinfo: false,
 		},
-		externals: standalone
-			? {}
-			: {
-					react: 'React',
-					'react-dom': 'ReactDOM',
-			  },
+		externalsType: 'umd',
+		externals:
+			standalone || true // TODO: Enable react sharing when react 19 support is added
+				? {}
+				: {
+						react: 'React',
+						'react-dom': 'ReactDOM',
+				  },
 	};
 };

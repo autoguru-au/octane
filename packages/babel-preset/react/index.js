@@ -10,14 +10,15 @@ module.exports = function autoGuruReactPreset(api, options = {}) {
 	return {
 		presets: [
 			[
-				require.resolve('@babel/preset-react'),
+				'@babel/preset-react',
 				{
 					useBuiltIns: true,
 					development: dev,
-					runtime: 'classic',
+					runtime: 'automatic',
 				},
 			],
 		],
+
 		plugins: [
 			!dev &&
 				require.resolve(
