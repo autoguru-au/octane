@@ -52,7 +52,12 @@ jobs:
 
       # 🔎 TypeScript Type Checking
       - name: TypeScript Check
-        run: yarn tsc --noEmit --skipLibCheck
+        run: |
+          if [ -f "tsconfig.json" ]; then
+            yarn tsc --noEmit --skipLibCheck
+          else
+            echo "⚠️ No tsconfig.json found, skipping TypeScript check."
+          fi
 
       # 🏗 Run Tests (if enabled)
       - name: Run Tests with Coverage
