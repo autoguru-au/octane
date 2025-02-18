@@ -1,6 +1,9 @@
 name: SonarQube CI
 
-on: push
+on: 
+  push:
+    branches:
+      mainxx
 
 jobs:
   test:

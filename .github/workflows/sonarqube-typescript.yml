@@ -69,6 +69,7 @@ jobs:
 
       # 🛠 Verify Terraform Installation
       - name: Verify Terraform Installation
+        if: env.ENABLE_LINT == 'false'
         run: terraform version
 
       # 🔧 Generate Relay Files (if applicable)
