@@ -1,5 +1,18 @@
 # gdu
 
+## 12.2.0
+
+### Minor Changes
+
+-   28011c4: Update Babel presets and configurations for React 19 support
+
+### Patch Changes
+
+-   Updated dependencies [28011c4]
+    -   @autoguru/babel-preset@3.1.0
+    -   @autoguru/tsconfig@1.3.0
+    -   @autoguru/utilities@1.3.0
+
 ## 12.1.1
 
 ### Patch Changes

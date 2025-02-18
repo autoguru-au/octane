@@ -1,6 +1,6 @@
 {
 	"name": "@autoguru/tsconfig",
-	"version": "1.2.1",
+	"version": "1.3.0",
 	"description": "AutoGuru's TypeScript shared config",
 	"homepage": "https://github.com/autoguru-au/octane/tree/master/packages/tsconfig#readme",
 	"repository": "https://github.com/autoguru-au/octane/tree/master/packages/tsconfig",
