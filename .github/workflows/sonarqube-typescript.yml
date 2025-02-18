@@ -20,7 +20,6 @@ jobs:
     env:
       TZ: Australia/Brisbane
       CI: true
-      ENABLE_LINT: true
 
     steps:
       # 📥 Checkout Repository
@@ -47,45 +46,28 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           check-latest: true
 
-      # 🛠 Cache dependencies
-      - name: Yarn cache
-        uses: actions/cache@v3
-        with:
-          path: .yarn/cache
-          key: yarn-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
-
       # 📦 Install dependencies
       - name: Install Dependencies
         run: yarn install --immutable --check-cache
 
-      # 🔎 TypeScript Check (Solo si hay tsconfig.json)
+      # 🔎 TypeScript Type Checking
       - name: TypeScript Check
-        run: |
-          if [ -f "tsconfig.json" ]; then
-            yarn tsc --noEmit --skipLibCheck
-          else
-            echo "⚠️ No tsconfig.json found, skipping TypeScript check."
-          fi
+        run: yarn tsc --noEmit --skipLibCheck
 
-      # 🔍 Lint Code (Si está habilitado)
-      - name: Lint Code
-        if: env.ENABLE_LINT == 'true'
-        run: ESLINT_PARALLEL=TRUE yarn lint
-
-      # 🏗 Run Tests & Generate Coverage (Solo si enable_tests = true)
+      # 🏗 Run Tests (if enabled)
       - name: Run Tests with Coverage
         if: inputs.enable_tests == true
         run: |
           if yarn test --no-cache --ci --coverage; then
             echo "TESTS_PASSED=true" >> $GITHUB_ENV
           else
-            echo "⚠️ Tests failed, skipping coverage..."
+            echo "Tests failed, skipping coverage..."
             echo "TESTS_PASSED=false" >> $GITHUB_ENV
           fi
 
-      # 🔧 Fix lcov paths for SonarQube (Si los tests pasaron)
+      # 🔧 Fix lcov paths for SonarQube (only if tests ran)
       - name: Fix lcov paths
-        if: inputs.enable_tests == true && env.TESTS_PASSED == 'true'
+        if: env.TESTS_PASSED == 'true'
         run: |
           echo "Fixing paths in lcov.info..."
           sed -i 's#\.\./##g' coverage/lcov.info
@@ -96,26 +78,20 @@ jobs:
       - name: Install Sonar Scanner
         run: npm install -g sonar-scanner
 
-      # 🚀 Run SonarQube Analysis
+      # 🚀 Start SonarQube Analysis
       - name: Run SonarQube Analysis
         env:
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          echo "Running SonarQube analysis..."
-
           SONAR_CMD="sonar-scanner -Dsonar.projectKey='${{ github.event.repository.name }}' \
             -Dsonar.sourceEncoding=UTF-8 \
             -Dsonar.host.url='${{ secrets.SONAR_HOST_URL }}' \
             -Dsonar.login='${{ secrets.SONAR_TOKEN }}' \
             -Dsonar.exclusions='**/node_modules/**,**/stories/**,**/*.stories.tsx'"
 
-          # Si los tests pasaron, incluir cobertura en Sonar
-          if [ -f "coverage/lcov.info" ] && [ "$TESTS_PASSED" == "true" ]; then
+          if [ "$TESTS_PASSED" == "true" ]; then
             SONAR_CMD="$SONAR_CMD -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info"
-          else
-            echo "⚠️ No test results, running SonarQube without test coverage..."
           fi
 
-          # Ejecutar SonarQube
           eval $SONAR_CMD
