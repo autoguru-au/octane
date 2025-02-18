@@ -4,12 +4,6 @@ const { join } = require('path');
 const browsers = require('browserslist-config-autoguru');
 
 const { PROJECT_ROOT } = require('../lib/roots');
-const ReactCompilerConfig = {
-	target: '19',
-	sources: (filename) => {
-		return filename.includes('apps') || filename.includes('packages');
-	},
-};
 
 module.exports = (guruConfig) => {
 	let hasRelay = false;
@@ -43,7 +37,7 @@ module.exports = (guruConfig) => {
 				require.resolve('@autoguru/babel-preset/react'),
 			],
 			[
-				'@babel/preset-typescript',
+				require.resolve('@babel/preset-typescript'),
 				{
 					isTSX: true,
 					allExtensions: true,
@@ -51,9 +45,8 @@ module.exports = (guruConfig) => {
 			],
 		].filter(Boolean),
 		plugins: [
-			['babel-plugin-react-compiler', ReactCompilerConfig],
 			hasRelay && [
-				'babel-plugin-relay',
+				require.resolve('babel-plugin-relay'),
 				{
 					haste: false,
 					isDevVariable: '__DEV__',

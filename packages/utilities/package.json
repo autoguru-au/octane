@@ -23,8 +23,6 @@
 		"@autoguru/eslint-plugin": "*",
 		"@autoguru/jest-preset": "*",
 		"@babel/core": "^7.15.0",
-		"@babel/preset-env": "^7.24.5",
-		"@babel/preset-react": "^7.26.3",
 		"@next/eslint-plugin-next": "^12.2.3",
 		"@types/babel-types": "^7.0.10",
 		"@types/glob": "^7.1.4",

@@ -15,23 +15,10 @@
 		"release": "yarn run build:all && changeset publish",
 		"test": "jest"
 	},
-	"resolutions": {
-		"@babel/core": "^7.24.5"
-	},
-	"volta": {
-		"node": "16.13.0",
-		"yarn": "3.6.1"
-	},
-	"engines": {
-		"node": ">=16.13.0",
-		"yarn": ">=3.6.0",
-		"npm": "please-use-yarn"
-	},
-	"packageManager": "yarn@3.6.1",
-	"devDependencies": {
+	"dependencies": {
 		"@autoguru/eslint-plugin": "*",
 		"@changesets/cli": "^2.11.1",
-		"@manypkg/cli": "^0.23.0",
+		"@manypkg/cli": "^0.21.4",
 		"@types/node": "^16.4.13",
 		"browserslist-config-autoguru": "*",
 		"dotenv": "^16.4.5",
@@ -43,5 +30,21 @@
 		"plop": "^2.7.4",
 		"prettier": "^2.8.8",
 		"typescript": "5.3.3"
-	}
+	},
+	"resolutions": {
+		"@babel/preset-env": "^7.24.5",
+		"@babel/preset-react": "^7.24.1",
+		"@babel/preset-typescript": "^7.24.1",
+		"@babel/core": "^7.24.5"
+	},
+	"volta": {
+		"node": "16.13.0",
+		"yarn": "3.6.1"
+	},
+	"engines": {
+		"node": ">=16.13.0",
+		"yarn": ">=3.6.0",
+		"npm": "please-use-yarn"
+	},
+	"packageManager": "yarn@3.6.1"
 }

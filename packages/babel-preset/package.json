@@ -24,7 +24,7 @@
 		"@babel/plugin-transform-spread": "^7.24.1",
 		"@babel/plugin-transform-strict-mode": "^7.24.1",
 		"@babel/preset-env": "^7.24.5",
-		"@babel/preset-react": "^7.26.3",
+		"@babel/preset-react": "^7.24.1",
 		"@babel/preset-typescript": "^7.24.1",
 		"@babel/runtime-corejs3": "^7.24.5",
 		"babel-plugin-dev-expression": "^0.2.3",

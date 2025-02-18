@@ -3,47 +3,32 @@
 exports[`react preset when production should match the snapshot for fixture asFunction.jsx 1`] = `
 "var _h, _h2;
 import React, { memo } from 'react';
-import { jsx as _jsx } from \\"react/jsx-runtime\\";
 export const Test = /*#__PURE__*/memo(function () {
-  return _h || (_h = /*#__PURE__*/_jsx(\\"h1\\", {
-    children: \\"test\\"
-  }));
+  return _h || (_h = /*#__PURE__*/React.createElement(\\"h1\\", null, \\"test\\"));
 });
 export const Test2 = /*#__PURE__*/memo(function Named() {
-  return _h2 || (_h2 = /*#__PURE__*/_jsx(\\"h1\\", {
-    children: \\"test\\"
-  }));
+  return _h2 || (_h2 = /*#__PURE__*/React.createElement(\\"h1\\", null, \\"test\\"));
 });"
 `;
 
 exports[`react preset when production should match the snapshot for fixture conditionalMemo.jsx 1`] = `
 "var _h, _h2;
 import React, { memo } from 'react';
-import { jsx as _jsx } from \\"react/jsx-runtime\\";
-export const Test = something ? /*#__PURE__*/memo(() => _h || (_h = /*#__PURE__*/_jsx(\\"h1\\", {
-  children: \\"test a\\"
-}))) : /*#__PURE__*/memo(() => _h2 || (_h2 = /*#__PURE__*/_jsx(\\"h1\\", {
-  children: \\"test b\\"
-})));"
+export const Test = something ? /*#__PURE__*/memo(() => _h || (_h = /*#__PURE__*/React.createElement(\\"h1\\", null, \\"test a\\"))) : /*#__PURE__*/memo(() => _h2 || (_h2 = /*#__PURE__*/React.createElement(\\"h1\\", null, \\"test b\\")));"
 `;
 
 exports[`react preset when production should match the snapshot for fixture deepMemo.jsx 1`] = `
 "import React, { memo } from 'react';
-import { jsx as _jsx } from \\"react/jsx-runtime\\";
 const test = () => {
   return factory(someProp => {
     var _h;
-    return /*#__PURE__*/memo(() => _h || (_h = /*#__PURE__*/_jsx(\\"h1\\", {
-      children: someProp
-    })));
+    return /*#__PURE__*/memo(() => _h || (_h = /*#__PURE__*/React.createElement(\\"h1\\", null, someProp)));
   });
 };
 const test2 = () => {
   return factory(someProp => {
     var _h2;
-    const WrappedFn = () => _h2 || (_h2 = /*#__PURE__*/_jsx(\\"h1\\", {
-      children: someProp
-    }));
+    const WrappedFn = () => _h2 || (_h2 = /*#__PURE__*/React.createElement(\\"h1\\", null, someProp));
     WrappedFn.displayName = 'boom bang, click clak';
     return /*#__PURE__*/memo(WrappedFn);
   });
@@ -53,39 +38,27 @@ const test2 = () => {
 exports[`react preset when production should match the snapshot for fixture defaultExportMemo.jsx 1`] = `
 "var _h;
 import React, { memo } from 'react';
-import { jsx as _jsx } from \\"react/jsx-runtime\\";
-export default /*#__PURE__*/memo(() => _h || (_h = /*#__PURE__*/_jsx(\\"h1\\", {
-  children: \\"test\\"
-})));"
+export default /*#__PURE__*/memo(() => _h || (_h = /*#__PURE__*/React.createElement(\\"h1\\", null, \\"test\\")));"
 `;
 
 exports[`react preset when production should match the snapshot for fixture memoPassedIn.jsx 1`] = `
 "var _h;
 import React, { memo } from 'react';
-import { jsx as _jsx } from \\"react/jsx-runtime\\";
-export const Test = withData( /*#__PURE__*/memo(() => _h || (_h = /*#__PURE__*/_jsx(\\"h1\\", {
-  children: \\"test\\"
-}))));"
+export const Test = withData( /*#__PURE__*/memo(() => _h || (_h = /*#__PURE__*/React.createElement(\\"h1\\", null, \\"test\\"))));"
 `;
 
 exports[`react preset when production should match the snapshot for fixture memoWithDestructure.jsx 1`] = `
 "var _h;
 import { memo } from 'react';
-import { jsx as _jsx } from \\"react/jsx-runtime\\";
-const TestMemo = /*#__PURE__*/memo(() => _h || (_h = /*#__PURE__*/_jsx(\\"h1\\", {
-  children: \\"test\\"
-})));"
+const TestMemo = /*#__PURE__*/memo(() => _h || (_h = /*#__PURE__*/React.createElement(\\"h1\\", null, \\"test\\")));"
 `;
 
 exports[`react preset when production should match the snapshot for fixture standardReact.jsx 1`] = `
 "var _label, _h;
 import React, { memo } from 'react';
-import { jsxs as _jsxs, jsx as _jsx } from \\"react/jsx-runtime\\";
 class GreetSomeone extends React.Component {
   render() {
-    return /*#__PURE__*/_jsxs(\\"div\\", {
-      children: [this.props.greeting, \\" \\", this.props.subject, \\"!\\"]
-    });
+    return /*#__PURE__*/React.createElement(\\"div\\", null, this.props.greeting, \\" \\", this.props.subject, \\"!\\");
   }
 }
 function App() {
@@ -95,34 +68,22 @@ function App() {
     const newGreeting = input.value.toUpperCase();
     setGreeting(newGreeting);
   }
-  return /*#__PURE__*/_jsxs(\\"form\\", {
-    children: [/*#__PURE__*/_jsxs(\\"div\\", {
-      children: [_label || (_label = /*#__PURE__*/_jsx(\\"label\\", {
-        htmlFor: \\"greeting\\",
-        children: \\"Greeting: \\"
-      })), /*#__PURE__*/_jsx(\\"input\\", {
-        id: \\"greeting\\",
-        onChange: handleGreetingChange,
-        value: greeting
-      })]
-    }), /*#__PURE__*/_jsx(\\"div\\", {
-      children: /*#__PURE__*/_jsx(GreetSomeone, {
-        greeting: greeting,
-        subject: \\"Nancy\\"
-      })
-    })]
-  });
+  return /*#__PURE__*/React.createElement(\\"form\\", null, /*#__PURE__*/React.createElement(\\"div\\", null, _label || (_label = /*#__PURE__*/React.createElement(\\"label\\", {
+    htmlFor: \\"greeting\\"
+  }, \\"Greeting: \\")), /*#__PURE__*/React.createElement(\\"input\\", {
+    id: \\"greeting\\",
+    onChange: handleGreetingChange,
+    value: greeting
+  })), /*#__PURE__*/React.createElement(\\"div\\", null, /*#__PURE__*/React.createElement(GreetSomeone, {
+    greeting: greeting,
+    subject: \\"Nancy\\"
+  })));
 }
-const MemoTest = /*#__PURE__*/memo(() => _h || (_h = /*#__PURE__*/_jsx(\\"h1\\", {
-  children: \\"test\\"
-})));"
+const MemoTest = /*#__PURE__*/memo(() => _h || (_h = /*#__PURE__*/React.createElement(\\"h1\\", null, \\"test\\")));"
 `;
 
 exports[`react preset when production should match the snapshot for fixture usingReactMemo.jsx 1`] = `
 "var _h;
 import React from 'react';
-import { jsx as _jsx } from \\"react/jsx-runtime\\";
-export const TestMemo = /*#__PURE__*/React.memo(() => _h || (_h = /*#__PURE__*/_jsx(\\"h1\\", {
-  children: \\"test\\"
-})));"
+export const TestMemo = /*#__PURE__*/React.memo(() => _h || (_h = /*#__PURE__*/React.createElement(\\"h1\\", null, \\"test\\")));"
 `;

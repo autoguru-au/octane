@@ -78,7 +78,9 @@ export const configure = async (app_location) => {
 		},
 		include: [
 			'./*.d.ts',
-			...guruConfig.srcPaths.map((item) => `${item.replace(/\/$/, '')}`),
+			...guruConfig.srcPaths.map(
+				(item) => `${item.replace(/\/$/, '')}`,
+			),
 		].filter(Boolean),
 		exclude: ['node_modules'],
 	};
