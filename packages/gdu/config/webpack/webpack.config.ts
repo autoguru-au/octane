@@ -208,6 +208,8 @@ export const baseOptions = (
 					terserOptions,
 				}),
 			],
+			usedExports: true,
+			providedExports: true,
 		},
 		module: {
 			strictExportPresence: true,
