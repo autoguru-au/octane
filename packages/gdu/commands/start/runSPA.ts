@@ -48,7 +48,6 @@ export const runSPA = async (guruConfig: GuruConfig, isDebug) => {
 	webpackConfig.plugins.push(
 		new HtmlWebpackPlugin({
 			template: consumerHtmlTemplate ?? 'auto',
-			// @ts-ignore
 			scriptLoading: 'module',
 		}),
 	);
