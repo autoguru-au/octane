@@ -140,13 +140,9 @@ export const makeWebComponentsWebpackConfig = (
 			crossOriginLoading: 'anonymous',
 			sourceMapFilename: 'sourceMaps/[file].map',
 			pathinfo: false,
-			library: {
-				type: 'module',
-			},
 		},
 		experiments: {
 			layers: true,
-			outputModule: true,
 		},
 		cache: {
 			type: 'filesystem',
@@ -326,6 +322,5 @@ export const makeWebComponentsWebpackConfig = (
 				exclude: [/.css.ts$/, frameworkRegex],
 			}),
 		].filter(Boolean),
-		target: 'es2020',
 	};
 };
