@@ -97,6 +97,7 @@ export const baseOptions = (
 		},
 		experiments: {
 			layers: true,
+			outputModule: true,
 		},
 		cache: {
 			type: 'filesystem',
@@ -401,6 +402,12 @@ export const baseOptions = (
 				test: [/.ts$/, /.tsx$/],
 			}),
 		].filter(Boolean),
+		target: 'es2020',
+		output: {
+			library: {
+				type: 'module',
+			},
+		},
 	};
 };
 
