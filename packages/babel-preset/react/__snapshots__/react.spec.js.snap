@@ -63,7 +63,7 @@ exports[`react preset when production should match the snapshot for fixture memo
 "var _h;
 import React, { memo } from 'react';
 import { jsx as _jsx } from \\"react/jsx-runtime\\";
-export const Test = withData( /*#__PURE__*/memo(() => _h || (_h = /*#__PURE__*/_jsx(\\"h1\\", {
+export const Test = withData(/*#__PURE__*/memo(() => _h || (_h = /*#__PURE__*/_jsx(\\"h1\\", {
   children: \\"test\\"
 }))));"
 `;
