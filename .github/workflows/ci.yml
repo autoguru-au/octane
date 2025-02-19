@@ -39,7 +39,7 @@ jobs:
         run: yarn lint
 
       - name: Test
-        run: yarn test --no-cache --ci --coverage
+        run: yarn test:ci
 
       - uses: codecov/codecov-action@v1
         with:
