@@ -32,25 +32,37 @@ module.exports = (guruConfig) => {
 	} catch {
 		// Do nothing
 	}
-
-	return {
+	return ({
 		presets: [
 			[
-				require.resolve('@autoguru/babel-preset/web'),
-				{ corejs: 3, browsers, loose: false },
-			],
-			guruConfig.type !== 'ssr' && [
-				require.resolve('@autoguru/babel-preset/react'),
-			],
+				[
+					require.resolve('@autoguru/babel-preset/web'),
+					{ corejs: 3, browsers, loose: false },
+				],
+				guruConfig.type !== 'ssr' && [
+					require.resolve('@autoguru/babel-preset/react'),
+				],
+				[
+					'@babel/preset-typescript',
+					{
+						isTSX: true,
+						allExtensions: true,
+					},
+				],
+			].filter(Boolean),
+
+			['@babel/preset-typescript'],
 			[
-				'@babel/preset-typescript',
+				'@babel/preset-react',
 				{
-					isTSX: true,
-					allExtensions: true,
+					runtime: 'automatic',
+					development: process.env.NODE_ENV !== 'production',
 				},
 			],
-		].filter(Boolean),
+		],
+
 		plugins: [
+			process.env.NODE_ENV === 'development' && 'react-refresh/babel',
 			['babel-plugin-react-compiler', ReactCompilerConfig],
 			hasRelay && [
 				'babel-plugin-relay',
@@ -70,5 +82,5 @@ module.exports = (guruConfig) => {
 			],
 			[require.resolve('./pathNormaliser')],
 		].filter(Boolean),
-	};
+	});
 };

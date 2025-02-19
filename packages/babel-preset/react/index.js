@@ -9,12 +9,25 @@ module.exports = function autoGuruReactPreset(api, options = {}) {
 
 	return {
 		presets: [
+
 			[
-				'@babel/preset-react',
+				'@babel/preset-env',
 				{
-					useBuiltIns: true,
-					development: dev,
+					bugfixes: true,
+					useBuiltIns: 'usage',
+					corejs: { version: 3, proposals: true },
+					modules: false, // Keep as false for better tree shaking and HMR
+					loose: false,
+					debug: dev,
+					targets: {
+						esmodules: true,
+					},
 					runtime: 'automatic',
+					include: [
+						'@babel/plugin-transform-class-properties',
+						'@babel/plugin-transform-private-methods',
+						'@babel/plugin-transform-private-property-in-object',
+					],
 				},
 			],
 		],
