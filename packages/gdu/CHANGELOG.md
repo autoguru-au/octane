@@ -1,5 +1,11 @@
 # gdu
 
+## 12.3.0
+
+### Minor Changes
+
+-   73a57a3: GDU bundles MFE as ES Modules
+
 ## 12.2.0
 
 ### Minor Changes
