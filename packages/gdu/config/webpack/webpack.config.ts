@@ -8,32 +8,16 @@ import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import Dotenv from 'dotenv-webpack';
 import envCI from 'env-ci';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import {
-	defineReactCompilerLoaderOption,
-	reactCompilerLoader,
-} from 'react-compiler-webpack';
+import { defineReactCompilerLoaderOption, reactCompilerLoader } from 'react-compiler-webpack';
 import { MinifyOptions } from 'terser';
 import TerserPlugin, { MinimizerOptions } from 'terser-webpack-plugin';
 import { TreatPlugin } from 'treat/webpack-plugin';
 import { TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
-import {
-	Configuration,
-	DefinePlugin,
-	IgnorePlugin,
-	SourceMapDevToolPlugin,
-} from 'webpack';
+import { Configuration, DefinePlugin, IgnorePlugin, SourceMapDevToolPlugin } from 'webpack';
 
-import {
-	getGuruConfig,
-	getProjectFolderName,
-	getProjectName,
-} from '../../lib/config';
+import { getGuruConfig, getProjectFolderName, getProjectName } from '../../lib/config';
 import { isProductionBuild } from '../../lib/misc';
-import {
-	CALLING_WORKSPACE_ROOT,
-	GDU_ROOT,
-	PROJECT_ROOT,
-} from '../../lib/roots';
+import { CALLING_WORKSPACE_ROOT, GDU_ROOT, PROJECT_ROOT } from '../../lib/roots';
 import { getBuildEnvs, getConfigsDirs } from '../../utils/configs';
 import { getHooks } from '../../utils/hooks';
 
@@ -445,6 +429,7 @@ export const makeWebpackConfig = (
 	tenant?: string,
 	standalone?: boolean,
 ): Configuration => {
+	standalone = true; // TODO: Enable react sharing when react 19 support is added
 	const { outputPath, isTenanted } = getGuruConfig();
 	return {
 		name: buildEnv,
@@ -469,7 +454,7 @@ export const makeWebpackConfig = (
 		},
 		externalsType: 'umd',
 		externals:
-			standalone || true // TODO: Enable react sharing when react 19 support is added
+			standalone
 				? {}
 				: {
 						react: 'React',
