@@ -100,10 +100,12 @@
 		"@types/node-fetch": "^2.5.12",
 		"@types/sade": "^1.7.3",
 		"@types/webpack": "^5.28.5",
+		"@types/webpack-dev-server": "^4.7.2",
 		"@typescript-eslint/eslint-plugin": "^7.8.0",
 		"babel-plugin-macros": "^3.1.0",
 		"browserslist-config-autoguru": "*",
-		"typescript": "5.3.3"
+		"typescript": "5.3.3",
+		"webpack-bundle-analyzer": "^4.10.1"
 	},
 	"peerDependencies": {
 		"@types/node": ">=10",
