@@ -93,7 +93,6 @@
 	},
 	"devDependencies": {
 		"@babel/core": "^7.15.0",
-		"@next/eslint-plugin-next": "^12.2.3",
 		"@types/babel-types": "^7.0.10",
 		"@types/glob": "^7.1.4",
 		"@types/node": "^16.4.13",
@@ -101,7 +100,6 @@
 		"@types/sade": "^1.7.3",
 		"@types/webpack": "^5.28.5",
 		"@types/webpack-dev-server": "^4.7.2",
-		"@typescript-eslint/eslint-plugin": "^8.24.1",
 		"babel-plugin-macros": "^3.1.0",
 		"browserslist-config-autoguru": "*",
 		"typescript": "5.3.3",
@@ -112,7 +110,7 @@
 		"browserslist-config-autoguru": ">=2.4.1"
 	},
 	"engines": {
-		"node": ">=16.8.0"
+		"node": ">=20.9.0"
 	},
 	"publishConfig": {
 		"access": "public"
