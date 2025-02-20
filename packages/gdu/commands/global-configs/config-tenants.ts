@@ -31,7 +31,7 @@ const mfeApplicationOffset = 0;
 
 const mapLBPriority = (value: string, env: ENV, tenant?: TENANT) => {
 	const envOffset = environmentOffsets[env.toLowerCase()] ?? 0;
-	const scopeOffset = tenant ? scopeOffsets[tenant.toLowerCase()] ?? 0 : 0;
+	const scopeOffset = tenant ? (scopeOffsets[tenant.toLowerCase()] ?? 0) : 0;
 	return (
 		envOffset * 10_000 +
 		scopeOffset * 1000 +
@@ -56,6 +56,7 @@ export default async () => {
 		'.mfe-data',
 		'mfe-list.json',
 	);
+	// eslint-disable-next-line unicorn/text-encoding-identifier-case
 	const mfeList = JSON.parse(fs.readFileSync(mfeListFile, 'utf-8'));
 	let mfeProjects = [];
 
@@ -155,6 +156,7 @@ export default async () => {
 			dotenv.config({ path: filteredEnvFiles, override: true });
 
 			const fileContent = filteredEnvFiles.reduce(
+				// eslint-disable-next-line unicorn/text-encoding-identifier-case
 				(acc, envFile) => acc + fs.readFileSync(envFile, 'utf-8'),
 				'',
 			);
@@ -163,6 +165,7 @@ export default async () => {
 					const mapperEntry = Object.keys(tokenMap).find((mapKey) =>
 						key.toLowerCase().startsWith(mapKey.toLowerCase()),
 					);
+					// eslint-disable-next-line unicorn/prefer-ternary
 					if (mapperEntry) {
 						acc[key] = tokenMap[mapperEntry](
 							process.env[key]!,

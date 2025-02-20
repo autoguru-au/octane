@@ -1,5 +1,3 @@
-/* eslint-disable unicorn/prefer-module */
-/* eslint-disable unicorn/prefer-prototype-methods */
 import path, { join, resolve } from 'path';
 
 import { VanillaExtractPlugin } from '@vanilla-extract/webpack-plugin';
@@ -8,17 +6,33 @@ import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import Dotenv from 'dotenv-webpack';
 import envCI from 'env-ci';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import { defineReactCompilerLoaderOption, reactCompilerLoader } from 'react-compiler-webpack';
+import {
+	defineReactCompilerLoaderOption,
+	reactCompilerLoader,
+} from 'react-compiler-webpack';
 import { MinifyOptions } from 'terser';
 import TerserPlugin, { MinimizerOptions } from 'terser-webpack-plugin';
 import { TreatPlugin } from 'treat/webpack-plugin';
 import { TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
-import { Configuration, DefinePlugin, IgnorePlugin, SourceMapDevToolPlugin } from 'webpack';
+import {
+	Configuration,
+	DefinePlugin,
+	IgnorePlugin,
+	SourceMapDevToolPlugin,
+} from 'webpack';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
-import { getGuruConfig, getProjectFolderName, getProjectName } from '../../lib/config';
+import {
+	getGuruConfig,
+	getProjectFolderName,
+	getProjectName,
+} from '../../lib/config';
 import { isProductionBuild } from '../../lib/misc';
-import { CALLING_WORKSPACE_ROOT, GDU_ROOT, PROJECT_ROOT } from '../../lib/roots';
+import {
+	CALLING_WORKSPACE_ROOT,
+	GDU_ROOT,
+	PROJECT_ROOT,
+} from '../../lib/roots';
 import { getBuildEnvs, getConfigsDirs } from '../../utils/configs';
 import { getHooks } from '../../utils/hooks';
 
@@ -160,16 +174,16 @@ export const baseOptions = (
 						reuseExistingChunk: true,
 						enforce: true,
 					},
-					framework: !standalone
-						? {
-							chunks: 'all',
-							name: 'framework',
-							test: frameworkRegex,
-							priority: 60,
-							reuseExistingChunk: true,
-							enforce: true,
-						}
-						: {},
+					framework: standalone
+						? {}
+						: {
+								chunks: 'all',
+								name: 'framework',
+								test: frameworkRegex,
+								priority: 60,
+								reuseExistingChunk: true,
+								enforce: true,
+							},
 					// AutoGuru related assets here
 					guru: {
 						test: /@autoguru[/\\]/,
@@ -379,26 +393,27 @@ export const baseOptions = (
 				}),
 			]),
 			!isDev &&
-			new GuruBuildManifest({
-				mountDOMId: guruConfig.mountDOMId,
-				mountDOMClass: guruConfig.mountDOMClass,
-				outputDir:
-					!isMultiEnv && buildEnv === 'prod'
-						? resolve(PROJECT_ROOT, 'dist')
-						: resolve(PROJECT_ROOT, 'dist', buildEnv),
-				includeChunks: true,
-			}),
+				new GuruBuildManifest({
+					mountDOMId: guruConfig.mountDOMId,
+					mountDOMClass: guruConfig.mountDOMClass,
+					outputDir:
+						!isMultiEnv && buildEnv === 'prod'
+							? resolve(PROJECT_ROOT, 'dist')
+							: resolve(PROJECT_ROOT, 'dist', buildEnv),
+					includeChunks: true,
+				}),
 			new SourceMapDevToolPlugin({
 				exclude: standalone
 					? [/.css.ts$/, frameworkRegex]
 					: [/.css.ts$/],
 				test: [/.ts$/, /.tsx$/],
 			}),
-			process.env.ANALYZE && new BundleAnalyzerPlugin({
-				analyzerMode: 'static',
-				reportFilename: 'bundle-report.html',
-				openAnalyzer: false,
-			}),
+			process.env.ANALYZE &&
+				new BundleAnalyzerPlugin({
+					analyzerMode: 'static',
+					reportFilename: 'bundle-report.html',
+					openAnalyzer: false,
+				}),
 		].filter(Boolean),
 		target: 'es2020',
 		output: {
@@ -416,10 +431,10 @@ export const baseOptions = (
 type BuildEnv = ReturnType<typeof getBuildEnvs>[number];
 
 const getPublicPath = ({
-						   buildEnv,
-						   isDev,
-						   projectFolderName,
-					   }: {
+	buildEnv,
+	isDev,
+	projectFolderName,
+}: {
 	buildEnv: BuildEnv;
 	isTenanted: boolean;
 	isDev: boolean;
@@ -465,10 +480,9 @@ export const makeWebpackConfig = (
 			},
 		},
 		externalsType: 'module',
-		externals:
-			standalone
-				? {}
-				: {
+		externals: standalone
+			? {}
+			: {
 					react: 'https://esm.sh/react@19',
 					'react-dom/client': 'https://esm.sh/react-dom@19/client',
 					'react/jsx-runtime': 'https://esm.sh/react@19/jsx-runtime',

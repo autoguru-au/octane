@@ -1,5 +1,4 @@
-/* eslint-disable */
-
+// eslint-disable-next-line import/no-unresolved
 import client_app from '__GDU_CONSUMER_CLIENT__';
 
 const canPerformance =
@@ -35,11 +34,13 @@ function completePerformanceMarks() {
 
 if (!__DEV__) {
 	try {
+		// eslint-disable-next-line sonarjs/no-nested-assignment
 		(window.__AG_APPS = []).push({
 			app: __GDU_APP_NAME__,
 			build_info: __GDU_BUILD_INFO__,
 			mode: process.env.NODE_ENV,
 		});
+		// eslint-disable-next-line unicorn/prefer-optional-catch-binding, sonarjs/no-ignored-exceptions, @typescript-eslint/no-unused-vars
 	} catch (error) {
 		// ignore
 	}

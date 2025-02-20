@@ -1,5 +1,3 @@
-/* eslint-disable unicorn/prefer-module */
-/* eslint-disable unicorn/prefer-prototype-methods */
 import { readdirSync } from 'fs';
 import { join, resolve } from 'path';
 
@@ -121,6 +119,7 @@ export const makeWebComponentsWebpackConfig = (
 		name,
 		context: PROJECT_ROOT,
 		mode: isDev ? 'development' : 'production',
+		// eslint-disable-next-line unicorn/prefer-object-from-entries
 		entry: getComponentPaths().reduce(
 			(map, item) => ({
 				...map,

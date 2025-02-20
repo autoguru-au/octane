@@ -8,7 +8,6 @@ function isDebugging(api) {
 	return isDev || env === 'debug';
 }
 
-// eslint-disable-next-line unicorn/prefer-module
 module.exports = {
 	isDevelopment,
 	isDebugging,

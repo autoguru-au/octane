@@ -4,3 +4,6 @@ templates/**
 
 example/
 tsconfig.json
+
+/.nx/cache
+/.nx/workspace-data

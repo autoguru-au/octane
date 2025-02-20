@@ -49,7 +49,7 @@ export function* getConsumerRuntimeConfig(): Generator<{
 	};
 
 	let currentEnv;
-	// eslint-disable-next-line no-cond-assign
+
 	while ((currentEnv = envs.shift())) {
 		const { env: name, ...config } = currentEnv;
 

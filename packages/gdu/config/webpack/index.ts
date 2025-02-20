@@ -2,7 +2,6 @@ import { Configuration } from 'webpack';
 
 import { getBuildEnvs } from '../../utils/configs';
 
-// eslint-disable-next-line import/extensions
 import { baseOptions, makeWebpackConfig } from './webpack.config';
 
 const buildConfigs = (
@@ -13,11 +12,7 @@ const buildConfigs = (
 	const buildEnvs = getBuildEnvs(env);
 	return buildEnvs.map((buildEnv) => ({
 		...baseOptions(buildEnv, buildEnvs.length > 1, isDebug, standalone),
-		...makeWebpackConfig(
-			buildEnv,
-			buildEnvs.length > 1,
-			standalone,
-		),
+		...makeWebpackConfig(buildEnv, buildEnvs.length > 1, standalone),
 	}));
 };
 

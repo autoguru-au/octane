@@ -1,5 +1,3 @@
-/* eslint-disable unicorn/prefer-module */
-
 import http from 'http';
 import { join } from 'path';
 

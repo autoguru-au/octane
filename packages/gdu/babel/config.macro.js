@@ -1,4 +1,3 @@
-/* eslint-disable unicorn/prefer-module */
 const { default: template } = require('@babel/template');
 const { createMacro, MacroError } = require('babel-plugin-macros');
 const {
@@ -16,7 +15,7 @@ if (!env_config)
 			.join('\n')}`,
 	);
 
-// eslint-disable-next-line unicorn/prefer-module
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 module.exports = createMacro(({ references, state, babel: { types: t } }) => {
 	if (!references.default)
 		throw new MacroError('Only default imports supported');

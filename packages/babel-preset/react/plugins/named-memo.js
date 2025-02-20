@@ -1,4 +1,3 @@
-/* eslint-disable unicorn/prefer-module */
 const { default: annotateAsPure } = require('@babel/helper-annotate-as-pure');
 const { declare } = require('@babel/helper-plugin-utils');
 

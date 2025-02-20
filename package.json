@@ -9,7 +9,7 @@
 		"format": "prettier --write \"{*,packages/**/*}.+(js|jsx|ts|tsx|css|scss|json|yml|md|mdx|html)\"",
 		"generate": "plop readmes && prettier --write \"{*,packages/**/*}.md\" ",
 		"postinstall": "manypkg check",
-		"lint": "eslint \"packages/**/*.{js,jsx,ts,tsx}\" --quiet --fix",
+		"lint": "eslint \"packages/**/*.{js,jsx,ts,tsx}\" --fix --quiet",
 		"plop": "plop",
 		"build:all": "yarn workspace @autoguru/utilities build && nx run-many --target=build --all",
 		"release": "yarn run build:all && changeset publish",
@@ -20,29 +20,28 @@
 		"@babel/core": "^7.24.5"
 	},
 	"volta": {
-		"node": "16.13.0",
+		"node": "20.9.0",
 		"yarn": "3.6.1"
 	},
 	"engines": {
-		"node": ">=16.13.0",
+		"node": ">=20.9.0",
 		"yarn": ">=3.6.0",
 		"npm": "please-use-yarn"
 	},
 	"packageManager": "yarn@3.6.1",
 	"devDependencies": {
 		"@autoguru/eslint-plugin": "*",
-		"@changesets/cli": "^2.11.1",
+		"@changesets/cli": "^2.28.0",
 		"@manypkg/cli": "^0.23.0",
 		"@types/node": "^16.4.13",
 		"browserslist-config-autoguru": "*",
-		"dotenv": "^16.4.5",
-		"eslint": "^7.28.0",
-		"eslint-plugin-jest": "^24.3.6",
-		"glob": "^7.1.6",
+		"dotenv": "^16.4.7",
+		"eslint": "^9.20.1",
+		"glob": "^11.0.1",
 		"jest": "^26.6.1",
-		"nx": "^16.3.2",
-		"plop": "^2.7.4",
-		"prettier": "^2.8.8",
+		"nx": "^20.4.5",
+		"plop": "^4.0.1",
+		"prettier": "^3.5.1",
 		"typescript": "5.3.3"
 	}
 }

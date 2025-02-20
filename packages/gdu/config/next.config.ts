@@ -1,4 +1,3 @@
-/* eslint-disable unicorn/prefer-prototype-methods */
 import path, { resolve } from 'path';
 
 import Dotenv from 'dotenv-webpack';
@@ -168,6 +167,7 @@ export const CSPDefaultsList: CSPItem[] = [
 export const generateCSP = (cspList: CSPItem[]): string =>
 	cspList.reduce(
 		(policies, csp, currentIndex) =>
+			// eslint-disable-next-line unicorn/no-negated-condition
 			`${policies}${currentIndex !== 0 ? '; ' : ''}${
 				csp.key
 			} ${csp.values.join(' ')}`,
@@ -315,9 +315,11 @@ export const createNextJSConfig = (
 			);
 			defaultConfig.resolve.preferRelative = true;
 			defaultConfig.optimization.splitChunks = {
+				// eslint-disable-next-line unicorn/no-useless-fallback-in-spread
 				...(defaultConfig.optimization?.splitChunks || {}),
 				cacheGroups: {
 					...(defaultConfig.optimization?.splitChunks?.cacheGroups ||
+						// eslint-disable-next-line unicorn/no-useless-fallback-in-spread
 						{}),
 					// AutoGuru MFE configs
 					mfeConfigs: {

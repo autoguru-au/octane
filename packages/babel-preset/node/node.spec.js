@@ -1,5 +1,5 @@
 process.env.NODE_ENV = 'production';
-/* eslint-disable unicorn/prefer-module */
+
 const { transformAsync } = require('@babel/core');
 
 const fixture = `

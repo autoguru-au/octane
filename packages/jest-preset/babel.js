@@ -1,4 +1,3 @@
-/* eslint-disable unicorn/prefer-module */
 module.exports = require('babel-jest').createTransformer({
 	babelrc: false,
 	presets: [
