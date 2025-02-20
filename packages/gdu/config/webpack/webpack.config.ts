@@ -177,7 +177,7 @@ export const baseOptions = (
 								priority: 60,
 								reuseExistingChunk: true,
 								enforce: true,
-						  }
+							}
 						: {},
 					// AutoGuru related assets here
 					guru: {
@@ -469,11 +469,12 @@ export const makeWebpackConfig = (
 		},
 		externalsType: 'umd',
 		externals:
+			// eslint-disable-next-line sonarjs/no-redundant-boolean
 			standalone || true // TODO: Enable react sharing when react 19 support is added
 				? {}
 				: {
 						react: 'React',
 						'react-dom': 'ReactDOM',
-				  },
+					},
 	};
 };

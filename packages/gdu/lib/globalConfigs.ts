@@ -17,6 +17,7 @@ export const getTokens = async () => {
 };
 
 export const getInterfaceKeys = async (filePath: string) => {
+	// eslint-disable-next-line unicorn/text-encoding-identifier-case
 	const fileContent: string = fs.readFileSync(filePath, 'utf-8');
 
 	type ProcessEnvs = any;

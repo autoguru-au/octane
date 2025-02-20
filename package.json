@@ -9,7 +9,7 @@
 		"format": "prettier --write \"{*,packages/**/*}.+(js|jsx|ts|tsx|css|scss|json|yml|md|mdx|html)\"",
 		"generate": "plop readmes && prettier --write \"{*,packages/**/*}.md\" ",
 		"postinstall": "manypkg check",
-		"lint": "eslint \"packages/**/*.{js,jsx,ts,tsx}\" --quiet",
+		"lint": "eslint \"packages/**/*.{js,jsx,ts,tsx}\" --fix --quiet",
 		"plop": "plop",
 		"build:all": "yarn workspace @autoguru/utilities build && nx run-many --target=build --all",
 		"release": "yarn run build:all && changeset publish",

@@ -121,6 +121,7 @@ export const makeWebComponentsWebpackConfig = (
 		name,
 		context: PROJECT_ROOT,
 		mode: isDev ? 'development' : 'production',
+		// eslint-disable-next-line unicorn/prefer-object-from-entries
 		entry: getComponentPaths().reduce(
 			(map, item) => ({
 				...map,

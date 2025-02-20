@@ -25,6 +25,7 @@ describe('react preset', () => {
 			});
 		});
 
+		// skipped due to the experimental flag
 		describe.skip('when development', () => {
 			beforeEach(() => {
 				process.env.NODE_ENV = 'development';

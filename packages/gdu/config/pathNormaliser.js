@@ -1,4 +1,4 @@
-/* eslint-disable unicorn/prefer-module */
+// eslint-disable-next-line unicorn/prefer-string-replace-all
 const replacer = (filepath) => filepath.replace(/\\/g, '/');
 
 /**

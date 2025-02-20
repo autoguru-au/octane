@@ -25,6 +25,7 @@ export default async () => {
 
 	// eslint-disable-next-line unicorn/consistent-function-scoping
 	const getFileName = (env: ENV) => {
+		// eslint-disable-next-line sonarjs/no-small-switch
 		switch (env) {
 			case 'prod_build':
 				return 'prod';
@@ -125,6 +126,7 @@ export default async () => {
 	});
 
 	envs.forEach((env: ENV) => {
+		// eslint-disable-next-line unicorn/no-negated-condition
 		if (env !== 'tokens') {
 			tenants.forEach((tenant: TENANT) => {
 				generateTokens(env, tenant);

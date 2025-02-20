@@ -31,22 +31,10 @@ export default [
 			'sonarjs/no-commented-code': 'off',
 			'sonarjs/no-empty-test-file': 'warn',
 			'unicorn/no-anonymous-default-export': 'off',
+			'unicorn/no-typeof-undefined': 'warn',
 			'unicorn/import-style': 'off',
 			'unicorn/prefer-module': 'off',
 			'unicorn/prefer-node-protocol': 'off',
-
-			// for gdu
-			'@typescript-eslint/ban-ts-comment': 'off',
-			'@typescript-eslint/no-unused-vars': 'warn',
-			'sonarjs/no-nested-functions': 'warn',
-			'sonarjs/redundant-type-aliases': 'warn',
-			'unicorn/import-style': 'off',
-			'unicorn/no-length-as-slice-end': 'warn',
-			'unicorn/no-process-exit': 'warn',
-			'unicorn/no-typeof-undefined': 'warn',
-			'unicorn/prefer-node-protocol': 'off',
-			'unicorn/prefer-string-replace-all': 'warn',
-			'unicorn/switch-case-braces': 'warn',
 		},
 	},
 	// ...compat.extends('plugin:jest/recommended-legacy').map((config) => ({
@@ -60,6 +48,24 @@ export default [
 				...globals.jest,
 				...globals.node,
 			},
+		},
+	},
+	{
+		// rules just for GDU
+		files: ['packages/gdu/**/*.{ts,tsx}'],
+		rules: {
+			'@typescript-eslint/ban-ts-comment': 'off',
+			'@typescript-eslint/no-unused-vars': 'warn',
+			'@typescript-eslint/no-unused-vars': 'warn',
+			'sonarjs/no-nested-functions': 'warn',
+			'sonarjs/redundant-type-aliases': 'warn',
+			'unicorn/import-style': 'off',
+			'unicorn/no-length-as-slice-end': 'warn',
+			'unicorn/no-process-exit': 'warn',
+			'unicorn/no-typeof-undefined': 'warn',
+			'unicorn/prefer-node-protocol': 'off',
+			'unicorn/prefer-string-replace-all': 'warn',
+			'unicorn/switch-case-braces': 'warn',
 		},
 	},
 ];
