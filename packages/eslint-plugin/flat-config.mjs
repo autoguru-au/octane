@@ -2,11 +2,11 @@ import { fixupConfigRules, fixupPluginRules } from '@eslint/compat';
 import { FlatCompat } from '@eslint/eslintrc';
 import js from '@eslint/js';
 import tsParser from '@typescript-eslint/parser';
-
 import reactEslint from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import jsxA11Y from 'eslint-plugin-jsx-a11y';
 import sonarjs from 'eslint-plugin-sonarjs';
+import globals from 'globals';
 
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -20,6 +20,7 @@ const compat = new FlatCompat({
 });
 
 // Eslint configs for import statements
+/** @type {import('eslint').Linter.Config[]} */
 export const imports = [
 	...fixupConfigRules(compat.extends('plugin:import/errors')),
 	{
@@ -54,18 +55,15 @@ export const imports = [
 				'never',
 				{
 					graphql: 'always',
-					treat: 'always',
-					scss: 'always',
 				},
 			],
 			'import/no-duplicates': 'error',
-
-			'import/namespace': 'off', // breaks??
 		},
 	},
 ];
 
 // Eslint base config including import
+/** @type {import('eslint').Linter.Config[]} */
 export const base = [
 	...imports,
 	...fixupConfigRules(
@@ -77,8 +75,8 @@ export const base = [
 	),
 	{
 		languageOptions: {
+			globals: globals.browser,
 			sourceType: 'module',
-
 			parserOptions: {
 				ecmaFeatures: {
 					jsx: true,
@@ -94,12 +92,14 @@ export const base = [
 			'unicorn/no-array-reduce': 'off',
 			'unicorn/no-array-for-each': 'off',
 			'unicorn/no-array-push-push': 'off',
+			'unicorn/prefer-global-this': 'off',
 			'unicorn/prefer-spread': 'warn',
 		},
 	},
 ];
 
 // Eslint react plugins, settings and rules
+/** @type {import('eslint').Linter.Config[]} */
 export const react = [
 	...fixupConfigRules(
 		compat.extends(
@@ -127,6 +127,7 @@ export const react = [
 ];
 
 // TypeScript plugins, and SonarJS plugin settings and rules
+/** @type {import('eslint').Linter.Config[]} */
 export const typescript = [
 	...fixupConfigRules(
 		compat.extends(
@@ -157,8 +158,17 @@ export const typescript = [
 		},
 		rules: {
 			'sonarjs/no-duplicate-string': 'warn',
+			'sonarjs/no-nested-template-literals': 'warn',
 			'sonarjs/slow-regex': 'warn',
 			'sonarjs/todo-tag': 'off',
 		},
 	},
 ];
+
+// /** @type {import('eslint').Linter.Config[]} */
+// export default [
+// 	{ files: ['**/*.{js,jsx,mjs,cjs,ts,tsx}'] },
+// 	{ languageOptions: { globals: globals.browser } },
+// 	js.configs.recommended,
+// 	// ...tseslint.configs.recommended,
+// ];
