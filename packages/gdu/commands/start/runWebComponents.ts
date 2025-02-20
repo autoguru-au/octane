@@ -21,6 +21,7 @@ const getConsumerHtmlTemplate = (
 		if (existsSync(filePath)) {
 			return filePath;
 		}
+		// eslint-disable-next-line no-empty
 	} finally {
 	}
 

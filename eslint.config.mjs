@@ -31,7 +31,6 @@ export default [
 		rules: {
 			'@typescript-eslint/ban-ts-comment': 'off',
 			'@typescript-eslint/no-unused-vars': 'warn',
-			'@typescript-eslint/no-unused-vars': 'warn',
 			'sonarjs/no-nested-functions': 'warn',
 			'sonarjs/redundant-type-aliases': 'warn',
 			'unicorn/import-style': 'off',
