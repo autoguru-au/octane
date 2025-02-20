@@ -6,6 +6,7 @@ import reactEslint from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import jsxA11Y from 'eslint-plugin-jsx-a11y';
 import sonarjs from 'eslint-plugin-sonarjs';
+import tseslint from 'typescript-eslint';
 import globals from 'globals';
 
 import path from 'node:path';
@@ -65,6 +66,7 @@ export const imports = [
 // Eslint base config including import
 /** @type {import('eslint').Linter.Config[]} */
 export const base = [
+	js.configs.recommended,
 	...imports,
 	...fixupConfigRules(
 		compat.extends(
@@ -76,15 +78,9 @@ export const base = [
 	{
 		languageOptions: {
 			globals: globals.browser,
-			sourceType: 'module',
-			parserOptions: {
-				ecmaFeatures: {
-					jsx: true,
-				},
-			},
 		},
-
 		rules: {
+			'no-sparse-arrays': 'warn',
 			'unicorn/filename-case': 'off',
 			'unicorn/prevent-abbreviations': 'off',
 			'unicorn/no-null': 'off',
@@ -129,10 +125,9 @@ export const react = [
 // TypeScript plugins, and SonarJS plugin settings and rules
 /** @type {import('eslint').Linter.Config[]} */
 export const typescript = [
+	...tseslint.configs.recommended,
 	...fixupConfigRules(
 		compat.extends(
-			'plugin:@typescript-eslint/eslint-recommended',
-			'plugin:@typescript-eslint/recommended',
 			'plugin:import/typescript',
 			'plugin:sonarjs/recommended-legacy',
 		),
@@ -165,10 +160,18 @@ export const typescript = [
 	},
 ];
 
-// /** @type {import('eslint').Linter.Config[]} */
-// export default [
-// 	{ files: ['**/*.{js,jsx,mjs,cjs,ts,tsx}'] },
-// 	{ languageOptions: { globals: globals.browser } },
-// 	js.configs.recommended,
-// 	// ...tseslint.configs.recommended,
-// ];
+/** @type {import('eslint').Linter.Config[]} */
+export const jest = [
+	...fixupConfigRules(
+		compat.extends('plugin:jest/recommended').map((config) => ({
+			...config,
+			files: ['**/jest.*js', '**/*.spec.{js,jsx}'],
+			languageOptions: {
+				globals: {
+					...globals.jest,
+					...globals.node,
+				},
+			},
+		})),
+	),
+];

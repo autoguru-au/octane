@@ -1,29 +1,17 @@
-import globals from 'globals';
-import pluginJs from '@eslint/js';
-
-import { base, typescript } from '@autoguru/eslint-plugin/config';
-import { FlatCompat } from '@eslint/eslintrc';
-
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const compat = new FlatCompat({
-	baseDirectory: __dirname,
-	recommendedConfig: pluginJs.configs.recommended,
-	allConfig: pluginJs.configs.all,
-});
+import { base, jest, typescript } from '@autoguru/eslint-plugin/config';
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
 	{
-		ignores: ['**/node_modules', 'packages/*/dist/**'],
+		ignores: ['**/node_modules', '**/dist/**'],
 	},
 	...base,
 	...typescript,
+	...jest,
 	{
+		// octane specific overrides
 		rules: {
+			'no-undef': 'warn',
 			'@typescript-eslint/no-explicit-any': 'warn',
 			'@typescript-eslint/no-require-imports': 'off',
 			'promise/always-return': 'warn',
@@ -37,18 +25,8 @@ export default [
 			'unicorn/prefer-node-protocol': 'off',
 		},
 	},
-	// ...compat.extends('plugin:jest/recommended').map((config) => ({
-	// 	...config,
-	// 	files: ['**/jest.*js', '**/*.spec.{js,jsx}'],
-	// 	languageOptions: {
-	// 		globals: {
-	// 			...globals.jest,
-	// 			...globals.node,
-	// 		},
-	// 	},
-	// })),
 	{
-		// rules just for GDU
+		// additional rules just for GDU
 		files: ['packages/gdu/**/*.{ts,tsx}'],
 		rules: {
 			'@typescript-eslint/ban-ts-comment': 'off',
