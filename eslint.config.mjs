@@ -37,19 +37,16 @@ export default [
 			'unicorn/prefer-node-protocol': 'off',
 		},
 	},
-	// ...compat.extends('plugin:jest/recommended-legacy').map((config) => ({
+	// ...compat.extends('plugin:jest/recommended').map((config) => ({
 	// 	...config,
 	// 	files: ['**/jest.*js', '**/*.spec.{js,jsx}'],
+	// 	languageOptions: {
+	// 		globals: {
+	// 			...globals.jest,
+	// 			...globals.node,
+	// 		},
+	// 	},
 	// })),
-	{
-		files: ['**/jest.*js', '**/*.spec.{js,jsx}'],
-		languageOptions: {
-			globals: {
-				...globals.jest,
-				...globals.node,
-			},
-		},
-	},
 	{
 		// rules just for GDU
 		files: ['packages/gdu/**/*.{ts,tsx}'],
