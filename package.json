@@ -9,7 +9,7 @@
 		"format": "prettier --write \"{*,packages/**/*}.+(js|jsx|ts|tsx|css|scss|json|yml|md|mdx|html)\"",
 		"generate": "plop readmes && prettier --write \"{*,packages/**/*}.md\" ",
 		"postinstall": "manypkg check",
-		"lint": "eslint \"packages/**/*.{js,jsx,ts,tsx}\" --quiet --fix",
+		"lint": "eslint \"packages/**/*.{js,jsx,ts,tsx}\" --quiet",
 		"plop": "plop",
 		"build:all": "yarn workspace @autoguru/utilities build && nx run-many --target=build --all",
 		"release": "yarn run build:all && changeset publish",
@@ -19,11 +19,11 @@
 		"@babel/core": "^7.24.5"
 	},
 	"volta": {
-		"node": "16.13.0",
+		"node": "22.14.0",
 		"yarn": "3.6.1"
 	},
 	"engines": {
-		"node": ">=16.13.0",
+		"node": ">=18.20.6",
 		"yarn": ">=3.6.0",
 		"npm": "please-use-yarn"
 	},

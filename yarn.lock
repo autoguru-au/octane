@@ -112,6 +112,8 @@ __metadata:
     eslint-plugin-react-hooks: ^5.1.0
     eslint-plugin-sonarjs: ^3.0.2
     eslint-plugin-unicorn: ^56.0.0
+    globals: ^15.15.0
+    typescript-eslint: ^8.24.1
   peerDependencies:
     eslint: ">=7"
     eslint-plugin-jest: ">=24"
@@ -4218,7 +4220,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/eslint-plugin@npm:^8.24.1":
+"@typescript-eslint/eslint-plugin@npm:8.24.1, @typescript-eslint/eslint-plugin@npm:^8.24.1":
   version: 8.24.1
   resolution: "@typescript-eslint/eslint-plugin@npm:8.24.1"
   dependencies:
@@ -4255,7 +4257,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/parser@npm:^8.24.1":
+"@typescript-eslint/parser@npm:8.24.1, @typescript-eslint/parser@npm:^8.24.1":
   version: 8.24.1
   resolution: "@typescript-eslint/parser@npm:8.24.1"
   dependencies:
@@ -9921,7 +9923,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globals@npm:^15.9.0":
+"globals@npm:^15.15.0, globals@npm:^15.9.0":
   version: 15.15.0
   resolution: "globals@npm:15.15.0"
   checksum: a2a92199a112db00562a2f85eeef2a7e3943e171f7f7d9b17dfa9231e35fd612588f3c199d1509ab1757273467e413b08c80424cf6e399e96acdaf93deb3ee88
@@ -18654,6 +18656,20 @@ __metadata:
   dependencies:
     is-typedarray: ^1.0.0
   checksum: 99c11aaa8f45189fcfba6b8a4825fd684a321caa9bd7a76a27cf0c7732c174d198b99f449c52c3818107430b5f41c0ccbbfb75cb2ee3ca4a9451710986d61a60
+  languageName: node
+  linkType: hard
+
+"typescript-eslint@npm:^8.24.1":
+  version: 8.24.1
+  resolution: "typescript-eslint@npm:8.24.1"
+  dependencies:
+    "@typescript-eslint/eslint-plugin": 8.24.1
+    "@typescript-eslint/parser": 8.24.1
+    "@typescript-eslint/utils": 8.24.1
+  peerDependencies:
+    eslint: ^8.57.0 || ^9.0.0
+    typescript: ">=4.8.4 <5.8.0"
+  checksum: afb7c5004c7751945c7e59f33dbb26618da435b90fc757b71469e3b4209001a42840e88dfd5174557f5f29aa4d1e3c079dd3c8bb8bca91cd68c540add7ca584e
   languageName: node
   linkType: hard
 
