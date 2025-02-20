@@ -1,4 +1,3 @@
-/* eslint-disable unicorn/prefer-module */
 const { default: template } = require('@babel/template');
 const { createMacro, MacroError } = require('babel-plugin-macros');
 const {

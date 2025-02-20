@@ -1,4 +1,3 @@
-/* eslint-disable unicorn/prefer-module */
 const { isDevelopment } = require('../utils');
 
 module.exports = function autoGuruReactPreset(api, options = {}) {

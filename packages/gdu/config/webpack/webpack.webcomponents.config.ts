@@ -1,5 +1,3 @@
-/* eslint-disable unicorn/prefer-module */
-/* eslint-disable unicorn/prefer-prototype-methods */
 import { readdirSync } from 'fs';
 import { join, resolve } from 'path';
 

@@ -1,5 +1,3 @@
-/* eslint-disable unicorn/prefer-module */
-/* eslint-disable unicorn/prefer-prototype-methods */
 import path, { join, resolve } from 'path';
 
 import { VanillaExtractPlugin } from '@vanilla-extract/webpack-plugin';

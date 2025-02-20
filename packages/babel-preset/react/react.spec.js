@@ -1,4 +1,3 @@
-/* eslint-disable unicorn/prefer-module */
 const { readdirSync } = require('fs');
 const { join } = require('path');
 

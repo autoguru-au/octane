@@ -1,4 +1,3 @@
-/* eslint-disable unicorn/prefer-prototype-methods */
 import path, { resolve } from 'path';
 
 import Dotenv from 'dotenv-webpack';

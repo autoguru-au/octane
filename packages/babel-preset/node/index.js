@@ -1,4 +1,3 @@
-/* eslint-disable unicorn/prefer-module */
 const sharedPlugins = require('../sharedPlugins');
 const { isDevelopment } = require('../utils');
 
