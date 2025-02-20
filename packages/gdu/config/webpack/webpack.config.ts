@@ -160,7 +160,7 @@ export const baseOptions = (
 						reuseExistingChunk: true,
 						enforce: true,
 					},
-					framework: standalone
+					framework: !standalone
 						? {
 							chunks: 'all',
 							name: 'framework',
@@ -402,8 +402,12 @@ export const baseOptions = (
 		].filter(Boolean),
 		target: 'es2020',
 		output: {
+			module: true,
 			library: {
 				type: 'module',
+			},
+			environment: {
+				module: true,
 			},
 		},
 	};
@@ -441,11 +445,9 @@ export const makeWebpackConfig = (
 	tenant?: string,
 	standalone?: boolean,
 ): Configuration => {
-	standalone = true; // TODO: Enable react sharing when react 19 support is added
 	const { outputPath, isTenanted } = getGuruConfig();
 	return {
 		name: buildEnv,
-
 		output: {
 			path: `${outputPath}/${
 				!isMultiEnv && buildEnv === 'prod' ? '' : buildEnv
@@ -463,14 +465,19 @@ export const makeWebpackConfig = (
 			crossOriginLoading: 'anonymous',
 			sourceMapFilename: 'sourceMaps/[file].map',
 			pathinfo: false,
+			module: true,
+			library: {
+				type: 'module',
+			},
 		},
-		externalsType: 'umd',
+		externalsType: 'module',
 		externals:
 			standalone
 				? {}
 				: {
-					react: 'React',
-					'react-dom': 'ReactDOM',
+					react: 'https://esm.sh/react@19',
+					'react-dom/client': 'https://esm.sh/react-dom@19/client',
+					'react/jsx-runtime': 'https://esm.sh/react@19/jsx-runtime',
 				},
 	};
 };
