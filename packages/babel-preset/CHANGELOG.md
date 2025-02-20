@@ -1,5 +1,14 @@
 # @autoguru/babel-preset
 
+## 3.1.1
+
+### Patch Changes
+
+-   72a4956: Fixes number of es bundling issues
+    ```
+
+    ```
+
 ## 3.1.0
 
 ### Minor Changes
