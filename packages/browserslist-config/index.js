@@ -1,4 +1,3 @@
-// eslint-disable-next-line unicorn/prefer-module
 module.exports = [
 	'> 0.50% in au',
 	'last 2 chrome versions',

@@ -7,7 +7,6 @@ import dedent from 'ts-dedent';
 import webpack, { Configuration } from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 
-// eslint-disable-next-line import/extensions
 import { makeWebComponentsWebpackConfig } from '../../config/webpack/webpack.webcomponents.config';
 import { getProjectName, GuruConfig } from '../../lib/config';
 import { PROJECT_ROOT } from '../../lib/roots';
@@ -112,7 +111,6 @@ export const runWebComponents = async (guruConfig: GuruConfig, component) => {
 
 			  Local:            ${blue(`http://${hosts[0]}:${guruConfig.port}/`)}
 			  On Your Network:  ${blue(
-					// eslint-disable-next-line unicorn/prefer-module
 					`http://${require('ip').address()}:${guruConfig.port}/`,
 				)}
 

@@ -1,7 +1,6 @@
 const sharedPlugins = require('../sharedPlugins');
 const { isDevelopment } = require('../utils');
 
-// eslint-disable-next-line unicorn/prefer-module
 module.exports = function autoGuruNodePreset(api, options = {}) {
 	const {
 		version = 'current',

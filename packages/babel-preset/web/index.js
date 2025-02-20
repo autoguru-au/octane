@@ -1,7 +1,6 @@
 const sharedPlugins = require('../sharedPlugins');
 const { isDevelopment, isDebugging } = require('../utils');
 
-// eslint-disable-next-line unicorn/prefer-module
 module.exports = function autoGuruWebPreset(api, options = {}) {
 	const { modules = false, debug = false, corejs = 3, browsers } = options;
 

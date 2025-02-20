@@ -51,7 +51,6 @@ export const getMfeMountPoint = ({
 			document.querySelector('#' + mountDOMId);
 	} else if (typeof mountDOMClass === 'string') {
 		const elements =
-			// @ts-expect-error always truthy
 			// eslint-disable-next-line no-constant-binary-expression
 			[queryShadowRoot(wrapElements, '.' + mountDOMClass)] ||
 			Array.from(document.querySelectorAll('.' + mountDOMClass));
