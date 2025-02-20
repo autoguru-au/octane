@@ -417,13 +417,11 @@ type BuildEnv = ReturnType<typeof getBuildEnvs>[number];
 
 const getPublicPath = ({
 						   buildEnv,
-						   tenant,
 						   isDev,
 						   projectFolderName,
 					   }: {
 	buildEnv: BuildEnv;
 	isTenanted: boolean;
-	tenant?: string;
 	isDev: boolean;
 	projectFolderName: string;
 }): string => {
@@ -433,16 +431,13 @@ const getPublicPath = ({
 		return `#{PUBLIC_PATH_BASE}/${projectFolderName}/`;
 	}
 
-	const folderPath = tenant
-		? `${tenant}/${projectFolderName}`
-		: `${projectFolderName}`;
+	const [agEnv, tenant] = buildEnv.split('-');
 
-	return `https://static-mfe-${buildEnv}.autoguru.io/${folderPath}/`;
+	return `https://mfe.${tenant}-${agEnv}.autoguru.com/${projectFolderName}/`;
 };
 export const makeWebpackConfig = (
 	buildEnv: BuildEnv,
 	isMultiEnv: boolean,
-	tenant?: string,
 	standalone?: boolean,
 ): Configuration => {
 	const { outputPath, isTenanted } = getGuruConfig();
@@ -454,7 +449,6 @@ export const makeWebpackConfig = (
 			}`,
 			publicPath: getPublicPath({
 				buildEnv,
-				tenant,
 				isDev,
 				projectFolderName: getProjectFolderName(),
 				isTenanted,
