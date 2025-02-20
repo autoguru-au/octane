@@ -22,6 +22,7 @@ import {
 	IgnorePlugin,
 	SourceMapDevToolPlugin,
 } from 'webpack';
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
 import {
 	getGuruConfig,
@@ -40,6 +41,7 @@ import { getHooks } from '../../utils/hooks';
 import { GuruBuildManifest } from './plugins/GuruBuildManifest';
 
 const { branch = 'null', commit = 'null' } = envCI();
+const isDev = !isProductionBuild();
 
 const terserOptions: MinimizerOptions<MinifyOptions> = {
 	ie8: false,
@@ -50,7 +52,13 @@ const terserOptions: MinimizerOptions<MinifyOptions> = {
 		inline: 3,
 		hoist_funs: true,
 		toplevel: true,
-		passes: 2,
+		passes: 3,
+		pure_funcs: [
+			'console.log',
+			'console.info',
+			'console.debug',
+			'console.warn',
+		],
 		pure_getters: true,
 		module: true,
 	},
@@ -69,7 +77,6 @@ const frameworkRegex =
 	/(?<!node_modules.*)[/\\]node_modules[/\\](react|react-dom)[/\\]/;
 
 const hooks = getHooks();
-const isDev = !isProductionBuild();
 
 const gduEntryPath = join(GDU_ROOT, 'entry');
 
@@ -170,15 +177,15 @@ export const baseOptions = (
 						enforce: true,
 					},
 					framework: standalone
-						? {
+						? {}
+						: {
 								chunks: 'all',
 								name: 'framework',
 								test: frameworkRegex,
 								priority: 60,
 								reuseExistingChunk: true,
 								enforce: true,
-							}
-						: {},
+							},
 					// AutoGuru related assets here
 					guru: {
 						test: /@autoguru[/\\]/,
@@ -403,11 +410,21 @@ export const baseOptions = (
 					: [/.css.ts$/],
 				test: [/.ts$/, /.tsx$/],
 			}),
+			process.env.ANALYZE &&
+				new BundleAnalyzerPlugin({
+					analyzerMode: 'static',
+					reportFilename: 'bundle-report.html',
+					openAnalyzer: false,
+				}),
 		].filter(Boolean),
 		target: 'es2020',
 		output: {
+			module: true,
 			library: {
 				type: 'module',
+			},
+			environment: {
+				module: true,
 			},
 		},
 	};
@@ -417,13 +434,11 @@ type BuildEnv = ReturnType<typeof getBuildEnvs>[number];
 
 const getPublicPath = ({
 	buildEnv,
-	tenant,
 	isDev,
 	projectFolderName,
 }: {
 	buildEnv: BuildEnv;
 	isTenanted: boolean;
-	tenant?: string;
 	isDev: boolean;
 	projectFolderName: string;
 }): string => {
@@ -433,29 +448,24 @@ const getPublicPath = ({
 		return `#{PUBLIC_PATH_BASE}/${projectFolderName}/`;
 	}
 
-	const folderPath = tenant
-		? `${tenant}/${projectFolderName}`
-		: `${projectFolderName}`;
+	const [agEnv, tenant] = buildEnv.split('-');
 
-	return `https://static-mfe-${buildEnv}.autoguru.io/${folderPath}/`;
+	return `https://mfe.${tenant}-${agEnv}.autoguru.com/${projectFolderName}/`;
 };
 export const makeWebpackConfig = (
 	buildEnv: BuildEnv,
 	isMultiEnv: boolean,
-	tenant?: string,
 	standalone?: boolean,
 ): Configuration => {
 	const { outputPath, isTenanted } = getGuruConfig();
 	return {
 		name: buildEnv,
-
 		output: {
 			path: `${outputPath}/${
 				!isMultiEnv && buildEnv === 'prod' ? '' : buildEnv
 			}`,
 			publicPath: getPublicPath({
 				buildEnv,
-				tenant,
 				isDev,
 				projectFolderName: getProjectFolderName(),
 				isTenanted,
@@ -466,15 +476,18 @@ export const makeWebpackConfig = (
 			crossOriginLoading: 'anonymous',
 			sourceMapFilename: 'sourceMaps/[file].map',
 			pathinfo: false,
+			module: true,
+			library: {
+				type: 'module',
+			},
 		},
-		externalsType: 'umd',
-		externals:
-			// eslint-disable-next-line sonarjs/no-redundant-boolean
-			standalone || true // TODO: Enable react sharing when react 19 support is added
-				? {}
-				: {
-						react: 'React',
-						'react-dom': 'ReactDOM',
-					},
+		externalsType: 'module',
+		externals: standalone
+			? {}
+			: {
+					react: 'https://esm.sh/react@19',
+					'react-dom/client': 'https://esm.sh/react-dom@19/client',
+					'react/jsx-runtime': 'https://esm.sh/react@19/jsx-runtime',
+				},
 	};
 };

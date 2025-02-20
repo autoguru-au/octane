@@ -21,7 +21,7 @@ export default async ({ tenant }) => {
 	let stats;
 	switch (guruConfig?.type) {
 		case 'spa':
-			stats = await buildSPA(guruConfig, tenant);
+			stats = await buildSPA(guruConfig);
 			break;
 		case 'ssr':
 			stats = await buildSSR(guruConfig);

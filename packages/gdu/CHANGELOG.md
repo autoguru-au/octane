@@ -1,5 +1,23 @@
 # gdu
 
+## 12.3.2
+
+### Patch Changes
+
+-   72a4956: Fixes number of es bundling issues
+    ```
+
+    ```
+-   Updated dependencies [72a4956]
+    -   @autoguru/babel-preset@3.1.1
+
+## 12.3.1
+
+### Patch Changes
+
+-   2ce7d74: Updates dependencies for html-webpack-plugin, webpack-dev-server,
+    and others
+
 ## 12.3.0
 
 ### Minor Changes

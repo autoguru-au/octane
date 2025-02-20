@@ -8,7 +8,6 @@ import { baseOptions, makeWebpackConfig } from './webpack.config';
 const buildConfigs = (
 	env = process.env.APP_ENV,
 	isDebug: boolean,
-	tenant?: string,
 	standalone: boolean = true,
 ): Configuration[] => {
 	const buildEnvs = getBuildEnvs(env);
@@ -17,7 +16,6 @@ const buildConfigs = (
 		...makeWebpackConfig(
 			buildEnv,
 			buildEnvs.length > 1,
-			tenant,
 			standalone,
 		),
 	}));
