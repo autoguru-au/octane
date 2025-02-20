@@ -24,7 +24,7 @@
 		"yarn": "3.6.1"
 	},
 	"engines": {
-		"node": ">=18.20.6",
+		"node": ">=20.9.0",
 		"yarn": ">=3.6.0",
 		"npm": "please-use-yarn"
 	},
