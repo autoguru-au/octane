@@ -1,5 +1,18 @@
 # @autoguru/tsconfig
 
+## 1.3.0
+
+### Minor Changes
+
+-   28011c4: Update Babel presets and configurations for React 19 support
+
+## 1.2.1
+
+### Patch Changes
+
+-   f8a9186: borwoerslist-config-autoguru update gdu update @autoguru/tsconfig
+    update
+
 ## 1.2.0
 
 ### Minor Changes

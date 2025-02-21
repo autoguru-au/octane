@@ -1,5 +1,3 @@
-/* eslint-disable unicorn/prefer-module */
-/* eslint-disable unicorn/prefer-prototype-methods */
 import path, { join, resolve } from 'path';
 
 import { VanillaExtractPlugin } from '@vanilla-extract/webpack-plugin';
@@ -8,7 +6,12 @@ import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import Dotenv from 'dotenv-webpack';
 import envCI from 'env-ci';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import TerserPlugin from 'terser-webpack-plugin';
+import {
+	defineReactCompilerLoaderOption,
+	reactCompilerLoader,
+} from 'react-compiler-webpack';
+import { MinifyOptions } from 'terser';
+import TerserPlugin, { MinimizerOptions } from 'terser-webpack-plugin';
 import { TreatPlugin } from 'treat/webpack-plugin';
 import { TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
 import {
@@ -17,6 +20,7 @@ import {
 	IgnorePlugin,
 	SourceMapDevToolPlugin,
 } from 'webpack';
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
 import {
 	getGuruConfig,
@@ -35,26 +39,32 @@ import { getHooks } from '../../utils/hooks';
 import { GuruBuildManifest } from './plugins/GuruBuildManifest';
 
 const { branch = 'null', commit = 'null' } = envCI();
+const isDev = !isProductionBuild();
 
-const terserOptions = {
+const terserOptions: MinimizerOptions<MinifyOptions> = {
 	ie8: false,
-	output: {
-		ecma: 5,
-		safari10: true,
-		comments: false,
-		ascii_only: true,
-	},
-	parse: { ecma: 8 },
+	parse: { ecma: 2020 },
 	compress: {
-		ecma: 5,
-		warnings: false,
+		ecma: 2020,
 		comparisons: false,
-		inline: 2,
+		inline: 3,
 		hoist_funs: true,
 		toplevel: true,
-		passes: 5,
+		passes: 3,
+		pure_funcs: [
+			'console.log',
+			'console.info',
+			'console.debug',
+			'console.warn',
+		],
+		pure_getters: true,
+		module: true,
 	},
-	mangle: { safari10: true },
+	format: {
+		ecma: 2020,
+		comments: false,
+	},
+	mangle: true,
 };
 
 const vendorRegex =
@@ -65,7 +75,6 @@ const frameworkRegex =
 	/(?<!node_modules.*)[/\\]node_modules[/\\](react|react-dom)[/\\]/;
 
 const hooks = getHooks();
-const isDev = !isProductionBuild();
 
 const gduEntryPath = join(GDU_ROOT, 'entry');
 
@@ -93,6 +102,7 @@ export const baseOptions = (
 		},
 		experiments: {
 			layers: true,
+			outputModule: true,
 		},
 		cache: {
 			type: 'filesystem',
@@ -165,15 +175,15 @@ export const baseOptions = (
 						enforce: true,
 					},
 					framework: standalone
-						? {
+						? {}
+						: {
 								chunks: 'all',
 								name: 'framework',
 								test: frameworkRegex,
 								priority: 60,
 								reuseExistingChunk: true,
 								enforce: true,
-						  }
-						: {},
+							},
 					// AutoGuru related assets here
 					guru: {
 						test: /@autoguru[/\\]/,
@@ -199,13 +209,26 @@ export const baseOptions = (
 			minimizer: [
 				new TerserPlugin({
 					parallel: true,
+					minify: TerserPlugin.terserMinify,
 					terserOptions,
 				}),
 			],
+			usedExports: true,
+			providedExports: true,
 		},
 		module: {
 			strictExportPresence: true,
 			rules: [
+				{
+					test: /\.[cm]?[jt]sx?$/i,
+					exclude: /node_modules/,
+					use: [
+						{
+							loader: reactCompilerLoader,
+							options: defineReactCompilerLoaderOption({}),
+						},
+					],
+				},
 				{
 					test: /\.css$/i,
 					oneOf: [
@@ -385,7 +408,23 @@ export const baseOptions = (
 					: [/.css.ts$/],
 				test: [/.ts$/, /.tsx$/],
 			}),
+			process.env.ANALYZE &&
+				new BundleAnalyzerPlugin({
+					analyzerMode: 'static',
+					reportFilename: 'bundle-report.html',
+					openAnalyzer: false,
+				}),
 		].filter(Boolean),
+		target: 'es2020',
+		output: {
+			module: true,
+			library: {
+				type: 'module',
+			},
+			environment: {
+				module: true,
+			},
+		},
 	};
 };
 
@@ -393,13 +432,11 @@ type BuildEnv = ReturnType<typeof getBuildEnvs>[number];
 
 const getPublicPath = ({
 	buildEnv,
-	tenant,
 	isDev,
 	projectFolderName,
 }: {
 	buildEnv: BuildEnv;
 	isTenanted: boolean;
-	tenant?: string;
 	isDev: boolean;
 	projectFolderName: string;
 }): string => {
@@ -409,29 +446,24 @@ const getPublicPath = ({
 		return `#{PUBLIC_PATH_BASE}/${projectFolderName}/`;
 	}
 
-	const folderPath = tenant
-		? `${tenant}/${projectFolderName}`
-		: `${projectFolderName}`;
+	const [agEnv, tenant] = buildEnv.split('-');
 
-	return `https://static-mfe-${buildEnv}.autoguru.io/${folderPath}/`;
+	return `https://mfe.${tenant}-${agEnv}.autoguru.com/${projectFolderName}/`;
 };
 export const makeWebpackConfig = (
 	buildEnv: BuildEnv,
 	isMultiEnv: boolean,
-	tenant?: string,
 	standalone?: boolean,
 ): Configuration => {
 	const { outputPath, isTenanted } = getGuruConfig();
 	return {
 		name: buildEnv,
-
 		output: {
 			path: `${outputPath}/${
 				!isMultiEnv && buildEnv === 'prod' ? '' : buildEnv
 			}`,
 			publicPath: getPublicPath({
 				buildEnv,
-				tenant,
 				isDev,
 				projectFolderName: getProjectFolderName(),
 				isTenanted,
@@ -442,12 +474,18 @@ export const makeWebpackConfig = (
 			crossOriginLoading: 'anonymous',
 			sourceMapFilename: 'sourceMaps/[file].map',
 			pathinfo: false,
+			module: true,
+			library: {
+				type: 'module',
+			},
 		},
+		externalsType: 'module',
 		externals: standalone
 			? {}
 			: {
-					react: 'React',
-					'react-dom': 'ReactDOM',
-			  },
+					react: 'https://esm.sh/react@19',
+					'react-dom/client': 'https://esm.sh/react-dom@19/client',
+					'react/jsx-runtime': 'https://esm.sh/react@19/jsx-runtime',
+				},
 	};
 };

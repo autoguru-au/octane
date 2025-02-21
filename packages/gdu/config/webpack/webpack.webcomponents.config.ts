@@ -1,5 +1,3 @@
-/* eslint-disable unicorn/prefer-module */
-/* eslint-disable unicorn/prefer-prototype-methods */
 import { readdirSync } from 'fs';
 import { join, resolve } from 'path';
 
@@ -8,7 +6,8 @@ import browsers from 'browserslist-config-autoguru';
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import envCI from 'env-ci';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import TerserPlugin from 'terser-webpack-plugin';
+import { MinifyOptions } from 'terser';
+import TerserPlugin, { MinimizerOptions } from 'terser-webpack-plugin';
 import { TreatPlugin } from 'treat/webpack-plugin';
 import { TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
 import {
@@ -25,27 +24,25 @@ import { getHooks } from '../../utils/hooks';
 
 const { branch = 'null', commit = 'null' } = envCI();
 
-const terserOptions = {
+const terserOptions: MinimizerOptions<MinifyOptions> = {
 	ie8: false,
-	output: {
-		ecma: 5,
-		safari10: true,
-		comments: false,
-		ascii_only: true,
-	},
-	parse: { ecma: 8 },
+	parse: { ecma: 2020 },
 	compress: {
-		ecma: 5,
-		warnings: false,
+		ecma: 2020,
 		comparisons: false,
-		inline: 2,
+		inline: 3,
 		hoist_funs: true,
 		toplevel: true,
-		passes: 5,
+		passes: 2,
+		pure_getters: true,
+		module: true,
 	},
-	mangle: { safari10: true },
+	format: {
+		ecma: 2020,
+		comments: false,
+	},
+	mangle: true,
 };
-
 const hooks = getHooks();
 
 const frameworkRegex =
@@ -122,6 +119,7 @@ export const makeWebComponentsWebpackConfig = (
 		name,
 		context: PROJECT_ROOT,
 		mode: isDev ? 'development' : 'production',
+		// eslint-disable-next-line unicorn/prefer-object-from-entries
 		entry: getComponentPaths().reduce(
 			(map, item) => ({
 				...map,
@@ -141,9 +139,13 @@ export const makeWebComponentsWebpackConfig = (
 			crossOriginLoading: 'anonymous',
 			sourceMapFilename: 'sourceMaps/[file].map',
 			pathinfo: false,
+			library: {
+				type: 'module',
+			},
 		},
 		experiments: {
 			layers: true,
+			outputModule: true,
 		},
 		cache: {
 			type: 'filesystem',
@@ -180,6 +182,7 @@ export const makeWebComponentsWebpackConfig = (
 			minimizer: [
 				new TerserPlugin({
 					parallel: true,
+					minify: TerserPlugin.terserMinify,
 					terserOptions,
 				}),
 			],
@@ -322,5 +325,6 @@ export const makeWebComponentsWebpackConfig = (
 				exclude: [/.css.ts$/, frameworkRegex],
 			}),
 		].filter(Boolean),
+		target: 'es2020',
 	};
 };

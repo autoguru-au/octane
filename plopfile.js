@@ -3,7 +3,6 @@ const glob = require('glob');
 
 const { workspaces = [] } = require('./package.json');
 
-// eslint-disable-next-line unicorn/prefer-module
 module.exports = function (plop) {
 	plop.setGenerator('readmes', {
 		description: 'Generate root repo readme',

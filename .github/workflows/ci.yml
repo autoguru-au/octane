@@ -20,7 +20,7 @@ jobs:
         id: setups
         run: |-
           echo "::set-output name=yarn_cache::$(yarn cache dir)"
-          echo "::set-output name=node_version::$(cat .nvmrc)"
+          echo "::set-output name=node_version::$(jq -r '.volta.node' package.json)"
 
       - name: Setup Node ${{ steps.setups.outputs.node_version }}
         uses: actions/setup-node@master
@@ -39,7 +39,7 @@ jobs:
         run: yarn lint
 
       - name: Test
-        run: yarn test --no-cache --ci --coverage
+        run: yarn test:ci
 
       - uses: codecov/codecov-action@v1
         with:

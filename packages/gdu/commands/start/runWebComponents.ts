@@ -7,7 +7,6 @@ import dedent from 'ts-dedent';
 import webpack, { Configuration } from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 
-// eslint-disable-next-line import/extensions
 import { makeWebComponentsWebpackConfig } from '../../config/webpack/webpack.webcomponents.config';
 import { getProjectName, GuruConfig } from '../../lib/config';
 import { PROJECT_ROOT } from '../../lib/roots';
@@ -21,6 +20,7 @@ const getConsumerHtmlTemplate = (
 		if (existsSync(filePath)) {
 			return filePath;
 		}
+		// eslint-disable-next-line no-empty
 	} finally {
 	}
 
@@ -111,7 +111,6 @@ export const runWebComponents = async (guruConfig: GuruConfig, component) => {
 
 			  Local:            ${blue(`http://${hosts[0]}:${guruConfig.port}/`)}
 			  On Your Network:  ${blue(
-					// eslint-disable-next-line unicorn/prefer-module
 					`http://${require('ip').address()}:${guruConfig.port}/`,
 				)}
 
@@ -124,14 +123,17 @@ export const runWebComponents = async (guruConfig: GuruConfig, component) => {
 		}
 	});
 
-	const devServer = new WebpackDevServer(compiler, {
-		static: join(PROJECT_ROOT, 'public'),
-		host: hosts[0],
-		allowedHosts: hosts,
-		historyApiFallback: true,
-		hot: true,
-		port: guruConfig.port,
-	});
+	const devServer = new WebpackDevServer(
+		compiler as any,
+		{
+			static: join(PROJECT_ROOT, 'public'),
+			host: hosts[0],
+			allowedHosts: hosts,
+			historyApiFallback: true,
+			hot: true,
+			port: guruConfig.port,
+		} as any,
+	);
 
 	devServer.start().catch((error) => {
 		if (error) {

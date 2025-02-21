@@ -1,28 +1,37 @@
-/* eslint-disable unicorn/prefer-module */
 const { isDevelopment } = require('../utils');
 
-// eslint-disable-next-line unicorn/prefer-module
 module.exports = function autoGuruReactPreset(api, options = {}) {
 	const dev = isDevelopment(api);
-
 	const { experimental = false } = options;
 
 	return {
 		presets: [
 			[
-				require.resolve('@babel/preset-react'),
+				'@babel/preset-env',
 				{
-					useBuiltIns: true,
+					bugfixes: true,
+					useBuiltIns: 'usage',
+					corejs: { version: 3, proposals: true },
+					modules: false,
+					loose: false,
+					debug: dev,
+					targets: {
+						esmodules: true,
+					},
+				},
+			],
+			[
+				'@babel/preset-react',
+				{
+					runtime: 'automatic',
 					development: dev,
-					runtime: 'classic',
+					useBuiltIns: true,
+					importSource: 'react'
 				},
 			],
 		],
 		plugins: [
-			!dev &&
-				require.resolve(
-					'@babel/plugin-transform-react-constant-elements',
-				),
+			!dev && require.resolve('@babel/plugin-transform-react-constant-elements'),
 			dev && experimental && require.resolve('./plugins/named-memo.js'),
 		].filter(Boolean),
 	};

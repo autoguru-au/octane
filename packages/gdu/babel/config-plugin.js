@@ -1,4 +1,3 @@
-/* eslint-disable unicorn/prefer-module */
 const { declare } = require('@babel/helper-plugin-utils');
 
 module.exports = declare(function ({ types: t, assertVersion }) {
@@ -27,6 +26,7 @@ module.exports = declare(function ({ types: t, assertVersion }) {
 				const specifiers = path.get('specifiers');
 
 				if (
+					// eslint-disable-next-line unicorn/no-useless-length-check
 					specifiers.length > 0 &&
 					specifiers.some((n) => t.isImportDefaultSpecifier(n))
 				)

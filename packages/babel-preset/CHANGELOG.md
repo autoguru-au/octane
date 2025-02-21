@@ -1,5 +1,20 @@
 # @autoguru/babel-preset
 
+## 3.1.1
+
+### Patch Changes
+
+-   72a4956: Fixes number of es bundling issues
+    ```
+
+    ```
+
+## 3.1.0
+
+### Minor Changes
+
+-   28011c4: Update Babel presets and configurations for React 19 support
+
 ## 3.0.0
 
 ### Major Changes

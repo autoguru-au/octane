@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/* eslint-disable unicorn/prefer-module */
+
 const {
 	_: [type, app_name],
 	debug,

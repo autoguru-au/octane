@@ -4,14 +4,20 @@ import * as path from 'path';
 import * as dotenv from 'dotenv';
 import { blue, dim } from 'kleur';
 
-
 import { getTokens } from '../../lib/globalConfigs';
 
-const envs = ['uat', 'preprod', 'dev', 'prod_build', 'test', 'tokens', 'shared'];
+const envs = [
+	'uat',
+	'preprod',
+	'dev',
+	'prod_build',
+	'test',
+	'tokens',
+	'shared',
+];
 const tenants = ['au', 'nz', 'global'];
 type ENV = (typeof envs)[number];
-type TENANT = (typeof tenants)[number] ;
-
+type TENANT = (typeof tenants)[number];
 
 export default async () => {
 	console.log('Global config tokens started');
@@ -19,6 +25,7 @@ export default async () => {
 
 	// eslint-disable-next-line unicorn/consistent-function-scoping
 	const getFileName = (env: ENV) => {
+		// eslint-disable-next-line sonarjs/no-small-switch
 		switch (env) {
 			case 'prod_build':
 				return 'prod';
@@ -40,23 +47,23 @@ export default async () => {
 	);
 
 	const copyTokens = () => {
-		const prodFile = path.join(
-			process.cwd(),
-			'.gdu_config',
-			'.env.prod',
-		);
+		const prodFile = path.join(process.cwd(), '.gdu_config', '.env.prod');
 		const tokensFile = path.join(
 			process.cwd(),
 			'.gdu_config',
 			'.env.tokens',
 		);
 
-		 // Create .gdu_config directory if it doesn't exist
+		// Create .gdu_config directory if it doesn't exist
 		fs.mkdirSync(path.dirname(tokensFile), { recursive: true });
 
 		// Check if prod file exists
 		if (!fs.existsSync(prodFile)) {
-			console.log(`${dim('Info:')} Production file ${blue(prodFile)} not found, skipping...`);
+			console.log(
+				`${dim('Info:')} Production file ${blue(
+					prodFile,
+				)} not found, skipping...`,
+			);
 			return;
 		}
 
@@ -81,17 +88,20 @@ export default async () => {
 			tenant ? `.env.${env}_${tenant}` : `.env.${env}`,
 		);
 
-		 // Show informative message if the env file does not exist
+		// Show informative message if the env file does not exist
 		if (!fs.existsSync(envFile)) {
-			console.log(`${dim('Info:')} Environment file ${blue(envFile)} not found, skipping...`);
+			console.log(
+				`${dim('Info:')} Environment file ${blue(
+					envFile,
+				)} not found, skipping...`,
+			);
 			return;
 		}
 
 		dotenv.config({ path: [defaultsFile, envFile], override: true });
 
 		const FILTERED_TOKENS = Object.keys(TOKENS).reduce((acc, key) => {
-			if (process.env[key])
-				acc[key] = process.env[key];
+			if (process.env[key]) acc[key] = process.env[key];
 			return acc;
 		}, {});
 
@@ -112,10 +122,11 @@ export default async () => {
 	fs.mkdirSync(destinationFolder, { recursive: true });
 	// clear all files in the destination folder
 	fs.readdirSync(destinationFolder).forEach((file) => {
-		fs.unlinkSync(path.join(destinationFolder, file))
+		fs.unlinkSync(path.join(destinationFolder, file));
 	});
 
 	envs.forEach((env: ENV) => {
+		// eslint-disable-next-line unicorn/no-negated-condition
 		if (env !== 'tokens') {
 			tenants.forEach((tenant: TENANT) => {
 				generateTokens(env, tenant);
@@ -123,8 +134,6 @@ export default async () => {
 		} else {
 			generateTokens(env);
 		}
-
 	});
 	console.log('Global config tokens finished');
-
-}
+};

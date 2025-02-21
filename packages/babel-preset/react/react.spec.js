@@ -1,4 +1,3 @@
-/* eslint-disable unicorn/prefer-module */
 const { readdirSync } = require('fs');
 const { join } = require('path');
 
@@ -25,6 +24,7 @@ describe('react preset', () => {
 			});
 		});
 
+		// skipped due to the experimental flag
 		describe.skip('when development', () => {
 			beforeEach(() => {
 				process.env.NODE_ENV = 'development';

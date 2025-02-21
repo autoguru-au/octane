@@ -1,8 +1,6 @@
 {
 	"compileOnSave": true,
 	"compilerOptions": {
-		"allowSyntheticDefaultImports": true,
-		"esModuleInterop": true,
 		"allowJs": false,
 		"allowSyntheticDefaultImports": true,
 		"allowUnreachableCode": false,
@@ -16,7 +14,7 @@
 		"forceConsistentCasingInFileNames": true,
 		"importHelpers": true,
 		"incremental": false,
-		"jsx": "preserve",
+		"jsx": "react",
 		"module": "esnext",
 		"moduleResolution": "node",
 		"noEmit": false,

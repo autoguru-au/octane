@@ -4,7 +4,7 @@ import { diary } from 'diary';
 
 import { requireFromCaller } from './resolve';
 import { PROJECT_ROOT } from './roots';
-/* eslint-disable unicorn/prefer-module */
+
 const { debug } = diary('gdu:config');
 
 const readCache = new Map();
@@ -80,6 +80,7 @@ export const decorateConfig = (guruConfig: Partial<GuruConfig>): GuruConfig => {
 
 	guruConfig.srcPaths =
 		guruConfig.srcPaths ||
+		// eslint-disable-next-line no-extra-boolean-cast
 		(Boolean(guruConfig.type === 'ssr')
 			? ['./pages/', './components/', './scenes/']
 			: ['./src/']);

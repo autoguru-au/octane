@@ -1,29 +1,26 @@
 {
-	"tasksRunnerOptions": {
-		"default": {
-			"runner": "nx/tasks-runners/default",
-			"options": {
-				"cacheableOperations": [
-					"start",
-					"build",
-					"lint",
-					"eslint",
-					"format",
-					"browsers"
-				]
-			}
-		}
-	},
-	"affected": {
-		"defaultBase": "develop"
-	},
 	"targetDefaults": {
 		"start": {
 			"dependsOn": ["^start"],
-			"outputs": ["{projectRoot}/dist", "{projectRoot}/.build_cache"]
+			"outputs": ["{projectRoot}/dist", "{projectRoot}/.build_cache"],
+			"cache": true
 		},
 		"build": {
-			"outputs": ["{projectRoot}/dist"]
+			"outputs": ["{projectRoot}/dist"],
+			"cache": true
+		},
+		"lint": {
+			"cache": true
+		},
+		"eslint": {
+			"cache": true
+		},
+		"format": {
+			"cache": true
+		},
+		"browsers": {
+			"cache": true
 		}
-	}
+	},
+	"defaultBase": "develop"
 }

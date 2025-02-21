@@ -19,6 +19,7 @@ const getConsumerHtmlTemplate = (
 		if (existsSync(filePath)) {
 			return filePath;
 		}
+		// eslint-disable-next-line no-empty
 	} finally {
 	}
 
@@ -40,15 +41,15 @@ export const runSPA = async (guruConfig: GuruConfig, isDebug) => {
 
 	// eslint-disable-next-line unicorn/prefer-prototype-methods
 	const webpackConfig: Configuration = hooks.webpackConfig
-		.call(webpackConfigs(appEnv, isDebug, null, guruConfig?.standalone))
+		.call(webpackConfigs(appEnv, isDebug, guruConfig?.standalone))
 		.find(({ name }) => name === appEnv);
 
 	const consumerHtmlTemplate = getConsumerHtmlTemplate(guruConfig);
 
 	webpackConfig.plugins.push(
-		// @ts-ignore
 		new HtmlWebpackPlugin({
 			template: consumerHtmlTemplate ?? 'auto',
+			scriptLoading: 'module',
 		}),
 	);
 	webpackConfig.plugins.push(
@@ -110,7 +111,6 @@ export const runSPA = async (guruConfig: GuruConfig, isDebug) => {
 
 			  Local:            ${blue(`http://${hosts[0]}:${guruConfig.port}/`)}
 			  On Your Network:  ${blue(
-					// eslint-disable-next-line unicorn/prefer-module
 					`http://${require('ip').address()}:${guruConfig.port}/`,
 				)}
 

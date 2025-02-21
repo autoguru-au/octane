@@ -1,5 +1,52 @@
 # gdu
 
+## 12.3.2
+
+### Patch Changes
+
+-   72a4956: Fixes number of es bundling issues
+    ```
+
+    ```
+-   Updated dependencies [72a4956]
+    -   @autoguru/babel-preset@3.1.1
+
+## 12.3.1
+
+### Patch Changes
+
+-   2ce7d74: Updates dependencies for html-webpack-plugin, webpack-dev-server,
+    and others
+
+## 12.3.0
+
+### Minor Changes
+
+-   73a57a3: GDU bundles MFE as ES Modules
+
+## 12.2.0
+
+### Minor Changes
+
+-   28011c4: Update Babel presets and configurations for React 19 support
+
+### Patch Changes
+
+-   Updated dependencies [28011c4]
+    -   @autoguru/babel-preset@3.1.0
+    -   @autoguru/tsconfig@1.3.0
+    -   @autoguru/utilities@1.3.0
+
+## 12.1.1
+
+### Patch Changes
+
+-   f8a9186: borwoerslist-config-autoguru update gdu update @autoguru/tsconfig
+    update
+-   Updated dependencies [f8a9186]
+    -   browserslist-config-autoguru@2.4.1
+    -   @autoguru/tsconfig@1.2.1
+
 ## 12.1.0
 
 ### Minor Changes
