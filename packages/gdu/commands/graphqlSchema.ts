@@ -30,7 +30,7 @@ const normalise = (
 						normaliser.replacer,
 					),
 				schema,
-		  )
+			)
 		: schema;
 };
 

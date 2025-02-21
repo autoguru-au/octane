@@ -6,33 +6,17 @@ import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import Dotenv from 'dotenv-webpack';
 import envCI from 'env-ci';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import {
-	defineReactCompilerLoaderOption,
-	reactCompilerLoader,
-} from 'react-compiler-webpack';
+import { defineReactCompilerLoaderOption, reactCompilerLoader } from 'react-compiler-webpack';
 import { MinifyOptions } from 'terser';
 import TerserPlugin, { MinimizerOptions } from 'terser-webpack-plugin';
 import { TreatPlugin } from 'treat/webpack-plugin';
 import { TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
-import {
-	Configuration,
-	DefinePlugin,
-	IgnorePlugin,
-	SourceMapDevToolPlugin,
-} from 'webpack';
+import { Configuration, DefinePlugin, IgnorePlugin, SourceMapDevToolPlugin } from 'webpack';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
-import {
-	getGuruConfig,
-	getProjectFolderName,
-	getProjectName,
-} from '../../lib/config';
+import { getGuruConfig, getProjectFolderName, getProjectName } from '../../lib/config';
 import { isProductionBuild } from '../../lib/misc';
-import {
-	CALLING_WORKSPACE_ROOT,
-	GDU_ROOT,
-	PROJECT_ROOT,
-} from '../../lib/roots';
+import { CALLING_WORKSPACE_ROOT, GDU_ROOT, PROJECT_ROOT } from '../../lib/roots';
 import { getBuildEnvs, getConfigsDirs } from '../../utils/configs';
 import { getHooks } from '../../utils/hooks';
 
@@ -90,15 +74,17 @@ const fileMask = isDev ? '[name]' : '[name]-[contenthash:8]';
 export const baseOptions = ({
 	buildEnv,
 	isMultiEnv,
-	isDebug = false,
 	standalone,
 	analyze,
+								isDebug = false,
+								withBabelDebug = false,
 }: {
 	buildEnv: string;
 	isMultiEnv: boolean;
-	isDebug?: boolean;
 	standalone?: boolean;
 	analyze?: boolean;
+	isDebug?: boolean;
+	withBabelDebug?: boolean;
 }): Configuration => {
 	const guruConfig = getGuruConfig();
 	return {
@@ -320,7 +306,7 @@ export const baseOptions = ({
 													'@babel/preset-env',
 												),
 												{
-													debug: false,
+													debug: withBabelDebug,
 													useBuiltIns: false,
 													modules: false,
 													exclude: [
@@ -416,12 +402,12 @@ export const baseOptions = ({
 					: [/.css.ts$/],
 				test: [/.ts$/, /.tsx$/],
 			}),
-			process.env.ANALYZE || analyze &&
-				new BundleAnalyzerPlugin({
-					analyzerMode: 'static',
-					reportFilename: 'bundle-report.html',
-					openAnalyzer: false,
-				}),
+			analyze &&
+			new BundleAnalyzerPlugin({
+				analyzerMode: 'static',
+				reportFilename: 'bundle-report.html',
+				openAnalyzer: false,
+			}),
 		].filter(Boolean),
 		target: 'es2020',
 		output: {

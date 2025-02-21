@@ -1,13 +1,13 @@
-function isDevelopment(api) {
+const isDevelopment = (api) => {
 	const env = api.env();
 	return env === 'development' || env === 'test';
-}
-function isDebugging(api) {
+};
+const isDebugging = (api) => {
 	const isDev = isDevelopment(api);
 	const env = api.env();
-	return isDev || env === 'debug';
-}
-
+	const isDebug = process.env.DEBUG === 'true';
+	return isDev && (env === 'debug' || isDebug);
+};
 module.exports = {
 	isDevelopment,
 	isDebugging,

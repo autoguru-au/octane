@@ -1,8 +1,13 @@
-const { isDevelopment } = require('../utils');
+const { isDevelopment, isDebugging } = require('../utils');
 
 module.exports = function autoGuruReactPreset(api, options = {}) {
 	const dev = isDevelopment(api);
+	const debug = isDebugging(api);
 	const { experimental = false } = options;
+	console.log({
+		isDevelopment: isDevelopment(api),
+		isDebugging: isDebugging(api),
+	});
 
 	return {
 		presets: [
@@ -14,9 +19,9 @@ module.exports = function autoGuruReactPreset(api, options = {}) {
 					corejs: { version: 3, proposals: true },
 					modules: false,
 					loose: false,
-					debug: dev,
+					debug,
 					targets: {
-						esmodules: true,
+						esmodules: !dev,
 					},
 				},
 			],
@@ -26,13 +31,15 @@ module.exports = function autoGuruReactPreset(api, options = {}) {
 					runtime: 'automatic',
 					development: dev,
 					useBuiltIns: true,
-					importSource: 'react'
+					importSource: 'react',
 				},
 			],
 		],
 		plugins: [
-			!dev && require.resolve('@babel/plugin-transform-react-constant-elements'),
-			dev && experimental && require.resolve('./plugins/named-memo.js'),
+			!dev &&
+				require.resolve(
+					'@babel/plugin-transform-react-constant-elements',
+				),
 		].filter(Boolean),
 	};
 };

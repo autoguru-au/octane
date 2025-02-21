@@ -4,12 +4,19 @@ import { getBuildEnvs } from '../../utils/configs';
 
 import { baseOptions, makeWebpackConfig } from './webpack.config';
 
-const buildConfigs = (
+const buildConfigs = ({
 	env = process.env.APP_ENV,
-	isDebug: boolean,
-	standalone: boolean = true,
-	analyze: boolean = false,
-): Configuration[] => {
+	isDebug,
+	standalone = true,
+	analyze = false,
+	withBabelDebug = false,
+}: {
+	env?: string;
+	isDebug: boolean;
+	withBabelDebug: boolean;
+	standalone?: boolean;
+	analyze?: boolean;
+}): Configuration[] => {
 	const buildEnvs = getBuildEnvs(env);
 	return buildEnvs.map((buildEnv) => ({
 		...baseOptions({
@@ -18,6 +25,7 @@ const buildConfigs = (
 			isDebug,
 			standalone,
 			analyze,
+			withBabelDebug,
 		}),
 		...makeWebpackConfig(buildEnv, buildEnvs.length > 1, standalone),
 	}));

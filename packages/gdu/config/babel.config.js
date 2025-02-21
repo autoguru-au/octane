@@ -1,6 +1,8 @@
+/* eslint-disable unicorn/prefer-module */
 const { join } = require('path');
-const kleur = require('kleur');
+
 const browsers = require('browserslist-config-autoguru');
+const kleur = require('kleur');
 
 const { PROJECT_ROOT } = require('../lib/roots');
 const ReactCompilerConfig = {
@@ -14,10 +16,9 @@ module.exports = (guruConfig) => {
 	let hasRelay = false;
 
 	try {
-		const packageJson = require(join(
-			guruConfig.__configPath,
-			'./package.json',
-		));
+		const packageJson = require(
+			join(guruConfig.__configPath, './package.json'),
+		);
 
 		const deps = new Set();
 		for (const item of Object.keys(packageJson.devDependencies))
@@ -57,7 +58,7 @@ module.exports = (guruConfig) => {
 		plugins: [
 			['babel-plugin-react-compiler', ReactCompilerConfig],
 			hasRelay && [
-				'babel-plugin-relay',
+				require.resolve('babel-plugin-relay'),
 				{
 					haste: false,
 					isDevVariable: '__DEV__',

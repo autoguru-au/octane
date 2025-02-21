@@ -35,13 +35,22 @@ export const runSPA = async (guruConfig: GuruConfig, isDebug) => {
 			isDebug ? magenta(' DEBUG MODE') : ''
 		}`,
 	);
-
-	// eslint-disable-next-line unicorn/prefer-prototype-methods
 	const appEnv = process.env.APP_ENV || 'dev';
-
-	// eslint-disable-next-line unicorn/prefer-prototype-methods
+	const withBabelDebug = process.env.BABEL_DEBUG === 'true';
+	console.log(
+		`${cyan('Starting SPA...')}${withBabelDebug ? magenta(' BABEL DEBUG MODE') : ''}`,
+	);
 	const webpackConfig: Configuration = hooks.webpackConfig
-		.call(webpackConfigs(appEnv, isDebug, guruConfig?.standalone))
+		.call(
+			webpackConfigs({
+				env: appEnv,
+				isDebug,
+				standalone: guruConfig?.standalone,
+				analyze: false,
+				withBabelDebug,
+			}),
+		)
+
 		.find(({ name }) => name === appEnv);
 
 	const consumerHtmlTemplate = getConsumerHtmlTemplate(guruConfig);
