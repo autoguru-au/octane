@@ -3,7 +3,6 @@ const { isDevelopment, isDebugging } = require('../utils');
 module.exports = function autoGuruReactPreset(api, options = {}) {
 	const dev = isDevelopment(api);
 	const debug = isDebugging(api);
-	const { experimental = false } = options;
 	console.log({
 		isDevelopment: isDevelopment(api),
 		isDebugging: isDebugging(api),
