@@ -42,7 +42,7 @@ const terserOptions: MinimizerOptions<MinifyOptions> = {
 			'console.warn',
 		],
 		pure_getters: true,
-		module: true,
+		module: !isDev,
 	},
 	format: {
 		ecma: 2020,
@@ -410,7 +410,16 @@ export const baseOptions = ({
 			}),
 		].filter(Boolean),
 		target: 'es2020',
-		output: {
+		output: isDev ? {
+			path: guruConfig.outputPath,
+			publicPath: '/',
+			filename: `${fileMask}.js`,
+			chunkFilename: `chunks/${fileMask}.js`,
+			hashFunction: 'sha256',
+			crossOriginLoading: 'anonymous',
+			sourceMapFilename: 'sourceMaps/[file].map',
+			pathinfo: false,
+		} : {
 			module: true,
 			library: {
 				type: 'module',
@@ -444,11 +453,30 @@ const getPublicPath = ({
 
 	return `https://mfe.${tenant}-${agEnv}.autoguru.com/${projectFolderName}/`;
 };
+
 export const makeWebpackConfig = (
 	buildEnv: BuildEnv,
 	isMultiEnv: boolean,
 	standalone?: boolean,
-): Configuration => {
+): {
+	name: "dev" | "test" | "uat" | "preprod" | "prod" | "dockerprod" | string;
+	output: {
+		path: string;
+		publicPath: string;
+		filename: string;
+		chunkFilename: string;
+		hashFunction: string;
+		crossOriginLoading: string;
+		sourceMapFilename: string;
+		pathinfo: boolean
+	};
+	externalsType: string;
+	externals: object | { react: string; 'react-dom': string } | {
+		react: string;
+		'react-dom/client': string;
+		'react/jsx-runtime': string
+	}
+} => {
 	const { outputPath, isTenanted } = getGuruConfig();
 	return {
 		name: buildEnv,
@@ -468,18 +496,21 @@ export const makeWebpackConfig = (
 			crossOriginLoading: 'anonymous',
 			sourceMapFilename: 'sourceMaps/[file].map',
 			pathinfo: false,
-			module: true,
-			library: {
-				type: 'module',
-			},
-		},
-		externalsType: 'module',
-		externals: standalone
-			? {}
-			: {
-					react: 'https://esm.sh/react@19',
-					'react-dom/client': 'https://esm.sh/react-dom@19/client',
-					'react/jsx-runtime': 'https://esm.sh/react@19/jsx-runtime',
+			...(isDev ? {} : {
+				module: true,
+				library: {
+					type: 'module',
 				},
+				environment: {
+					module: true,
+				}
+			}),
+		},
+		externalsType: isDev ? undefined : 'module',
+		externals: (isDev || standalone) ? {} : {
+				react: 'React',
+				'react-dom': 'ReactDOM',
+			},
 	};
 };
+

@@ -7,7 +7,7 @@ import dedent from 'ts-dedent';
 import webpack, { Configuration } from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 
-import webpackConfigs from '../../config/webpack';
+import buildConfigs from '../../config/webpack';
 import { getProjectName, GuruConfig } from '../../lib/config';
 import { PROJECT_ROOT } from '../../lib/roots';
 import { getHooks } from '../../utils/hooks';
@@ -35,17 +35,17 @@ export const runSPA = async (guruConfig: GuruConfig, isDebug) => {
 			isDebug ? magenta(' DEBUG MODE') : ''
 		}`,
 	);
-	const appEnv = process.env.APP_ENV || 'dev';
+	const appEnv = process.env.APP_ENV || 'dev_au';
 	const withBabelDebug = process.env.BABEL_DEBUG === 'true';
 	console.log(
-		`${cyan('Starting SPA...')}${withBabelDebug ? magenta(' BABEL DEBUG MODE') : ''}`,
+		`${cyan(`Starting SPA on ${appEnv} ...`)}${withBabelDebug ? magenta(' BABEL DEBUG MODE') : ''}`,
 	);
 	const webpackConfig: Configuration = hooks.webpackConfig
 		.call(
-			webpackConfigs({
+			buildConfigs({
 				env: appEnv,
 				isDebug,
-				standalone: guruConfig?.standalone,
+				standalone: true, // All MFE run as standalone in development mode
 				analyze: false,
 				withBabelDebug,
 			}),

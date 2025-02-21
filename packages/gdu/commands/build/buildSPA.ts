@@ -3,7 +3,7 @@ import * as process from 'node:process';
 import { cyan, magenta } from 'kleur';
 import webpack, { Configuration } from 'webpack';
 
-import makeWebpackConfig from '../../config/webpack';
+import buildConfigs from '../../config/webpack';
 import { GuruConfig } from '../../lib/config';
 import { run } from '../../lib/runWebpack';
 import { getHooks } from '../../utils/hooks';
@@ -15,9 +15,8 @@ export const buildSPA = async (guruConfig: GuruConfig, analyze: boolean) => {
 	console.log(
 		`${cyan('Building SPA...')}${withBabelDebug ? magenta(' BABEL DEBUG MODE') : ''}`,
 	);
-	// eslint-disable-next-line unicorn/prefer-prototype-methods
 	const webpackConfigs: Configuration[] = hooks.webpackConfig.call(
-		makeWebpackConfig({
+		buildConfigs({
 			env: void 0,
 			isDebug: false,
 			standalone: guruConfig?.standalone,

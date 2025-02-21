@@ -1,6 +1,6 @@
 const { isDevelopment, isDebugging } = require('../utils');
 
-module.exports = function autoGuruReactPreset(api, options = {}) {
+module.exports = function autoGuruReactPreset(api = {}) {
 	const dev = isDevelopment(api);
 	const debug = isDebugging(api);
 	console.log({
