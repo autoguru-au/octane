@@ -13,7 +13,8 @@
 		"plop": "plop",
 		"build:all": "yarn workspace @autoguru/utilities build && nx run-many --target=build --all",
 		"release": "yarn run build:all && changeset publish",
-		"test": "jest"
+		"test": "jest",
+		"test:ci": "jest --no-cache --ci --coverage"
 	},
 	"dependencies": {
 		"@autoguru/eslint-plugin": "*",
