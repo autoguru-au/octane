@@ -1,5 +1,5 @@
 const { join } = require('path');
-
+const kleur = require('kleur');
 const browsers = require('browserslist-config-autoguru');
 
 const { PROJECT_ROOT } = require('../lib/roots');
@@ -30,6 +30,11 @@ module.exports = (guruConfig) => {
 		}
 	} catch {
 		// Do nothing
+	}
+
+	// log if mfe has relay
+	if (hasRelay) {
+		console.log(kleur.green('Relay detected in MFE 🌟'));
 	}
 
 	return {
