@@ -1,6 +1,7 @@
 const { isDevelopment, isDebugging } = require('../utils');
 
-module.exports = function autoGuruReactPreset(api = {}) {
+module.exports = function autoGuruReactPreset(api = {}, options = {}) {
+	const { browsers } = options;
 	const dev = isDevelopment(api);
 	const debug = isDebugging(api);
 	console.log({
@@ -18,8 +19,8 @@ module.exports = function autoGuruReactPreset(api = {}) {
 					corejs: { version: 3, proposals: true },
 					modules: false,
 					loose: false,
-					debug,
 					targets: {
+						browsers,
 						esmodules: !dev,
 					},
 				},
@@ -31,6 +32,11 @@ module.exports = function autoGuruReactPreset(api = {}) {
 					development: dev,
 					useBuiltIns: true,
 					importSource: 'react',
+					loose: false,
+					targets: {
+						browsers,
+						esmodules: !dev,
+					},
 				},
 			],
 		],

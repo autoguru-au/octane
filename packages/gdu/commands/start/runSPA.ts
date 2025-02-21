@@ -138,8 +138,22 @@ export const runSPA = async (guruConfig: GuruConfig, isDebug) => {
 			host: hosts[0],
 			allowedHosts: hosts,
 			historyApiFallback: true,
-			hot: true,
+			hot: 'only',
+			liveReload: false,
+			client: {
+				overlay: true,
+				progress: true,
+				webSocketTransport: 'ws',
+			},
+			webSocketServer: 'ws',
 			port: guruConfig.port,
+			devMiddleware: {
+				publicPath: '/',
+				writeToDisk: false,
+			},
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+			},
 		},
 		compiler,
 	);

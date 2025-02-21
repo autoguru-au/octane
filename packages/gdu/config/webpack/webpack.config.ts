@@ -6,17 +6,33 @@ import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import Dotenv from 'dotenv-webpack';
 import envCI from 'env-ci';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import { defineReactCompilerLoaderOption, reactCompilerLoader } from 'react-compiler-webpack';
+import {
+	defineReactCompilerLoaderOption,
+	reactCompilerLoader,
+} from 'react-compiler-webpack';
 import { MinifyOptions } from 'terser';
 import TerserPlugin, { MinimizerOptions } from 'terser-webpack-plugin';
 import { TreatPlugin } from 'treat/webpack-plugin';
 import { TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
-import { Configuration, DefinePlugin, IgnorePlugin, SourceMapDevToolPlugin } from 'webpack';
+import {
+	Configuration,
+	DefinePlugin,
+	IgnorePlugin,
+	SourceMapDevToolPlugin,
+} from 'webpack';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
-import { getGuruConfig, getProjectFolderName, getProjectName } from '../../lib/config';
+import {
+	getGuruConfig,
+	getProjectFolderName,
+	getProjectName,
+} from '../../lib/config';
 import { isProductionBuild } from '../../lib/misc';
-import { CALLING_WORKSPACE_ROOT, GDU_ROOT, PROJECT_ROOT } from '../../lib/roots';
+import {
+	CALLING_WORKSPACE_ROOT,
+	GDU_ROOT,
+	PROJECT_ROOT,
+} from '../../lib/roots';
 import { getBuildEnvs, getConfigsDirs } from '../../utils/configs';
 import { getHooks } from '../../utils/hooks';
 
@@ -71,13 +87,23 @@ const ourCodePaths = [
 
 const fileMask = isDev ? '[name]' : '[name]-[contenthash:8]';
 
+const getExternals = (isDev: boolean, standalone?: boolean) => {
+	return isDev || standalone
+		? {}
+		: {
+				react: 'https://esm.sh/react@19',
+				'react-dom/client': 'https://esm.sh/react-dom@19/client',
+				'react/jsx-runtime': 'https://esm.sh/react@19/jsx-runtime',
+			};
+};
+
 export const baseOptions = ({
 	buildEnv,
 	isMultiEnv,
 	standalone,
 	analyze,
-								isDebug = false,
-								withBabelDebug = false,
+	isDebug = false,
+	withBabelDebug = false,
 }: {
 	buildEnv: string;
 	isMultiEnv: boolean;
@@ -85,6 +111,7 @@ export const baseOptions = ({
 	analyze?: boolean;
 	isDebug?: boolean;
 	withBabelDebug?: boolean;
+	// eslint-disable-next-line sonarjs/cognitive-complexity
 }): Configuration => {
 	const guruConfig = getGuruConfig();
 	return {
@@ -95,7 +122,7 @@ export const baseOptions = ({
 		},
 		experiments: {
 			layers: true,
-			outputModule: true,
+			outputModule: !isDev, // Only enable ES modules in production
 		},
 		cache: {
 			type: 'filesystem',
@@ -123,6 +150,12 @@ export const baseOptions = ({
 			],
 			alias: {
 				__GDU_CONSUMER_CLIENT__: join(PROJECT_ROOT, 'src/client.tsx'),
+				...(isDev
+					? {
+							symlinks: false,
+							cacheWithContext: false,
+						}
+					: {}),
 			},
 		},
 		optimization: {
@@ -196,9 +229,11 @@ export const baseOptions = ({
 				},
 			},
 			moduleIds: isDev ? 'named' : 'deterministic',
-			runtimeChunk: {
-				name: 'runtime',
-			},
+			runtimeChunk: isDev
+				? {
+						name: 'runtime',
+					}
+				: false,
 			minimizer: [
 				new TerserPlugin({
 					parallel: true,
@@ -403,14 +438,14 @@ export const baseOptions = ({
 				test: [/.ts$/, /.tsx$/],
 			}),
 			analyze &&
-			new BundleAnalyzerPlugin({
-				analyzerMode: 'static',
-				reportFilename: 'bundle-report.html',
-				openAnalyzer: false,
-			}),
+				new BundleAnalyzerPlugin({
+					analyzerMode: 'static',
+					reportFilename: 'bundle-report.html',
+					openAnalyzer: false,
+				}),
 		].filter(Boolean),
-		target: 'es2020',
-		output: isDev ? {
+		target: isDev ? 'web' : 'es2020',
+		output: {
 			path: guruConfig.outputPath,
 			publicPath: '/',
 			filename: `${fileMask}.js`,
@@ -418,16 +453,20 @@ export const baseOptions = ({
 			hashFunction: 'sha256',
 			crossOriginLoading: 'anonymous',
 			sourceMapFilename: 'sourceMaps/[file].map',
-			pathinfo: false,
-		} : {
-			module: true,
-			library: {
-				type: 'module',
-			},
+			pathinfo: isDev,
+			chunkFormat: isDev ? 'array-push' : undefined,
+			module: !isDev,
+			library: isDev ? undefined : { type: 'module' },
 			environment: {
-				module: true,
+				arrowFunction: true,
+				const: true,
+				destructuring: true,
+				dynamicImport: true,
+				module: !isDev,
 			},
 		},
+		externalsType: isDev ? 'var' : 'module',
+		externals: getExternals(isDev, standalone),
 	};
 };
 
@@ -459,7 +498,7 @@ export const makeWebpackConfig = (
 	isMultiEnv: boolean,
 	standalone?: boolean,
 ): {
-	name: "dev" | "test" | "uat" | "preprod" | "prod" | "dockerprod" | string;
+	name: 'dev' | 'test' | 'uat' | 'preprod' | 'prod' | 'dockerprod' | string;
 	output: {
 		path: string;
 		publicPath: string;
@@ -468,14 +507,17 @@ export const makeWebpackConfig = (
 		hashFunction: string;
 		crossOriginLoading: string;
 		sourceMapFilename: string;
-		pathinfo: boolean
+		pathinfo: boolean;
 	};
 	externalsType: string;
-	externals: object | { react: string; 'react-dom': string } | {
-		react: string;
-		'react-dom/client': string;
-		'react/jsx-runtime': string
-	}
+	externals:
+		| object
+		| { react: string; 'react-dom': string }
+		| {
+				react: string;
+				'react-dom/client': string;
+				'react/jsx-runtime': string;
+		  };
 } => {
 	const { outputPath, isTenanted } = getGuruConfig();
 	return {
@@ -496,21 +538,19 @@ export const makeWebpackConfig = (
 			crossOriginLoading: 'anonymous',
 			sourceMapFilename: 'sourceMaps/[file].map',
 			pathinfo: false,
-			...(isDev ? {} : {
-				module: true,
-				library: {
-					type: 'module',
-				},
-				environment: {
-					module: true,
-				}
-			}),
+			...(isDev
+				? {}
+				: {
+						module: true,
+						library: {
+							type: 'module',
+						},
+						environment: {
+							module: true,
+						},
+					}),
 		},
 		externalsType: isDev ? undefined : 'module',
-		externals: (isDev || standalone) ? {} : {
-				react: 'React',
-				'react-dom': 'ReactDOM',
-			},
+		externals: getExternals(isDev, standalone),
 	};
 };
-

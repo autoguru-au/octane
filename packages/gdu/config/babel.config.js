@@ -46,6 +46,7 @@ module.exports = (guruConfig) => {
 			],
 			guruConfig.type !== 'ssr' && [
 				require.resolve('@autoguru/babel-preset/react'),
+				{ corejs: 3, browsers, loose: false },
 			],
 			[
 				'@babel/preset-typescript',
