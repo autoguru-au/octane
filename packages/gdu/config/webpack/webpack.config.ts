@@ -87,12 +87,19 @@ const ourCodePaths = [
 
 const fileMask = isDev ? '[name]' : '[name]-[contenthash:8]';
 
-export const baseOptions = (
+export const baseOptions = ({
 	buildEnv,
-	isMultiEnv: boolean,
+	isMultiEnv,
 	isDebug = false,
-	standalone?: boolean,
-): Configuration => {
+	standalone,
+	analyze,
+}: {
+	buildEnv: string;
+	isMultiEnv: boolean;
+	isDebug?: boolean;
+	standalone?: boolean;
+	analyze?: boolean;
+}): Configuration => {
 	const guruConfig = getGuruConfig();
 	return {
 		context: PROJECT_ROOT,
@@ -313,6 +320,7 @@ export const baseOptions = (
 													'@babel/preset-env',
 												),
 												{
+													debug: false,
 													useBuiltIns: false,
 													modules: false,
 													exclude: [
@@ -408,7 +416,7 @@ export const baseOptions = (
 					: [/.css.ts$/],
 				test: [/.ts$/, /.tsx$/],
 			}),
-			process.env.ANALYZE &&
+			process.env.ANALYZE || analyze &&
 				new BundleAnalyzerPlugin({
 					analyzerMode: 'static',
 					reportFilename: 'bundle-report.html',
