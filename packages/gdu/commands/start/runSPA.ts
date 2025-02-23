@@ -35,7 +35,7 @@ export const runSPA = async (guruConfig: GuruConfig, isDebug) => {
 			isDebug ? magenta(' DEBUG MODE') : ''
 		}`,
 	);
-	const appEnv = process.env.APP_ENV || 'dev_au';
+	const appEnv = process.env.APP_ENV;
 	const withBabelDebug = process.env.BABEL_DEBUG === 'true';
 	console.log(
 		`${cyan(`Starting SPA on ${appEnv} ...`)}${withBabelDebug ? magenta(' BABEL DEBUG MODE') : ''}`,

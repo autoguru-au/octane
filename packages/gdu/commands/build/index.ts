@@ -21,7 +21,7 @@ export default async ({ tenant, analyze }) => {
 	let stats;
 	switch (guruConfig?.type) {
 		case 'spa':
-			stats = await buildSPA(guruConfig, analyze || process.env.ANALYZE);
+			stats = await buildSPA(guruConfig, analyze || process.env.ANALYZE === 'true');
 			break;
 		case 'ssr':
 			stats = await buildSSR(guruConfig);

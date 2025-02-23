@@ -46,7 +46,15 @@ export default (app: Sade) => {
 			false,
 		)
 		.example('start -p 80')
-		.action(deferredAction(async () => import('./start'), IS_NOT_ROOT));
+			.action(
+			deferredAction(async () => {
+				process.env.GDU_COMMAND = 'start';
+				if (!process.env.APP_ENV) {
+					process.env.APP_ENV = 'dev_au';
+				}
+				return import('./start');
+			}, IS_NOT_ROOT),
+		);
 
 	// === BROWSERS
 	app.command('generateBrowsers')
@@ -63,7 +71,13 @@ export default (app: Sade) => {
 		.describe('Builds the target app ready for production')
 		.option('-t, --tenant', 'Tenant to build the mfe for', '')
 		.option('-a, --analyze', 'Analyze the bundle', false)
-		.action(deferredAction(async () => import('./build'), IS_NOT_ROOT));
+			.action(
+			deferredAction(async (opts) => {
+				process.env.GDU_COMMAND = 'build';
+				process.env.ANALYZE = opts?.analyze === true ? 'true' : 'false';
+				return import('./build');
+			}, IS_NOT_ROOT),
+		);
 
 	// === FORMAT
 	app.command('format')
