@@ -10,7 +10,6 @@ import { GuruConfig } from '../../lib/config';
 import { run } from '../../lib/runWebpack';
 import { getHooks } from '../../utils/hooks';
 
-
 const deleteLicenseFiles = async (dir: string): Promise<number> => {
 	let deleteCount = 0;
 	const files = await fs.readdir(dir);
@@ -42,6 +41,9 @@ export const buildSPA = async (guruConfig: GuruConfig) => {
 		}),
 	);
 
+	// first clear build directory
+	await fs.rmdir(guruConfig.outputPath, { recursive: true });
+	await fs.mkdir(guruConfig.outputPath, { recursive: true });
 	const compiler = webpack(webpackConfigs);
 	await run(compiler);
 

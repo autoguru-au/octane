@@ -1,3 +1,5 @@
+import defaultBrowsers from 'browserslist-config-autoguru';
+
 const sharedPlugins = require('../sharedPlugins');
 const { isDevelopment, isDebugging } = require('../utils');
 
@@ -8,13 +10,20 @@ module.exports = function autoGuruWebPreset(api, options = {}) {
 			[
 				require.resolve('@babel/preset-env'),
 				{
-					corejs,
-					loose: false,
+					bugfixes: true,
+					useBuiltIns: 'entry', // Changed to entry to be more restrictive
+					corejs: {
+						version: 3,
+						proposals: false, // Disabled proposals to avoid unnecessary polyfills
+					},
 					modules,
-					spec: false,
-					shippedProposals: true,
-					useBuiltIns: 'usage',
-					targets: browsers,
+					loose: false,
+					targets: {
+						browsers: browsers || defaultBrowsers,
+						esmodules: !dev,
+					},
+					include: [],
+					exclude: ['transform-typeof-symbol'],
 				},
 			],
 		],

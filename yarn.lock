@@ -86,6 +86,7 @@ __metadata:
     "@babel/runtime-corejs3": ^7.24.5
     babel-plugin-dev-expression: ^0.2.3
     babel-plugin-macros: ^3.1.0
+    browserslist-config-autoguru: "*"
   peerDependencies:
     "@babel/core": ^7.24.5
   languageName: unknown
