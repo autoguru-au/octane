@@ -1,5 +1,13 @@
 # @autoguru/babel-preset
 
+## 3.1.3
+
+### Patch Changes
+
+- 58e4948: Updated browserlist
+- Updated dependencies [58e4948]
+    - browserslist-config-autoguru@2.4.3
+
 ## 3.1.2
 
 ### Patch Changes
