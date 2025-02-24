@@ -4,7 +4,7 @@ const isDevelopment = (api) => {
 };
 
 const isDebugging = () => {
-	const isDebug = process.env.DEBUG === 'true';
+	const isDebug = process.env.BABEL_DEBUG === 'true';
 	const isAnalyze = process.env.ANALYZE === 'true';
 	const command = process.env.GDU_COMMAND;
 

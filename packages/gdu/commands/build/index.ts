@@ -9,7 +9,7 @@ import { buildSPA } from './buildSPA';
 import { buildSSR } from './buildSSR';
 import { buildWebComponents } from './buildWebComponents';
 
-export default async ({ tenant, analyze }) => {
+export default async ({ tenant }) => {
 	setEnvProd(true);
 
 	const guruConfig = getGuruConfig();
@@ -21,7 +21,7 @@ export default async ({ tenant, analyze }) => {
 	let stats;
 	switch (guruConfig?.type) {
 		case 'spa':
-			stats = await buildSPA(guruConfig, analyze || process.env.ANALYZE === 'true');
+			stats = await buildSPA(guruConfig);
 			break;
 		case 'ssr':
 			stats = await buildSSR(guruConfig);

@@ -1,4 +1,6 @@
+import { promises as fs } from 'fs';
 import * as process from 'node:process';
+import { join } from 'path';
 
 import { cyan, magenta } from 'kleur';
 import webpack, { Configuration } from 'webpack';
@@ -8,7 +10,24 @@ import { GuruConfig } from '../../lib/config';
 import { run } from '../../lib/runWebpack';
 import { getHooks } from '../../utils/hooks';
 
-export const buildSPA = async (guruConfig: GuruConfig, analyze: boolean) => {
+
+const deleteLicenseFiles = async (dir: string): Promise<number> => {
+	let deleteCount = 0;
+	const files = await fs.readdir(dir);
+	for (const file of files) {
+		const filePath = join(dir, file);
+		const stat = await fs.stat(filePath);
+		if (stat.isDirectory()) {
+			deleteCount += await deleteLicenseFiles(filePath);
+		} else if (file.endsWith('.LICENSE.txt')) {
+			await fs.unlink(filePath);
+			console.log(`Deleted: ${filePath}`);
+			deleteCount++;
+		}
+	}
+	return deleteCount;
+};
+export const buildSPA = async (guruConfig: GuruConfig) => {
 	const hooks = getHooks();
 
 	const withBabelDebug = process.env.BABEL_DEBUG === 'true';
@@ -20,13 +39,14 @@ export const buildSPA = async (guruConfig: GuruConfig, analyze: boolean) => {
 			env: void 0,
 			isDebug: false,
 			standalone: guruConfig?.standalone,
-			analyze,
-			withBabelDebug,
 		}),
 	);
 
 	const compiler = webpack(webpackConfigs);
-	run(compiler);
+	await run(compiler);
+
+	const deletedFilesCount = await deleteLicenseFiles(guruConfig.outputPath);
+	console.log(cyan(`Deleted ${deletedFilesCount} license files`));
 
 	return {
 		artifactPath: guruConfig.outputPath,

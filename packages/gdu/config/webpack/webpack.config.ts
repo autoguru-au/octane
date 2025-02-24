@@ -101,19 +101,16 @@ export const baseOptions = ({
 	buildEnv,
 	isMultiEnv,
 	standalone,
-	analyze,
 	isDebug = false,
-	withBabelDebug = false,
 }: {
 	buildEnv: string;
 	isMultiEnv: boolean;
 	standalone?: boolean;
-	analyze?: boolean;
 	isDebug?: boolean;
-	withBabelDebug?: boolean;
 	// eslint-disable-next-line sonarjs/cognitive-complexity
 }): Configuration => {
 	const guruConfig = getGuruConfig();
+	const withBabelDebug = process.env.BABEL_DEBUG === 'true';
 	return {
 		context: PROJECT_ROOT,
 		mode: isDev ? 'development' : 'production',
@@ -437,7 +434,7 @@ export const baseOptions = ({
 					: [/.css.ts$/],
 				test: [/.ts$/, /.tsx$/],
 			}),
-			analyze &&
+			process.env.ANALYZE === 'true' &&
 				new BundleAnalyzerPlugin({
 					analyzerMode: 'static',
 					reportFilename: 'bundle-report.html',

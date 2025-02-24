@@ -46,8 +46,6 @@ export const runSPA = async (guruConfig: GuruConfig, isDebug) => {
 				env: appEnv,
 				isDebug,
 				standalone: true, // All MFE run as standalone in development mode
-				analyze: false,
-				withBabelDebug,
 			}),
 		)
 
