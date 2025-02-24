@@ -42,7 +42,9 @@ export const buildSPA = async (guruConfig: GuruConfig) => {
 	);
 
 	// first clear build directory
-	await fs.rmdir(guruConfig.outputPath, { recursive: true });
+	if (await fs.stat(guruConfig.outputPath).catch(() => false)) {
+		await fs.rmdir(guruConfig.outputPath, { recursive: true });
+	}
 	await fs.mkdir(guruConfig.outputPath, { recursive: true });
 	const compiler = webpack(webpackConfigs);
 	await run(compiler);

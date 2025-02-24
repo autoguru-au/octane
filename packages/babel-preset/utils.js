@@ -1,5 +1,5 @@
 const isDevelopment = (api) => {
-	if(api) {
+	if (api) {
 		const env = api.env();
 		return env === 'development' || env === 'test';
 	}

@@ -35,6 +35,9 @@
 		"browserslist-config-autoguru": "*",
 		"typescript": "5.3.3"
 	},
+	"peerDependencies": {
+		"browserslist-config-autoguru": ">=2.4.2"
+	},
 	"publishConfig": {
 		"access": "public"
 	}

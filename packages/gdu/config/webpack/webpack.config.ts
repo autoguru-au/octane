@@ -69,13 +69,36 @@ const terserOptions: MinimizerOptions<MinifyOptions> = {
 
 const vendorRegex =
 	/(?<!node_modules.*)[/\\]node_modules[/\\](scheduler|prop-types|use-subscription)[/\\]/;
-const relayRegex =
-	/(?<!node_modules.*)[/\\]node_modules[/\\](relay-runtime|react-relay)[/\\]/;
+// We can remove the relay regex since we're externalizing it
+// const relayRegex =
+//	/(?<!node_modules.*)[/\\]node_modules[/\\](relay-runtime|react-relay)[/\\]/;
 const frameworkRegex =
 	/(?<!node_modules.*)[/\\]node_modules[/\\](react|react-dom)[/\\]/;
 
 const hooks = getHooks();
 
+// Add package.json parsing to get relay version
+const getRelayVersion = () => {
+	try {
+		const packagePath = path.join(PROJECT_ROOT, 'package.json');
+		const pkg = require(packagePath);
+		return (pkg.devDependencies?.['react-relay'] || '18.2.0').replace(
+			'^',
+			'',
+		);
+	} catch {
+		return '18.2.0';
+	}
+};
+const getReactVersion = () => {
+	try {
+		const packagePath = path.join(PROJECT_ROOT, 'package.json');
+		const pkg = require(packagePath);
+		return (pkg.dependencies?.react || '19').replace('^', '');
+	} catch {
+		return '19';
+	}
+};
 const gduEntryPath = join(GDU_ROOT, 'entry');
 
 const ourCodePaths = [
@@ -88,12 +111,16 @@ const ourCodePaths = [
 const fileMask = isDev ? '[name]' : '[name]-[contenthash:8]';
 
 const getExternals = (isDev: boolean, standalone?: boolean) => {
+	const relayVersion = getRelayVersion();
+	const reactVersion = getReactVersion();
 	return isDev || standalone
 		? {}
 		: {
-				react: 'https://esm.sh/react@19',
-				'react-dom/client': 'https://esm.sh/react-dom@19/client',
-				'react/jsx-runtime': 'https://esm.sh/react@19/jsx-runtime',
+				react: `https://esm.sh/react@${reactVersion}`,
+				'react-dom/client': `https://esm.sh/react-dom@${reactVersion}/client`,
+				'react/jsx-runtime': `https://esm.sh/react@${reactVersion}/jsx-runtime`,
+				'react-relay': `https://esm.sh/react-relay@${relayVersion}`,
+				'relay-runtime': `https://esm.sh/relay-runtime@${relayVersion}`,
 			};
 };
 
@@ -180,14 +207,6 @@ export const baseOptions = ({
 						priority: 30,
 						minChunks: 1,
 						reuseExistingChunk: true,
-					},
-					relay: {
-						chunks: 'all',
-						name: 'relay',
-						test: relayRegex,
-						priority: 40,
-						reuseExistingChunk: true,
-						enforce: true,
 					},
 					vendor: {
 						chunks: 'all',
