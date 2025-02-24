@@ -1,5 +1,13 @@
 # create-guru
 
+## 12.3.3
+
+### Patch Changes
+
+- 0bc6f62: GDU developmeny start command fixed
+- Updated dependencies [0bc6f62]
+    - gdu@12.3.3
+
 ## 12.0.0
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # browserslist-config-autoguru
 
+## 2.4.2
+
+### Patch Changes
+
+- 0bc6f62: GDU developmeny start command fixed
+
 ## 2.4.1
 
 ### Patch Changes

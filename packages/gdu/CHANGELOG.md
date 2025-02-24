@@ -1,5 +1,16 @@
 # gdu
 
+## 12.3.3
+
+### Patch Changes
+
+- 0bc6f62: GDU developmeny start command fixed
+- Updated dependencies [0bc6f62]
+    - browserslist-config-autoguru@2.4.2
+    - @autoguru/babel-preset@3.1.2
+    - @autoguru/utilities@1.3.1
+    - @autoguru/tsconfig@1.3.1
+
 ## 12.3.2
 
 ### Patch Changes

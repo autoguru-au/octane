@@ -1,5 +1,13 @@
 # @autoguru/jest-preset
 
+## 3.0.1
+
+### Patch Changes
+
+- 0bc6f62: GDU developmeny start command fixed
+- Updated dependencies [0bc6f62]
+    - @autoguru/babel-preset@3.1.2
+
 ## 3.0.0
 
 ### Major Changes
