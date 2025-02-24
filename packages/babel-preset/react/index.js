@@ -1,11 +1,14 @@
 const { isDevelopment, isDebugging } = require('../utils');
-
+import defaultBrowsers from 'browserslist-config-autoguru';
 module.exports = function autoGuruReactPreset(_, options = {}) {
 	const { browsers } = options;
+
 	const dev = isDevelopment();
 	console.log({
 		isDevelopment: isDevelopment(),
 		isDebugging: isDebugging(),
+		browsers: browsers,
+		defaultBrowsers: defaultBrowsers,
 	});
 
 	return {
@@ -19,7 +22,7 @@ module.exports = function autoGuruReactPreset(_, options = {}) {
 					modules: false,
 					loose: false,
 					targets: {
-						browsers,
+						browsers: browsers || defaultBrowsers,
 						esmodules: !dev,
 					},
 				},
@@ -33,7 +36,7 @@ module.exports = function autoGuruReactPreset(_, options = {}) {
 					importSource: 'react',
 					loose: false,
 					targets: {
-						browsers,
+						browsers: browsers || defaultBrowsers,
 						esmodules: !dev,
 					},
 				},
