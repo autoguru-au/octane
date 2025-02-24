@@ -1,5 +1,4 @@
-import defaultBrowsers from 'browserslist-config-autoguru';
-
+const defaultBrowsers = require('../../browserslist-config');
 const sharedPlugins = require('../sharedPlugins');
 const { isDevelopment, isDebugging } = require('../utils');
 
@@ -18,10 +17,7 @@ module.exports = function autoGuruWebPreset(api, options = {}) {
 					},
 					modules,
 					loose: false,
-					targets: {
-						browsers: browsers || defaultBrowsers,
-						esmodules: !dev,
-					},
+					targets: browsers || defaultBrowsers,
 					include: [],
 					exclude: ['transform-typeof-symbol'],
 				},

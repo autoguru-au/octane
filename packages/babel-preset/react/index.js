@@ -1,5 +1,4 @@
-import defaultBrowsers from 'browserslist-config-autoguru';
-
+const defaultBrowsers = require('../../browserslist-config');
 const { isDevelopment, isDebugging } = require('../utils');
 module.exports = function autoGuruReactPreset(_, options = {}) {
 	const { browsers } = options;
@@ -43,7 +42,6 @@ module.exports = function autoGuruReactPreset(_, options = {}) {
 					loose: false,
 					targets: {
 						browsers: browsers || defaultBrowsers,
-						esmodules: !dev,
 					},
 				},
 			],

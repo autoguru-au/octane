@@ -1,24 +1,35 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`web preset should allow for cjs modules 1`] = `
-"const myVar = new Map([]);
-class TestClass {
-  static staticProp = 'static prop';
-  prop = 'prop';
-  get getterProp() {
-    return 'getter prop';
+"\\"use strict\\";
+
+var _interopRequireDefault = require(\\"@babel/runtime/helpers/interopRequireDefault\\");
+var _createClass2 = _interopRequireDefault(require(\\"@babel/runtime/helpers/createClass\\"));
+var _defineProperty2 = _interopRequireDefault(require(\\"@babel/runtime/helpers/defineProperty\\"));
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { (0, _defineProperty2.default)(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+const myVar = new Map([]);
+let TestClass = /*#__PURE__*/function () {
+  function TestClass() {
+    (0, _defineProperty2.default)(this, \\"prop\\", 'prop');
   }
-}
+  return (0, _createClass2.default)(TestClass, [{
+    key: \\"getterProp\\",
+    get: function () {
+      return 'getter prop';
+    }
+  }]);
+}();
+(0, _defineProperty2.default)(TestClass, \\"staticProp\\", 'static prop');
 const objectA = {
   a: 'a',
   b: 'b'
 };
 const d = 'd';
-const objectB = {
-  ...objectA,
+const objectB = _objectSpread(_objectSpread({}, objectA), {}, {
   c: 'c',
   [d]: 'd'
-};
+});
 function test(firstArg, ...args) {
   const [, test2] = args;
   console.log(firstArg, args[0], test2);
@@ -29,24 +40,34 @@ const testAsync = async () => {
 `;
 
 exports[`web preset should allow for corejs override 1`] = `
-"const myVar = new Map([]);
-class TestClass {
-  static staticProp = 'static prop';
-  prop = 'prop';
-  get getterProp() {
-    return 'getter prop';
+"\\"use strict\\";
+
+import _createClass from \\"@babel/runtime-corejs2/helpers/createClass\\";
+import _defineProperty from \\"@babel/runtime-corejs2/helpers/defineProperty\\";
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+const myVar = new Map([]);
+let TestClass = /*#__PURE__*/function () {
+  function TestClass() {
+    _defineProperty(this, \\"prop\\", 'prop');
   }
-}
+  return _createClass(TestClass, [{
+    key: \\"getterProp\\",
+    get: function () {
+      return 'getter prop';
+    }
+  }]);
+}();
+_defineProperty(TestClass, \\"staticProp\\", 'static prop');
 const objectA = {
   a: 'a',
   b: 'b'
 };
 const d = 'd';
-const objectB = {
-  ...objectA,
+const objectB = _objectSpread(_objectSpread({}, objectA), {}, {
   c: 'c',
   [d]: 'd'
-};
+});
 function test(firstArg, ...args) {
   const [, test2] = args;
   console.log(firstArg, args[0], test2);
@@ -57,14 +78,24 @@ const testAsync = async () => {
 `;
 
 exports[`web preset should do the __DEV__ dev expression 1`] = `
-"if (__DEV__) {
+"\\"use strict\\";
+
+if (process.env.NODE_ENV !== \\"production\\") {
   console.log('test');
 }"
 `;
 
-exports[`web preset should do the invariant dev expression 1`] = `"invariant(test === true, \\"some error\\");"`;
+exports[`web preset should do the invariant dev expression 1`] = `
+"\\"use strict\\";
 
-exports[`web preset should do the warning dev expression 1`] = `"warning(test === true, \\"some error\\");"`;
+!(test === true) ? process.env.NODE_ENV !== \\"production\\" ? invariant(false, \\"some error\\") : invariant(false) : void 0;"
+`;
+
+exports[`web preset should do the warning dev expression 1`] = `
+"\\"use strict\\";
+
+process.env.NODE_ENV !== \\"production\\" ? warning(test === true, \\"some error\\") : void 0;"
+`;
 
 exports[`web preset should match the snapshot 1`] = `
 "\\"use strict\\";
@@ -95,10 +126,7 @@ const objectB = _objectSpread(_objectSpread({}, objectA), {}, {
   c: 'c',
   [d]: 'd'
 });
-function test(firstArg) {
-  for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-    args[_key - 1] = arguments[_key];
-  }
+function test(firstArg, ...args) {
   const [, test2] = args;
   console.log(firstArg, args[0], test2);
 }
@@ -108,7 +136,9 @@ const testAsync = async () => {
 `;
 
 exports[`web preset should optimize clsx 1`] = `
-"import clsx from 'clsx';
+"\\"use strict\\";
+
+import clsx from 'clsx';
 const validCondition = true;
 const invalidCondition = false;
 const a = 'a-class';

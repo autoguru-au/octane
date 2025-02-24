@@ -1,6 +1,9 @@
 const isDevelopment = (api) => {
-	const env = api.env();
-	return env === 'development' || env === 'test';
+	if(api) {
+		const env = api.env();
+		return env === 'development' || env === 'test';
+	}
+	return process.env.NODE_ENV !== 'production';
 };
 
 const isDebugging = () => {
