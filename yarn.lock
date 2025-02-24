@@ -89,6 +89,7 @@ __metadata:
     browserslist-config-autoguru: "*"
   peerDependencies:
     "@babel/core": ^7.24.5
+    browserslist-config-autoguru: ">=2.4.2"
   languageName: unknown
   linkType: soft
 
@@ -156,6 +157,8 @@ __metadata:
     tiny-invariant: ^1.0.6
     tiny-warning: ^1.0.3
     typescript: 5.3.3
+  peerDependencies:
+    browserslist-config-autoguru: ">=2.4.2"
   languageName: unknown
   linkType: soft
 
@@ -5810,9 +5813,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"browserslist-config-autoguru@*, browserslist-config-autoguru@workspace:packages/browserslist-config":
+"browserslist-config-autoguru@*, browserslist-config-autoguru@workspace:packages/browserslist-config-autoguru":
   version: 0.0.0-use.local
-  resolution: "browserslist-config-autoguru@workspace:packages/browserslist-config"
+  resolution: "browserslist-config-autoguru@workspace:packages/browserslist-config-autoguru"
   dependencies:
     browserslist: ^4.21.4
   languageName: unknown

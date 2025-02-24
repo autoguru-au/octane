@@ -36,7 +36,8 @@
 		"browserslist-config-autoguru": "*"
 	},
 	"peerDependencies": {
-		"@babel/core": "^7.24.5"
+		"@babel/core": "^7.24.5",
+		"browserslist-config-autoguru": ">=2.4.2"
 	},
 	"publishConfig": {
 		"access": "public"

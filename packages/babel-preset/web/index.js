@@ -1,4 +1,5 @@
-const defaultBrowsers = require('../../browserslist-config');
+const defaultBrowsers = require('browserslist-config-autoguru');
+
 const sharedPlugins = require('../sharedPlugins');
 const { isDevelopment, isDebugging } = require('../utils');
 
