@@ -1,5 +1,11 @@
 # @autoguru/tsconfig
 
+## 1.3.1
+
+### Patch Changes
+
+- 0bc6f62: GDU developmeny start command fixed
+
 ## 1.3.0
 
 ### Minor Changes

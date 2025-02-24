@@ -1,5 +1,11 @@
 # @autoguru/babel-preset
 
+## 3.1.2
+
+### Patch Changes
+
+- 0bc6f62: GDU developmeny start command fixed
+
 ## 3.1.1
 
 ### Patch Changes

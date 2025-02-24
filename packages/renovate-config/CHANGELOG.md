@@ -1,5 +1,11 @@
 # renovate-config-autoguru
 
+## 1.1.1
+
+### Patch Changes
+
+- 0bc6f62: GDU developmeny start command fixed
+
 ## 1.1.0
 
 ### Minor Changes
