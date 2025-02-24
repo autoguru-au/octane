@@ -58,7 +58,7 @@ const terserOptions: MinimizerOptions<MinifyOptions> = {
 			'console.warn',
 		],
 		pure_getters: true,
-		module: true,
+		module: !isDev,
 	},
 	format: {
 		ecma: 2020,
@@ -87,13 +87,30 @@ const ourCodePaths = [
 
 const fileMask = isDev ? '[name]' : '[name]-[contenthash:8]';
 
-export const baseOptions = (
+const getExternals = (isDev: boolean, standalone?: boolean) => {
+	return isDev || standalone
+		? {}
+		: {
+				react: 'https://esm.sh/react@19',
+				'react-dom/client': 'https://esm.sh/react-dom@19/client',
+				'react/jsx-runtime': 'https://esm.sh/react@19/jsx-runtime',
+			};
+};
+
+export const baseOptions = ({
 	buildEnv,
-	isMultiEnv: boolean,
+	isMultiEnv,
+	standalone,
 	isDebug = false,
-	standalone?: boolean,
-): Configuration => {
+}: {
+	buildEnv: string;
+	isMultiEnv: boolean;
+	standalone?: boolean;
+	isDebug?: boolean;
+	// eslint-disable-next-line sonarjs/cognitive-complexity
+}): Configuration => {
 	const guruConfig = getGuruConfig();
+	const withBabelDebug = process.env.BABEL_DEBUG === 'true';
 	return {
 		context: PROJECT_ROOT,
 		mode: isDev ? 'development' : 'production',
@@ -102,7 +119,7 @@ export const baseOptions = (
 		},
 		experiments: {
 			layers: true,
-			outputModule: true,
+			outputModule: !isDev, // Only enable ES modules in production
 		},
 		cache: {
 			type: 'filesystem',
@@ -130,6 +147,12 @@ export const baseOptions = (
 			],
 			alias: {
 				__GDU_CONSUMER_CLIENT__: join(PROJECT_ROOT, 'src/client.tsx'),
+				...(isDev
+					? {
+							symlinks: false,
+							cacheWithContext: false,
+						}
+					: {}),
 			},
 		},
 		optimization: {
@@ -203,9 +226,11 @@ export const baseOptions = (
 				},
 			},
 			moduleIds: isDev ? 'named' : 'deterministic',
-			runtimeChunk: {
-				name: 'runtime',
-			},
+			runtimeChunk: isDev
+				? {
+						name: 'runtime',
+					}
+				: false,
 			minimizer: [
 				new TerserPlugin({
 					parallel: true,
@@ -313,6 +338,7 @@ export const baseOptions = (
 													'@babel/preset-env',
 												),
 												{
+													debug: withBabelDebug,
 													useBuiltIns: false,
 													modules: false,
 													exclude: [
@@ -408,23 +434,36 @@ export const baseOptions = (
 					: [/.css.ts$/],
 				test: [/.ts$/, /.tsx$/],
 			}),
-			process.env.ANALYZE &&
+			process.env.ANALYZE === 'true' &&
 				new BundleAnalyzerPlugin({
 					analyzerMode: 'static',
 					reportFilename: 'bundle-report.html',
 					openAnalyzer: false,
 				}),
 		].filter(Boolean),
-		target: 'es2020',
+		target: isDev ? 'web' : 'es2020',
 		output: {
-			module: true,
-			library: {
-				type: 'module',
-			},
+			path: guruConfig.outputPath,
+			publicPath: '/',
+			filename: `${fileMask}.js`,
+			chunkFilename: `chunks/${fileMask}.js`,
+			hashFunction: 'sha256',
+			crossOriginLoading: 'anonymous',
+			sourceMapFilename: 'sourceMaps/[file].map',
+			pathinfo: isDev,
+			chunkFormat: isDev ? 'array-push' : undefined,
+			module: !isDev,
+			library: isDev ? undefined : { type: 'module' },
 			environment: {
-				module: true,
+				arrowFunction: true,
+				const: true,
+				destructuring: true,
+				dynamicImport: true,
+				module: !isDev,
 			},
 		},
+		externalsType: isDev ? 'var' : 'module',
+		externals: getExternals(isDev, standalone),
 	};
 };
 
@@ -450,11 +489,33 @@ const getPublicPath = ({
 
 	return `https://mfe.${tenant}-${agEnv}.autoguru.com/${projectFolderName}/`;
 };
+
 export const makeWebpackConfig = (
 	buildEnv: BuildEnv,
 	isMultiEnv: boolean,
 	standalone?: boolean,
-): Configuration => {
+): {
+	name: 'dev' | 'test' | 'uat' | 'preprod' | 'prod' | 'dockerprod' | string;
+	output: {
+		path: string;
+		publicPath: string;
+		filename: string;
+		chunkFilename: string;
+		hashFunction: string;
+		crossOriginLoading: string;
+		sourceMapFilename: string;
+		pathinfo: boolean;
+	};
+	externalsType: string;
+	externals:
+		| object
+		| { react: string; 'react-dom': string }
+		| {
+				react: string;
+				'react-dom/client': string;
+				'react/jsx-runtime': string;
+		  };
+} => {
 	const { outputPath, isTenanted } = getGuruConfig();
 	return {
 		name: buildEnv,
@@ -474,18 +535,19 @@ export const makeWebpackConfig = (
 			crossOriginLoading: 'anonymous',
 			sourceMapFilename: 'sourceMaps/[file].map',
 			pathinfo: false,
-			module: true,
-			library: {
-				type: 'module',
-			},
+			...(isDev
+				? {}
+				: {
+						module: true,
+						library: {
+							type: 'module',
+						},
+						environment: {
+							module: true,
+						},
+					}),
 		},
-		externalsType: 'module',
-		externals: standalone
-			? {}
-			: {
-					react: 'https://esm.sh/react@19',
-					'react-dom/client': 'https://esm.sh/react-dom@19/client',
-					'react/jsx-runtime': 'https://esm.sh/react@19/jsx-runtime',
-				},
+		externalsType: isDev ? undefined : 'module',
+		externals: getExternals(isDev, standalone),
 	};
 };

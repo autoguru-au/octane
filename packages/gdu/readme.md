@@ -11,8 +11,8 @@ configurability on a similar vein as webpack, using `tapable`.
 
 This tool has been heavily inspired by:
 
--   [seek-oss/sku](https://github.com/seek-oss/sku)
--   [facebook/create-react-app](https://github.com/facebook/create-react-app)
+- [seek-oss/sku](https://github.com/seek-oss/sku)
+- [facebook/create-react-app](https://github.com/facebook/create-react-app)
 
 ## Getting Started
 
@@ -58,17 +58,16 @@ interface GuruConfig {
 
 ### Hooks
 
--   `webpackConfig(config)` - After we have resolved a webpack config, but
-    before we use it.
--   `beforeServer(server)` - After we have initialized a new polka server, but
-    before default routes kick in, mainly used to inject middleware.
--   `afterServer(server)` - After we have injected all middleware, default
-    routes.
--   `beforeNextJSPrepare(app)` - Before we run `nextjs.prepare()`, but after
-    `nextjs.getRequestHandler()`
--   `afterNextJSConfig(config)` - After default nextjs config has been resolved
-    to be sent forward into nextjs.
--   `babelConfig(config)` - After babel config has been resolved, but before
-    it's used.
+- `webpackConfig(config)` - After we have resolved a webpack config, but before
+  we use it.
+- `beforeServer(server)` - After we have initialized a new polka server, but
+  before default routes kick in, mainly used to inject middleware.
+- `afterServer(server)` - After we have injected all middleware, default routes.
+- `beforeNextJSPrepare(app)` - Before we run `nextjs.prepare()`, but after
+  `nextjs.getRequestHandler()`
+- `afterNextJSConfig(config)` - After default nextjs config has been resolved to
+  be sent forward into nextjs.
+- `babelConfig(config)` - After babel config has been resolved, but before it's
+  used.
 
 <a href="http://www.autoguru.com.au/"><img src="https://cdn.autoguru.com.au/images/logos/autoguru.svg" alt="AutoGuru" width="150" /></a>
