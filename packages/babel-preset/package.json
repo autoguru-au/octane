@@ -1,6 +1,6 @@
 {
 	"name": "@autoguru/babel-preset",
-	"version": "3.1.2",
+	"version": "3.1.3",
 	"description": "AutoGuru's org-wide Babel preset",
 	"homepage": "https://github.com/autoguru-au/octane/tree/master/packages/babel-preset#readme",
 	"repository": "https://github.com/autoguru-au/octane/tree/master/packages/babel-preset",
@@ -37,7 +37,7 @@
 	},
 	"peerDependencies": {
 		"@babel/core": "^7.24.5",
-		"browserslist-config-autoguru": ">=2.4.2"
+		"browserslist-config-autoguru": ">=2.4.3"
 	},
 	"publishConfig": {
 		"access": "public"

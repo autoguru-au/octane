@@ -1,5 +1,19 @@
 # gdu
 
+## 12.4.0
+
+### Minor Changes
+
+- 58e4948: Externalises relay in prod builds
+
+### Patch Changes
+
+- 58e4948: Updated browserlist
+- Updated dependencies [58e4948]
+    - browserslist-config-autoguru@2.4.3
+    - @autoguru/babel-preset@3.1.3
+    - @autoguru/utilities@1.3.2
+
 ## 12.3.3
 
 ### Patch Changes

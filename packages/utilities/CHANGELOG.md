@@ -1,5 +1,13 @@
 # @autoguru/utilities
 
+## 1.3.2
+
+### Patch Changes
+
+- 58e4948: Updated browserlist
+- Updated dependencies [58e4948]
+    - browserslist-config-autoguru@2.4.3
+
 ## 1.3.1
 
 ### Patch Changes

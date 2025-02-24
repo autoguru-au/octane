@@ -1,5 +1,11 @@
 # browserslist-config-autoguru
 
+## 2.4.3
+
+### Patch Changes
+
+- 58e4948: Updated browserlist
+
 ## 2.4.2
 
 ### Patch Changes
