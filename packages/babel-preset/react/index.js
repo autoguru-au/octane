@@ -1,15 +1,9 @@
 const defaultBrowsers = require('../../browserslist-config');
-const { isDevelopment, isDebugging } = require('../utils');
+const { isDevelopment } = require('../utils');
 module.exports = function autoGuruReactPreset(_, options = {}) {
 	const { browsers } = options;
 
 	const dev = isDevelopment();
-	console.log({
-		isDevelopment: isDevelopment(),
-		isDebugging: isDebugging(),
-		browsers: browsers,
-		defaultBrowsers: defaultBrowsers,
-	});
 
 	return {
 		presets: [
