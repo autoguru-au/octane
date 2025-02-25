@@ -5813,9 +5813,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"browserslist-config-autoguru@*, browserslist-config-autoguru@workspace:packages/browserslist-config-autoguru":
+"browserslist-config-autoguru@*, browserslist-config-autoguru@workspace:packages/browserslist-config":
   version: 0.0.0-use.local
-  resolution: "browserslist-config-autoguru@workspace:packages/browserslist-config-autoguru"
+  resolution: "browserslist-config-autoguru@workspace:packages/browserslist-config"
   dependencies:
     browserslist: ^4.21.4
   languageName: unknown

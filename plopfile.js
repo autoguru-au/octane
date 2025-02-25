@@ -20,12 +20,12 @@ module.exports = function (plop) {
 				},
 				{
 					type: 'add',
-					path: 'packages/browserslist-config-autoguru/readme.md',
+					path: 'packages/browserslist-config/readme.md',
 					templateFile: 'templates/browserslist-config_readme.hbs.md',
 					force: true,
 					data: {
 						browsers_link: `https://browserl.ist/?q=${encodeURI(
-							require('./packages/browserslist-config-autoguru').join(
+							require('./packages/browserslist-config').join(
 								', ',
 							),
 						)}`,

@@ -6,17 +6,33 @@ import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import Dotenv from 'dotenv-webpack';
 import envCI from 'env-ci';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import { defineReactCompilerLoaderOption, reactCompilerLoader } from 'react-compiler-webpack';
+import {
+	defineReactCompilerLoaderOption,
+	reactCompilerLoader,
+} from 'react-compiler-webpack';
 import { MinifyOptions } from 'terser';
 import TerserPlugin, { MinimizerOptions } from 'terser-webpack-plugin';
 import { TreatPlugin } from 'treat/webpack-plugin';
 import { TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
-import { Configuration, DefinePlugin, IgnorePlugin, SourceMapDevToolPlugin } from 'webpack';
+import {
+	Configuration,
+	DefinePlugin,
+	IgnorePlugin,
+	SourceMapDevToolPlugin,
+} from 'webpack';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
-import { getGuruConfig, getProjectFolderName, getProjectName } from '../../lib/config';
+import {
+	getGuruConfig,
+	getProjectFolderName,
+	getProjectName,
+} from '../../lib/config';
 import { isProductionBuild } from '../../lib/misc';
-import { CALLING_WORKSPACE_ROOT, GDU_ROOT, PROJECT_ROOT } from '../../lib/roots';
+import {
+	CALLING_WORKSPACE_ROOT,
+	GDU_ROOT,
+	PROJECT_ROOT,
+} from '../../lib/roots';
 import { getBuildEnvs, getConfigsDirs } from '../../utils/configs';
 import { getHooks } from '../../utils/hooks';
 
@@ -53,16 +69,15 @@ const terserOptions: MinimizerOptions<MinifyOptions> = {
 
 const vendorRegex =
 	/(?<!node_modules.*)[/\\]node_modules[/\\](scheduler|prop-types|use-subscription)[/\\]/;
-// We can remove the relay regex since we're externalizing it
-// const relayRegex =
-//	/(?<!node_modules.*)[/\\]node_modules[/\\](relay-runtime|react-relay)[/\\]/;
+const relayRegex =
+	/(?<!node_modules.*)[/\\]node_modules[/\\](relay-runtime|react-relay)[/\\]/;
 const frameworkRegex =
 	/(?<!node_modules.*)[/\\]node_modules[/\\](react|react-dom)[/\\]/;
 
 const hooks = getHooks();
 
 // Add package.json parsing to get relay version
-const getRelayVersion = () => {
+/*const getRelayVersion = () => {
 	try {
 		const packagePath = path.join(PROJECT_ROOT, 'package.json');
 		const pkg = require(packagePath);
@@ -73,7 +88,7 @@ const getRelayVersion = () => {
 	} catch {
 		return '18.2.0';
 	}
-};
+};*/
 const getReactVersion = () => {
 	try {
 		const packagePath = path.join(PROJECT_ROOT, 'package.json');
@@ -95,16 +110,14 @@ const ourCodePaths = [
 const fileMask = isDev ? '[name]' : '[name]-[contenthash:8]';
 
 const getExternals = (isDev: boolean, standalone?: boolean) => {
-	const relayVersion = getRelayVersion();
+	//const relayVersion = getRelayVersion();
 	const reactVersion = getReactVersion();
 	return isDev || standalone
 		? {}
 		: {
-				react: `https://esm.sh/react@${reactVersion}`,
-				'react-dom/client': `https://esm.sh/react-dom@${reactVersion}/client`,
-				'react/jsx-runtime': `https://esm.sh/react@${reactVersion}/jsx-runtime`,
-				'relay-runtime': `https://esm.sh/relay-runtime@${relayVersion}`,
-				'react-relay': `https://esm.sh/react-relay@${relayVersion}`,
+			react: `https://esm.sh/react@${reactVersion}`,
+			'react-dom/client': `https://esm.sh/react-dom@${reactVersion}/client`,
+			'react/jsx-runtime': `https://esm.sh/react@${reactVersion}/jsx-runtime`,
 			};
 };
 
@@ -191,6 +204,14 @@ export const baseOptions = ({
 						priority: 30,
 						minChunks: 1,
 						reuseExistingChunk: true,
+					},
+					relay: {
+						chunks: 'all',
+						name: 'relay',
+						test: relayRegex,
+						priority: 40,
+						reuseExistingChunk: true,
+						enforce: true,
 					},
 					vendor: {
 						chunks: 'all',
