@@ -10,17 +10,13 @@ module.exports = function autoGuruWebPreset(api, options = {}) {
 			[
 				require.resolve('@babel/preset-env'),
 				{
-					bugfixes: true,
-					useBuiltIns: 'entry', // Changed to entry to be more restrictive
-					corejs: {
-						version: 3,
-						proposals: false, // Disabled proposals to avoid unnecessary polyfills
-					},
-					modules,
+					corejs,
 					loose: false,
+					modules,
+					spec: false,
+					shippedProposals: true,
+					useBuiltIns: 'usage',
 					targets: browsers || defaultBrowsers,
-					include: [],
-					exclude: ['transform-typeof-symbol'],
 				},
 			],
 		],

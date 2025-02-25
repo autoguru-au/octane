@@ -6,6 +6,7 @@ import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import Dotenv from 'dotenv-webpack';
 import envCI from 'env-ci';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+
 import {
 	defineReactCompilerLoaderOption,
 	reactCompilerLoader,
@@ -250,11 +251,9 @@ export const baseOptions = ({
 				},
 			},
 			moduleIds: isDev ? 'named' : 'deterministic',
-			runtimeChunk: isDev
-				? {
-						name: 'runtime',
-					}
-				: false,
+			runtimeChunk: {
+				name: 'runtime',
+			},
 			minimizer: [
 				new TerserPlugin({
 					parallel: true,

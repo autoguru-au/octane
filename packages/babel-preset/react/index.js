@@ -12,19 +12,14 @@ module.exports = function autoGuruReactPreset(_, options = {}) {
 				'@babel/preset-env',
 				{
 					bugfixes: true,
-					useBuiltIns: 'entry', // Changed to entry to be more restrictive
-					corejs: {
-						version: 3,
-						proposals: false, // Disabled proposals to avoid unnecessary polyfills
-					},
+					useBuiltIns: 'usage',
+					corejs: { version: 3, proposals: true },
 					modules: false,
 					loose: false,
 					targets: {
 						browsers: browsers || defaultBrowsers,
 						esmodules: !dev,
 					},
-					include: [],
-					exclude: ['transform-typeof-symbol'],
 				},
 			],
 			[
