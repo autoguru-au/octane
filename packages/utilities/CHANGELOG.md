@@ -1,5 +1,11 @@
 # @autoguru/utilities
 
+## 1.3.3
+
+### Patch Changes
+
+- 2a4a6df: Fixes externalised packages
+
 ## 1.3.2
 
 ### Patch Changes

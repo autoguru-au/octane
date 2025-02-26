@@ -1,5 +1,11 @@
 # @autoguru/babel-preset
 
+## 3.1.4
+
+### Patch Changes
+
+- 2a4a6df: Fixes externalised packages
+
 ## 3.1.3
 
 ### Patch Changes

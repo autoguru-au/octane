@@ -1,5 +1,15 @@
 # gdu
 
+## 12.4.1
+
+### Patch Changes
+
+- 2a4a6df: Fixes externalised packages
+- Updated dependencies [2a4a6df]
+    - browserslist-config-autoguru@2.4.4
+    - @autoguru/babel-preset@3.1.4
+    - @autoguru/utilities@1.3.3
+
 ## 12.4.0
 
 ### Minor Changes
