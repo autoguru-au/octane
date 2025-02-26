@@ -61,7 +61,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@autoguru/babel-preset@^3.1.2, @autoguru/babel-preset@^3.1.3, @autoguru/babel-preset@workspace:packages/babel-preset":
+"@autoguru/babel-preset@^3.1.2, @autoguru/babel-preset@^3.1.4, @autoguru/babel-preset@workspace:packages/babel-preset":
   version: 0.0.0-use.local
   resolution: "@autoguru/babel-preset@workspace:packages/babel-preset"
   dependencies:
@@ -135,7 +135,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@autoguru/utilities@^1.3.2, @autoguru/utilities@workspace:packages/utilities":
+"@autoguru/utilities@^1.3.3, @autoguru/utilities@workspace:packages/utilities":
   version: 0.0.0-use.local
   resolution: "@autoguru/utilities@workspace:packages/utilities"
   dependencies:
@@ -9603,9 +9603,9 @@ __metadata:
   resolution: "gdu@workspace:packages/gdu"
   dependencies:
     "@2fd/graphdoc": ^2.4.0
-    "@autoguru/babel-preset": ^3.1.3
+    "@autoguru/babel-preset": ^3.1.4
     "@autoguru/tsconfig": 1.3.1
-    "@autoguru/utilities": ^1.3.2
+    "@autoguru/utilities": ^1.3.3
     "@babel/core": ^7.15.0
     "@babel/helper-plugin-utils": ^7.24.5
     "@babel/preset-env": ^7.24.5
@@ -9684,7 +9684,7 @@ __metadata:
     whatwg-fetch: ^3.6.2
   peerDependencies:
     "@types/node": ">=10"
-    browserslist-config-autoguru: ">=2.4.3"
+    browserslist-config-autoguru: ">=2.4.4"
   bin:
     gdu: ./bin/gdu.js
   languageName: unknown
