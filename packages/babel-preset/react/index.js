@@ -26,12 +26,15 @@ module.exports = function autoGuruReactPreset(api, options = {}) {
 					runtime: 'automatic',
 					development: dev,
 					useBuiltIns: true,
-					importSource: 'react'
+					importSource: 'react',
 				},
 			],
 		],
 		plugins: [
-			!dev && require.resolve('@babel/plugin-transform-react-constant-elements'),
+			!dev &&
+				require.resolve(
+					'@babel/plugin-transform-react-constant-elements',
+				),
 			dev && experimental && require.resolve('./plugins/named-memo.js'),
 		].filter(Boolean),
 	};

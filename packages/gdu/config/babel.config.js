@@ -14,10 +14,9 @@ module.exports = (guruConfig) => {
 	let hasRelay = false;
 
 	try {
-		const packageJson = require(join(
-			guruConfig.__configPath,
-			'./package.json',
-		));
+		const packageJson = require(
+			join(guruConfig.__configPath, './package.json'),
+		);
 
 		const deps = new Set();
 		for (const item of Object.keys(packageJson.devDependencies))
