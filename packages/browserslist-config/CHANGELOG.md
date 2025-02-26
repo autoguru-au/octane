@@ -1,5 +1,11 @@
 # browserslist-config-autoguru
 
+## 2.4.4
+
+### Patch Changes
+
+- 2a4a6df: Fixes externalised packages
+
 ## 2.4.3
 
 ### Patch Changes

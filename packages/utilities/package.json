@@ -1,6 +1,6 @@
 {
 	"name": "@autoguru/utilities",
-	"version": "1.3.2",
+	"version": "1.3.3",
 	"description": "A collection of smallish things that help AutoGuru write code.",
 	"homepage": "https://github.com/autoguru-au/octane/tree/master/packages/utilities#readme",
 	"repository": "https://github.com/autoguru-au/octane/tree/master/packages/utilities",
