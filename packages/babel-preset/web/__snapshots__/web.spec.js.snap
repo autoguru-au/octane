@@ -30,7 +30,10 @@ const objectB = _objectSpread(_objectSpread({}, objectA), {}, {
   c: 'c',
   [d]: 'd'
 });
-function test(firstArg, ...args) {
+function test(firstArg) {
+  for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+    args[_key - 1] = arguments[_key];
+  }
   const [, test2] = args;
   console.log(firstArg, args[0], test2);
 }
@@ -46,6 +49,7 @@ import _createClass from \\"@babel/runtime-corejs2/helpers/createClass\\";
 import _defineProperty from \\"@babel/runtime-corejs2/helpers/defineProperty\\";
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
 function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+import \\"core-js/modules/web.dom.iterable.js\\";
 const myVar = new Map([]);
 let TestClass = /*#__PURE__*/function () {
   function TestClass() {
@@ -68,7 +72,10 @@ const objectB = _objectSpread(_objectSpread({}, objectA), {}, {
   c: 'c',
   [d]: 'd'
 });
-function test(firstArg, ...args) {
+function test(firstArg) {
+  for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+    args[_key - 1] = arguments[_key];
+  }
   const [, test2] = args;
   console.log(firstArg, args[0], test2);
 }
@@ -126,7 +133,10 @@ const objectB = _objectSpread(_objectSpread({}, objectA), {}, {
   c: 'c',
   [d]: 'd'
 });
-function test(firstArg, ...args) {
+function test(firstArg) {
+  for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+    args[_key - 1] = arguments[_key];
+  }
   const [, test2] = args;
   console.log(firstArg, args[0], test2);
 }

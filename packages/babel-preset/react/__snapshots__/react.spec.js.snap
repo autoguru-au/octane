@@ -79,6 +79,8 @@ const TestMemo = /*#__PURE__*/memo(() => _h || (_h = /*#__PURE__*/_jsx(\\"h1\\",
 
 exports[`react preset when production should match the snapshot for fixture standardReact.jsx 1`] = `
 "var _label, _h;
+import \\"core-js/modules/es.array.iterator.js\\";
+import \\"core-js/modules/web.dom-collections.iterator.js\\";
 import React, { memo } from 'react';
 import { jsxs as _jsxs, jsx as _jsx } from \\"react/jsx-runtime\\";
 class GreetSomeone extends React.Component {
