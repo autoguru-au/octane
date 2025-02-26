@@ -1,10 +1,8 @@
-const defaultBrowsers = require('browserslist-config-autoguru');
-
 const { isDevelopment } = require('../utils');
-module.exports = function autoGuruReactPreset(_, options = {}) {
-	const { browsers } = options;
 
-	const dev = isDevelopment();
+module.exports = function autoGuruReactPreset(api, options = {}) {
+	const dev = isDevelopment(api);
+	const { experimental = false } = options;
 
 	return {
 		presets: [
@@ -16,9 +14,9 @@ module.exports = function autoGuruReactPreset(_, options = {}) {
 					corejs: { version: 3, proposals: true },
 					modules: false,
 					loose: false,
+					debug: dev,
 					targets: {
-						browsers: browsers || defaultBrowsers,
-						esmodules: !dev,
+						esmodules: true,
 					},
 				},
 			],
@@ -28,19 +26,13 @@ module.exports = function autoGuruReactPreset(_, options = {}) {
 					runtime: 'automatic',
 					development: dev,
 					useBuiltIns: true,
-					importSource: 'react',
-					loose: false,
-					targets: {
-						browsers: browsers || defaultBrowsers,
-					},
+					importSource: 'react'
 				},
 			],
 		],
 		plugins: [
-			!dev &&
-				require.resolve(
-					'@babel/plugin-transform-react-constant-elements',
-				),
+			!dev && require.resolve('@babel/plugin-transform-react-constant-elements'),
+			dev && experimental && require.resolve('./plugins/named-memo.js'),
 		].filter(Boolean),
 	};
 };

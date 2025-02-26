@@ -6,7 +6,6 @@ import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import Dotenv from 'dotenv-webpack';
 import envCI from 'env-ci';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-
 import {
 	defineReactCompilerLoaderOption,
 	reactCompilerLoader,
@@ -59,7 +58,7 @@ const terserOptions: MinimizerOptions<MinifyOptions> = {
 			'console.warn',
 		],
 		pure_getters: true,
-		module: !isDev,
+		module: true,
 	},
 	format: {
 		ecma: 2020,
@@ -77,28 +76,6 @@ const frameworkRegex =
 
 const hooks = getHooks();
 
-// Add package.json parsing to get relay version
-/*const getRelayVersion = () => {
-	try {
-		const packagePath = path.join(PROJECT_ROOT, 'package.json');
-		const pkg = require(packagePath);
-		return (pkg.devDependencies?.['react-relay'] || '18.2.0').replace(
-			'^',
-			'',
-		);
-	} catch {
-		return '18.2.0';
-	}
-};*/
-const getReactVersion = () => {
-	try {
-		const packagePath = path.join(PROJECT_ROOT, 'package.json');
-		const pkg = require(packagePath);
-		return (pkg.dependencies?.react || '19').replace('^', '');
-	} catch {
-		return '19';
-	}
-};
 const gduEntryPath = join(GDU_ROOT, 'entry');
 
 const ourCodePaths = [
@@ -110,32 +87,13 @@ const ourCodePaths = [
 
 const fileMask = isDev ? '[name]' : '[name]-[contenthash:8]';
 
-const getExternals = (isDev: boolean, standalone?: boolean) => {
-	//const relayVersion = getRelayVersion();
-	const reactVersion = getReactVersion();
-	return isDev || standalone
-		? {}
-		: {
-			react: `https://esm.sh/react@${reactVersion}`,
-			'react-dom/client': `https://esm.sh/react-dom@${reactVersion}/client`,
-			'react/jsx-runtime': `https://esm.sh/react@${reactVersion}/jsx-runtime`,
-			};
-};
-
-export const baseOptions = ({
+export const baseOptions = (
 	buildEnv,
-	isMultiEnv,
-	standalone,
+	isMultiEnv: boolean,
 	isDebug = false,
-}: {
-	buildEnv: string;
-	isMultiEnv: boolean;
-	standalone?: boolean;
-	isDebug?: boolean;
-	// eslint-disable-next-line sonarjs/cognitive-complexity
-}): Configuration => {
+	standalone?: boolean,
+): Configuration => {
 	const guruConfig = getGuruConfig();
-	const withBabelDebug = process.env.BABEL_DEBUG === 'true';
 	return {
 		context: PROJECT_ROOT,
 		mode: isDev ? 'development' : 'production',
@@ -144,7 +102,7 @@ export const baseOptions = ({
 		},
 		experiments: {
 			layers: true,
-			outputModule: !isDev, // Only enable ES modules in production
+			outputModule: true,
 		},
 		cache: {
 			type: 'filesystem',
@@ -172,12 +130,6 @@ export const baseOptions = ({
 			],
 			alias: {
 				__GDU_CONSUMER_CLIENT__: join(PROJECT_ROOT, 'src/client.tsx'),
-				...(isDev
-					? {
-							symlinks: false,
-							cacheWithContext: false,
-						}
-					: {}),
 			},
 		},
 		optimization: {
@@ -361,7 +313,6 @@ export const baseOptions = ({
 													'@babel/preset-env',
 												),
 												{
-													debug: withBabelDebug,
 													useBuiltIns: false,
 													modules: false,
 													exclude: [
@@ -457,36 +408,23 @@ export const baseOptions = ({
 					: [/.css.ts$/],
 				test: [/.ts$/, /.tsx$/],
 			}),
-			process.env.ANALYZE === 'true' &&
+			process.env.ANALYZE &&
 				new BundleAnalyzerPlugin({
 					analyzerMode: 'static',
 					reportFilename: 'bundle-report.html',
 					openAnalyzer: false,
 				}),
 		].filter(Boolean),
-		target: isDev ? 'web' : 'es2020',
+		target: 'es2020',
 		output: {
-			path: guruConfig.outputPath,
-			publicPath: '/',
-			filename: `${fileMask}.js`,
-			chunkFilename: `chunks/${fileMask}.js`,
-			hashFunction: 'sha256',
-			crossOriginLoading: 'anonymous',
-			sourceMapFilename: 'sourceMaps/[file].map',
-			pathinfo: isDev,
-			chunkFormat: isDev ? 'array-push' : undefined,
-			module: !isDev,
-			library: isDev ? undefined : { type: 'module' },
+			module: true,
+			library: {
+				type: 'module',
+			},
 			environment: {
-				arrowFunction: true,
-				const: true,
-				destructuring: true,
-				dynamicImport: true,
-				module: !isDev,
+				module: true,
 			},
 		},
-		externalsType: isDev ? 'var' : 'module',
-		externals: getExternals(isDev, standalone),
 	};
 };
 
@@ -512,33 +450,11 @@ const getPublicPath = ({
 
 	return `https://mfe.${tenant}-${agEnv}.autoguru.com/${projectFolderName}/`;
 };
-
 export const makeWebpackConfig = (
 	buildEnv: BuildEnv,
 	isMultiEnv: boolean,
 	standalone?: boolean,
-): {
-	name: 'dev' | 'test' | 'uat' | 'preprod' | 'prod' | 'dockerprod' | string;
-	output: {
-		path: string;
-		publicPath: string;
-		filename: string;
-		chunkFilename: string;
-		hashFunction: string;
-		crossOriginLoading: string;
-		sourceMapFilename: string;
-		pathinfo: boolean;
-	};
-	externalsType: string;
-	externals:
-		| object
-		| { react: string; 'react-dom': string }
-		| {
-				react: string;
-				'react-dom/client': string;
-				'react/jsx-runtime': string;
-		  };
-} => {
+): Configuration => {
 	const { outputPath, isTenanted } = getGuruConfig();
 	return {
 		name: buildEnv,
@@ -558,19 +474,18 @@ export const makeWebpackConfig = (
 			crossOriginLoading: 'anonymous',
 			sourceMapFilename: 'sourceMaps/[file].map',
 			pathinfo: false,
-			...(isDev
-				? {}
-				: {
-						module: true,
-						library: {
-							type: 'module',
-						},
-						environment: {
-							module: true,
-						},
-					}),
+			module: true,
+			library: {
+				type: 'module',
+			},
 		},
-		externalsType: isDev ? undefined : 'module',
-		externals: getExternals(isDev, standalone),
+		externalsType: 'module',
+		externals: standalone
+			? {}
+			: {
+					react: 'https://esm.sh/react@19',
+					'react-dom/client': 'https://esm.sh/react-dom@19/client',
+					'react/jsx-runtime': 'https://esm.sh/react@19/jsx-runtime',
+				},
 	};
 };

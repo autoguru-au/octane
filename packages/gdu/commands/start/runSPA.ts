@@ -7,7 +7,7 @@ import dedent from 'ts-dedent';
 import webpack, { Configuration } from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 
-import buildConfigs from '../../config/webpack';
+import webpackConfigs from '../../config/webpack';
 import { getProjectName, GuruConfig } from '../../lib/config';
 import { PROJECT_ROOT } from '../../lib/roots';
 import { getHooks } from '../../utils/hooks';
@@ -35,20 +35,13 @@ export const runSPA = async (guruConfig: GuruConfig, isDebug) => {
 			isDebug ? magenta(' DEBUG MODE') : ''
 		}`,
 	);
-	const appEnv = process.env.APP_ENV;
-	const withBabelDebug = process.env.BABEL_DEBUG === 'true';
-	console.log(
-		`${cyan(`Starting SPA on ${appEnv} ...`)}${withBabelDebug ? magenta(' BABEL DEBUG MODE') : ''}`,
-	);
-	const webpackConfig: Configuration = hooks.webpackConfig
-		.call(
-			buildConfigs({
-				env: appEnv,
-				isDebug,
-				standalone: true, // All MFE run as standalone in development mode
-			}),
-		)
 
+	// eslint-disable-next-line unicorn/prefer-prototype-methods
+	const appEnv = process.env.APP_ENV || 'dev';
+
+	// eslint-disable-next-line unicorn/prefer-prototype-methods
+	const webpackConfig: Configuration = hooks.webpackConfig
+		.call(webpackConfigs(appEnv, isDebug, guruConfig?.standalone))
 		.find(({ name }) => name === appEnv);
 
 	const consumerHtmlTemplate = getConsumerHtmlTemplate(guruConfig);
@@ -136,22 +129,8 @@ export const runSPA = async (guruConfig: GuruConfig, isDebug) => {
 			host: hosts[0],
 			allowedHosts: hosts,
 			historyApiFallback: true,
-			hot: 'only',
-			liveReload: false,
-			client: {
-				overlay: true,
-				progress: true,
-				webSocketTransport: 'ws',
-			},
-			webSocketServer: 'ws',
+			hot: true,
 			port: guruConfig.port,
-			devMiddleware: {
-				publicPath: '/',
-				writeToDisk: false,
-			},
-			headers: {
-				'Access-Control-Allow-Origin': '*',
-			},
 		},
 		compiler,
 	);

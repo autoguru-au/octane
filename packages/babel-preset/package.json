@@ -32,12 +32,10 @@
 	},
 	"devDependencies": {
 		"@autoguru/jest-preset": "*",
-		"@babel/core": "^7.15.0",
-		"browserslist-config-autoguru": "*"
+		"@babel/core": "^7.15.0"
 	},
 	"peerDependencies": {
-		"@babel/core": "^7.24.5",
-		"browserslist-config-autoguru": ">=2.4.3"
+		"@babel/core": "^7.24.5"
 	},
 	"publishConfig": {
 		"access": "public"

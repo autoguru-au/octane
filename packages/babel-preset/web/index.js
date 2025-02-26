@@ -1,22 +1,22 @@
-const defaultBrowsers = require('browserslist-config-autoguru');
-
 const sharedPlugins = require('../sharedPlugins');
 const { isDevelopment, isDebugging } = require('../utils');
 
 module.exports = function autoGuruWebPreset(api, options = {}) {
-	const { modules = false, corejs = 3, browsers } = options;
+	const { modules = false, debug = false, corejs = 3, browsers } = options;
+
 	return {
 		presets: [
 			[
 				require.resolve('@babel/preset-env'),
 				{
 					corejs,
+					debug,
 					loose: false,
 					modules,
 					spec: false,
 					shippedProposals: true,
 					useBuiltIns: 'usage',
-					targets: browsers || defaultBrowsers,
+					targets: browsers,
 				},
 			],
 		],
@@ -25,6 +25,7 @@ module.exports = function autoGuruWebPreset(api, options = {}) {
 				isDevelopment: isDevelopment(api),
 				isDebugging: isDebugging(api),
 				modules,
+				debug,
 				corejs,
 				loose: false,
 			}),
