@@ -1,8 +1,6 @@
-/* eslint-disable unicorn/prefer-module */
 const { join } = require('path');
 
 const browsers = require('browserslist-config-autoguru');
-const kleur = require('kleur');
 
 const { PROJECT_ROOT } = require('../lib/roots');
 const ReactCompilerConfig = {
@@ -33,11 +31,6 @@ module.exports = (guruConfig) => {
 		// Do nothing
 	}
 
-	// log if mfe has relay
-	if (hasRelay) {
-		console.log(kleur.green('Relay detected in MFE 🌟'));
-	}
-
 	return {
 		presets: [
 			[
@@ -46,7 +39,6 @@ module.exports = (guruConfig) => {
 			],
 			guruConfig.type !== 'ssr' && [
 				require.resolve('@autoguru/babel-preset/react'),
-				{ corejs: 3, browsers, loose: false },
 			],
 			[
 				'@babel/preset-typescript',
@@ -59,7 +51,7 @@ module.exports = (guruConfig) => {
 		plugins: [
 			['babel-plugin-react-compiler', ReactCompilerConfig],
 			hasRelay && [
-				require.resolve('babel-plugin-relay'),
+				'babel-plugin-relay',
 				{
 					haste: false,
 					isDevVariable: '__DEV__',

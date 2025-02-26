@@ -2,8 +2,8 @@
 	"name": "browserslist-config-autoguru",
 	"version": "2.4.3",
 	"description": "AutoGuru's org-wide browserslist config",
-	"homepage": "https://github.com/autoguru-au/octane/tree/master/packages/browserslist-config-autoguru#readme",
-	"repository": "https://github.com/autoguru-au/octane/tree/master/packages/browserslist-config-autoguru",
+	"homepage": "https://github.com/autoguru-au/octane/tree/master/packages/browserslist-config#readme",
+	"repository": "https://github.com/autoguru-au/octane/tree/master/packages/browserslist-config",
 	"license": "MIT",
 	"main": "index.js",
 	"files": [

@@ -46,21 +46,7 @@ export default (app: Sade) => {
 			false,
 		)
 		.example('start -p 80')
-		.action(
-			deferredAction(async () => {
-				process.env.GDU_COMMAND = 'start';
-				if (!process.env.APP_ENV) {
-					process.env.APP_ENV = 'dev_au';
-				}
-				if (!process.env.ANALYZE) {
-					process.env.ANALYZE = 'false';
-				}
-				if (!process.env.BABEL_DEBUG) {
-					process.env.BABEL_DEBUG = 'false';
-				}
-				return import('./start');
-			}, IS_NOT_ROOT),
-		);
+		.action(deferredAction(async () => import('./start'), IS_NOT_ROOT));
 
 	// === BROWSERS
 	app.command('generateBrowsers')
@@ -76,30 +62,7 @@ export default (app: Sade) => {
 	app.command('build')
 		.describe('Builds the target app ready for production')
 		.option('-t, --tenant', 'Tenant to build the mfe for', '')
-		.option('-a, --analyze', 'Analyze the bundle', false)
-		.option('-p, --production', 'Production build', true)
-		.action(
-			deferredAction(async (opts) => {
-				process.env.GDU_COMMAND = 'build';
-				if (!process.env.NODE_ENV) {
-					process.env.NODE_ENV =
-						opts?.production === false
-							? 'development'
-							: 'production';
-				}
-				if (
-					!process.env.BABEL_DEBUG ||
-					process.env.BABEL_DEBU !== 'true'
-				) {
-					process.env.BABEL_DEBUG = 'false';
-				}
-				if (!process.env.ANALYZE || process.env.ANALYZE !== 'true') {
-					process.env.ANALYZE =
-						opts?.analyze === true ? 'true' : 'false';
-				}
-				return import('./build');
-			}, IS_NOT_ROOT),
-		);
+		.action(deferredAction(async () => import('./build'), IS_NOT_ROOT));
 
 	// === FORMAT
 	app.command('format')
