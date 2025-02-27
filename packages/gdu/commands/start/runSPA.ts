@@ -35,13 +35,16 @@ export const runSPA = async (guruConfig: GuruConfig, isDebug) => {
 			isDebug ? magenta(' DEBUG MODE') : ''
 		}`,
 	);
+	const appEnv = process.env.APP_ENV || 'dev_au';
 
-	// eslint-disable-next-line unicorn/prefer-prototype-methods
-	const appEnv = process.env.APP_ENV || 'dev';
-
-	// eslint-disable-next-line unicorn/prefer-prototype-methods
 	const webpackConfig: Configuration = hooks.webpackConfig
-		.call(webpackConfigs(appEnv, isDebug, guruConfig?.standalone))
+		.call(
+			webpackConfigs({
+				env: appEnv,
+				isDebug,
+				standalone: guruConfig?.standalone,
+			}),
+		)
 		.find(({ name }) => name === appEnv);
 
 	const consumerHtmlTemplate = getConsumerHtmlTemplate(guruConfig);

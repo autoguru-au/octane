@@ -1,3 +1,5 @@
+/* eslint-disable unicorn/prefer-module */
+/* eslint-disable unicorn/prefer-prototype-methods */
 import path, { join, resolve } from 'path';
 
 import { VanillaExtractPlugin } from '@vanilla-extract/webpack-plugin';
@@ -20,7 +22,6 @@ import {
 	IgnorePlugin,
 	SourceMapDevToolPlugin,
 } from 'webpack';
-import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
 import {
 	getGuruConfig,
@@ -40,6 +41,9 @@ import { GuruBuildManifest } from './plugins/GuruBuildManifest';
 
 const { branch = 'null', commit = 'null' } = envCI();
 
+const hooks = getHooks();
+const isDev = !isProductionBuild();
+
 const terserOptions: MinimizerOptions<MinifyOptions> = {
 	ie8: false,
 	parse: { ecma: 2020 },
@@ -57,7 +61,7 @@ const terserOptions: MinimizerOptions<MinifyOptions> = {
 			'console.warn',
 		],
 		pure_getters: true,
-		module: true,
+		module: !isDev,
 	},
 	format: {
 		ecma: 2020,
@@ -73,30 +77,6 @@ const relayRegex =
 const frameworkRegex =
 	/(?<!node_modules.*)[/\\]node_modules[/\\](react|react-dom)[/\\]/;
 
-const hooks = getHooks();
-
-// Add package.json parsing to get relay version
-/*const getRelayVersion = () => {
-	try {
-		const packagePath = path.join(PROJECT_ROOT, 'package.json');
-		const pkg = require(packagePath);
-		return (pkg.devDependencies?.['react-relay'] || '18.2.0').replace(
-			'^',
-			'',
-		);
-	} catch {
-		return '18.2.0';
-	}
-};*/
-const getReactVersion = () => {
-	try {
-		const packagePath = path.join(PROJECT_ROOT, 'package.json');
-		const pkg = require(packagePath);
-		return (pkg.dependencies?.react || '19').replace('^', '');
-	} catch {
-		return '19';
-	}
-};
 const gduEntryPath = join(GDU_ROOT, 'entry');
 
 const ourCodePaths = [
@@ -106,21 +86,9 @@ const ourCodePaths = [
 	/@autoguru[/\\]/,
 ].filter(Boolean);
 
-const fileMask = '[name]-[contenthash:8]';
+const fileMask = isDev ? '[name]' : '[name]-[contenthash:8]';
 
-const getExternals = (standalone?: boolean) => {
-	//const relayVersion = getRelayVersion();
-	const reactVersion = getReactVersion();
-	return standalone
-		? {}
-		: {
-				react: `https://esm.sh/react@${reactVersion}`,
-				'react-dom/client': `https://esm.sh/react-dom@${reactVersion}/client`,
-				'react/jsx-runtime': `https://esm.sh/react@${reactVersion}/jsx-runtime`,
-			};
-};
-
-export const baseOptions = ({
+export const baseDevelopmentOptions = ({
 	buildEnv,
 	isMultiEnv,
 	standalone,
@@ -130,24 +98,21 @@ export const baseOptions = ({
 	isMultiEnv: boolean;
 	standalone?: boolean;
 	isDebug?: boolean;
-	// eslint-disable-next-line sonarjs/cognitive-complexity
 }): Configuration => {
 	const guruConfig = getGuruConfig();
-	const withBabelDebug = process.env.BABEL_DEBUG === 'true';
 	return {
 		context: PROJECT_ROOT,
-		mode: 'production',
+		mode: isDev ? 'development' : 'production',
 		entry: {
 			main: [join(gduEntryPath, 'spa', 'client.js')].filter(Boolean),
 		},
 		experiments: {
 			layers: true,
-			outputModule: true,
 		},
 		cache: {
 			type: 'filesystem',
 			cacheLocation: resolve(PROJECT_ROOT, '.build_cache'),
-			allowCollectingMemory: false,
+			allowCollectingMemory: isDev ? true : false,
 			buildDependencies: {
 				// This makes all dependencies of this file - build dependencies
 				config: [__filename],
@@ -174,8 +139,8 @@ export const baseOptions = ({
 		},
 		optimization: {
 			nodeEnv: false,
-			minimize: true,
-			concatenateModules: true,
+			minimize: !isDev,
+			concatenateModules: !isDev,
 			splitChunks: {
 				chunks: 'async',
 				minSize: 20_000,
@@ -215,15 +180,15 @@ export const baseOptions = ({
 						enforce: true,
 					},
 					framework: standalone
-						? {}
-						: {
+						? {
 								chunks: 'all',
 								name: 'framework',
 								test: frameworkRegex,
 								priority: 60,
 								reuseExistingChunk: true,
 								enforce: true,
-							},
+							}
+						: {},
 					// AutoGuru related assets here
 					guru: {
 						test: /@autoguru[/\\]/,
@@ -242,19 +207,16 @@ export const baseOptions = ({
 					},
 				},
 			},
-			moduleIds: 'deterministic',
+			moduleIds: isDev ? 'named' : 'deterministic',
 			runtimeChunk: {
 				name: 'runtime',
 			},
 			minimizer: [
 				new TerserPlugin({
 					parallel: true,
-					minify: TerserPlugin.terserMinify,
 					terserOptions,
 				}),
 			],
-			usedExports: true,
-			providedExports: true,
 		},
 		module: {
 			strictExportPresence: true,
@@ -321,9 +283,11 @@ export const baseOptions = ({
 										cacheCompression: false,
 										cacheDirectory: true,
 										babelrc: false,
-										envName: 'production',
+										envName: isDev
+											? 'development'
+											: 'production',
 										...hooks.babelConfig.call(
-											require('../babel-config/production')(
+											require('../babel-config/development')(
 												getGuruConfig(),
 											),
 										),
@@ -342,14 +306,15 @@ export const baseOptions = ({
 										cacheCompression: false,
 										cacheDirectory: true,
 										babelrc: false,
-										envName: 'production',
+										envName: isDev
+											? 'development'
+											: 'production',
 										presets: [
 											[
 												require.resolve(
 													'@babel/preset-env',
 												),
 												{
-													debug: withBabelDebug,
 													useBuiltIns: false,
 													modules: false,
 													exclude: [
@@ -368,7 +333,7 @@ export const baseOptions = ({
 						},
 					],
 				},
-			].filter(Boolean),
+			],
 		},
 		devtool: 'source-map',
 		plugins: [
@@ -377,11 +342,13 @@ export const baseOptions = ({
 					return /(\/next\/)/.test(resource);
 				},
 			}),
-			new CleanWebpackPlugin(),
+			!isDev && new CleanWebpackPlugin(),
 			new DefinePlugin({
 				'process.__browser__': JSON.stringify(true),
-				'process.env.NODE_ENV': JSON.stringify('production'),
-				__DEV__: JSON.stringify(false),
+				'process.env.NODE_ENV': JSON.stringify(
+					isDev ? 'development' : 'production',
+				),
+				__DEV__: JSON.stringify(isDev),
 				__MOUNT_DOM_ID__: guruConfig.mountDOMId,
 				__MOUNT_DOM_CLASS__: guruConfig.mountDOMClass,
 				__DEBUG__: JSON.stringify(isDebug),
@@ -399,7 +366,7 @@ export const baseOptions = ({
 							: require.resolve('style-loader'),
 					},
 				],
-				minify: true,
+				minify: !isDev,
 				browsers,
 			}),
 			new VanillaExtractPlugin(),
@@ -419,57 +386,31 @@ export const baseOptions = ({
 				new Dotenv({
 					path: path.resolve(
 						configsDir,
-						`.env.${process.env.APP_ENV || buildEnv}`,
+						`.env.${
+							process.env.APP_ENV || (isDev ? 'dev' : buildEnv)
+						}`,
 					),
 					prefix: 'process.env.',
 					ignoreStub: true,
 				}),
 			]),
-			new GuruBuildManifest({
-				mountDOMId: guruConfig.mountDOMId,
-				mountDOMClass: guruConfig.mountDOMClass,
-				outputDir:
-					!isMultiEnv && buildEnv === 'prod'
-						? resolve(PROJECT_ROOT, 'dist')
-						: resolve(PROJECT_ROOT, 'dist', buildEnv),
-				includeChunks: true,
-			}),
+			!isDev &&
+				new GuruBuildManifest({
+					mountDOMId: guruConfig.mountDOMId,
+					mountDOMClass: guruConfig.mountDOMClass,
+					outputDir:
+						!isMultiEnv && buildEnv === 'prod'
+							? resolve(PROJECT_ROOT, 'dist')
+							: resolve(PROJECT_ROOT, 'dist', buildEnv),
+					includeChunks: true,
+				}),
 			new SourceMapDevToolPlugin({
 				exclude: standalone
 					? [/.css.ts$/, frameworkRegex]
 					: [/.css.ts$/],
 				test: [/.ts$/, /.tsx$/],
 			}),
-			process.env.ANALYZE === 'true' &&
-				new BundleAnalyzerPlugin({
-					analyzerMode: 'static',
-					reportFilename: 'bundle-report.html',
-					openAnalyzer: false,
-				}),
 		].filter(Boolean),
-		target: 'es2020',
-		output: {
-			path: guruConfig.outputPath,
-			publicPath: '/',
-			filename: `${fileMask}.js`,
-			chunkFilename: `chunks/${fileMask}.js`,
-			hashFunction: 'sha256',
-			crossOriginLoading: 'anonymous',
-			sourceMapFilename: 'sourceMaps/[file].map',
-			pathinfo: false,
-			chunkFormat: undefined,
-			module: true,
-			library: { type: 'module' },
-			environment: {
-				arrowFunction: true,
-				const: true,
-				destructuring: true,
-				dynamicImport: true,
-				module: true,
-			},
-		},
-		externalsType: 'module',
-		externals: getExternals(standalone),
 	};
 };
 
@@ -496,42 +437,21 @@ const getPublicPath = ({
 	return `https://mfe.${tenant}-${agEnv}.autoguru.com/${projectFolderName}/`;
 };
 
-export const makeWebpackConfig = (
+export const makeWebpackDevelopmentConfig = (
 	buildEnv: BuildEnv,
 	isMultiEnv: boolean,
-	standalone?: boolean,
-): {
-	name: 'dev' | 'test' | 'uat' | 'preprod' | 'prod' | 'dockerprod' | string;
-	output: {
-		path: string;
-		publicPath: string;
-		filename: string;
-		chunkFilename: string;
-		hashFunction: string;
-		crossOriginLoading: string;
-		sourceMapFilename: string;
-		pathinfo: boolean;
-	};
-	externalsType: string;
-	externals:
-		| object
-		| { react: string; 'react-dom': string }
-		| {
-				react: string;
-				'react-dom/client': string;
-				'react/jsx-runtime': string;
-		  };
-} => {
+): Configuration => {
 	const { outputPath, isTenanted } = getGuruConfig();
 	return {
 		name: buildEnv,
+
 		output: {
 			path: `${outputPath}/${
 				!isMultiEnv && buildEnv === 'prod' ? '' : buildEnv
 			}`,
 			publicPath: getPublicPath({
 				buildEnv,
-				isDev: false,
+				isDev,
 				projectFolderName: getProjectFolderName(),
 				isTenanted,
 			}),
@@ -541,16 +461,7 @@ export const makeWebpackConfig = (
 			crossOriginLoading: 'anonymous',
 			sourceMapFilename: 'sourceMaps/[file].map',
 			pathinfo: false,
-			//@ts-ignore
-			module: true,
-			library: {
-				type: 'module',
-			},
-			environment: {
-				module: true,
-			},
 		},
-		externalsType: 'module',
-		externals: getExternals(standalone),
+		externals: {},
 	};
 };
