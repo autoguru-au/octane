@@ -1,38 +1,46 @@
 import { Configuration } from 'webpack';
-
-import { isProductionBuild } from '../../lib/misc';
 import { getBuildEnvs } from '../../utils/configs';
-
+import { isProductionBuild } from '../../lib/misc';
 import { baseOptions, makeWebpackConfig } from './webpack.config';
-import {
-	baseDevelopmentOptions,
-	makeWebpackDevelopmentConfig,
-} from './webpack.development.config';
+import { baseDevelopmentOptions, makeWebpackDevelopmentConfig } from './webpack.development.config';
 
-const isDev = !isProductionBuild();
-const buildConfigs = ({
-	env = process.env.APP_ENV,
-	isDebug,
-	standalone = !process.env.NODE_ENV || process.env.NODE_ENV !== 'production',
-}: {
-	env?: string;
-	isDebug: boolean;
+export interface WebpackConfigOpts {
+	env: string;
+	isDebug?: boolean;
 	standalone?: boolean;
-}): Configuration[] => {
-	const buildEnvs = getBuildEnvs(env);
-	// @ts-ignore
-	return buildEnvs.map((buildEnv) => ({
-		...(isDev ? baseDevelopmentOptions : baseOptions)({
-			buildEnv,
-			isMultiEnv: buildEnvs.length > 1,
-			isDebug,
-			standalone,
-		}),
-		...(!isDev &&
-			makeWebpackConfig(buildEnv, buildEnvs.length > 1, standalone)),
-		...(isDev &&
-			makeWebpackDevelopmentConfig(buildEnv, buildEnvs.length > 1)),
-	}));
-};
+}
 
-export default buildConfigs;
+export default (
+	options: WebpackConfigOpts,
+): Configuration[] => {
+	const { env  = process.env.APP_ENV, isDebug = false, standalone } = options;
+	const isProduction = isProductionBuild();
+	const buildEnvs = getBuildEnvs(env);
+
+	if (isProduction) {
+		const isMultiEnv = buildEnvs.length > 1;
+		return buildEnvs.map((buildEnv) => ({
+			...(baseOptions)({
+				buildEnv,
+				isMultiEnv,
+				isDebug,
+				standalone,
+			}),
+			...(makeWebpackConfig(buildEnv, isMultiEnv, standalone)),
+		})) as Configuration[];
+	} else {
+		const buildEnv = env || 'dev_au';
+
+		return [
+			{
+				...baseDevelopmentOptions({
+					buildEnv,
+					isMultiEnv: false,
+					standalone,
+					isDebug,
+				}),
+				...makeWebpackDevelopmentConfig(buildEnv, false),
+			},
+		];
+	}
+};
