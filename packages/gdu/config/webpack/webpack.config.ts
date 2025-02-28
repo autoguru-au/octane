@@ -115,6 +115,7 @@ const getExternals = (standalone?: boolean) => {
 		? {}
 		: {
 				react: `https://esm.sh/react@${reactVersion}`,
+				'react-dom': `https://esm.sh/react-dom@${reactVersion}`,
 				'react-dom/client': `https://esm.sh/react-dom@${reactVersion}/client`,
 				'react/jsx-runtime': `https://esm.sh/react@${reactVersion}/jsx-runtime`,
 				/*'react-relay': `https://esm.sh/react-relay@${relayVersion}`,
