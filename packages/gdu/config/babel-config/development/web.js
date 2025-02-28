@@ -12,10 +12,10 @@ module.exports = function autoGuruWebDevelopmentPreset(api, options = {}) {
 					corejs,
 					debug,
 					loose: false,
-					modules,
+					useBuiltIns: false,
+					modules: false, // Keep ES modules intact for webpack
 					spec: false,
 					shippedProposals: true,
-					useBuiltIns: 'usage',
 					targets: browsers,
 				},
 			],
@@ -33,7 +33,7 @@ module.exports = function autoGuruWebDevelopmentPreset(api, options = {}) {
 			[
 				require.resolve('@babel/plugin-transform-runtime'),
 				{
-					useESModules: modules === false ? false : 'auto',
+					useESModules: true, // Use ES modules
 					corejs: options.corejs,
 				},
 			],

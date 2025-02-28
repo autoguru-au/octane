@@ -10,6 +10,8 @@ module.exports = function autoGuruReactDevelopmentPreset(api, options = {}) {
 					development: true,
 					useBuiltIns: true,
 					importSource: 'react',
+					// Use ESM modules instead of commonjs
+					module: false,
 				},
 			],
 		],

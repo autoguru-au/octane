@@ -1,10 +1,7 @@
-/* eslint-disable unicorn/prefer-module */
-/* eslint-disable unicorn/prefer-prototype-methods */
 import path, { join, resolve } from 'path';
 
 import { VanillaExtractPlugin } from '@vanilla-extract/webpack-plugin';
 import browsers from 'browserslist-config-autoguru';
-import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import Dotenv from 'dotenv-webpack';
 import envCI from 'env-ci';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
@@ -12,8 +9,6 @@ import {
 	defineReactCompilerLoaderOption,
 	reactCompilerLoader,
 } from 'react-compiler-webpack';
-import { MinifyOptions } from 'terser';
-import TerserPlugin, { MinimizerOptions } from 'terser-webpack-plugin';
 import { TreatPlugin } from 'treat/webpack-plugin';
 import { TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
 import {
@@ -28,7 +23,6 @@ import {
 	getProjectFolderName,
 	getProjectName,
 } from '../../lib/config';
-import { isProductionBuild } from '../../lib/misc';
 import {
 	CALLING_WORKSPACE_ROOT,
 	GDU_ROOT,
@@ -37,38 +31,9 @@ import {
 import { getBuildEnvs, getConfigsDirs } from '../../utils/configs';
 import { getHooks } from '../../utils/hooks';
 
-import { GuruBuildManifest } from './plugins/GuruBuildManifest';
-
 const { branch = 'null', commit = 'null' } = envCI();
 
 const hooks = getHooks();
-const isDev = !isProductionBuild();
-
-const terserOptions: MinimizerOptions<MinifyOptions> = {
-	ie8: false,
-	parse: { ecma: 2020 },
-	compress: {
-		ecma: 2020,
-		comparisons: false,
-		inline: 3,
-		hoist_funs: true,
-		toplevel: true,
-		passes: 3,
-		pure_funcs: [
-			'console.log',
-			'console.info',
-			'console.debug',
-			'console.warn',
-		],
-		pure_getters: true,
-		module: !isDev,
-	},
-	format: {
-		ecma: 2020,
-		comments: false,
-	},
-	mangle: true,
-};
 
 const vendorRegex =
 	/(?<!node_modules.*)[/\\]node_modules[/\\](scheduler|prop-types|use-subscription)[/\\]/;
@@ -86,11 +51,31 @@ const ourCodePaths = [
 	/@autoguru[/\\]/,
 ].filter(Boolean);
 
-const fileMask = isDev ? '[name]' : '[name]-[contenthash:8]';
+const fileMask = '[name]';
+
+const getDotenvPlugins = (configsDir: string) => {
+	if (!process.env.APP_ENV) {
+		throw new Error('APP_ENV is not set');
+	}
+	return [
+		new Dotenv({
+			path: path.resolve(configsDir, '.env.defaults'),
+			prefix: 'process.env.',
+			ignoreStub: false,
+			systemvars: true, // Include system env vars
+			defaults: true, // Include defaults
+		}),
+		new Dotenv({
+			path: path.resolve(configsDir, `.env.${process.env.APP_ENV}`),
+			prefix: 'process.env.',
+			ignoreStub: false,
+			systemvars: true, // Include system env vars
+			defaults: true, // Include defaults
+		}),
+	];
+};
 
 export const baseDevelopmentOptions = ({
-	buildEnv,
-	isMultiEnv,
 	standalone,
 	isDebug = false,
 }: {
@@ -102,17 +87,18 @@ export const baseDevelopmentOptions = ({
 	const guruConfig = getGuruConfig();
 	return {
 		context: PROJECT_ROOT,
-		mode: isDev ? 'development' : 'production',
+		mode: 'development',
 		entry: {
 			main: [join(gduEntryPath, 'spa', 'client.js')].filter(Boolean),
 		},
 		experiments: {
 			layers: true,
+			outputModule: true, // Enable ES modules output
 		},
 		cache: {
 			type: 'filesystem',
 			cacheLocation: resolve(PROJECT_ROOT, '.build_cache'),
-			allowCollectingMemory: isDev ? true : false,
+			allowCollectingMemory: true,
 			buildDependencies: {
 				// This makes all dependencies of this file - build dependencies
 				config: [__filename],
@@ -139,8 +125,8 @@ export const baseDevelopmentOptions = ({
 		},
 		optimization: {
 			nodeEnv: false,
-			minimize: !isDev,
-			concatenateModules: !isDev,
+			minimize: false, // Don't minimize in development
+			concatenateModules: false,
 			splitChunks: {
 				chunks: 'async',
 				minSize: 20_000,
@@ -207,16 +193,10 @@ export const baseDevelopmentOptions = ({
 					},
 				},
 			},
-			moduleIds: isDev ? 'named' : 'deterministic',
+			moduleIds: 'named',
 			runtimeChunk: {
 				name: 'runtime',
 			},
-			minimizer: [
-				new TerserPlugin({
-					parallel: true,
-					terserOptions,
-				}),
-			],
 		},
 		module: {
 			strictExportPresence: true,
@@ -283,9 +263,7 @@ export const baseDevelopmentOptions = ({
 										cacheCompression: false,
 										cacheDirectory: true,
 										babelrc: false,
-										envName: isDev
-											? 'development'
-											: 'production',
+										envName: 'development',
 										...hooks.babelConfig.call(
 											require('../babel-config/development')(
 												getGuruConfig(),
@@ -306,9 +284,7 @@ export const baseDevelopmentOptions = ({
 										cacheCompression: false,
 										cacheDirectory: true,
 										babelrc: false,
-										envName: isDev
-											? 'development'
-											: 'production',
+										envName: 'development',
 										presets: [
 											[
 												require.resolve(
@@ -316,7 +292,7 @@ export const baseDevelopmentOptions = ({
 												),
 												{
 													useBuiltIns: false,
-													modules: false,
+													modules: false, // Using false to preserve ES modules
 													exclude: [
 														'transform-typeof-symbol',
 													],
@@ -335,22 +311,19 @@ export const baseDevelopmentOptions = ({
 				},
 			],
 		},
-		devtool: 'source-map',
+		devtool: 'eval-source-map',
 		plugins: [
 			new IgnorePlugin({
 				checkResource(resource) {
 					return /(\/next\/)/.test(resource);
 				},
 			}),
-			!isDev && new CleanWebpackPlugin(),
 			new DefinePlugin({
 				'process.__browser__': JSON.stringify(true),
-				'process.env.NODE_ENV': JSON.stringify(
-					isDev ? 'development' : 'production',
-				),
-				__DEV__: JSON.stringify(isDev),
-				__MOUNT_DOM_ID__: guruConfig.mountDOMId,
-				__MOUNT_DOM_CLASS__: guruConfig.mountDOMClass,
+				'process.env.NODE_ENV': JSON.stringify('development'),
+				__DEV__: JSON.stringify(true),
+				__MOUNT_DOM_ID__: JSON.stringify(guruConfig.mountDOMId),
+				__MOUNT_DOM_CLASS__: JSON.stringify(guruConfig.mountDOMClass),
 				__DEBUG__: JSON.stringify(isDebug),
 				__GDU_APP_NAME__: JSON.stringify(getProjectName()),
 				__GDU_BUILD_INFO__: JSON.stringify({
@@ -361,12 +334,10 @@ export const baseDevelopmentOptions = ({
 			new TreatPlugin({
 				outputLoaders: [
 					{
-						loader: isProductionBuild()
-							? MiniCssExtractPlugin.loader
-							: require.resolve('style-loader'),
+						loader: require.resolve('style-loader'),
 					},
 				],
-				minify: !isDev,
+				minify: false,
 				browsers,
 			}),
 			new VanillaExtractPlugin(),
@@ -375,35 +346,8 @@ export const baseDevelopmentOptions = ({
 				chunkFilename: `chunks/${fileMask}.css`,
 				ignoreOrder: true,
 			}),
-
-			// Read defaults
-			...getConfigsDirs().flatMap((configsDir) => [
-				new Dotenv({
-					path: path.resolve(configsDir, '.env.defaults'),
-					prefix: 'process.env.',
-					ignoreStub: true,
-				}), // Read env
-				new Dotenv({
-					path: path.resolve(
-						configsDir,
-						`.env.${
-							process.env.APP_ENV || (isDev ? 'dev' : buildEnv)
-						}`,
-					),
-					prefix: 'process.env.',
-					ignoreStub: true,
-				}),
-			]),
-			!isDev &&
-				new GuruBuildManifest({
-					mountDOMId: guruConfig.mountDOMId,
-					mountDOMClass: guruConfig.mountDOMClass,
-					outputDir:
-						!isMultiEnv && buildEnv === 'prod'
-							? resolve(PROJECT_ROOT, 'dist')
-							: resolve(PROJECT_ROOT, 'dist', buildEnv),
-					includeChunks: true,
-				}),
+			// Read defaults and inject them as string literals
+			...getConfigsDirs().flatMap((element) => getDotenvPlugins(element)),
 			new SourceMapDevToolPlugin({
 				exclude: standalone
 					? [/.css.ts$/, frameworkRegex]
@@ -444,14 +388,13 @@ export const makeWebpackDevelopmentConfig = (
 	const { outputPath, isTenanted } = getGuruConfig();
 	return {
 		name: buildEnv,
-
 		output: {
 			path: `${outputPath}/${
 				!isMultiEnv && buildEnv === 'prod' ? '' : buildEnv
 			}`,
 			publicPath: getPublicPath({
 				buildEnv,
-				isDev,
+				isDev: true,
 				projectFolderName: getProjectFolderName(),
 				isTenanted,
 			}),
@@ -461,7 +404,19 @@ export const makeWebpackDevelopmentConfig = (
 			crossOriginLoading: 'anonymous',
 			sourceMapFilename: 'sourceMaps/[file].map',
 			pathinfo: false,
+			// ES Module config
+			module: true,
+			library: { type: 'module' },
+			environment: {
+				module: true,
+				arrowFunction: true,
+				const: true,
+				destructuring: true,
+				dynamicImport: true,
+			},
 		},
+		// No externals in development mode - bundle everything
+		externalsType: undefined,
 		externals: {},
 	};
 };
