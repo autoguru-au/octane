@@ -1,8 +1,9 @@
 const { join } = require('path');
 
 const browsers = require('browserslist-config-autoguru');
+const kleur = require('kleur');
 
-const { PROJECT_ROOT } = require('../lib/roots');
+const { PROJECT_ROOT } = require('../../../lib/roots');
 const ReactCompilerConfig = {
 	target: '19',
 	sources: (filename) => {
@@ -29,6 +30,11 @@ module.exports = (guruConfig) => {
 		}
 	} catch {
 		// Do nothing
+	}
+
+	// log if mfe has relay
+	if (hasRelay) {
+		console.log(kleur.green('Relay detected in MFE 🌟'));
 	}
 
 	return {
@@ -66,7 +72,7 @@ module.exports = (guruConfig) => {
 					),
 				},
 			],
-			[require.resolve('./pathNormaliser')],
+			[require.resolve('../../pathNormaliser')],
 		].filter(Boolean),
 	};
 };

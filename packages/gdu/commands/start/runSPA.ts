@@ -11,6 +11,7 @@ import webpackConfigs from '../../config/webpack';
 import { getProjectName, GuruConfig } from '../../lib/config';
 import { PROJECT_ROOT } from '../../lib/roots';
 import { getHooks } from '../../utils/hooks';
+
 const getConsumerHtmlTemplate = (
 	guruConfig: GuruConfig,
 ): string | undefined => {
@@ -28,6 +29,7 @@ const getConsumerHtmlTemplate = (
 
 const localhost = '0.0.0.0';
 const hosts = ['localhost', localhost];
+
 export const runSPA = async (guruConfig: GuruConfig, isDebug) => {
 	const hooks = getHooks();
 	console.log(
@@ -35,23 +37,29 @@ export const runSPA = async (guruConfig: GuruConfig, isDebug) => {
 			isDebug ? magenta(' DEBUG MODE') : ''
 		}`,
 	);
+	const appEnv = process.env.APP_ENV || 'dev_au';
 
-	// eslint-disable-next-line unicorn/prefer-prototype-methods
-	const appEnv = process.env.APP_ENV || 'dev';
-
-	// eslint-disable-next-line unicorn/prefer-prototype-methods
 	const webpackConfig: Configuration = hooks.webpackConfig
-		.call(webpackConfigs(appEnv, isDebug, guruConfig?.standalone))
+		.call(
+			webpackConfigs({
+				env: appEnv,
+				isDebug,
+				standalone: guruConfig?.standalone,
+			}),
+		)
 		.find(({ name }) => name === appEnv);
 
 	const consumerHtmlTemplate = getConsumerHtmlTemplate(guruConfig);
 
+	// Add HtmlWebpackPlugin with proper ES module configuration
 	webpackConfig.plugins.push(
 		new HtmlWebpackPlugin({
 			template: consumerHtmlTemplate ?? 'auto',
-			scriptLoading: 'module',
+			scriptLoading: 'module', // Use ES modules
+			inject: 'body',
 		}),
 	);
+
 	webpackConfig.plugins.push(
 		new (class HtmlWebpackPluginConfigAdditionsPlugin {
 			apply(compiler) {
@@ -75,11 +83,17 @@ export const runSPA = async (guruConfig: GuruConfig, isDebug) => {
 											compilation.options.output
 												.publicPath || ''
 										}${file}`,
+										type: 'module', // Set script type to module
 									},
 									meta: { plugin: 'html-webpack-plugin' },
 								});
 							}
 						}
+
+						// Ensure all scripts use type="module"
+						cfg.assetTags.scripts.forEach((script) => {
+							script.attributes.type = 'module';
+						});
 
 						return cfg;
 					});
@@ -123,14 +137,33 @@ export const runSPA = async (guruConfig: GuruConfig, isDebug) => {
 		}
 	});
 
+	// Enhanced DevServer configuration with improved HMR support for ES modules
 	const devServer = new WebpackDevServer(
 		{
 			static: join(PROJECT_ROOT, 'public'),
 			host: hosts[0],
 			allowedHosts: hosts,
 			historyApiFallback: true,
-			hot: true,
+			hot: true, // Enable HMR
 			port: guruConfig.port,
+			client: {
+				overlay: {
+					errors: true,
+					warnings: false,
+				},
+				progress: true,
+				logging: 'info',
+			},
+			devMiddleware: {
+				publicPath: '/',
+			},
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+				'Access-Control-Allow-Methods':
+					'GET, POST, PUT, DELETE, PATCH, OPTIONS',
+				'Access-Control-Allow-Headers':
+					'X-Requested-With, content-type, Authorization',
+			},
 		},
 		compiler,
 	);

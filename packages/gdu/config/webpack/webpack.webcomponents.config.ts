@@ -233,7 +233,7 @@ export const makeWebComponentsWebpackConfig = (
 											? 'development'
 											: 'production',
 										...hooks.babelConfig.call(
-											require('../babel.config')(
+											require('../babel-config/production')(
 												getGuruConfig(),
 											),
 										),
