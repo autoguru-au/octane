@@ -1,5 +1,12 @@
 # @autoguru/babel-preset
 
+## 3.2.0
+
+### Minor Changes
+
+- aa0ab7c: GDU: Development and production webpac config pathways are now
+  independent of each other
+
 ## 3.1.4
 
 ### Patch Changes

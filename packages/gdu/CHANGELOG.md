@@ -1,5 +1,17 @@
 # gdu
 
+## 12.5.0
+
+### Minor Changes
+
+- aa0ab7c: GDU: Development and production webpac config pathways are now
+  independent of each other
+
+### Patch Changes
+
+- Updated dependencies [aa0ab7c]
+    - @autoguru/babel-preset@3.2.0
+
 ## 12.4.0
 
 ### Minor Changes
