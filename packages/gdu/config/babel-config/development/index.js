@@ -39,7 +39,7 @@ module.exports = (guruConfig) => {
 
 	return {
 		presets: [
-			[require('./web'), { corejs: 3, browsers, loose: false }],
+			[require('./web'), { corejs: 3, browsers, loose: false, modules: 'commonjs' }],
 			guruConfig.type !== 'ssr' && [require('./react')],
 			[
 				require.resolve('@babel/preset-typescript'),
@@ -57,7 +57,7 @@ module.exports = (guruConfig) => {
 					haste: false,
 					isDevVariable: '__DEV__',
 					isDebugVariable: '__DEBUG__',
-					eagerESModules: true,
+					eagerESModules: false,
 					artifactDirectory: join(
 						PROJECT_ROOT,
 						'../../',
