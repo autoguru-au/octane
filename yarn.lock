@@ -52,7 +52,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@autoguru/babel-preset@^3.1.2, @autoguru/babel-preset@^3.1.3, @autoguru/babel-preset@workspace:packages/babel-preset":
+"@autoguru/babel-preset@^3.1.2, @autoguru/babel-preset@^3.2.0, @autoguru/babel-preset@workspace:packages/babel-preset":
   version: 0.0.0-use.local
   resolution: "@autoguru/babel-preset@workspace:packages/babel-preset"
   dependencies:
@@ -9756,7 +9756,7 @@ __metadata:
   resolution: "gdu@workspace:packages/gdu"
   dependencies:
     "@2fd/graphdoc": ^2.4.0
-    "@autoguru/babel-preset": ^3.1.3
+    "@autoguru/babel-preset": ^3.2.0
     "@autoguru/tsconfig": 1.3.1
     "@autoguru/utilities": ^1.3.2
     "@babel/core": ^7.15.0
