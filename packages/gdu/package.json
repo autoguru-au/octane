@@ -49,6 +49,7 @@
 		"buffer": "^6.0.3",
 		"clean-webpack-plugin": "^4.0.0-alpha.0",
 		"core-js": "^3.40.0",
+		"crypto-browserify": "^3.12.1",
 		"css-loader": "^6.7.1",
 		"cssnano": "^4.1.10",
 		"date-fns": "^2.29.3",
