@@ -1,5 +1,12 @@
 # gdu
 
+## 12.5.1
+
+### Patch Changes
+
+- 8e4ea8e: GDU: Adds legacy polyfills to support the legacy
+  `subscriptions-transport-ws` package
+
 ## 12.5.0
 
 ### Minor Changes
