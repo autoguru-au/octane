@@ -110,6 +110,10 @@ export const baseDevelopmentOptions = ({
 			fallback: {
 				path: false,
 				util: false,
+				zlib: require.resolve('browserify-zlib'),
+				buffer: require.resolve('buffer/'),
+				stream: require.resolve('stream-browserify'),
+				assert: require.resolve('assert/'),
 			},
 			extensions: ['.tsx', '.ts', '.mjs', '.jsx', '.js', '.json'],
 			plugins: [
