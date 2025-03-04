@@ -110,9 +110,12 @@ export const baseDevelopmentOptions = ({
 			fallback: {
 				path: false,
 				util: false,
+				net: false,
+				tls: false,
 				zlib: require.resolve('browserify-zlib'),
 				buffer: require.resolve('buffer/'),
 				stream: require.resolve('stream-browserify'),
+				https: require.resolve("https-browserify"),
 				assert: require.resolve('assert/'),
 				crypto: require.resolve('crypto-browserify'),
 				http: require.resolve('stream-http'),
