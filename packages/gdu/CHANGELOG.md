@@ -1,5 +1,11 @@
 # gdu
 
+## 12.5.2
+
+### Patch Changes
+
+- 14727b2: gdu: add crypto-browserify support in webpack configuration
+
 ## 12.5.1
 
 ### Patch Changes
