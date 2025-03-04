@@ -1,5 +1,13 @@
 # gdu
 
+## 12.5.4
+
+### Patch Changes
+
+- 34b3043: gdu: add net and tls browserify support in webpack configuration
+- 34b3043: gdu: add stream-http and url browserify support in webpack
+  configuration
+
 ## 12.5.3
 
 ### Patch Changes
