@@ -18,6 +18,7 @@ import {
 	Configuration,
 	DefinePlugin,
 	IgnorePlugin,
+	ProvidePlugin,
 	SourceMapDevToolPlugin,
 } from 'webpack';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
@@ -162,9 +163,12 @@ export const baseOptions = ({
 			fallback: {
 				path: false,
 				util: false,
+				net: false,
+				tls: false,
 				zlib: require.resolve('browserify-zlib'),
 				buffer: require.resolve('buffer/'),
 				stream: require.resolve('stream-browserify'),
+				https: require.resolve("https-browserify"),
 				assert: require.resolve('assert/'),
 				crypto: require.resolve('crypto-browserify'),
 				http: require.resolve('stream-http'),
@@ -455,7 +459,11 @@ export const baseOptions = ({
 					analyzerMode: 'static',
 					reportFilename: 'bundle-report.html',
 					openAnalyzer: false,
-				}),
+					}),
+			new ProvidePlugin({
+				net: 'net',
+				tls: 'tls',
+			}),
 		].filter(Boolean),
 		target: 'es2020',
 		output: {

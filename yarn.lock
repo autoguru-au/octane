@@ -10074,6 +10074,7 @@ __metadata:
     kleur: ^4.1.4
     mini-css-extract-plugin: ^2.4.2
     mkdirp: ^1.0.4
+    net: 1.0.2
     next: ^14.2.3
     node-fetch: ^2.6.1
     node-static: ^0.7.11
@@ -10092,6 +10093,7 @@ __metadata:
     subscriptions-transport-ws: ^0.11.0
     tapable: ^2.2.0
     terser-webpack-plugin: ^5.3.11
+    tls-browserify: 0.2.2
     treat: 2.0.4
     ts-dedent: ^2.2.0
     tsconfig-paths-webpack-plugin: ^3.5.2
@@ -14097,6 +14099,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"net@npm:1.0.2":
+  version: 1.0.2
+  resolution: "net@npm:1.0.2"
+  checksum: d97e215d922e87e9aa86e87daae73ce7f4e291f2d71365a115f2f51831b1add86e73584e944285daafcad4058c09bb85e33250da84834a26a83020740d45b4a1
+  languageName: node
+  linkType: hard
+
 "next-tick@npm:^1.1.0":
   version: 1.1.0
   resolution: "next-tick@npm:1.1.0"
@@ -14224,6 +14233,13 @@ __metadata:
     fetch-blob: ^3.1.4
     formdata-polyfill: ^4.0.10
   checksum: 06a04095a2ddf05b0830a0d5302699704d59bda3102894ea64c7b9d4c865ecdff2d90fd042df7f5bc40337266961cb6183dcc808ea4f3000d024f422b462da92
+  languageName: node
+  linkType: hard
+
+"node-forge@npm:^0.7.0":
+  version: 0.7.6
+  resolution: "node-forge@npm:0.7.6"
+  checksum: 661d420847da736d82f3aad0e8ad2b5fceddc4bd5f4065b923c566e9fd68e568509677374f101c1f4321c541dcbef0864516a2a55ff03a9236d0895195dfa7aa
   languageName: node
   linkType: hard
 
@@ -18797,6 +18813,15 @@ __metadata:
   dependencies:
     tslib: ^2.0.3
   checksum: e8b7ea006b53cf3208d278455d9f1e22c409459d7f9878da324fa3b18cc0aef8560924c19c744e870394a5d9cddfdbe029ebae9875909ee7f4fc562e7cbfc53e
+  languageName: node
+  linkType: hard
+
+"tls-browserify@npm:0.2.2":
+  version: 0.2.2
+  resolution: "tls-browserify@npm:0.2.2"
+  dependencies:
+    node-forge: ^0.7.0
+  checksum: 7c639ae2c33c806737bd1810a1933dab73ecbb938e0f370b810443b87ca07e329c2cd36af1a2ac56424b7fb045769cd8a9ac6c07f1aacad72fe7693c40583937
   languageName: node
   linkType: hard
 
