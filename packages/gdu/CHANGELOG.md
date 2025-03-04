@@ -1,5 +1,12 @@
 # gdu
 
+## 12.5.3
+
+### Patch Changes
+
+- d1f93cc: gdu: add stream-http and url browserify support in webpack
+  configuration
+
 ## 12.5.2
 
 ### Patch Changes
