@@ -18,7 +18,6 @@ import {
 	Configuration,
 	DefinePlugin,
 	IgnorePlugin,
-	ProvidePlugin,
 	SourceMapDevToolPlugin,
 } from 'webpack';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
@@ -165,14 +164,13 @@ export const baseOptions = ({
 				util: false,
 				net: false,
 				tls: false,
-				zlib: require.resolve('browserify-zlib'),
-				buffer: require.resolve('buffer/'),
-				stream: require.resolve('stream-browserify'),
-				https: require.resolve("https-browserify"),
-				assert: require.resolve('assert/'),
-				crypto: require.resolve('crypto-browserify'),
-				http: require.resolve('stream-http'),
-				url: require.resolve('url/'),
+				buffer: false,
+				stream: false,
+				https: false,
+				http: false,
+				url: false,
+				assert: false,
+				crypto: false,
 			},
 			extensions: ['.tsx', '.ts', '.mjs', '.jsx', '.js', '.json'],
 			plugins: [
@@ -395,6 +393,11 @@ export const baseOptions = ({
 			new DefinePlugin({
 				'process.__browser__': JSON.stringify(true),
 				'process.env.NODE_ENV': JSON.stringify('production'),
+				'process.env.NODE_DEBUG': JSON.stringify(false),
+				'process.env.browser': JSON.stringify(true),
+				'process.env.nextTick': (callback) => setTimeout(callback, 0),
+				'global.Writable': 'require("stream").Writable',
+
 				__DEV__: JSON.stringify(false),
 				__MOUNT_DOM_ID__: guruConfig.mountDOMId,
 				__MOUNT_DOM_CLASS__: guruConfig.mountDOMClass,
@@ -459,11 +462,7 @@ export const baseOptions = ({
 					analyzerMode: 'static',
 					reportFilename: 'bundle-report.html',
 					openAnalyzer: false,
-					}),
-			new ProvidePlugin({
-				net: 'net',
-				tls: 'tls',
-			}),
+				}),
 		].filter(Boolean),
 		target: 'es2020',
 		output: {
