@@ -397,7 +397,7 @@ export const baseOptions = ({
 				'process.env.browser': JSON.stringify(true),
 				'process.env.nextTick': (callback) => setTimeout(callback, 0),
 				'global.Writable': 'require("stream").Writable',
-			
+
 				__DEV__: JSON.stringify(false),
 				__MOUNT_DOM_ID__: guruConfig.mountDOMId,
 				__MOUNT_DOM_CLASS__: guruConfig.mountDOMClass,
@@ -462,7 +462,7 @@ export const baseOptions = ({
 					analyzerMode: 'static',
 					reportFilename: 'bundle-report.html',
 					openAnalyzer: false,
-					}),
+				}),
 		].filter(Boolean),
 		target: 'es2020',
 		output: {

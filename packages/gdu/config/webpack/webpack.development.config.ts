@@ -334,7 +334,7 @@ export const baseDevelopmentOptions = ({
 				'process.env.browser': JSON.stringify(true),
 				'process.env.nextTick': (callback) => setTimeout(callback, 0),
 				'global.Writable': 'require("stream").Writable',
-			
+
 				__DEV__: JSON.stringify(true),
 				__MOUNT_DOM_ID__: JSON.stringify(guruConfig.mountDOMId),
 				__MOUNT_DOM_CLASS__: JSON.stringify(guruConfig.mountDOMClass),
