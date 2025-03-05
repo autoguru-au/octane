@@ -1,5 +1,11 @@
 # gdu
 
+## 12.6.0
+
+### Minor Changes
+
+- b86ff25: GDU: remove unused dependencies and streamline webpack configuration
+
 ## 12.5.4
 
 ### Patch Changes
