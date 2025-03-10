@@ -93,7 +93,8 @@ export const baseDevelopmentOptions = ({
 		},
 		experiments: {
 			layers: true,
-			outputModule: true, // Enable ES modules output
+			// Disable ES modules output for development to make HMR work
+			outputModule: false,
 		},
 		cache: {
 			type: 'filesystem',
@@ -418,11 +419,12 @@ export const makeWebpackDevelopmentConfig = (
 			crossOriginLoading: 'anonymous',
 			sourceMapFilename: 'sourceMaps/[file].map',
 			pathinfo: false,
-			// ES Module config
-			module: true,
-			library: { type: 'module' },
+			// Use UMD format for development to enable HMR
+			module: false,
+			library: {
+				type: 'umd'
+			},
 			environment: {
-				module: true,
 				arrowFunction: true,
 				const: true,
 				destructuring: true,
