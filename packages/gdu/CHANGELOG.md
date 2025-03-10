@@ -1,5 +1,12 @@
 # gdu
 
+## 12.6.1
+
+### Patch Changes
+
+- 8604415: Disabled ES modules output and use UMD format for development to
+  enable HMR
+
 ## 12.6.0
 
 ### Minor Changes
