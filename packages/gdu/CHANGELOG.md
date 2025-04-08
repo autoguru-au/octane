@@ -1,5 +1,12 @@
 # gdu
 
+## 12.6.3
+
+### Patch Changes
+
+- ec6b7d1: Fixed issue with queryShadowRoot function in MFE mount point
+  detection
+
 ## 12.6.2
 
 ### Patch Changes
