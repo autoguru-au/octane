@@ -19,17 +19,17 @@ const queryShadowRoot = (wrapElement: Array<Element>, selector: string) => {
 	//Find element with no shadow root
 	if (wrapElement && wrapElement.length > 0) {
 		for (const element of wrapElement) {
-			if (
-				// @ts-ignore
-				!element.firstChild?.shadowRoot?.firstChild?.childNodes?.length
-			) {
-				// @ts-ignore
-				return element.firstChild.shadowRoot.querySelector(selector);
+			const firstChild = element.firstChild;
+			if (firstChild instanceof Element && firstChild.shadowRoot) {
+				const shadowRoot =
+					firstChild.shadowRoot.querySelector(selector);
+				if (shadowRoot) {
+					return shadowRoot;
+				}
 			}
 		}
-	} else {
-		return null;
 	}
+	return null;
 };
 export const getMfeMountPoint = ({
 	mountDOMId,
@@ -55,7 +55,7 @@ export const getMfeMountPoint = ({
 			[queryShadowRoot(wrapElements, '.' + mountDOMClass)] ||
 			Array.from(document.querySelectorAll('.' + mountDOMClass));
 		for (const element of elements) {
-			if (element && !element?.childNodes?.length) {
+			if (element) {
 				point = element as HTMLElement;
 				break;
 			}

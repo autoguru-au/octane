@@ -422,7 +422,7 @@ export const makeWebpackDevelopmentConfig = (
 			// Use UMD format for development to enable HMR
 			module: false,
 			library: {
-				type: 'umd'
+				type: 'umd',
 			},
 			environment: {
 				arrowFunction: true,
