@@ -41,7 +41,7 @@ export const getMfeMountPoint = ({
 		'You must provide a mountDOMId or mountDOMClass',
 	);
 
-	let point: HTMLElement | null = null;
+	let point: HTMLElement | any = null;
 	const wrapElements = Array.from(
 		document.querySelectorAll(`.${mountDOMId || mountDOMClass}-wrap`),
 	);
