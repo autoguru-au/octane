@@ -6,10 +6,7 @@ const debug = bugger('gdu:webpack:compile');
 
 const done = (resolve, reject) => (err, stats) => {
 	if (err || stats.hasErrors()) {
-		const errorMessage = err || stats.toString('errors-only');
-		console.error('Webpack compilation failed:');
-		console.error(errorMessage);
-		reject(errorMessage);
+		reject(err || stats.toString('errors-only'));
 		return;
 	}
 
