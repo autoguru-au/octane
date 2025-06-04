@@ -29,10 +29,10 @@ export const run = async (compiler: Compiler | MultiCompiler) =>
 	new Promise((resolve, reject) =>
 		compiler.run((err, stats) => {
 			compiler.close((err2) => {
-				console.log(stats);
-				resolve(err || err2);
+				// Handle compilation errors first, then close errors
+				const combinedError = err || err2;
+				done(resolve, reject)(combinedError, stats);
 			});
-			done(resolve, reject);
 		}),
 	);
 
