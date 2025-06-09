@@ -1,5 +1,11 @@
 # gdu
 
+## 12.6.4
+
+### Patch Changes
+
+- f0db7aa: Improves MFE build logs
+
 ## 12.6.3
 
 ### Patch Changes
