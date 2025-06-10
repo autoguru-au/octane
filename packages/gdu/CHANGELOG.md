@@ -1,5 +1,11 @@
 # gdu
 
+## 12.6.5
+
+### Patch Changes
+
+- 1c7be1a: Addes changeset for gdu patch release
+
 ## 12.6.4
 
 ### Patch Changes
