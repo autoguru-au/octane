@@ -1,5 +1,11 @@
 # gdu
 
+## 12.6.6
+
+### Patch Changes
+
+- 049ff1b: Fixed broken file caching for webpack builds
+
 ## 12.6.5
 
 ### Patch Changes
