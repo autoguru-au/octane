@@ -150,11 +150,17 @@ export const baseOptions = ({
 		cache: {
 			type: 'filesystem',
 			cacheLocation: resolve(PROJECT_ROOT, '.build_cache'),
+			name: process.env.APP_ENV || 'default',
 			allowCollectingMemory: false,
 			buildDependencies: {
 				// This makes all dependencies of this file - build dependencies
 				config: [__filename],
-				// By default webpack and loaders are build dependencies
+				// Add environment variables as build dependencies
+				env: [
+					process.env.APP_ENV,
+					process.env.NODE_ENV,
+					process.env.BABEL_DEBUG
+				].filter(Boolean),
 			},
 		},
 		resolve: {
