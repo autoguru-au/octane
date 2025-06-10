@@ -107,7 +107,6 @@ const ourCodePaths = [
 ].filter(Boolean);
 
 const fileMask = '[name]-[contenthash:8]';
-
 const getExternals = (standalone?: boolean) => {
 	//const relayVersion = getRelayVersion();
 	const reactVersion = getReactVersion();
@@ -149,35 +148,17 @@ export const baseOptions = ({
 		},
 		cache: {
 			type: 'filesystem',
-			cacheLocation: resolve(PROJECT_ROOT, '.build_cache'),
+			cacheLocation: resolve(PROJECT_ROOT, '.build_cache', buildEnv),
 			name: process.env.APP_ENV || 'default',
 			allowCollectingMemory: false,
 			buildDependencies: {
 				// This makes all dependencies of this file - build dependencies
 				config: [__filename],
-				// Add environment variables as build dependencies
-				env: [
-					process.env.APP_ENV,
-					process.env.NODE_ENV,
-					process.env.BABEL_DEBUG
-				].filter(Boolean),
 			},
 		},
 		resolve: {
 			preferRelative: true,
-			fallback: {
-				path: false,
-				util: false,
-				net: false,
-				tls: false,
-				buffer: false,
-				stream: false,
-				https: false,
-				http: false,
-				url: false,
-				assert: false,
-				crypto: false,
-			},
+			fallback: {},
 			extensions: ['.tsx', '.ts', '.mjs', '.jsx', '.js', '.json'],
 			plugins: [
 				// TODO: Remove the ignore when plugin is fixed it's types
