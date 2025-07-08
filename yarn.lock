@@ -5431,13 +5431,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"argue-cli@npm:^2.1.0":
-  version: 2.1.0
-  resolution: "argue-cli@npm:2.1.0"
-  checksum: 1dad41394bcc68177a2faf69659c8641e1faf8e12f861d3fd742d2860b99f1177c4d33e225b2d6a0548bf12f552f83caddca537efa1d474ce07e5d0aeb1d333d
-  languageName: node
-  linkType: hard
-
 "aria-query@npm:^5.3.2":
   version: 5.3.2
   resolution: "aria-query@npm:5.3.2"
@@ -6174,24 +6167,6 @@ __metadata:
     browserslist: ^4.25.1
   languageName: unknown
   linkType: soft
-
-"browserslist-useragent-regexp@npm:^4.1.3":
-  version: 4.1.3
-  resolution: "browserslist-useragent-regexp@npm:4.1.3"
-  dependencies:
-    argue-cli: ^2.1.0
-    easy-table: ^1.2.0
-    picocolors: ^1.0.0
-    regexp-tree: ^0.1.24
-    ua-regexes-lite: ^1.2.1
-  peerDependencies:
-    browserslist: ">=4.0.0"
-  bin:
-    bluare: dist/cli.js
-    browserslist-useragent-regexp: dist/cli.js
-  checksum: fd8c30bf84b248aa91b5d46d429c39055f2d3304e2d5cef82589d859f406c16f3795949da0ab45fe64264df4591ced6f791c77d6e6fb0fa83be0c3b027327e7b
-  languageName: node
-  linkType: hard
 
 "browserslist@npm:^4.0.0, browserslist@npm:^4.12.0, browserslist@npm:^4.21.10, browserslist@npm:^4.24.0, browserslist@npm:^4.24.4, browserslist@npm:^4.25.1, browserslist@npm:^4.6.4":
   version: 4.25.1
@@ -8198,19 +8173,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"easy-table@npm:^1.2.0":
-  version: 1.2.0
-  resolution: "easy-table@npm:1.2.0"
-  dependencies:
-    ansi-regex: ^5.0.1
-    wcwidth: ^1.0.1
-  dependenciesMeta:
-    wcwidth:
-      optional: true
-  checksum: 66961b19751a68d2d30ce9b74ef750c374cc3112bbcac3d1ed5a939e43c035ecf6b1954098df2d5b05f1e853ab2b67de893794390dcbf0abe1f157fddeb52174
-  languageName: node
-  linkType: hard
-
 "ecc-jsbn@npm:~0.1.1":
   version: 0.1.2
   resolution: "ecc-jsbn@npm:0.1.2"
@@ -10027,7 +9989,6 @@ __metadata:
     babel-plugin-react-compiler: ^19.0.0-beta-30d8a17-20250209
     babel-plugin-relay: ^16.2.0
     browserslist-config-autoguru: "*"
-    browserslist-useragent-regexp: ^4.1.3
     clean-webpack-plugin: ^4.0.0-alpha.0
     core-js: ^3.40.0
     css-loader: ^6.7.1
@@ -16629,7 +16590,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"regexp-tree@npm:^0.1.24, regexp-tree@npm:^0.1.27":
+"regexp-tree@npm:^0.1.27":
   version: 0.1.27
   resolution: "regexp-tree@npm:0.1.27"
   bin:
@@ -19014,13 +18975,6 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 1b503525a88ff0ff5952e95870971c4fb2118c17364d60302c21935dedcd6c37e6a0a692f350892bafcef6f4a16d09073fe461158547978d2f16fbe4cb18581c
-  languageName: node
-  linkType: hard
-
-"ua-regexes-lite@npm:^1.2.1":
-  version: 1.2.1
-  resolution: "ua-regexes-lite@npm:1.2.1"
-  checksum: 3545a3bd0bedc5a66912b5ba8248a230f0f31f6f6446dd0fa83f7bf77a5e9b206122ab30a8c4b1150bb5ffe5407da8d3b7a557adfa542c0af6bae5ebd77dd703
   languageName: node
   linkType: hard
 
