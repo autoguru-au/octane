@@ -1,5 +1,11 @@
 # browserslist-config-autoguru
 
+## 2.4.5
+
+### Patch Changes
+
+- 87ce9b3: Updates browserslist
+
 ## 2.4.4
 
 ### Patch Changes
