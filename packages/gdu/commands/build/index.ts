@@ -3,7 +3,6 @@ import { getGuruConfig } from '../../lib/config';
 import { genGithubOutputs } from '../../lib/githubOutputs';
 import { setEnvProd } from '../../lib/misc';
 import { projectInfo } from '../../lib/terminal';
-import { buildSupportedBrowsers } from '../generateBrowsers';
 
 import { buildSPA } from './buildSPA';
 import { buildSSR } from './buildSSR';
@@ -15,8 +14,6 @@ export default async ({ tenant }) => {
 	const guruConfig = getGuruConfig();
 
 	banner(tenant ? `Building for tenant: ${tenant}` : 'Building untenanted');
-
-	await buildSupportedBrowsers();
 
 	let stats;
 	switch (guruConfig?.type) {
