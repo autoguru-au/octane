@@ -33,7 +33,7 @@ export const run = async (compiler: Compiler | MultiCompiler) =>
 					reject(err || err2);
 					return;
 				}
-				
+
 				// Log meaningful build output
 				if (stats) {
 					const statsOptions = {
@@ -49,10 +49,10 @@ export const run = async (compiler: Compiler | MultiCompiler) =>
 						warnings: true,
 						errors: true,
 					};
-					
+
 					console.log(stats.toString(statsOptions));
 				}
-				
+
 				done(resolve, reject)(err, stats);
 			});
 		}),

@@ -1,5 +1,4 @@
 module.exports = [
-	'> 0.50% in au',
 	'last 2 chrome versions',
 
 	'last 2 firefox versions',
