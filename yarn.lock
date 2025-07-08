@@ -7115,7 +7115,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "create-guru@workspace:packages/create-guru"
   dependencies:
-    gdu: ^12.3.3
+    gdu: ^13.0.0
     mri: ^1.1.6
   bin:
     create-guru: ./index.js
@@ -9954,7 +9954,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"gdu@^12.3.3, gdu@workspace:packages/gdu":
+"gdu@^13.0.0, gdu@workspace:packages/gdu":
   version: 0.0.0-use.local
   resolution: "gdu@workspace:packages/gdu"
   dependencies:
@@ -10039,7 +10039,7 @@ __metadata:
     whatwg-fetch: ^3.6.2
   peerDependencies:
     "@types/node": ">=10"
-    browserslist-config-autoguru: ">=2.4.3"
+    browserslist-config-autoguru: ">=2.5.0"
   bin:
     gdu: ./bin/gdu.js
   languageName: unknown
