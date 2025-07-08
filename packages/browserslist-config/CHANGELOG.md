@@ -1,5 +1,11 @@
 # browserslist-config-autoguru
 
+## 2.5.0
+
+### Minor Changes
+
+- 95427d7: GDU: No longer exposes a buildSupportedBrowsers function
+
 ## 2.4.5
 
 ### Patch Changes

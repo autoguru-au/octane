@@ -1,5 +1,16 @@
 # gdu
 
+## 13.0.0
+
+### Major Changes
+
+- 95427d7: GDU: No longer exposes a buildSupportedBrowsers function
+
+### Patch Changes
+
+- Updated dependencies [95427d7]
+    - browserslist-config-autoguru@2.5.0
+
 ## 12.6.6
 
 ### Patch Changes

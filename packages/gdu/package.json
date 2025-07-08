@@ -1,6 +1,6 @@
 {
 	"name": "gdu",
-	"version": "12.6.6",
+	"version": "13.0.0",
 	"description": "AutoGuru's development toolkit",
 	"homepage": "https://github.com/autoguru-au/octane/tree/master/packages/gdu#readme",
 	"repository": "https://github.com/autoguru-au/octane/tree/master/packages/gdu",
@@ -106,7 +106,7 @@
 	},
 	"peerDependencies": {
 		"@types/node": ">=10",
-		"browserslist-config-autoguru": ">=2.4.3"
+		"browserslist-config-autoguru": ">=2.5.0"
 	},
 	"engines": {
 		"node": ">=20.9.0"
