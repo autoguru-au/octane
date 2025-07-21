@@ -43,6 +43,7 @@ const defaultOptions = {
 	// generate contents to save to manifest file
 	objectToString: (result) => JSON.stringify(result),
 	includeChunks: true,
+	// Controls whether the application should be rendered without a surrounding frame (e.g., for embedding in other contexts).
 	frameless: false,
 	publicPath: '',
 	mountDOMId: '',
