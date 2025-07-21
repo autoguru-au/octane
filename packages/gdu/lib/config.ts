@@ -33,6 +33,7 @@ export interface GuruConfig {
 	__configPath: string;
 	__legacy_mode?: boolean;
 	standalone?: boolean;
+	frameless?: boolean;
 
 	tap?(hooks: Record<string, any>): void;
 }

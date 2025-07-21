@@ -12,6 +12,7 @@ export interface Manifest {
 	hash: string;
 	mountDOMId?: string;
 	mountDOMClass?: string;
+	frameless?: boolean;
 	assets: Asset;
 	chunks: Asset;
 }
@@ -42,6 +43,7 @@ const defaultOptions = {
 	// generate contents to save to manifest file
 	objectToString: (result) => JSON.stringify(result),
 	includeChunks: true,
+	frameless: false,
 	publicPath: '',
 	mountDOMId: '',
 	mountDOMClass: '',
@@ -65,6 +67,7 @@ export class GuruBuildManifest {
 			this.result.hash = compilation.hash;
 			this.result.mountDOMId = this.options.mountDOMId;
 			this.result.mountDOMClass = this.options.mountDOMClass;
+			this.result.frameless = this.options.frameless;
 			compilation.chunks.forEach((chunk) => {
 				chunk.files.forEach((filename) => {
 					if (
