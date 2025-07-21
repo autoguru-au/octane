@@ -1,5 +1,11 @@
 # gdu
 
+## 13.1.0
+
+### Minor Changes
+
+- 17e836a: Added a new "frameless" flag to MFE guru configs
+
 ## 13.0.0
 
 ### Major Changes
