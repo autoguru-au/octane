@@ -1,5 +1,11 @@
 # gdu
 
+## 13.1.1
+
+### Patch Changes
+
+- e9af457: Fixes GDU token generation
+
 ## 13.1.0
 
 ### Minor Changes
