@@ -23,11 +23,14 @@ export default async () => {
 		{} as Record<keyof ProcessEnvs, string | undefined>,
 	);
 
-	const tokensContent: string = `export const TOKENS = ${JSON.stringify(
+	const tokensContent: string = `const TOKENS = ${JSON.stringify(
 		TOKENS,
 		null,
 		2,
-	).replace(/"process\.env\.(\w+)"/g, 'process.env.$1')};\n`;
+	).replace(/"process\.env\.(\w+)"/g, 'process.env.$1')};
+
+module.exports = { TOKENS };
+`;
 	const tokensFilePath = path.resolve(
 		'packages',
 		'global-configs',
