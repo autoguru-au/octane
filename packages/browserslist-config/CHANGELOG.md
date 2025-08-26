@@ -1,5 +1,11 @@
 # browserslist-config-autoguru
 
+## 2.5.1
+
+### Patch Changes
+
+- 6e08e42: Widens supported browser versions
+
 ## 2.5.0
 
 ### Minor Changes
