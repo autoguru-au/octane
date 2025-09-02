@@ -277,7 +277,7 @@ export const preloadLocales = async (locales = ['en']) => {
 
 // Initialize with detected locale
 export const initializeI18n = async () => {
-  const detectedLocale = (typeof navigator !== 'undefined' && navigator.language) 
+  const detectedLocale = (typeof navigator !== 'undefined' && typeof navigator.language === 'string' && navigator.language) 
     ? navigator.language.split('-')[0] 
     : 'en';
   
