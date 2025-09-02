@@ -37,6 +37,7 @@ import { getBuildEnvs, getConfigsDirs } from '../../utils/configs';
 import { getHooks } from '../../utils/hooks';
 
 import { GuruBuildManifest } from './plugins/GuruBuildManifest';
+import { TranslationHashingPlugin } from './plugins/TranslationHashingPlugin';
 
 const { branch = 'null', commit = 'null' } = envCI();
 
@@ -239,6 +240,22 @@ export const baseOptions = ({
 						reuseExistingChunk: true,
 						enforce: true,
 					},
+					// i18n manifest modules
+					i18nManifests: {
+						chunks: 'all',
+						test: /i18n-manifest/,
+						name(module) {
+							// Keep the original name for i18n manifest files
+							const moduleFileName = module.identifier().split('/').pop();
+							if (moduleFileName && moduleFileName.includes('i18n-manifest')) {
+								return moduleFileName.replace('.js', '');
+							}
+							return 'i18n-manifests';
+						},
+						priority: 90,
+						reuseExistingChunk: true,
+						enforce: true,
+					},
 				},
 			},
 			moduleIds: 'deterministic',
@@ -438,6 +455,12 @@ export const baseOptions = ({
 						? resolve(PROJECT_ROOT, 'dist')
 						: resolve(PROJECT_ROOT, 'dist', buildEnv),
 				includeChunks: true,
+			}),
+			new TranslationHashingPlugin({
+				publicPath: guruConfig.publicPath ? `${guruConfig.publicPath}locales/` : '/locales/',
+				outputPath: 'locales/',
+				localesDir: 'public/locales',
+				hashLength: 8,
 			}),
 			new SourceMapDevToolPlugin({
 				exclude: standalone
