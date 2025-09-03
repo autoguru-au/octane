@@ -267,7 +267,7 @@ export const preloadLocales = async (locales = ['en']) => {
   const promises = locales.map(locale => loadLocaleManifest(locale));
   const results = await Promise.allSettled(promises);
 
-  const loaded: Record<string, unknown | null> = {};
+  const loaded = {};
   results.forEach((result, index) => {
     if (result.status === 'fulfilled') {
       loaded[locales[index]] = result.value;
