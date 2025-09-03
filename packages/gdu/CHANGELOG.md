@@ -1,5 +1,15 @@
 # gdu
 
+## 13.3.0
+
+### Minor Changes
+
+- dd661d3: Adds support for hashing i18n translation files
+
+### Patch Changes
+
+- dd661d3: Fixes generated manifest for translations
+
 ## 13.2.0
 
 ### Minor Changes
