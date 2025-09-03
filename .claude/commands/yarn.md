@@ -2,4 +2,4 @@
 Run this command from the monorepo root folder
 `yarn install && yarn format`
 
-If there was errors yarn install command then run `yarn manypkg fix` commans and `yarn install && yarn relay && yarn format` command again
+If there were errors with the yarn install command, then run `yarn manypkg fix` commands and `yarn install && yarn relay && yarn format` command again
