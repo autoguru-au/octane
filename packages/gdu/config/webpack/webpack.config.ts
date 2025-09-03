@@ -246,8 +246,14 @@ export const baseOptions = ({
 						test: /i18n-manifest/,
 						name(module) {
 							// Keep the original name for i18n manifest files
-							const moduleFileName = module.identifier().split('/').pop();
-							if (moduleFileName && moduleFileName.includes('i18n-manifest')) {
+							const moduleFileName = module
+								.identifier()
+								.split('/')
+								.pop();
+							if (
+								moduleFileName &&
+								moduleFileName.includes('i18n-manifest')
+							) {
 								return moduleFileName.replace('.js', '');
 							}
 							return 'i18n-manifests';
@@ -457,7 +463,9 @@ export const baseOptions = ({
 				includeChunks: true,
 			}),
 			new TranslationHashingPlugin({
-				publicPath: guruConfig.publicPath ? `${guruConfig.publicPath}locales/` : '/locales/',
+				publicPath: guruConfig.publicPath
+					? `${guruConfig.publicPath}locales/`
+					: '/locales/',
 				outputPath: 'locales/',
 				localesDir: 'public/locales',
 				hashLength: 8,

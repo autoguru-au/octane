@@ -1,186 +1,211 @@
 import crypto from 'crypto';
-import { promises as fs , existsSync } from 'fs';
+import { promises as fs, existsSync } from 'fs';
 import path from 'path';
 
 import { Compiler, Compilation, sources } from 'webpack';
 
 interface TranslationInfo {
-  path: string;
-  hash: string;
-  size: number;
+	path: string;
+	hash: string;
+	size: number;
 }
 
 interface LocaleManifest {
-  [namespace: string]: TranslationInfo;
+	[namespace: string]: TranslationInfo;
 }
 
 interface ManifestModule {
-  name: string;
-  hash: string;
+	name: string;
+	hash: string;
 }
 
 interface PluginOptions {
-  publicPath?: string;
-  outputPath?: string;
-  localesDir?: string;
-  hashLength?: number;
-  excludeLocales?: string[];
+	publicPath?: string;
+	outputPath?: string;
+	localesDir?: string;
+	hashLength?: number;
+	excludeLocales?: string[];
 }
 
 const pluginName = 'TranslationHashingPlugin';
 
 export class TranslationHashingPlugin {
-  private options: Required<PluginOptions>;
-  private translationManifests: Map<string, LocaleManifest> = new Map();
-  private manifestModules: Map<string, ManifestModule> = new Map();
+	private options: Required<PluginOptions>;
+	private translationManifests: Map<string, LocaleManifest> = new Map();
+	private manifestModules: Map<string, ManifestModule> = new Map();
 
-  constructor(options: PluginOptions = {}) {
-    this.options = {
-      publicPath: options.publicPath || '/locales/',
-      outputPath: options.outputPath || 'locales/',
-      localesDir: options.localesDir || 'public/locales',
-      hashLength: options.hashLength || 8,
-      excludeLocales: options.excludeLocales || [],
-    };
-  }
+	constructor(options: PluginOptions = {}) {
+		this.options = {
+			publicPath: options.publicPath || '/locales/',
+			outputPath: options.outputPath || 'locales/',
+			localesDir: options.localesDir || 'public/locales',
+			hashLength: options.hashLength || 8,
+			excludeLocales: options.excludeLocales || [],
+		};
+	}
 
-  apply(compiler: Compiler) {
-    compiler.hooks.thisCompilation.tap(pluginName, (compilation) => {
-      compilation.hooks.processAssets.tapAsync(
-        {
-          name: pluginName,
-          stage: Compilation.PROCESS_ASSETS_STAGE_ADDITIONAL,
-        },
-        async (_assets, callback) => {
-          try {
-            await this.processTranslations(compiler, compilation);
-            callback();
-          } catch (error) {
-            callback(error as Error);
-          }
-        }
-      );
-    });
+	apply(compiler: Compiler) {
+		compiler.hooks.thisCompilation.tap(pluginName, (compilation) => {
+			compilation.hooks.processAssets.tapAsync(
+				{
+					name: pluginName,
+					stage: Compilation.PROCESS_ASSETS_STAGE_ADDITIONAL,
+				},
+				async (_assets, callback) => {
+					try {
+						await this.processTranslations(compiler, compilation);
+						callback();
+					} catch (error) {
+						callback(error as Error);
+					}
+				},
+			);
+		});
 
-    // Hook into the emit phase to update the build manifest
-    compiler.hooks.emit.tapAsync(pluginName, async (compilation, callback) => {
-      try {
-        await this.updateBuildManifest(compilation);
-        callback();
-      } catch (error) {
-        callback(error as Error);
-      }
-    });
-  }
+		// Hook into the emit phase to update the build manifest
+		compiler.hooks.emit.tapAsync(
+			pluginName,
+			async (compilation, callback) => {
+				try {
+					await this.updateBuildManifest(compilation);
+					callback();
+				} catch (error) {
+					callback(error as Error);
+				}
+			},
+		);
+	}
 
-  private async processTranslations(compiler: Compiler, compilation: Compilation) {
-    const localesPath = path.join(compiler.context, this.options.localesDir);
+	private async processTranslations(
+		compiler: Compiler,
+		compilation: Compilation,
+	) {
+		const localesPath = path.join(
+			compiler.context,
+			this.options.localesDir,
+		);
 
-    if (!existsSync(localesPath)) {
-      console.log(`[${pluginName}] No locales directory found at ${localesPath}`);
-      return;
-    }
+		if (!existsSync(localesPath)) {
+			console.log(
+				`[${pluginName}] No locales directory found at ${localesPath}`,
+			);
+			return;
+		}
 
-    console.log(`[${pluginName}] Processing translations from ${localesPath}`);
+		console.log(
+			`[${pluginName}] Processing translations from ${localesPath}`,
+		);
 
-    // Get all locale directories
-    const locales = await fs.readdir(localesPath);
+		// Get all locale directories
+		const locales = await fs.readdir(localesPath);
 
-    for (const locale of locales) {
-      if (this.options.excludeLocales.includes(locale)) {
-        continue;
-      }
+		for (const locale of locales) {
+			if (this.options.excludeLocales.includes(locale)) {
+				continue;
+			}
 
-      const localePath = path.join(localesPath, locale);
-      const stat = await fs.stat(localePath);
+			const localePath = path.join(localesPath, locale);
+			const stat = await fs.stat(localePath);
 
-      if (stat.isDirectory()) {
-        const manifest = await this.processLocale(localePath, locale, compilation);
-        this.translationManifests.set(locale, manifest);
-      }
-    }
+			if (stat.isDirectory()) {
+				const manifest = await this.processLocale(
+					localePath,
+					locale,
+					compilation,
+				);
+				this.translationManifests.set(locale, manifest);
+			}
+		}
 
-    // Generate per-locale manifest modules
-    await this.generateManifestModules(compilation);
+		// Generate per-locale manifest modules
+		await this.generateManifestModules(compilation);
 
-    // Generate master manifest module
-    await this.generateMasterManifest(compilation);
-  }
+		// Generate master manifest module
+		await this.generateMasterManifest(compilation);
+	}
 
-  private async processLocale(
-    localePath: string,
-    locale: string,
-    compilation: Compilation
-  ): Promise<LocaleManifest> {
-    const manifest: LocaleManifest = {};
-    const files = await fs.readdir(localePath);
+	private async processLocale(
+		localePath: string,
+		locale: string,
+		compilation: Compilation,
+	): Promise<LocaleManifest> {
+		const manifest: LocaleManifest = {};
+		const files = await fs.readdir(localePath);
 
-    for (const file of files) {
-      if (!file.endsWith('.json')) {
-        continue;
-      }
+		for (const file of files) {
+			if (!file.endsWith('.json')) {
+				continue;
+			}
 
-      const filePath = path.join(localePath, file);
-      const content = await fs.readFile(filePath, 'utf8');
+			const filePath = path.join(localePath, file);
+			const content = await fs.readFile(filePath, 'utf8');
 
-      // Generate content hash
-      // eslint-disable-next-line sonarjs/hashing
-      const hash = crypto
-        .createHash('md5')
-        .update(content)
-        .digest('hex')
-        .slice(0, Math.max(0, this.options.hashLength));
+			// Generate content hash
+			// eslint-disable-next-line sonarjs/hashing
+			const hash = crypto
+				.createHash('md5')
+				.update(content)
+				.digest('hex')
+				.slice(0, Math.max(0, this.options.hashLength));
 
-      const namespace = file.replace('.json', '');
-      const hashedFilename = `${namespace}.${hash}.json`;
-      const outputPath = path.join(this.options.outputPath, locale, hashedFilename);
+			const namespace = file.replace('.json', '');
+			const hashedFilename = `${namespace}.${hash}.json`;
+			const outputPath = path.join(
+				this.options.outputPath,
+				locale,
+				hashedFilename,
+			);
 
-      // Add to compilation assets
-      compilation.emitAsset(
-        outputPath,
-        new sources.RawSource(content, false)
-      );
+			// Add to compilation assets
+			compilation.emitAsset(
+				outputPath,
+				new sources.RawSource(content, false),
+			);
 
-      manifest[namespace] = {
-        path: `${this.options.publicPath}${locale}/${hashedFilename}`,
-        hash: hash,
-        size: content.length,
-      };
+			manifest[namespace] = {
+				path: `${this.options.publicPath}${locale}/${hashedFilename}`,
+				hash: hash,
+				size: content.length,
+			};
 
-      console.log(`[${pluginName}] Processed ${locale}/${namespace} -> ${hashedFilename}`);
-    }
+			console.log(
+				`[${pluginName}] Processed ${locale}/${namespace} -> ${hashedFilename}`,
+			);
+		}
 
-    return manifest;
-  }
+		return manifest;
+	}
 
-  private async generateManifestModules(compilation: Compilation) {
-    for (const [locale, manifest] of this.translationManifests.entries()) {
-      const moduleContent = this.createManifestModule(manifest);
-      // eslint-disable-next-line sonarjs/hashing
-      const moduleHash = crypto
-        .createHash('md5')
-        .update(moduleContent)
-        .digest('hex')
-        .slice(0, Math.max(0, this.options.hashLength));
+	private async generateManifestModules(compilation: Compilation) {
+		for (const [locale, manifest] of this.translationManifests.entries()) {
+			const moduleContent = this.createManifestModule(manifest);
+			// eslint-disable-next-line sonarjs/hashing
+			const moduleHash = crypto
+				.createHash('md5')
+				.update(moduleContent)
+				.digest('hex')
+				.slice(0, Math.max(0, this.options.hashLength));
 
-      const moduleName = `i18n-manifest-${locale}.${moduleHash}.js`;
+			const moduleName = `i18n-manifest-${locale}.${moduleHash}.js`;
 
-      compilation.emitAsset(
-        moduleName,
-        new sources.RawSource(moduleContent, false)
-      );
+			compilation.emitAsset(
+				moduleName,
+				new sources.RawSource(moduleContent, false),
+			);
 
-      this.manifestModules.set(locale, {
-        name: moduleName,
-        hash: moduleHash,
-      });
+			this.manifestModules.set(locale, {
+				name: moduleName,
+				hash: moduleHash,
+			});
 
-      console.log(`[${pluginName}] Generated manifest module: ${moduleName}`);
-    }
-  }
+			console.log(
+				`[${pluginName}] Generated manifest module: ${moduleName}`,
+			);
+		}
+	}
 
-  private createManifestModule(manifest: LocaleManifest): string {
-    return `// Auto-generated translation manifest
+	private createManifestModule(manifest: LocaleManifest): string {
+		return `// Auto-generated translation manifest
 export const manifest = ${JSON.stringify(manifest, null, 2)};
 
 export const getTranslationPath = (namespace) => {
@@ -214,18 +239,18 @@ export const getManifestInfo = () => {
 
 export default manifest;
 `;
-  }
+	}
 
-  private async generateMasterManifest(compilation: Compilation) {
-    const imports: string[] = [];
-    const mappings: string[] = [];
+	private async generateMasterManifest(compilation: Compilation) {
+		const imports: string[] = [];
+		const mappings: string[] = [];
 
-    for (const [locale, module] of this.manifestModules.entries()) {
-      imports.push(`import manifest_${locale} from './${module.name}';`);
-      mappings.push(`  '${locale}': () => import('./${module.name}')`);
-    }
+		for (const [locale, module] of this.manifestModules.entries()) {
+			imports.push(`import manifest_${locale} from './${module.name}';`);
+			mappings.push(`  '${locale}': () => import('./${module.name}')`);
+		}
 
-    const masterContent = `// Auto-generated master translation manifest
+		const masterContent = `// Auto-generated master translation manifest
 // Static imports for immediate availability
 ${imports.join('\n')}
 
@@ -236,7 +261,9 @@ ${mappings.join(',\n')}
 
 // Static manifest access for SSR/preloading
 export const staticManifests = {
-${Array.from(this.manifestModules.keys()).map(locale => `  '${locale}': manifest_${locale}`).join(',\n')}
+${Array.from(this.manifestModules.keys())
+	.map((locale) => `  '${locale}': manifest_${locale}`)
+	.join(',\n')}
 };
 
 export const loadLocaleManifest = async (locale) => {
@@ -267,7 +294,7 @@ export const preloadLocales = async (locales = ['en']) => {
   const promises = locales.map(locale => loadLocaleManifest(locale));
   const results = await Promise.allSettled(promises);
 
-  const loaded: Record<string, unknown | null> = {};
+  const loaded = {};
   results.forEach((result, index) => {
     if (result.status === 'fulfilled') {
       loaded[locales[index]] = result.value;
@@ -292,80 +319,99 @@ export const initializeI18n = async () => {
 export default translationManifests;
 `;
 
-    // eslint-disable-next-line sonarjs/hashing
-    const masterHash = crypto
-      .createHash('md5')
-      .update(masterContent)
-      .digest('hex')
-      .slice(0, Math.max(0, this.options.hashLength));
+		// eslint-disable-next-line sonarjs/hashing
+		const masterHash = crypto
+			.createHash('md5')
+			.update(masterContent)
+			.digest('hex')
+			.slice(0, Math.max(0, this.options.hashLength));
 
-    const masterName = `i18n-master-manifest.${masterHash}.js`;
+		const masterName = `i18n-master-manifest.${masterHash}.js`;
 
-    compilation.emitAsset(
-      masterName,
-      new sources.RawSource(masterContent, false)
-    );
+		compilation.emitAsset(
+			masterName,
+			new sources.RawSource(masterContent, false),
+		);
 
-    // Store the master manifest name for later use
-    compilation.hooks.afterProcessAssets.tap(pluginName, () => {
-      if (!compilation.assets['i18n-master-manifest.json']) {
-        const metaInfo = {
-          masterManifest: masterName,
-          manifestModules: Object.fromEntries(this.manifestModules),
-          locales: Array.from(this.translationManifests.keys()),
-          generated: new Date().toISOString(),
-        };
+		// Store the master manifest name for later use
+		compilation.hooks.afterProcessAssets.tap(pluginName, () => {
+			if (!compilation.assets['i18n-master-manifest.json']) {
+				const metaInfo = {
+					masterManifest: masterName,
+					manifestModules: Object.fromEntries(this.manifestModules),
+					locales: Array.from(this.translationManifests.keys()),
+					generated: new Date().toISOString(),
+				};
 
-        compilation.emitAsset(
-          'i18n-master-manifest.json',
-          new sources.RawSource(JSON.stringify(metaInfo, null, 2), false)
-        );
-      }
-    });
+				compilation.emitAsset(
+					'i18n-master-manifest.json',
+					new sources.RawSource(
+						JSON.stringify(metaInfo, null, 2),
+						false,
+					),
+				);
+			}
+		});
 
-    console.log(`[${pluginName}] Generated master manifest: ${masterName}`);
-  }
+		console.log(`[${pluginName}] Generated master manifest: ${masterName}`);
+	}
 
-  private async updateBuildManifest(compilation: Compilation) {
-    // Find the i18n master manifest metadata
-    const metaAsset = compilation.getAsset('i18n-master-manifest.json');
-    if (!metaAsset) {
-      return;
-    }
+	private async updateBuildManifest(compilation: Compilation) {
+		// Find the i18n master manifest metadata
+		const metaAsset = compilation.getAsset('i18n-master-manifest.json');
+		if (!metaAsset) {
+			return;
+		}
 
-    const metaInfo = JSON.parse(metaAsset.source.source().toString());
+		const metaInfo = JSON.parse(metaAsset.source.source().toString());
 
-    // Find and update the build manifest if it exists
-    const buildManifestAsset = compilation.getAsset('build-manifest.json');
-    if (buildManifestAsset) {
-      try {
-        const manifest = JSON.parse(buildManifestAsset.source.source().toString());
+		// Find and update the build manifest if it exists
+		const buildManifestAsset = compilation.getAsset('build-manifest.json');
+		if (buildManifestAsset) {
+			try {
+				const manifest = JSON.parse(
+					buildManifestAsset.source.source().toString(),
+				);
 
-        // Add i18n information to the build manifest
-        manifest.i18n = {
-          masterManifest: metaInfo.masterManifest,
-          manifestModules: metaInfo.manifestModules,
-          supportedLocales: metaInfo.locales,
-          translationAssets: {},
-        };
+				// Add i18n information to the build manifest
+				manifest.i18n = {
+					masterManifest: metaInfo.masterManifest,
+					manifestModules: metaInfo.manifestModules,
+					supportedLocales: metaInfo.locales,
+					translationAssets: {},
+				};
 
-        // Add translation file paths
-        for (const [locale, localeManifest] of this.translationManifests.entries()) {
-          manifest.i18n.translationAssets[locale] = {};
-          for (const [namespace, info] of Object.entries(localeManifest)) {
-            manifest.i18n.translationAssets[locale][namespace] = info.path;
-          }
-        }
+				// Add translation file paths
+				for (const [
+					locale,
+					localeManifest,
+				] of this.translationManifests.entries()) {
+					manifest.i18n.translationAssets[locale] = {};
+					for (const [namespace, info] of Object.entries(
+						localeManifest,
+					)) {
+						manifest.i18n.translationAssets[locale][namespace] =
+							info.path;
+					}
+				}
 
-        compilation.updateAsset(
-          'build-manifest.json',
-          new sources.RawSource(JSON.stringify(manifest, null, 2), false)
-        );
+				compilation.updateAsset(
+					'build-manifest.json',
+					new sources.RawSource(
+						JSON.stringify(manifest, null, 2),
+						false,
+					),
+				);
 
-        console.log(`[${pluginName}] Updated build-manifest.json with i18n information`);
-      } catch (error) {
-        console.error(`[${pluginName}] Failed to update build manifest:`, error);
-      }
-    }
-  }
+				console.log(
+					`[${pluginName}] Updated build-manifest.json with i18n information`,
+				);
+			} catch (error) {
+				console.error(
+					`[${pluginName}] Failed to update build manifest:`,
+					error,
+				);
+			}
+		}
+	}
 }
