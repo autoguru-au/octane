@@ -19,6 +19,7 @@ To keep us up to date:
 1. From the root octane directory:
     1. Run `npx browserslist@latest --update-db`
 1. From the browserlist-config directory:
+
     1. Update package.json with latest
        [browserslist](https://www.npmjs.com/package/browserslist) version
     1. Run `yarn`

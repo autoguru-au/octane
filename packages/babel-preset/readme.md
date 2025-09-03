@@ -25,6 +25,7 @@ module.exports = {
 
 - `@autoguru/babel-preset` is merely an alias of `@autoguru/babel-preset/web`.
 - `@autoguru/babel-preset/node` is for node based targets.
+
     - `version` (default: current) - the version of node you're targeting
     - `modules` (default: commonjs) - what module transformations to apply.
     - `debug` (default: isProduction) - a boolean indicating if you want debug
@@ -37,6 +38,7 @@ module.exports = {
   This will look for a
   [browserslist config](https://github.com/browserslist/browserslist) file up
   the tree.
+
     - `modules` (default: false) - if you require module transformations. False
       is default as we use webpack's bundling system and want naked esmodules.
     - `debug` (default: isProduction) - a boolean indicating if you want debug
