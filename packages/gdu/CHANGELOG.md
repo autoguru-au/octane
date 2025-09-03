@@ -1,5 +1,11 @@
 # gdu
 
+## 13.2.0
+
+### Minor Changes
+
+- 4996981: Adds support for hashing i18n translation files
+
 ## 13.1.1
 
 ### Patch Changes
