@@ -1,5 +1,16 @@
 # gdu
 
+## 13.4.0
+
+### Minor Changes
+
+- 969dd6f: Adds support for hashing i18n translation files
+
+### Patch Changes
+
+- 969dd6f: Fixes incorrect translation manifest urls
+- 969dd6f: Fixes generated manifest for translations
+
 ## 13.3.0
 
 ### Minor Changes
