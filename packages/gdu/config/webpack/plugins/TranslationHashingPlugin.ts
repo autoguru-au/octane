@@ -162,8 +162,10 @@ export class TranslationHashingPlugin {
 				new sources.RawSource(content, false),
 			);
 
+			// Use relative path for locales to work with both CDN and local serving
+			// The path should be relative to the base public path
 			manifest[namespace] = {
-				path: `${this.options.publicPath}${locale}/${hashedFilename}`,
+				path: `/locales/${locale}/${hashedFilename}`,
 				hash: hash,
 				size: content.length,
 			};
