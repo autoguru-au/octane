@@ -1,5 +1,11 @@
 # gdu
 
+## 13.5.0
+
+### Minor Changes
+
+- 3bfd29a: Allows for empty i18n manfiest files to be created
+
 ## 13.4.0
 
 ### Minor Changes
