@@ -76,6 +76,71 @@ export class TranslationHashingPlugin {
 		);
 	}
 
+	private async generateEmptyManifests(compilation: Compilation) {
+		// Generate empty master manifest for MFEs without translations
+		const emptyMasterContent = `// Auto-generated empty translation manifest for MFEs without translations
+export const translationManifests = {};
+
+export const staticManifests = {};
+
+export const loadLocaleManifest = async (locale) => {
+  console.warn(\`No translations available for locale "\${locale}"\`);
+  return null;
+};
+
+export const getStaticManifest = (locale) => {
+  return null;
+};
+
+export const getSupportedLocales = () => {
+  return [];
+};
+
+export const preloadLocales = async (locales = []) => {
+  return {};
+};
+
+export const initializeI18n = async () => {
+  return null;
+};
+
+export default translationManifests;
+`;
+
+		// Generate a hash for consistency
+		// eslint-disable-next-line sonarjs/hashing
+		const masterHash = crypto
+			.createHash('md5')
+			.update(emptyMasterContent)
+			.digest('hex')
+			.slice(0, Math.max(0, this.options.hashLength));
+
+		const masterName = `i18n-master-manifest.${masterHash}.js`;
+
+		compilation.emitAsset(
+			masterName,
+			new sources.RawSource(emptyMasterContent, false),
+		);
+
+		// Create the metadata JSON file
+		const metaInfo = {
+			masterManifest: masterName,
+			manifestModules: {},
+			locales: [],
+			generated: new Date().toISOString(),
+			empty: true,
+		};
+
+		compilation.emitAsset(
+			'i18n-master-manifest.json',
+			new sources.RawSource(JSON.stringify(metaInfo, null, 2), false),
+		);
+
+		console.log(
+			`[${pluginName}] Generated empty master manifest: ${masterName}`,
+		);
+	}
+
 	private async processTranslations(
 		compiler: Compiler,
 		compilation: Compilation,
@@ -87,8 +152,10 @@ export class TranslationHashingPlugin {
 
 		if (!existsSync(localesPath)) {
 			console.log(
-				`[${pluginName}] No locales directory found at ${localesPath}`,
+				`[${pluginName}] No locales directory found at ${localesPath}, generating empty manifest`,
 			);
+			// Generate empty manifests for MFEs without translations
+			await this.generateEmptyManifests(compilation);
 			return;
 		}
 
