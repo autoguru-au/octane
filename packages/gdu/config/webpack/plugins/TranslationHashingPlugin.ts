@@ -331,7 +331,9 @@ export class TranslationHashingPlugin {
 
 		// Apply prefix strategy for clear separation and gitignore compatibility
 		const simplifiedPackageName = packageName.replace('@autoguru/', '');
-		return `pkg-${simplifiedPackageName}-${namespace}`;
+		// Use simplified naming: pkg-[package-name] instead of pkg-[package-name]-[namespace]
+		// This assumes namespace matches package name for package translations
+		return `pkg-${simplifiedPackageName}`;
 	}
 
 	private async copyPackageTranslationsToDev(compiler: Compiler) {
