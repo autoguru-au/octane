@@ -23,7 +23,6 @@ import {
 	getProjectFolderName,
 	getProjectName,
 } from '../../lib/config';
-import { TranslationHashingPlugin } from './plugins/TranslationHashingPlugin';
 import {
 	CALLING_WORKSPACE_ROOT,
 	GDU_ROOT,
@@ -31,6 +30,8 @@ import {
 } from '../../lib/roots';
 import { getBuildEnvs, getConfigsDirs } from '../../utils/configs';
 import { getHooks } from '../../utils/hooks';
+
+import { TranslationHashingPlugin } from './plugins/TranslationHashingPlugin';
 
 const { branch = 'null', commit = 'null' } = envCI();
 
