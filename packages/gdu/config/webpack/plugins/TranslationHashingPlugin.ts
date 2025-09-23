@@ -143,20 +143,22 @@ export class TranslationHashingPlugin {
 			return;
 		}
 
-		const packageDir = packageMatch[1];
+		const packageName = packageMatch[1];
 
-		// Check specific known packages
-		const knownPackages: Array<{ dir: string, name: string, fullName: string }> = [
-			{ dir: 'fleet-booking-profile', name: 'fleet-booking-profile', fullName: '@autoguru/fleet-booking-profile' },
-			{ dir: 'usage-meter', name: 'usage-meter', fullName: '@autoguru/usage-meter' }
-		];
-
-		for (const pkg of knownPackages) {
-			if (packageDir.includes(pkg.dir) && !processedPackages.has(pkg.name)) {
-				processedPackages.add(pkg.name);
-				await this.checkPackageForTranslations(pkg.fullName, compiler);
-			}
+		// Skip if already processed
+		if (processedPackages.has(packageName)) {
+			return;
 		}
+
+		processedPackages.add(packageName);
+
+		// Dynamically discover any package in /packages/ directory
+		// First try as @autoguru scoped package
+		const scopedPackageName = `@autoguru/${packageName}`;
+		await this.checkPackageForTranslations(scopedPackageName, compiler);
+
+		// Also try without scope for local packages
+		await this.checkPackageForTranslations(packageName, compiler);
 	}
 
 	private async processAutoguruPackage(
