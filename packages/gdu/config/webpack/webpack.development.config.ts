@@ -31,6 +31,8 @@ import {
 import { getBuildEnvs, getConfigsDirs } from '../../utils/configs';
 import { getHooks } from '../../utils/hooks';
 
+import { TranslationHashingPlugin } from './plugins/TranslationHashingPlugin';
+
 const { branch = 'null', commit = 'null' } = envCI();
 
 const hooks = getHooks();
@@ -368,6 +370,16 @@ export const baseDevelopmentOptions = ({
 					? [/.css.ts$/, frameworkRegex]
 					: [/.css.ts$/],
 				test: [/.ts$/, /.tsx$/],
+			}),
+			new TranslationHashingPlugin({
+				publicPath: guruConfig.publicPath
+					? `${guruConfig.publicPath}locales/`
+					: '/locales/',
+				outputPath: 'locales/',
+				localesDir: 'public/locales',
+				hashLength: 8,
+				autoIncludePackageTranslations: true,
+				packageTranslationMergeStrategy: 'prefix',
 			}),
 		].filter(Boolean),
 	};

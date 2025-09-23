@@ -469,6 +469,8 @@ export const baseOptions = ({
 				outputPath: 'locales/',
 				localesDir: 'public/locales',
 				hashLength: 8,
+				autoIncludePackageTranslations: true,
+				packageTranslationMergeStrategy: 'prefix',
 			}),
 			new SourceMapDevToolPlugin({
 				exclude: standalone
