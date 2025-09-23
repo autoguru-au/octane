@@ -324,7 +324,12 @@ export class TranslationHashingPlugin {
 	}
 
 	private getEffectiveNamespace(namespace: string, packageName: string): string {
-		// Always use prefix strategy for clear separation and gitignore compatibility
+		// Check if namespace already has the prefix to avoid double-prefixing
+		if (namespace.startsWith('pkg-')) {
+			return namespace;
+		}
+
+		// Apply prefix strategy for clear separation and gitignore compatibility
 		const simplifiedPackageName = packageName.replace('@autoguru/', '');
 		return `pkg-${simplifiedPackageName}-${namespace}`;
 	}
@@ -343,10 +348,9 @@ export class TranslationHashingPlugin {
 				await fs.mkdir(targetLocalePath, { recursive: true });
 
 				for (const [namespace, translations] of Object.entries(namespaces)) {
-					// Always use prefixed namespace for development to avoid conflicts
-					const simplifiedPackageName = packageName.replace('@autoguru/', '');
-					const prefixedNamespace = `pkg-${simplifiedPackageName}-${namespace}`;
-					const targetFile = path.join(targetLocalePath, `${prefixedNamespace}.json`);
+					// Use getEffectiveNamespace to handle already-prefixed namespaces
+					const effectiveNamespace = this.getEffectiveNamespace(namespace, packageName);
+					const targetFile = path.join(targetLocalePath, `${effectiveNamespace}.json`);
 
 					// Write the translation file
 					await fs.writeFile(targetFile, JSON.stringify(translations, null, 2));
