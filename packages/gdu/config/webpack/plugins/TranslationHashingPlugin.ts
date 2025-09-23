@@ -32,7 +32,7 @@ interface PluginOptions {
 	excludeLocales?: string[];
 	autoIncludePackageTranslations?: boolean;
 	// Only 'prefix' strategy is supported to ensure clear separation and gitignore compatibility
-	packageTranslationMergeStrategy?: 'prefix';
+	packageTranslationMergeStrategy: 'prefix';
 }
 
 const pluginName = 'TranslationHashingPlugin';
@@ -620,7 +620,6 @@ export default translationManifests;
 			.digest('hex')
 			.slice(0, Math.max(0, this.options.hashLength));
 	}
-
 
 	private async generateManifestModules(compilation: Compilation) {
 		for (const [locale, manifest] of this.translationManifests.entries()) {
