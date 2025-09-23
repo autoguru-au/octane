@@ -32,7 +32,7 @@ interface PluginOptions {
 	excludeLocales?: string[];
 	autoIncludePackageTranslations?: boolean;
 	// Only 'prefix' strategy is supported to ensure clear separation and gitignore compatibility
-	packageTranslationMergeStrategy: 'prefix';
+	packageTranslationMergeStrategy?: 'prefix';
 }
 
 const pluginName = 'TranslationHashingPlugin';
