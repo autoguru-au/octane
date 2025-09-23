@@ -51,7 +51,8 @@ export class TranslationHashingPlugin {
 			localesDir: options.localesDir || 'public/locales',
 			hashLength: options.hashLength || 8,
 			excludeLocales: options.excludeLocales || [],
-			autoIncludePackageTranslations: options.autoIncludePackageTranslations !== false,
+			autoIncludePackageTranslations:
+				options.autoIncludePackageTranslations !== false,
 			packageTranslationMergeStrategy: 'prefix', // Always use prefix for safety
 		};
 	}
@@ -65,11 +66,16 @@ export class TranslationHashingPlugin {
 					pluginName,
 					async (modules, callback) => {
 						try {
-							await this.discoverPackageTranslations(modules, compiler);
+							await this.discoverPackageTranslations(
+								modules,
+								compiler,
+							);
 
 							// In development mode, copy package translations to public directory
 							if (isDevelopment) {
-								await this.copyPackageTranslationsToDev(compiler);
+								await this.copyPackageTranslationsToDev(
+									compiler,
+								);
 							}
 
 							callback();
@@ -110,21 +116,36 @@ export class TranslationHashingPlugin {
 		);
 	}
 
-	private async discoverPackageTranslations(modules: any, compiler: Compiler) {
+	private async discoverPackageTranslations(
+		modules: any,
+		compiler: Compiler,
+	) {
 		const processedPackages = new Set<string>();
 		await this.scanModules(modules, processedPackages, compiler);
 	}
 
-	private async scanModules(modules: any, processedPackages: Set<string>, compiler: Compiler) {
+	private async scanModules(
+		modules: any,
+		processedPackages: Set<string>,
+		compiler: Compiler,
+	) {
 		for (const module of modules) {
 			const resourcePath = module.resource || module.userRequest || '';
 
 			// Process monorepo packages
-			await this.processMonorepoPackage(resourcePath, processedPackages, compiler);
+			await this.processMonorepoPackage(
+				resourcePath,
+				processedPackages,
+				compiler,
+			);
 
 			// Process @autoguru packages
 			if (resourcePath.includes('@autoguru/')) {
-				await this.processAutoguruPackage(resourcePath, processedPackages, compiler);
+				await this.processAutoguruPackage(
+					resourcePath,
+					processedPackages,
+					compiler,
+				);
 			}
 		}
 	}
@@ -132,7 +153,7 @@ export class TranslationHashingPlugin {
 	private async processMonorepoPackage(
 		resourcePath: string,
 		processedPackages: Set<string>,
-		compiler: Compiler
+		compiler: Compiler,
 	) {
 		if (!resourcePath.includes('/packages/')) {
 			return;
@@ -164,7 +185,7 @@ export class TranslationHashingPlugin {
 	private async processAutoguruPackage(
 		resourcePath: string,
 		processedPackages: Set<string>,
-		compiler: Compiler
+		compiler: Compiler,
 	) {
 		const match = resourcePath.match(/@autoguru\/([^/]+)/);
 		if (!match || processedPackages.has(match[1])) {
@@ -177,18 +198,33 @@ export class TranslationHashingPlugin {
 		await this.checkPackageForTranslations(packageName, compiler);
 	}
 
-	private async checkPackageForTranslations(packageName: string, compiler: Compiler) {
+	private async checkPackageForTranslations(
+		packageName: string,
+		compiler: Compiler,
+	) {
 		try {
-			const { packagePath, packageJsonPath } = this.resolvePackagePaths(packageName, compiler);
+			const { packagePath, packageJsonPath } = this.resolvePackagePaths(
+				packageName,
+				compiler,
+			);
 
 			if (!existsSync(packageJsonPath)) {
 				return;
 			}
 
-			const packageJson = JSON.parse(await fs.readFile(packageJsonPath, 'utf8'));
-			await this.processPackageTranslations(packageName, packagePath, packageJson);
+			const packageJson = JSON.parse(
+				await fs.readFile(packageJsonPath, 'utf8'),
+			);
+			await this.processPackageTranslations(
+				packageName,
+				packagePath,
+				packageJson,
+			);
 		} catch (error) {
-			console.warn(`[${pluginName}] Error checking package ${packageName}:`, error);
+			console.warn(
+				`[${pluginName}] Error checking package ${packageName}:`,
+				error,
+			);
 		}
 	}
 
@@ -197,34 +233,49 @@ export class TranslationHashingPlugin {
 		const monorepoPackagePath = path.join(
 			compiler.context,
 			'../../packages',
-			packageName.replace('@autoguru/', '')
+			packageName.replace('@autoguru/', ''),
 		);
 
 		// Check if it's a monorepo package
 		if (existsSync(monorepoPackagePath)) {
 			return {
 				packagePath: monorepoPackagePath,
-				packageJsonPath: path.join(monorepoPackagePath, 'package.json')
+				packageJsonPath: path.join(monorepoPackagePath, 'package.json'),
 			};
 		}
 
 		// Fall back to node_modules
-		const nodeModulesPath = path.join(compiler.context, 'node_modules', packageName);
+		const nodeModulesPath = path.join(
+			compiler.context,
+			'node_modules',
+			packageName,
+		);
 		return {
 			packagePath: nodeModulesPath,
-			packageJsonPath: path.join(nodeModulesPath, 'package.json')
+			packageJsonPath: path.join(nodeModulesPath, 'package.json'),
 		};
 	}
 
-	private async processPackageTranslations(packageName: string, packagePath: string, packageJson: any) {
+	private async processPackageTranslations(
+		packageName: string,
+		packagePath: string,
+		packageJson: any,
+	) {
 		// Check if package has i18n configuration
 		if (packageJson.i18n) {
 			const i18nConfig = packageJson.i18n as PackageI18nConfig;
-			const localesPath = path.join(packagePath, i18nConfig.localesPath || 'locales');
+			const localesPath = path.join(
+				packagePath,
+				i18nConfig.localesPath || 'locales',
+			);
 
 			if (existsSync(localesPath)) {
 				this.discoveredPackages.add(packageName);
-				await this.loadPackageTranslations(packageName, localesPath, i18nConfig.namespaces);
+				await this.loadPackageTranslations(
+					packageName,
+					localesPath,
+					i18nConfig.namespaces,
+				);
 			}
 			return;
 		}
@@ -240,7 +291,7 @@ export class TranslationHashingPlugin {
 	private async loadPackageTranslations(
 		packageName: string,
 		localesPath: string,
-		namespaces?: string[]
+		namespaces?: string[],
 	) {
 		const packageTranslations = new Map<string, any>();
 
@@ -251,10 +302,13 @@ export class TranslationHashingPlugin {
 				const localeTranslations = await this.loadLocaleTranslations(
 					localesPath,
 					locale,
-					namespaces
+					namespaces,
 				);
 
-				if (localeTranslations && Object.keys(localeTranslations).length > 0) {
+				if (
+					localeTranslations &&
+					Object.keys(localeTranslations).length > 0
+				) {
 					packageTranslations.set(locale, localeTranslations);
 				}
 			}
@@ -263,14 +317,17 @@ export class TranslationHashingPlugin {
 				this.packageTranslations.set(packageName, packageTranslations);
 			}
 		} catch (error) {
-			console.error(`[${pluginName}] Error loading translations from ${packageName}:`, error);
+			console.error(
+				`[${pluginName}] Error loading translations from ${packageName}:`,
+				error,
+			);
 		}
 	}
 
 	private async loadLocaleTranslations(
 		localesPath: string,
 		locale: string,
-		namespaces?: string[]
+		namespaces?: string[],
 	): Promise<any | null> {
 		const localePath = path.join(localesPath, locale);
 		const stat = await fs.stat(localePath);
@@ -295,7 +352,7 @@ export class TranslationHashingPlugin {
 				localePath,
 				file,
 				namespace,
-				localeTranslations
+				localeTranslations,
 			);
 		}
 
@@ -306,7 +363,7 @@ export class TranslationHashingPlugin {
 		localePath: string,
 		file: string,
 		namespace: string,
-		localeTranslations: any
+		localeTranslations: any,
 	): Promise<void> {
 		const filePath = path.join(localePath, file);
 		const content = await fs.readFile(filePath, 'utf8');
@@ -314,11 +371,17 @@ export class TranslationHashingPlugin {
 		try {
 			localeTranslations[namespace] = JSON.parse(content);
 		} catch (error) {
-			console.error(`[${pluginName}] Failed to parse ${filePath}:`, error);
+			console.error(
+				`[${pluginName}] Failed to parse ${filePath}:`,
+				error,
+			);
 		}
 	}
 
-	private getEffectiveNamespace(namespace: string, packageName: string): string {
+	private getEffectiveNamespace(
+		namespace: string,
+		packageName: string,
+	): string {
 		// Check if namespace already has the prefix to avoid double-prefixing
 		if (namespace.startsWith('pkg-')) {
 			return namespace;
@@ -334,21 +397,32 @@ export class TranslationHashingPlugin {
 	private async copyPackageTranslationsToDev(compiler: Compiler) {
 		const publicLocalesPath = path.join(compiler.context, 'public/locales');
 
-		for (const [packageName, packageTranslations] of this.packageTranslations) {
-
+		for (const [packageName, packageTranslations] of this
+			.packageTranslations) {
 			for (const [locale, namespaces] of packageTranslations) {
 				const targetLocalePath = path.join(publicLocalesPath, locale);
 
 				// Ensure locale directory exists
 				await fs.mkdir(targetLocalePath, { recursive: true });
 
-				for (const [namespace, translations] of Object.entries(namespaces)) {
+				for (const [namespace, translations] of Object.entries(
+					namespaces,
+				)) {
 					// Use getEffectiveNamespace to handle already-prefixed namespaces
-					const effectiveNamespace = this.getEffectiveNamespace(namespace, packageName);
-					const targetFile = path.join(targetLocalePath, `${effectiveNamespace}.json`);
+					const effectiveNamespace = this.getEffectiveNamespace(
+						namespace,
+						packageName,
+					);
+					const targetFile = path.join(
+						targetLocalePath,
+						`${effectiveNamespace}.json`,
+					);
 
 					// Write the translation file
-					await fs.writeFile(targetFile, JSON.stringify(translations, null, 2));
+					await fs.writeFile(
+						targetFile,
+						JSON.stringify(translations, null, 2),
+					);
 				}
 			}
 		}
@@ -413,7 +487,6 @@ export default translationManifests;
 			'i18n-master-manifest.json',
 			new sources.RawSource(JSON.stringify(metaInfo, null, 2), false),
 		);
-
 	}
 
 	private async processTranslations(
@@ -431,7 +504,6 @@ export default translationManifests;
 			await this.generateEmptyManifests(compilation);
 			return;
 		}
-
 
 		// Process each locale
 		for (const locale of allLocales) {
@@ -462,7 +534,10 @@ export default translationManifests;
 		return allLocales;
 	}
 
-	private async collectMfeLocales(localesPath: string, allLocales: Set<string>): Promise<void> {
+	private async collectMfeLocales(
+		localesPath: string,
+		allLocales: Set<string>,
+	): Promise<void> {
 		if (!existsSync(localesPath)) {
 			return;
 		}
@@ -470,7 +545,10 @@ export default translationManifests;
 		const mfeLocales = await fs.readdir(localesPath);
 		for (const locale of mfeLocales) {
 			const stat = await fs.stat(path.join(localesPath, locale));
-			if (stat.isDirectory() && !this.options.excludeLocales.includes(locale)) {
+			if (
+				stat.isDirectory() &&
+				!this.options.excludeLocales.includes(locale)
+			) {
 				allLocales.add(locale);
 			}
 		}
@@ -498,7 +576,11 @@ export default translationManifests;
 		const processedTranslations: { [namespace: string]: any } = {};
 
 		// Load MFE translations
-		await this.loadMfeTranslations(mfeLocalesPath, locale, processedTranslations);
+		await this.loadMfeTranslations(
+			mfeLocalesPath,
+			locale,
+			processedTranslations,
+		);
 
 		// Merge package translations
 		await this.mergePackageTranslations(locale, processedTranslations);
@@ -507,14 +589,14 @@ export default translationManifests;
 		return this.emitTranslationsAndBuildManifest(
 			locale,
 			processedTranslations,
-			compilation
+			compilation,
 		);
 	}
 
 	private async loadMfeTranslations(
 		mfeLocalesPath: string,
 		locale: string,
-		processedTranslations: { [namespace: string]: any }
+		processedTranslations: { [namespace: string]: any },
 	): Promise<void> {
 		const mfeLocalePath = path.join(mfeLocalesPath, locale);
 		if (!existsSync(mfeLocalePath)) {
@@ -533,20 +615,24 @@ export default translationManifests;
 			try {
 				processedTranslations[namespace] = JSON.parse(content);
 			} catch (error) {
-				console.error(`[${pluginName}] Failed to parse ${filePath}:`, error);
+				console.error(
+					`[${pluginName}] Failed to parse ${filePath}:`,
+					error,
+				);
 			}
 		}
 	}
 
 	private async mergePackageTranslations(
 		locale: string,
-		processedTranslations: { [namespace: string]: any }
+		processedTranslations: { [namespace: string]: any },
 	): Promise<void> {
 		if (!this.options.autoIncludePackageTranslations) {
 			return;
 		}
 
-		for (const [packageName, packageTranslations] of this.packageTranslations) {
+		for (const [packageName, packageTranslations] of this
+			.packageTranslations) {
 			const packageLocaleTranslations = packageTranslations.get(locale);
 			if (!packageLocaleTranslations) {
 				continue;
@@ -555,7 +641,7 @@ export default translationManifests;
 			this.mergeNamespaceTranslations(
 				packageName,
 				packageLocaleTranslations,
-				processedTranslations
+				processedTranslations,
 			);
 		}
 	}
@@ -563,18 +649,27 @@ export default translationManifests;
 	private mergeNamespaceTranslations(
 		packageName: string,
 		packageLocaleTranslations: any,
-		processedTranslations: { [namespace: string]: any }
+		processedTranslations: { [namespace: string]: any },
 	): void {
-		for (const [namespace, translations] of Object.entries(packageLocaleTranslations)) {
-			const effectiveNamespace = this.getEffectiveNamespace(namespace, packageName);
-			this.applyMergeStrategy(effectiveNamespace, translations, processedTranslations);
+		for (const [namespace, translations] of Object.entries(
+			packageLocaleTranslations,
+		)) {
+			const effectiveNamespace = this.getEffectiveNamespace(
+				namespace,
+				packageName,
+			);
+			this.applyMergeStrategy(
+				effectiveNamespace,
+				translations,
+				processedTranslations,
+			);
 		}
 	}
 
 	private applyMergeStrategy(
 		effectiveNamespace: string,
 		translations: any,
-		processedTranslations: { [namespace: string]: any }
+		processedTranslations: { [namespace: string]: any },
 	): void {
 		// Always use prefix strategy - directly assign the translation
 		processedTranslations[effectiveNamespace] = translations;
@@ -583,11 +678,13 @@ export default translationManifests;
 	private emitTranslationsAndBuildManifest(
 		locale: string,
 		processedTranslations: { [namespace: string]: any },
-		compilation: Compilation
+		compilation: Compilation,
 	): LocaleManifest {
 		const manifest: LocaleManifest = {};
 
-		for (const [namespace, translations] of Object.entries(processedTranslations)) {
+		for (const [namespace, translations] of Object.entries(
+			processedTranslations,
+		)) {
 			const content = JSON.stringify(translations);
 			const hash = this.generateContentHash(content);
 			const hashedFilename = `${namespace}.${hash}.json`;
@@ -647,9 +744,10 @@ export default translationManifests;
 
 	private createManifestModule(manifest: LocaleManifest): string {
 		// Include information about discovered packages in comments
-		const packageInfo = this.discoveredPackages.size > 0
-			? `// Includes translations from packages: ${Array.from(this.discoveredPackages).join(', ')}\n`
-			: '';
+		const packageInfo =
+			this.discoveredPackages.size > 0
+				? `// Includes translations from packages: ${Array.from(this.discoveredPackages).join(', ')}\n`
+				: '';
 
 		return `// Auto-generated translation manifest
 ${packageInfo}export const manifest = ${JSON.stringify(manifest, null, 2)};
@@ -798,7 +896,6 @@ export default translationManifests;
 				);
 			}
 		});
-
 	}
 
 	private async updateBuildManifest(compilation: Compilation) {

@@ -10089,7 +10089,7 @@ __metadata:
     whatwg-fetch: ^3.6.2
   peerDependencies:
     "@types/node": ">=10"
-    browserslist-config-autoguru: ">=2.5.0"
+    browserslist-config-autoguru: ">=2.5.2"
   bin:
     gdu: ./bin/gdu.js
   languageName: unknown
