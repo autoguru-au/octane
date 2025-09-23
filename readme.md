@@ -12,6 +12,19 @@
 The project is maintained as a monorepo which composes a wide array of npm
 packages, each package has it's own readme that document its own usage.
 
+## Claude Code Review
+
+This repository uses Claude Code for AI-powered code reviews on pull requests. The Claude Code workflow automatically reviews all pull requests and provides intelligent feedback and suggestions.
+
+### Features
+- 🤖 Automated AI-powered code reviews on every PR
+- 🔍 Consistent code quality checks
+- 💡 Intelligent suggestions for improvements
+- ⚡ Faster review cycles
+
+### Configuration
+The workflow is configured in `.github/workflows/claude-code-review.yml` and requires the `ANTHROPIC_API_KEY` repository secret to be set.
+
 ### Index
 
 | package                                                                 |                                                                                                                                                                                                     |
