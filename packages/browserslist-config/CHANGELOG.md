@@ -1,5 +1,11 @@
 # browserslist-config-autoguru
 
+## 2.5.2
+
+### Patch Changes
+
+- e6a102e: Updates browserlist
+
 ## 2.5.1
 
 ### Patch Changes

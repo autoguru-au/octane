@@ -1,5 +1,22 @@
 # gdu
 
+## 13.6.0
+
+### Minor Changes
+
+- e6a102e: Enable TranslationHashingPlugin in development mode for i18n support
+    - Fix TranslationHashingPlugin to work correctly in development environment
+    - Ensures translation manifests are generated in dev mode for proper i18n
+      functionality
+    - Add Claude Code GitHub Actions workflow for automated AI-powered code
+      reviews on pull requests
+
+### Patch Changes
+
+- e6a102e: Updates browserlist
+- Updated dependencies [e6a102e]
+    - browserslist-config-autoguru@2.5.2
+
 ## 13.5.0
 
 ### Minor Changes
