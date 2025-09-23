@@ -116,11 +116,7 @@ export class TranslationHashingPlugin {
 	}
 
 	private async scanModules(modules: any, processedPackages: Set<string>, compiler: Compiler) {
-		let moduleCount = 0;
-		let autoguruModuleCount = 0;
-
 		for (const module of modules) {
-			moduleCount++;
 			const resourcePath = module.resource || module.userRequest || '';
 
 			// Process monorepo packages
@@ -128,12 +124,9 @@ export class TranslationHashingPlugin {
 
 			// Process @autoguru packages
 			if (resourcePath.includes('@autoguru/')) {
-				autoguruModuleCount++;
 				await this.processAutoguruPackage(resourcePath, processedPackages, compiler);
 			}
 		}
-
-		return { moduleCount, autoguruModuleCount };
 	}
 
 	private async processMonorepoPackage(
@@ -337,8 +330,6 @@ export class TranslationHashingPlugin {
 	}
 
 	private async copyPackageTranslationsToDev(compiler: Compiler) {
-		console.log(`[${pluginName}] Copying package translations to public directory for development`);
-
 		const publicLocalesPath = path.join(compiler.context, 'public/locales');
 
 		for (const [packageName, packageTranslations] of this.packageTranslations) {
@@ -421,9 +412,6 @@ export default translationManifests;
 			new sources.RawSource(JSON.stringify(metaInfo, null, 2), false),
 		);
 
-		console.log(
-			`[${pluginName}] Generated empty master manifest: ${masterName}`,
-		);
 	}
 
 	private async processTranslations(
@@ -438,14 +426,10 @@ export default translationManifests;
 		const allLocales = await this.collectAllLocales(localesPath);
 
 		if (allLocales.size === 0) {
-			console.log(`[${pluginName}] No translations found, generating empty manifest`);
 			await this.generateEmptyManifests(compilation);
 			return;
 		}
 
-		console.log(
-			`[${pluginName}] Processing translations for locales: ${Array.from(allLocales).join(', ')}`,
-		);
 
 		// Process each locale
 		for (const locale of allLocales) {
@@ -621,10 +605,6 @@ export default translationManifests;
 				hash: hash,
 				size: content.length,
 			};
-
-			console.log(
-				`[${pluginName}] Processed ${locale}/${namespace} -> ${hashedFilename}`,
-			);
 		}
 
 		return manifest;
@@ -661,10 +641,6 @@ export default translationManifests;
 				name: moduleName,
 				hash: moduleHash,
 			});
-
-			console.log(
-				`[${pluginName}] Generated manifest module: ${moduleName}`,
-			);
 		}
 	}
 
@@ -822,7 +798,6 @@ export default translationManifests;
 			}
 		});
 
-		console.log(`[${pluginName}] Generated master manifest: ${masterName}`);
 	}
 
 	private async updateBuildManifest(compilation: Compilation) {
@@ -871,10 +846,6 @@ export default translationManifests;
 						JSON.stringify(manifest, null, 2),
 						false,
 					),
-				);
-
-				console.log(
-					`[${pluginName}] Updated build-manifest.json with i18n information`,
 				);
 			} catch (error) {
 				console.error(
