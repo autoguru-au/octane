@@ -619,7 +619,6 @@ export default translationManifests;
 			.slice(0, Math.max(0, this.options.hashLength));
 	}
 
-
 	private async generateManifestModules(compilation: Compilation) {
 		for (const [locale, manifest] of this.translationManifests.entries()) {
 			const moduleContent = this.createManifestModule(manifest);
