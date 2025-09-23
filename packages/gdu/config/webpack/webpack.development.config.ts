@@ -23,6 +23,7 @@ import {
 	getProjectFolderName,
 	getProjectName,
 } from '../../lib/config';
+import { TranslationHashingPlugin } from './plugins/TranslationHashingPlugin';
 import {
 	CALLING_WORKSPACE_ROOT,
 	GDU_ROOT,
@@ -368,6 +369,16 @@ export const baseDevelopmentOptions = ({
 					? [/.css.ts$/, frameworkRegex]
 					: [/.css.ts$/],
 				test: [/.ts$/, /.tsx$/],
+			}),
+			new TranslationHashingPlugin({
+				publicPath: guruConfig.publicPath
+					? `${guruConfig.publicPath}locales/`
+					: '/locales/',
+				outputPath: 'locales/',
+				localesDir: 'public/locales',
+				hashLength: 8,
+				autoIncludePackageTranslations: true,
+				packageTranslationMergeStrategy: 'merge',
 			}),
 		].filter(Boolean),
 	};
