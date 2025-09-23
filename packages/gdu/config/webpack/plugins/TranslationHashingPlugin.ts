@@ -125,41 +125,15 @@ export class TranslationHashingPlugin {
 		// Iterate through all modules to find @autoguru packages
 		for (const module of modules) {
 			moduleCount++;
-			// Check both the resource path and the resolved path
 			const resourcePath = module.resource || module.userRequest || '';
 
-			// Check if this is a package from the monorepo packages directory
-			if (resourcePath.includes('/packages/')) {
-				const packageMatch = resourcePath.match(/\/packages\/([^/]+)/);
-				if (packageMatch && packageMatch[1].includes('fleet-booking-profile')) {
-					console.log(`[${pluginName}] 🔍 FOUND fleet-booking-profile via packages path! Module resource: ${resourcePath}`);
-					if (!processedPackages.has('fleet-booking-profile')) {
-						processedPackages.add('fleet-booking-profile');
-						await this.checkPackageForTranslations('@autoguru/fleet-booking-profile', compiler);
-					}
-				}
-				if (packageMatch && packageMatch[1].includes('usage-meter')) {
-					console.log(`[${pluginName}] 🔍 FOUND usage-meter via packages path! Module resource: ${resourcePath}`);
-					if (!processedPackages.has('usage-meter')) {
-						processedPackages.add('usage-meter');
-						await this.checkPackageForTranslations('@autoguru/usage-meter', compiler);
-					}
-				}
-			}
+			// Process monorepo packages
+			await this.processMonorepoPackage(resourcePath, processedPackages, compiler);
 
+			// Process @autoguru packages
 			if (resourcePath.includes('@autoguru/')) {
-				// Extract package name from the path
 				autoguruModuleCount++;
-				const match = resourcePath.match(/@autoguru\/([^/]+)/);
-				if (match && !processedPackages.has(match[1])) {
-					const packageName = `@autoguru/${match[1]}`;
-					processedPackages.add(match[1]);
-
-					console.log(`[${pluginName}] Found @autoguru package: ${packageName}`);
-
-					// Check if this package has translations
-					await this.checkPackageForTranslations(packageName, compiler);
-				}
+				await this.processAutoguruPackage(resourcePath, processedPackages, compiler);
 			}
 		}
 
@@ -167,69 +141,119 @@ export class TranslationHashingPlugin {
 		console.log(`[${pluginName}] Discovered ${this.discoveredPackages.size} packages with translations`);
 	}
 
+	private async processMonorepoPackage(
+		resourcePath: string,
+		processedPackages: Set<string>,
+		compiler: Compiler
+	) {
+		if (!resourcePath.includes('/packages/')) {
+			return;
+		}
+
+		const packageMatch = resourcePath.match(/\/packages\/([^/]+)/);
+		if (!packageMatch) {
+			return;
+		}
+
+		const packageDir = packageMatch[1];
+
+		// Check specific known packages
+		const knownPackages: Array<{ dir: string, name: string, fullName: string }> = [
+			{ dir: 'fleet-booking-profile', name: 'fleet-booking-profile', fullName: '@autoguru/fleet-booking-profile' },
+			{ dir: 'usage-meter', name: 'usage-meter', fullName: '@autoguru/usage-meter' }
+		];
+
+		for (const pkg of knownPackages) {
+			if (packageDir.includes(pkg.dir) && !processedPackages.has(pkg.name)) {
+				console.log(`[${pluginName}] 🔍 FOUND ${pkg.name} via packages path! Module resource: ${resourcePath}`);
+				processedPackages.add(pkg.name);
+				await this.checkPackageForTranslations(pkg.fullName, compiler);
+			}
+		}
+	}
+
+	private async processAutoguruPackage(
+		resourcePath: string,
+		processedPackages: Set<string>,
+		compiler: Compiler
+	) {
+		const match = resourcePath.match(/@autoguru\/([^/]+)/);
+		if (!match || processedPackages.has(match[1])) {
+			return;
+		}
+
+		const packageName = `@autoguru/${match[1]}`;
+		processedPackages.add(match[1]);
+
+		console.log(`[${pluginName}] Found @autoguru package: ${packageName}`);
+		await this.checkPackageForTranslations(packageName, compiler);
+	}
+
 	private async checkPackageForTranslations(packageName: string, compiler: Compiler) {
 		try {
-			// Try to find the package in the monorepo first (packages directory)
-			const monorepoPackagePath = path.join(
-				compiler.context,
-				'../../packages',
-				packageName.replace('@autoguru/', '')
-			);
-
-			let packagePath: string;
-			let packageJsonPath: string;
-
-			console.log(`[${pluginName}] Checking package ${packageName}`);
-			console.log(`[${pluginName}]   Monorepo path: ${monorepoPackagePath}`);
-			console.log(`[${pluginName}]   Exists in monorepo: ${existsSync(monorepoPackagePath)}`);
-
-			// Check if it's a monorepo package
-			if (existsSync(monorepoPackagePath)) {
-				packagePath = monorepoPackagePath;
-				packageJsonPath = path.join(packagePath, 'package.json');
-			} else {
-				// Fall back to node_modules
-				packagePath = path.join(compiler.context, 'node_modules', packageName);
-				packageJsonPath = path.join(packagePath, 'package.json');
-				console.log(`[${pluginName}]   Using node_modules path: ${packagePath}`);
-			}
+			const { packagePath, packageJsonPath } = this.resolvePackagePaths(packageName, compiler);
 
 			if (!existsSync(packageJsonPath)) {
 				return;
 			}
 
 			const packageJson = JSON.parse(await fs.readFile(packageJsonPath, 'utf8'));
-
-			// Check if package has i18n configuration
-			if (packageJson.i18n) {
-				const i18nConfig = packageJson.i18n as PackageI18nConfig;
-				const localesPath = path.join(
-					packagePath,
-					i18nConfig.localesPath || 'locales'
-				);
-
-				if (existsSync(localesPath)) {
-					console.log(`[${pluginName}] Found translations in ${packageName}`);
-					this.discoveredPackages.add(packageName);
-
-					// Load package translations
-					await this.loadPackageTranslations(
-						packageName,
-						localesPath,
-						i18nConfig.namespaces
-					);
-				}
-			} else {
-				// Check for default locales directory even without explicit config
-				const defaultLocalesPath = path.join(packagePath, 'locales');
-				if (existsSync(defaultLocalesPath)) {
-					console.log(`[${pluginName}] Found translations in ${packageName} (no explicit config)`);
-					this.discoveredPackages.add(packageName);
-					await this.loadPackageTranslations(packageName, defaultLocalesPath);
-				}
-			}
+			await this.processPackageTranslations(packageName, packagePath, packageJson);
 		} catch (error) {
 			console.warn(`[${pluginName}] Error checking package ${packageName}:`, error);
+		}
+	}
+
+	private resolvePackagePaths(packageName: string, compiler: Compiler) {
+		// Try to find the package in the monorepo first (packages directory)
+		const monorepoPackagePath = path.join(
+			compiler.context,
+			'../../packages',
+			packageName.replace('@autoguru/', '')
+		);
+
+		console.log(`[${pluginName}] Checking package ${packageName}`);
+		console.log(`[${pluginName}]   Monorepo path: ${monorepoPackagePath}`);
+		console.log(`[${pluginName}]   Exists in monorepo: ${existsSync(monorepoPackagePath)}`);
+
+		// Check if it's a monorepo package
+		if (existsSync(monorepoPackagePath)) {
+			return {
+				packagePath: monorepoPackagePath,
+				packageJsonPath: path.join(monorepoPackagePath, 'package.json')
+			};
+		}
+
+		// Fall back to node_modules
+		const nodeModulesPath = path.join(compiler.context, 'node_modules', packageName);
+		console.log(`[${pluginName}]   Using node_modules path: ${nodeModulesPath}`);
+
+		return {
+			packagePath: nodeModulesPath,
+			packageJsonPath: path.join(nodeModulesPath, 'package.json')
+		};
+	}
+
+	private async processPackageTranslations(packageName: string, packagePath: string, packageJson: any) {
+		// Check if package has i18n configuration
+		if (packageJson.i18n) {
+			const i18nConfig = packageJson.i18n as PackageI18nConfig;
+			const localesPath = path.join(packagePath, i18nConfig.localesPath || 'locales');
+
+			if (existsSync(localesPath)) {
+				console.log(`[${pluginName}] Found translations in ${packageName}`);
+				this.discoveredPackages.add(packageName);
+				await this.loadPackageTranslations(packageName, localesPath, i18nConfig.namespaces);
+			}
+			return;
+		}
+
+		// Check for default locales directory even without explicit config
+		const defaultLocalesPath = path.join(packagePath, 'locales');
+		if (existsSync(defaultLocalesPath)) {
+			console.log(`[${pluginName}] Found translations in ${packageName} (no explicit config)`);
+			this.discoveredPackages.add(packageName);
+			await this.loadPackageTranslations(packageName, defaultLocalesPath);
 		}
 	}
 
