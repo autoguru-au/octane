@@ -31,7 +31,8 @@ interface PluginOptions {
 	hashLength?: number;
 	excludeLocales?: string[];
 	autoIncludePackageTranslations?: boolean;
-	packageTranslationMergeStrategy?: 'merge' | 'override' | 'prefix';
+	// Only 'prefix' strategy is supported to ensure clear separation and gitignore compatibility
+	packageTranslationMergeStrategy?: 'prefix';
 }
 
 const pluginName = 'TranslationHashingPlugin';
@@ -51,7 +52,7 @@ export class TranslationHashingPlugin {
 			hashLength: options.hashLength || 8,
 			excludeLocales: options.excludeLocales || [],
 			autoIncludePackageTranslations: options.autoIncludePackageTranslations !== false,
-			packageTranslationMergeStrategy: options.packageTranslationMergeStrategy || 'merge',
+			packageTranslationMergeStrategy: 'prefix', // Always use prefix for safety
 		};
 		console.log(`[${pluginName}] CONSTRUCTOR - Plugin instantiated with autoIncludePackageTranslations:`, this.options.autoIncludePackageTranslations);
 	}
@@ -343,11 +344,9 @@ export class TranslationHashingPlugin {
 	}
 
 	private getEffectiveNamespace(namespace: string, packageName: string): string {
-		if (this.options.packageTranslationMergeStrategy === 'prefix') {
-			const simplifiedPackageName = packageName.replace('@autoguru/', '');
-			return `pkg-${simplifiedPackageName}-${namespace}`;
-		}
-		return namespace;
+		// Always use prefix strategy for clear separation and gitignore compatibility
+		const simplifiedPackageName = packageName.replace('@autoguru/', '');
+		return `pkg-${simplifiedPackageName}-${namespace}`;
 	}
 
 	private async copyPackageTranslationsToDev(compiler: Compiler) {
@@ -365,12 +364,14 @@ export class TranslationHashingPlugin {
 				await fs.mkdir(targetLocalePath, { recursive: true });
 
 				for (const [namespace, translations] of Object.entries(namespaces)) {
-					const effectiveNamespace = this.getEffectiveNamespace(namespace, packageName);
-					const targetFile = path.join(targetLocalePath, `${effectiveNamespace}.json`);
+					// Always use prefixed namespace for development to avoid conflicts
+					const simplifiedPackageName = packageName.replace('@autoguru/', '');
+					const prefixedNamespace = `pkg-${simplifiedPackageName}-${namespace}`;
+					const targetFile = path.join(targetLocalePath, `${prefixedNamespace}.json`);
 
 					// Write the translation file
 					await fs.writeFile(targetFile, JSON.stringify(translations, null, 2));
-					console.log(`[${pluginName}] Copied ${packageName}/${locale}/${namespace}.json to ${effectiveNamespace}.json`);
+					console.log(`[${pluginName}] Copied ${packageName}/${locale}/${namespace}.json to ${prefixedNamespace}.json`);
 				}
 			}
 		}
@@ -606,18 +607,8 @@ export default translationManifests;
 		translations: any,
 		processedTranslations: { [namespace: string]: any }
 	): void {
-		switch (this.options.packageTranslationMergeStrategy) {
-		case 'override':
-		case 'prefix':
-			processedTranslations[effectiveNamespace] = translations;
-			break;
-		case 'merge':
-			if (!processedTranslations[effectiveNamespace]) {
-				processedTranslations[effectiveNamespace] = translations;
-			}
-			break;
-		// No default
-		}
+		// Always use prefix strategy - directly assign the translation
+		processedTranslations[effectiveNamespace] = translations;
 	}
 
 	private emitTranslationsAndBuildManifest(
