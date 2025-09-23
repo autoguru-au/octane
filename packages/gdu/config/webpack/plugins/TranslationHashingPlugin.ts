@@ -54,20 +54,13 @@ export class TranslationHashingPlugin {
 			autoIncludePackageTranslations: options.autoIncludePackageTranslations !== false,
 			packageTranslationMergeStrategy: 'prefix', // Always use prefix for safety
 		};
-		console.log(`[${pluginName}] CONSTRUCTOR - Plugin instantiated with autoIncludePackageTranslations:`, this.options.autoIncludePackageTranslations);
 	}
 
 	apply(compiler: Compiler) {
 		const isDevelopment = compiler.options.mode === 'development';
-		console.log(`[${pluginName}] Plugin initialized with options:`, {
-			autoIncludePackageTranslations: this.options.autoIncludePackageTranslations,
-			packageTranslationMergeStrategy: this.options.packageTranslationMergeStrategy,
-			mode: compiler.options.mode
-		});
 		compiler.hooks.thisCompilation.tap(pluginName, (compilation) => {
 			// Discover package translations if enabled
 			if (this.options.autoIncludePackageTranslations) {
-				console.log(`[${pluginName}] Setting up package discovery hook`);
 				compilation.hooks.finishModules.tapAsync(
 					pluginName,
 					async (modules, callback) => {
@@ -119,10 +112,7 @@ export class TranslationHashingPlugin {
 
 	private async discoverPackageTranslations(modules: any, compiler: Compiler) {
 		const processedPackages = new Set<string>();
-		console.log(`[${pluginName}] Starting package discovery, checking modules...`);
-		const stats = await this.scanModules(modules, processedPackages, compiler);
-		console.log(`[${pluginName}] Scanned ${stats.moduleCount} modules, found ${stats.autoguruModuleCount} @autoguru modules`);
-		console.log(`[${pluginName}] Discovered ${this.discoveredPackages.size} packages with translations`);
+		await this.scanModules(modules, processedPackages, compiler);
 	}
 
 	private async scanModules(modules: any, processedPackages: Set<string>, compiler: Compiler) {
@@ -170,7 +160,6 @@ export class TranslationHashingPlugin {
 
 		for (const pkg of knownPackages) {
 			if (packageDir.includes(pkg.dir) && !processedPackages.has(pkg.name)) {
-				console.log(`[${pluginName}] 🔍 FOUND ${pkg.name} via packages path! Module resource: ${resourcePath}`);
 				processedPackages.add(pkg.name);
 				await this.checkPackageForTranslations(pkg.fullName, compiler);
 			}
@@ -190,7 +179,6 @@ export class TranslationHashingPlugin {
 		const packageName = `@autoguru/${match[1]}`;
 		processedPackages.add(match[1]);
 
-		console.log(`[${pluginName}] Found @autoguru package: ${packageName}`);
 		await this.checkPackageForTranslations(packageName, compiler);
 	}
 
@@ -217,10 +205,6 @@ export class TranslationHashingPlugin {
 			packageName.replace('@autoguru/', '')
 		);
 
-		console.log(`[${pluginName}] Checking package ${packageName}`);
-		console.log(`[${pluginName}]   Monorepo path: ${monorepoPackagePath}`);
-		console.log(`[${pluginName}]   Exists in monorepo: ${existsSync(monorepoPackagePath)}`);
-
 		// Check if it's a monorepo package
 		if (existsSync(monorepoPackagePath)) {
 			return {
@@ -231,8 +215,6 @@ export class TranslationHashingPlugin {
 
 		// Fall back to node_modules
 		const nodeModulesPath = path.join(compiler.context, 'node_modules', packageName);
-		console.log(`[${pluginName}]   Using node_modules path: ${nodeModulesPath}`);
-
 		return {
 			packagePath: nodeModulesPath,
 			packageJsonPath: path.join(nodeModulesPath, 'package.json')
@@ -246,7 +228,6 @@ export class TranslationHashingPlugin {
 			const localesPath = path.join(packagePath, i18nConfig.localesPath || 'locales');
 
 			if (existsSync(localesPath)) {
-				console.log(`[${pluginName}] Found translations in ${packageName}`);
 				this.discoveredPackages.add(packageName);
 				await this.loadPackageTranslations(packageName, localesPath, i18nConfig.namespaces);
 			}
@@ -256,7 +237,6 @@ export class TranslationHashingPlugin {
 		// Check for default locales directory even without explicit config
 		const defaultLocalesPath = path.join(packagePath, 'locales');
 		if (existsSync(defaultLocalesPath)) {
-			console.log(`[${pluginName}] Found translations in ${packageName} (no explicit config)`);
 			this.discoveredPackages.add(packageName);
 			await this.loadPackageTranslations(packageName, defaultLocalesPath);
 		}
@@ -355,7 +335,6 @@ export class TranslationHashingPlugin {
 		const publicLocalesPath = path.join(compiler.context, 'public/locales');
 
 		for (const [packageName, packageTranslations] of this.packageTranslations) {
-			console.log(`[${pluginName}] Copying translations from ${packageName}`);
 
 			for (const [locale, namespaces] of packageTranslations) {
 				const targetLocalePath = path.join(publicLocalesPath, locale);
@@ -371,7 +350,6 @@ export class TranslationHashingPlugin {
 
 					// Write the translation file
 					await fs.writeFile(targetFile, JSON.stringify(translations, null, 2));
-					console.log(`[${pluginName}] Copied ${packageName}/${locale}/${namespace}.json to ${prefixedNamespace}.json`);
 				}
 			}
 		}
@@ -582,7 +560,6 @@ export default translationManifests;
 				continue;
 			}
 
-			console.log(`[${pluginName}] Merging translations from ${packageName} for locale ${locale}`);
 			this.mergeNamespaceTranslations(
 				packageName,
 				packageLocaleTranslations,

@@ -28,15 +28,13 @@ new TranslationHashingPlugin({
 
   // New options for package translations
   autoIncludePackageTranslations: true, // Enable/disable feature (default: true)
-  packageTranslationMergeStrategy: 'merge' // 'merge' | 'override' | 'prefix'
+  packageTranslationMergeStrategy: 'prefix' // Only 'prefix' is supported
 })
 ```
 
-### Merge Strategies
+### Translation Strategy
 
-1. **`merge` (default)**: MFE translations take precedence over package translations
-2. **`override`**: Package translations override MFE translations for same namespaces
-3. **`prefix`**: Package namespaces are prefixed with `pkg-{packageName}-` to avoid collisions
+**`prefix`** (only supported strategy): Package namespaces are prefixed with `pkg-{packageName}-` to avoid collisions and ensure clear separation between MFE and package translations.
 
 ## Package Setup
 
@@ -190,10 +188,7 @@ export const manifest = {
 
 ### Namespace Conflicts
 
-If package and MFE have same namespace:
-- Use `prefix` merge strategy to add prefixes
-- Or rename one of the namespaces
-- Or use `override` if you want package to take precedence
+The `prefix` strategy is automatically applied to prevent namespace conflicts. All package translations are prefixed with `pkg-{packageName}-` to ensure clear separation from MFE translations.
 
 ### Build Performance
 
