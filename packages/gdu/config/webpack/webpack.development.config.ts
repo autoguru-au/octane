@@ -379,7 +379,7 @@ export const baseDevelopmentOptions = ({
 				localesDir: 'public/locales',
 				hashLength: 8,
 				autoIncludePackageTranslations: true,
-				packageTranslationMergeStrategy: 'merge',
+				packageTranslationMergeStrategy: 'prefix',
 			}),
 		].filter(Boolean),
 	};

@@ -470,7 +470,7 @@ export const baseOptions = ({
 				localesDir: 'public/locales',
 				hashLength: 8,
 				autoIncludePackageTranslations: true,
-				packageTranslationMergeStrategy: 'merge',
+				packageTranslationMergeStrategy: 'prefix',
 			}),
 			new SourceMapDevToolPlugin({
 				exclude: standalone
