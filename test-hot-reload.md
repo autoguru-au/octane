@@ -10,12 +10,15 @@
 ## Expected Behavior
 
 ### Before Changes
+
 - Package translations are loaded and displayed correctly
 - Browser developer tools show translation files are fetched
 
 ### After Making Translation Changes
+
 1. File watcher detects the change
-2. Console shows: `[TranslationHashingPlugin] Updated {locale}/{namespace} from {packageName}`
+2. Console shows:
+   `[TranslationHashingPlugin] Updated {locale}/{namespace} from {packageName}`
 3. Webpack invalidates and triggers HMR
 4. Browser fetches updated translation with timestamp query parameter
 5. UI updates with new translation text without page refresh
@@ -23,17 +26,20 @@
 ## Test Cases
 
 ### Test 1: Simple Text Change
+
 1. Open `packages/fleet-booking-profile/locales/en/businessRules.json`
 2. Change any translation text
 3. Save the file
 4. Check if the UI updates automatically
 
 ### Test 2: Add New Translation Key
+
 1. Add a new key to the translation file
 2. Save the file
 3. Check if the new key is available in the app
 
 ### Test 3: Multiple Locale Changes
+
 1. Change translations in both `en` and `de` locales
 2. Save both files
 3. Switch between locales in the app

@@ -1,15 +1,24 @@
 # Package Translations Hot Reload Implementation
 
 ## Overview
-This document describes the implementation of hot reload functionality for package translations in the GDU build system, which eliminates the need for server restarts when modifying translation files during development.
+
+This document describes the implementation of hot reload functionality for
+package translations in the GDU build system, which eliminates the need for
+server restarts when modifying translation files during development.
 
 ## Problem Statement
-Previously, any change to a package translation file required a full server restart to see the updates, making the translation migration process slow and inefficient. This was particularly painful when migrating multiple packages with hundreds of translation keys.
+
+Previously, any change to a package translation file required a full server
+restart to see the updates, making the translation migration process slow and
+inefficient. This was particularly painful when migrating multiple packages with
+hundreds of translation keys.
 
 ## Solution Architecture
 
 ### 1. File Watching System
-The `TranslationHashingPlugin` now includes a file watching mechanism that monitors package translation directories for changes:
+
+The `TranslationHashingPlugin` now includes a file watching mechanism that
+monitors package translation directories for changes:
 
 ```typescript
 // Watches for changes in package locales directories
@@ -28,7 +37,9 @@ private setupTranslationWatchers(compiler: Compiler, compilation: Compilation) {
 ```
 
 ### 2. Change Detection and Processing
+
 When a translation file changes:
+
 1. The watcher detects the change
 2. The plugin reads the updated file
 3. Updates the in-memory cache
@@ -36,24 +47,29 @@ When a translation file changes:
 5. Triggers webpack invalidation for HMR
 
 ### 3. Cache Busting Strategy
+
 To prevent browser caching issues in development:
 
 #### Server-side (TranslationHashingPlugin):
+
 - Maintains version timestamps for each translation
 - Copies updated files to public directory immediately
 - Triggers webpack watching invalidation
 
 #### Client-side (manifest-aware-backend):
+
 ```typescript
 // Add timestamp to bypass caching in development
 if (!isHashed && __DEV__) {
-  fullPath = `${fullPath}?t=${Date.now()}`;
+	fullPath = `${fullPath}?t=${Date.now()}`;
 }
 const cacheMode = isHashed ? 'default' : 'no-cache';
 ```
 
 ### 4. HMR Integration
+
 The implementation integrates with webpack's Hot Module Replacement:
+
 - Calls `compiler.watching.invalidate()` when translations change
 - This triggers webpack to rebuild affected modules
 - HMR updates the browser without full page reload
@@ -63,6 +79,7 @@ The implementation integrates with webpack's Hot Module Replacement:
 ### Modified Files
 
 #### 1. `packages/gdu/config/webpack/plugins/TranslationHashingPlugin.ts`
+
 - Added `FSWatcher` import for file watching
 - Added `packagePaths` Map to track package locations
 - Added `watchers` Map to manage file watchers
@@ -72,34 +89,43 @@ The implementation integrates with webpack's Hot Module Replacement:
 - Implemented `cleanupWatchers()` method
 
 #### 2. `packages/i18n/lib/manifest-aware-backend.ts` (MFE repo)
+
 - Enhanced `fetchWithRetry()` to add timestamp query parameters
 - Improved hash detection regex pattern
 - Set `cache: 'no-cache'` for non-hashed files
 
 ### Key Features
 
-1. **Automatic Discovery**: Discovers all packages with translations automatically
-2. **Multiple Watch Paths**: Monitors both `locales/` and `src/locales/` directories
-3. **Namespace Prefixing**: Maintains the `pkg-` prefix strategy for package translations
+1. **Automatic Discovery**: Discovers all packages with translations
+   automatically
+2. **Multiple Watch Paths**: Monitors both `locales/` and `src/locales/`
+   directories
+3. **Namespace Prefixing**: Maintains the `pkg-` prefix strategy for package
+   translations
 4. **Memory Efficiency**: Cleans up watchers on shutdown
 5. **Error Handling**: Gracefully handles JSON parsing errors and missing files
 
 ## Usage
 
 ### Development Mode
+
 Hot reload is automatically enabled in development mode when:
+
 1. Running webpack dev server with `mode: 'development'`
 2. Package translations are discovered by the plugin
 3. HMR is enabled in webpack config
 
 ### Making Translation Changes
+
 1. Edit any translation file in a package's `locales/` directory
 2. Save the file
 3. Changes appear in the browser within 2-3 seconds
 4. No server restart required
 
 ### Console Output
+
 When a translation updates, you'll see:
+
 ```
 [TranslationHashingPlugin] Updated en/pkg-fleet-booking-profile from @autoguru/fleet-booking-profile
 ```
@@ -121,7 +147,8 @@ When a translation updates, you'll see:
 ## Future Improvements
 
 1. **Granular HMR**: Update only affected components instead of full module
-2. **WebSocket Notifications**: Direct browser notification of translation updates
+2. **WebSocket Notifications**: Direct browser notification of translation
+   updates
 3. **Translation Validation**: Validate JSON structure before applying changes
 4. **Differential Updates**: Send only changed keys instead of full namespace
 
@@ -130,20 +157,23 @@ When a translation updates, you'll see:
 ### Hot Reload Not Working
 
 1. **Check File Watchers**
-   - Verify console shows watcher setup
-   - Check OS file watcher limits
+
+    - Verify console shows watcher setup
+    - Check OS file watcher limits
 
 2. **Check Cache Headers**
-   - Network tab should show `cache-control: no-cache` for dev translations
-   - URLs should have timestamp query parameter
+
+    - Network tab should show `cache-control: no-cache` for dev translations
+    - URLs should have timestamp query parameter
 
 3. **Check HMR Configuration**
-   - Ensure webpack dev server has `hot: true`
-   - Verify HMR client is loaded
+
+    - Ensure webpack dev server has `hot: true`
+    - Verify HMR client is loaded
 
 4. **Check Development Mode**
-   - Verify `__DEV__` is true
-   - Ensure webpack mode is 'development'
+    - Verify `__DEV__` is true
+    - Ensure webpack mode is 'development'
 
 ## Migration Guide
 
@@ -156,4 +186,5 @@ For developers migrating package translations:
 5. Test multiple locales by switching language
 6. Commit changes when satisfied
 
-This implementation significantly improves the developer experience when working with package translations, reducing migration time from hours to minutes.
+This implementation significantly improves the developer experience when working
+with package translations, reducing migration time from hours to minutes.

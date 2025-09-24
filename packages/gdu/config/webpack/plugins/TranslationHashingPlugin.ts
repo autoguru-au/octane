@@ -1059,12 +1059,19 @@ export default translationManifests;
 								// Set new debounced timer
 								const timer = setTimeout(async () => {
 									this.changeDebounceTimers.delete(changeKey);
-									await this.handleTranslationChange(
-										compiler,
-										compilation,
-										watchPath,
-										fileStr,
-									);
+									try {
+										await this.handleTranslationChange(
+											compiler,
+											compilation,
+											watchPath,
+											fileStr,
+										);
+									} catch (error) {
+										console.error(
+											`[${pluginName}] Error handling translation change:`,
+											error,
+										);
+									}
 								}, DEBOUNCE_MS);
 
 								this.changeDebounceTimers.set(changeKey, timer);
@@ -1207,9 +1214,16 @@ export default translationManifests;
 	 * Clean up all file watchers and timers
 	 */
 	private cleanupWatchers() {
-		// Close all file watchers
-		for (const [, watcher] of this.watchers) {
-			watcher.close();
+		// Close all file watchers with error handling
+		for (const [path, watcher] of this.watchers) {
+			try {
+				watcher.close();
+			} catch (error) {
+				console.error(
+					`[${pluginName}] Error closing watcher for ${path}:`,
+					error,
+				);
+			}
 		}
 		this.watchers.clear();
 
