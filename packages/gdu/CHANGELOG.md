@@ -1,5 +1,11 @@
 # gdu
 
+## 13.6.1
+
+### Patch Changes
+
+- a81773c: Fixes translations not hot reloading when changed in shared packages
+
 ## 13.6.0
 
 ### Minor Changes
