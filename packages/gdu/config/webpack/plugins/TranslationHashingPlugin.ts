@@ -1,5 +1,5 @@
 import crypto from 'crypto';
-import { promises as fs, existsSync } from 'fs';
+import { promises as fs, existsSync, watch, FSWatcher } from 'fs';
 import path from 'path';
 
 import { Compiler, Compilation, sources } from 'webpack';
@@ -36,6 +36,8 @@ interface PluginOptions {
 }
 
 const pluginName = 'TranslationHashingPlugin';
+const MAX_WATCHERS = 100; // Prevent resource exhaustion
+const DEBOUNCE_MS = 300; // Debounce rapid file changes
 
 export class TranslationHashingPlugin {
 	private options: Required<PluginOptions>;
@@ -43,6 +45,11 @@ export class TranslationHashingPlugin {
 	private manifestModules: Map<string, ManifestModule> = new Map();
 	private packageTranslations: Map<string, Map<string, any>> = new Map();
 	private discoveredPackages: Set<string> = new Set();
+	private packagePaths: Map<string, string> = new Map();
+	private watchers: Map<string, FSWatcher> = new Map();
+	private translationVersions: Map<string, number> = new Map();
+	private changeDebounceTimers: Map<string, NodeJS.Timeout> = new Map();
+	private maxTranslationVersions = 1000; // LRU cache size limit
 
 	constructor(options: PluginOptions = {}) {
 		this.options = {
@@ -59,6 +66,22 @@ export class TranslationHashingPlugin {
 
 	apply(compiler: Compiler) {
 		const isDevelopment = compiler.options.mode === 'development';
+
+		// Clean up watchers on shutdown
+		compiler.hooks.shutdown.tap(pluginName, () => {
+			this.cleanupWatchers();
+		});
+
+		// Clean up watchers on compilation failure
+		compiler.hooks.failed.tap(pluginName, () => {
+			this.cleanupWatchers();
+		});
+
+		// Clean up watchers on watch run to handle restarts
+		compiler.hooks.watchClose.tap(pluginName, () => {
+			this.cleanupWatchers();
+		});
+
 		compiler.hooks.thisCompilation.tap(pluginName, (compilation) => {
 			// Discover package translations if enabled
 			if (this.options.autoIncludePackageTranslations) {
@@ -71,10 +94,14 @@ export class TranslationHashingPlugin {
 								compiler,
 							);
 
-							// In development mode, copy package translations to public directory
+							// In development mode, copy package translations to public directory and set up watchers
 							if (isDevelopment) {
 								await this.copyPackageTranslationsToDev(
 									compiler,
+								);
+								this.setupTranslationWatchers(
+									compiler,
+									compilation,
 								);
 							}
 
@@ -271,6 +298,7 @@ export class TranslationHashingPlugin {
 
 			if (existsSync(localesPath)) {
 				this.discoveredPackages.add(packageName);
+				this.packagePaths.set(packageName, packagePath);
 				await this.loadPackageTranslations(
 					packageName,
 					localesPath,
@@ -284,6 +312,7 @@ export class TranslationHashingPlugin {
 		const defaultLocalesPath = path.join(packagePath, 'locales');
 		if (existsSync(defaultLocalesPath)) {
 			this.discoveredPackages.add(packageName);
+			this.packagePaths.set(packageName, packagePath);
 			await this.loadPackageTranslations(packageName, defaultLocalesPath);
 		}
 	}
@@ -952,5 +981,256 @@ export default translationManifests;
 				);
 			}
 		}
+	}
+
+	/**
+	 * Set up file watchers for package translation files in development mode
+	 */
+	private setupTranslationWatchers(
+		compiler: Compiler,
+		compilation: Compilation,
+	) {
+		// Clean up existing watchers first
+		this.cleanupWatchers();
+
+		for (const [, packagePath] of this.packagePaths) {
+			if (!packagePath) continue;
+
+			// Check watcher limit to prevent resource exhaustion
+			if (this.watchers.size >= MAX_WATCHERS) {
+				console.warn(
+					`[${pluginName}] Maximum watchers (${MAX_WATCHERS}) reached, skipping additional watches`,
+				);
+				return;
+			}
+
+			const watchPaths = [];
+
+			// Watch the package's locales directory
+			const localesPath = path.join(packagePath, 'locales');
+			if (existsSync(localesPath)) {
+				watchPaths.push(localesPath);
+			}
+
+			// Also watch the package's src/locales if it exists
+			const srcLocalesPath = path.join(packagePath, 'src', 'locales');
+			if (existsSync(srcLocalesPath)) {
+				watchPaths.push(srcLocalesPath);
+			}
+
+			watchPaths.forEach((watchPath) => {
+				if (
+					!this.watchers.has(watchPath) &&
+					this.watchers.size < MAX_WATCHERS
+				) {
+					// Platform-specific watch options
+					const watchOptions: any = { recursive: true };
+
+					// Add platform-specific options for better reliability
+					if (process.platform === 'darwin') {
+						// macOS specific options
+						watchOptions.persistent = true;
+					} else if (process.platform === 'win32') {
+						// Windows specific options
+						watchOptions.persistent = true;
+						// Windows may need longer delay for file system events
+						watchOptions.interval = 100;
+					}
+
+					const watcher = watch(
+						watchPath,
+						watchOptions,
+						async (_eventType, filename) => {
+							// Handle both string and Buffer types for filename
+							const fileStr = filename ? filename.toString() : '';
+							if (fileStr && fileStr.endsWith('.json')) {
+								// Debounce rapid file changes
+								const changeKey = `${watchPath}/${fileStr}`;
+
+								// Clear existing timer for this file
+								if (this.changeDebounceTimers.has(changeKey)) {
+									clearTimeout(
+										this.changeDebounceTimers.get(
+											changeKey,
+										)!,
+									);
+								}
+
+								// Set new debounced timer
+								const timer = setTimeout(async () => {
+									this.changeDebounceTimers.delete(changeKey);
+									try {
+										await this.handleTranslationChange(
+											compiler,
+											compilation,
+											watchPath,
+											fileStr,
+										);
+									} catch (error) {
+										console.error(
+											`[${pluginName}] Error handling translation change:`,
+											error,
+										);
+									}
+								}, DEBOUNCE_MS);
+
+								this.changeDebounceTimers.set(changeKey, timer);
+							}
+						},
+					);
+					this.watchers.set(watchPath, watcher);
+				}
+			});
+		}
+	}
+
+	/**
+	 * Handle translation file changes and trigger HMR update
+	 */
+	private async handleTranslationChange(
+		compiler: Compiler,
+		_compilation: Compilation,
+		watchPath: string,
+		filename: string,
+	) {
+		// Path validation for security
+		if (filename.includes('..') || filename.includes('~')) {
+			console.warn(
+				`[${pluginName}] Suspicious filename detected, ignoring: ${filename}`,
+			);
+			return;
+		}
+
+		const filePath = path.join(watchPath, filename);
+		const normalizedPath = path.normalize(filePath);
+
+		// Ensure the path is still within the watch directory
+		if (!normalizedPath.startsWith(path.normalize(watchPath))) {
+			console.warn(
+				`[${pluginName}] Path traversal attempt detected, ignoring: ${filename}`,
+			);
+			return;
+		}
+
+		// Extract locale and namespace from the file path
+		const match = normalizedPath.match(
+			/locales[/\\]([^/\\]+)[/\\]([^/\\]+)\.json$/,
+		);
+		if (!match) return;
+
+		const [, locale, namespace] = match;
+
+		// Find which package this belongs to
+		let packageName = '';
+		for (const [pkgName, pkgPath] of this.packagePaths) {
+			if (filePath.startsWith(pkgPath)) {
+				packageName = pkgName;
+				break;
+			}
+		}
+
+		if (!packageName) return;
+
+		const effectiveNamespace = this.getEffectiveNamespace(
+			namespace,
+			packageName,
+		);
+
+		try {
+			// Check file size to prevent memory exhaustion
+			const stats = await fs.stat(filePath);
+			const maxFileSize = 10 * 1024 * 1024; // 10MB limit for translation files
+
+			if (stats.size > maxFileSize) {
+				console.warn(
+					`[${pluginName}] Translation file too large (${stats.size} bytes), skipping: ${filePath}`,
+				);
+				return;
+			}
+
+			// Read the updated translation file
+			const content = await fs.readFile(filePath, 'utf8');
+			const translations = JSON.parse(content);
+
+			// Update our in-memory cache
+			if (!this.packageTranslations.has(packageName)) {
+				this.packageTranslations.set(packageName, new Map());
+			}
+			const packageTranslations =
+				this.packageTranslations.get(packageName)!;
+
+			if (!packageTranslations.has(locale)) {
+				packageTranslations.set(locale, {});
+			}
+			packageTranslations.get(locale)![namespace] = translations;
+
+			// Copy the updated file to the public directory
+			const publicLocalesPath = path.join(
+				compiler.context,
+				'public/locales',
+			);
+			const targetLocalePath = path.join(publicLocalesPath, locale);
+			await fs.mkdir(targetLocalePath, { recursive: true });
+
+			// Add a timestamp for cache busting with LRU cache management
+			const version = Date.now();
+			const versionKey = `${locale}/${effectiveNamespace}`;
+
+			// Implement simple LRU cache for translation versions
+			if (this.translationVersions.size >= this.maxTranslationVersions) {
+				// Remove oldest entry (first in the Map)
+				const firstKey = this.translationVersions.keys().next().value;
+				this.translationVersions.delete(firstKey);
+			}
+
+			this.translationVersions.set(versionKey, version);
+
+			const targetFile = path.join(
+				targetLocalePath,
+				`${effectiveNamespace}.json`,
+			);
+			await fs.writeFile(
+				targetFile,
+				JSON.stringify(translations, null, 2),
+			);
+
+			// Invalidate webpack's watching to trigger HMR
+			if (compiler.watching) {
+				compiler.watching.invalidate();
+			}
+
+			console.log(
+				`[TranslationHashingPlugin] Updated ${locale}/${effectiveNamespace} from ${packageName}`,
+			);
+		} catch (error) {
+			console.error(
+				`[TranslationHashingPlugin] Error handling translation change:`,
+				error,
+			);
+		}
+	}
+
+	/**
+	 * Clean up all file watchers and timers
+	 */
+	private cleanupWatchers() {
+		// Close all file watchers with error handling
+		for (const [path, watcher] of this.watchers) {
+			try {
+				watcher.close();
+			} catch (error) {
+				console.error(
+					`[${pluginName}] Error closing watcher for ${path}:`,
+					error,
+				);
+			}
+		}
+		this.watchers.clear();
+
+		// Clear all debounce timers
+		for (const [, timer] of this.changeDebounceTimers) {
+			clearTimeout(timer);
+		}
+		this.changeDebounceTimers.clear();
 	}
 }
