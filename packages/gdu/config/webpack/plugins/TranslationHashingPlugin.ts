@@ -36,6 +36,8 @@ interface PluginOptions {
 }
 
 const pluginName = 'TranslationHashingPlugin';
+const MAX_WATCHERS = 100; // Prevent resource exhaustion
+const DEBOUNCE_MS = 300; // Debounce rapid file changes
 
 export class TranslationHashingPlugin {
 	private options: Required<PluginOptions>;
@@ -46,6 +48,8 @@ export class TranslationHashingPlugin {
 	private packagePaths: Map<string, string> = new Map();
 	private watchers: Map<string, FSWatcher> = new Map();
 	private translationVersions: Map<string, number> = new Map();
+	private changeDebounceTimers: Map<string, NodeJS.Timeout> = new Map();
+	private maxTranslationVersions = 1000; // LRU cache size limit
 
 	constructor(options: PluginOptions = {}) {
 		this.options = {
@@ -65,6 +69,16 @@ export class TranslationHashingPlugin {
 
 		// Clean up watchers on shutdown
 		compiler.hooks.shutdown.tap(pluginName, () => {
+			this.cleanupWatchers();
+		});
+
+		// Clean up watchers on compilation failure
+		compiler.hooks.failed.tap(pluginName, () => {
+			this.cleanupWatchers();
+		});
+
+		// Clean up watchers on watch run to handle restarts
+		compiler.hooks.watchClose.tap(pluginName, () => {
 			this.cleanupWatchers();
 		});
 
@@ -976,6 +990,12 @@ export default translationManifests;
 		for (const [, packagePath] of this.packagePaths) {
 			if (!packagePath) continue;
 
+			// Check watcher limit to prevent resource exhaustion
+			if (this.watchers.size >= MAX_WATCHERS) {
+				console.warn(`[${pluginName}] Maximum watchers (${MAX_WATCHERS}) reached, skipping additional watches`);
+				return;
+			}
+
 			const watchPaths = [];
 
 			// Watch the package's locales directory
@@ -991,18 +1011,48 @@ export default translationManifests;
 			}
 
 			watchPaths.forEach(watchPath => {
-				if (!this.watchers.has(watchPath)) {
+				if (!this.watchers.has(watchPath) && this.watchers.size < MAX_WATCHERS) {
+					// Platform-specific watch options
+					const watchOptions: any = { recursive: true };
+
+					// Add platform-specific options for better reliability
+					if (process.platform === 'darwin') {
+						// macOS specific options
+						watchOptions.persistent = true;
+					} else if (process.platform === 'win32') {
+						// Windows specific options
+						watchOptions.persistent = true;
+						// Windows may need longer delay for file system events
+						watchOptions.interval = 100;
+					}
+
 					const watcher = watch(
 						watchPath,
-						{ recursive: true },
+						watchOptions,
 						async (_eventType, filename) => {
-							if (filename && filename.endsWith('.json')) {
-								await this.handleTranslationChange(
-									compiler,
-									compilation,
-									watchPath,
-									filename
-								);
+							// Handle both string and Buffer types for filename
+							const fileStr = filename ? filename.toString() : '';
+							if (fileStr && fileStr.endsWith('.json')) {
+								// Debounce rapid file changes
+								const changeKey = `${watchPath}/${fileStr}`;
+
+								// Clear existing timer for this file
+								if (this.changeDebounceTimers.has(changeKey)) {
+									clearTimeout(this.changeDebounceTimers.get(changeKey)!);
+								}
+
+								// Set new debounced timer
+								const timer = setTimeout(async () => {
+									this.changeDebounceTimers.delete(changeKey);
+									await this.handleTranslationChange(
+										compiler,
+										compilation,
+										watchPath,
+										fileStr
+									);
+								}, DEBOUNCE_MS);
+
+								this.changeDebounceTimers.set(changeKey, timer);
 							}
 						}
 					);
@@ -1021,12 +1071,25 @@ export default translationManifests;
 		watchPath: string,
 		filename: string
 	) {
+		// Path validation for security
+		if (filename.includes('..') || filename.includes('~')) {
+			console.warn(`[${pluginName}] Suspicious filename detected, ignoring: ${filename}`);
+			return;
+		}
+
 		const filePath = path.join(watchPath, filename);
-		
+		const normalizedPath = path.normalize(filePath);
+
+		// Ensure the path is still within the watch directory
+		if (!normalizedPath.startsWith(path.normalize(watchPath))) {
+			console.warn(`[${pluginName}] Path traversal attempt detected, ignoring: ${filename}`);
+			return;
+		}
+
 		// Extract locale and namespace from the file path
-		const match = filePath.match(/locales[/\\]([^/\\]+)[/\\]([^/\\]+)\.json$/);
+		const match = normalizedPath.match(/locales[/\\]([^/\\]+)[/\\]([^/\\]+)\.json$/);
 		if (!match) return;
-		
+
 		const [, locale, namespace] = match;
 		
 		// Find which package this belongs to
@@ -1043,6 +1106,15 @@ export default translationManifests;
 		const effectiveNamespace = this.getEffectiveNamespace(namespace, packageName);
 		
 		try {
+			// Check file size to prevent memory exhaustion
+			const stats = await fs.stat(filePath);
+			const maxFileSize = 10 * 1024 * 1024; // 10MB limit for translation files
+
+			if (stats.size > maxFileSize) {
+				console.warn(`[${pluginName}] Translation file too large (${stats.size} bytes), skipping: ${filePath}`);
+				return;
+			}
+
 			// Read the updated translation file
 			const content = await fs.readFile(filePath, 'utf-8');
 			const translations = JSON.parse(content);
@@ -1063,9 +1135,18 @@ export default translationManifests;
 			const targetLocalePath = path.join(publicLocalesPath, locale);
 			await fs.mkdir(targetLocalePath, { recursive: true });
 			
-			// Add a timestamp for cache busting
+			// Add a timestamp for cache busting with LRU cache management
 			const version = Date.now();
-			this.translationVersions.set(`${locale}/${effectiveNamespace}`, version);
+			const versionKey = `${locale}/${effectiveNamespace}`;
+
+			// Implement simple LRU cache for translation versions
+			if (this.translationVersions.size >= this.maxTranslationVersions) {
+				// Remove oldest entry (first in the Map)
+				const firstKey = this.translationVersions.keys().next().value;
+				this.translationVersions.delete(firstKey);
+			}
+
+			this.translationVersions.set(versionKey, version);
 			
 			const targetFile = path.join(targetLocalePath, `${effectiveNamespace}.json`);
 			await fs.writeFile(targetFile, JSON.stringify(translations, null, 2));
@@ -1082,12 +1163,19 @@ export default translationManifests;
 	}
 
 	/**
-	 * Clean up all file watchers
+	 * Clean up all file watchers and timers
 	 */
 	private cleanupWatchers() {
+		// Close all file watchers
 		for (const [, watcher] of this.watchers) {
 			watcher.close();
 		}
 		this.watchers.clear();
+
+		// Clear all debounce timers
+		for (const [, timer] of this.changeDebounceTimers) {
+			clearTimeout(timer);
+		}
+		this.changeDebounceTimers.clear();
 	}
 }
