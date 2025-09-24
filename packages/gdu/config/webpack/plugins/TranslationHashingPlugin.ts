@@ -99,7 +99,10 @@ export class TranslationHashingPlugin {
 								await this.copyPackageTranslationsToDev(
 									compiler,
 								);
-								this.setupTranslationWatchers(compiler, compilation);
+								this.setupTranslationWatchers(
+									compiler,
+									compilation,
+								);
 							}
 
 							callback();
@@ -983,7 +986,10 @@ export default translationManifests;
 	/**
 	 * Set up file watchers for package translation files in development mode
 	 */
-	private setupTranslationWatchers(compiler: Compiler, compilation: Compilation) {
+	private setupTranslationWatchers(
+		compiler: Compiler,
+		compilation: Compilation,
+	) {
 		// Clean up existing watchers first
 		this.cleanupWatchers();
 
@@ -992,7 +998,9 @@ export default translationManifests;
 
 			// Check watcher limit to prevent resource exhaustion
 			if (this.watchers.size >= MAX_WATCHERS) {
-				console.warn(`[${pluginName}] Maximum watchers (${MAX_WATCHERS}) reached, skipping additional watches`);
+				console.warn(
+					`[${pluginName}] Maximum watchers (${MAX_WATCHERS}) reached, skipping additional watches`,
+				);
 				return;
 			}
 
@@ -1010,8 +1018,11 @@ export default translationManifests;
 				watchPaths.push(srcLocalesPath);
 			}
 
-			watchPaths.forEach(watchPath => {
-				if (!this.watchers.has(watchPath) && this.watchers.size < MAX_WATCHERS) {
+			watchPaths.forEach((watchPath) => {
+				if (
+					!this.watchers.has(watchPath) &&
+					this.watchers.size < MAX_WATCHERS
+				) {
 					// Platform-specific watch options
 					const watchOptions: any = { recursive: true };
 
@@ -1038,7 +1049,11 @@ export default translationManifests;
 
 								// Clear existing timer for this file
 								if (this.changeDebounceTimers.has(changeKey)) {
-									clearTimeout(this.changeDebounceTimers.get(changeKey)!);
+									clearTimeout(
+										this.changeDebounceTimers.get(
+											changeKey,
+										)!,
+									);
 								}
 
 								// Set new debounced timer
@@ -1048,13 +1063,13 @@ export default translationManifests;
 										compiler,
 										compilation,
 										watchPath,
-										fileStr
+										fileStr,
 									);
 								}, DEBOUNCE_MS);
 
 								this.changeDebounceTimers.set(changeKey, timer);
 							}
-						}
+						},
 					);
 					this.watchers.set(watchPath, watcher);
 				}
@@ -1069,11 +1084,13 @@ export default translationManifests;
 		compiler: Compiler,
 		_compilation: Compilation,
 		watchPath: string,
-		filename: string
+		filename: string,
 	) {
 		// Path validation for security
 		if (filename.includes('..') || filename.includes('~')) {
-			console.warn(`[${pluginName}] Suspicious filename detected, ignoring: ${filename}`);
+			console.warn(
+				`[${pluginName}] Suspicious filename detected, ignoring: ${filename}`,
+			);
 			return;
 		}
 
@@ -1082,16 +1099,20 @@ export default translationManifests;
 
 		// Ensure the path is still within the watch directory
 		if (!normalizedPath.startsWith(path.normalize(watchPath))) {
-			console.warn(`[${pluginName}] Path traversal attempt detected, ignoring: ${filename}`);
+			console.warn(
+				`[${pluginName}] Path traversal attempt detected, ignoring: ${filename}`,
+			);
 			return;
 		}
 
 		// Extract locale and namespace from the file path
-		const match = normalizedPath.match(/locales[/\\]([^/\\]+)[/\\]([^/\\]+)\.json$/);
+		const match = normalizedPath.match(
+			/locales[/\\]([^/\\]+)[/\\]([^/\\]+)\.json$/,
+		);
 		if (!match) return;
 
 		const [, locale, namespace] = match;
-		
+
 		// Find which package this belongs to
 		let packageName = '';
 		for (const [pkgName, pkgPath] of this.packagePaths) {
@@ -1100,41 +1121,50 @@ export default translationManifests;
 				break;
 			}
 		}
-		
+
 		if (!packageName) return;
-		
-		const effectiveNamespace = this.getEffectiveNamespace(namespace, packageName);
-		
+
+		const effectiveNamespace = this.getEffectiveNamespace(
+			namespace,
+			packageName,
+		);
+
 		try {
 			// Check file size to prevent memory exhaustion
 			const stats = await fs.stat(filePath);
 			const maxFileSize = 10 * 1024 * 1024; // 10MB limit for translation files
 
 			if (stats.size > maxFileSize) {
-				console.warn(`[${pluginName}] Translation file too large (${stats.size} bytes), skipping: ${filePath}`);
+				console.warn(
+					`[${pluginName}] Translation file too large (${stats.size} bytes), skipping: ${filePath}`,
+				);
 				return;
 			}
 
 			// Read the updated translation file
-			const content = await fs.readFile(filePath, 'utf-8');
+			const content = await fs.readFile(filePath, 'utf8');
 			const translations = JSON.parse(content);
-			
+
 			// Update our in-memory cache
 			if (!this.packageTranslations.has(packageName)) {
 				this.packageTranslations.set(packageName, new Map());
 			}
-			const packageTranslations = this.packageTranslations.get(packageName)!;
-			
+			const packageTranslations =
+				this.packageTranslations.get(packageName)!;
+
 			if (!packageTranslations.has(locale)) {
 				packageTranslations.set(locale, {});
 			}
 			packageTranslations.get(locale)![namespace] = translations;
-			
+
 			// Copy the updated file to the public directory
-			const publicLocalesPath = path.join(compiler.context, 'public/locales');
+			const publicLocalesPath = path.join(
+				compiler.context,
+				'public/locales',
+			);
 			const targetLocalePath = path.join(publicLocalesPath, locale);
 			await fs.mkdir(targetLocalePath, { recursive: true });
-			
+
 			// Add a timestamp for cache busting with LRU cache management
 			const version = Date.now();
 			const versionKey = `${locale}/${effectiveNamespace}`;
@@ -1147,18 +1177,29 @@ export default translationManifests;
 			}
 
 			this.translationVersions.set(versionKey, version);
-			
-			const targetFile = path.join(targetLocalePath, `${effectiveNamespace}.json`);
-			await fs.writeFile(targetFile, JSON.stringify(translations, null, 2));
-			
+
+			const targetFile = path.join(
+				targetLocalePath,
+				`${effectiveNamespace}.json`,
+			);
+			await fs.writeFile(
+				targetFile,
+				JSON.stringify(translations, null, 2),
+			);
+
 			// Invalidate webpack's watching to trigger HMR
 			if (compiler.watching) {
 				compiler.watching.invalidate();
 			}
-			
-			console.log(`[TranslationHashingPlugin] Updated ${locale}/${effectiveNamespace} from ${packageName}`);
+
+			console.log(
+				`[TranslationHashingPlugin] Updated ${locale}/${effectiveNamespace} from ${packageName}`,
+			);
 		} catch (error) {
-			console.error(`[TranslationHashingPlugin] Error handling translation change:`, error);
+			console.error(
+				`[TranslationHashingPlugin] Error handling translation change:`,
+				error,
+			);
 		}
 	}
 
