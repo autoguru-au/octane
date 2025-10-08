@@ -2,4 +2,4 @@
 'gdu': minor
 ---
 
-Upgrade react to 19.2 and react compiler to 1.0.0
+Upgrade React Compiler to 1.0.0
