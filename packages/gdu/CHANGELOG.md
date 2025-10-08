@@ -1,5 +1,11 @@
 # gdu
 
+## 13.7.0
+
+### Minor Changes
+
+- 471fae6: Upgrade React Compiler to 1.0.0
+
 ## 13.6.1
 
 ### Patch Changes
