@@ -7,6 +7,7 @@
 - 6d19dfe: Fix React Compiler production builds and upgrade Relay to v20.1.1
 
     **React Compiler Fix:**
+
     - Remove duplicate React Compiler processing that caused `useMemoCache`
       errors
     - Create custom webpack loader using official babel-plugin-react-compiler
@@ -16,6 +17,7 @@
     - Reduce bundle size by eliminating duplicate compilation passes
 
     **Relay Upgrade:**
+
     - Upgrade babel-plugin-relay to v20.1.1 (from v18.2.0)
     - Update for compatibility with React 19.2.0
     - Includes improvements to ESM module generation

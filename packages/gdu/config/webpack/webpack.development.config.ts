@@ -5,10 +5,6 @@ import browsers from 'browserslist-config-autoguru';
 import Dotenv from 'dotenv-webpack';
 import envCI from 'env-ci';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import {
-	defineReactCompilerLoaderOption,
-	reactCompilerLoader,
-} from 'react-compiler-webpack';
 import { TreatPlugin } from 'treat/webpack-plugin';
 import { TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
 import {
@@ -32,6 +28,14 @@ import { getBuildEnvs, getConfigsDirs } from '../../utils/configs';
 import { getHooks } from '../../utils/hooks';
 
 import { TranslationHashingPlugin } from './plugins/TranslationHashingPlugin';
+
+// React Compiler configuration
+const ReactCompilerConfig = {
+	target: '19',
+	sources: (filename: string) => {
+		return filename.includes('apps') || filename.includes('packages');
+	},
+};
 
 const { branch = 'null', commit = 'null' } = envCI();
 
@@ -218,8 +222,10 @@ export const baseDevelopmentOptions = ({
 					exclude: /node_modules/,
 					use: [
 						{
-							loader: reactCompilerLoader,
-							options: defineReactCompilerLoaderOption({}),
+							loader: require.resolve(
+								'./loaders/react-compiler-loader',
+							),
+							options: ReactCompilerConfig,
 						},
 					],
 				},
