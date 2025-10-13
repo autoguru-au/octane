@@ -6009,12 +6009,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-plugin-react-compiler@npm:^19.0.0-beta-30d8a17-20250209":
-  version: 19.0.0-beta-ebf51a3-20250411
-  resolution: "babel-plugin-react-compiler@npm:19.0.0-beta-ebf51a3-20250411"
+"babel-plugin-react-compiler@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "babel-plugin-react-compiler@npm:1.0.0"
   dependencies:
     "@babel/types": ^7.26.0
-  checksum: 3a5d60ee22847ecf6428221af1e87fb2780f0acb1e1890d45f73318ce9340abe3b2a421c930c74125bf92604cc367d4f3b5f7afdb347aa8ee122045340760f7c
+  checksum: 4c5c6c209a27477b7af8ce2361f3e5ddbc1ef59ebac5fc9d85cf91c3921752c19ac814bb7f98e7f55084db3cb585fc966aa05191018fa70e4444f2f4a980fff2
   languageName: node
   linkType: hard
 
@@ -10036,7 +10036,7 @@ __metadata:
     "@vanilla-extract/webpack-plugin": ^2.2.0
     babel-loader: ^9.1.3
     babel-plugin-macros: ^3.1.0
-    babel-plugin-react-compiler: ^19.0.0-beta-30d8a17-20250209
+    babel-plugin-react-compiler: ^1.0.0
     babel-plugin-relay: ^16.2.0
     browserslist-config-autoguru: "*"
     clean-webpack-plugin: ^4.0.0-alpha.0
