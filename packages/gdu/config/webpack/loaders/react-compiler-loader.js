@@ -8,7 +8,7 @@ const defaultBabelParsePlugins = ['jsx', 'typescript'];
  * Based on react-compiler-webpack but using official babel-plugin-react-compiler
  * Includes critical fix for React issue #29120 (jsescOption: { minimal: true })
  */
-async function reactCompilerLoader(input, _inputSourceMap) {
+async function reactCompilerLoader(input) {
 	const callback = this.async();
 
 	try {

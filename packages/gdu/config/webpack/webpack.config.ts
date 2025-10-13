@@ -290,7 +290,9 @@ export const baseOptions = ({
 					exclude: /node_modules/,
 					use: [
 						{
-							loader: require.resolve('./loaders/react-compiler-loader'),
+							loader: require.resolve(
+								'./loaders/react-compiler-loader',
+							),
 							options: ReactCompilerConfig,
 						},
 					],
