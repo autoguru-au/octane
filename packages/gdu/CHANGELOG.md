@@ -1,5 +1,11 @@
 # gdu
 
+## 13.8.0
+
+### Minor Changes
+
+- c233d8b: Reverts react compiler upgrade
+
 ## 13.7.0
 
 ### Minor Changes
