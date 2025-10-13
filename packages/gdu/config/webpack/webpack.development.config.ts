@@ -5,6 +5,10 @@ import browsers from 'browserslist-config-autoguru';
 import Dotenv from 'dotenv-webpack';
 import envCI from 'env-ci';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import {
+	defineReactCompilerLoaderOption,
+	reactCompilerLoader,
+} from 'react-compiler-webpack';
 import { TreatPlugin } from 'treat/webpack-plugin';
 import { TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
 import {
@@ -209,6 +213,16 @@ export const baseDevelopmentOptions = ({
 		module: {
 			strictExportPresence: true,
 			rules: [
+				{
+					test: /\.[cm]?[jt]sx?$/i,
+					exclude: /node_modules/,
+					use: [
+						{
+							loader: reactCompilerLoader,
+							options: defineReactCompilerLoaderOption({}),
+						},
+					],
+				},
 				{
 					test: /\.css$/i,
 					oneOf: [
