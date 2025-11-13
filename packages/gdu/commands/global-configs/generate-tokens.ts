@@ -23,7 +23,9 @@ export default async () => {
 		{} as Record<keyof ProcessEnvs, string | undefined>,
 	);
 
-	const tokensContent: string = `const TOKENS = ${JSON.stringify(
+	const tokensContent: string = `/// <reference types="node" />
+
+const TOKENS = ${JSON.stringify(
 		TOKENS,
 		null,
 		2,
