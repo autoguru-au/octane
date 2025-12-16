@@ -11,12 +11,13 @@ const vanillaExtractRefreshStubLoader: LoaderDefinitionFunction = function (
 	source: string | Buffer,
 ) {
 	this.cacheable?.();
-	const sourceString =
-		typeof source === 'string'
-			? source
-			: Buffer.isBuffer(source)
-				? source.toString('utf-8')
-				: '';
+
+	let sourceString = '';
+	if (typeof source === 'string') {
+		sourceString = source;
+	} else if (Buffer.isBuffer(source)) {
+		sourceString = source.toString('utf8');
+	}
 
 	const refreshStub = `
 ;(function() {
