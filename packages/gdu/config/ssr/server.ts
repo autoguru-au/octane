@@ -10,11 +10,14 @@ const logger = createLogger('server');
 export const run = async (port: number) => {
 	const start = Date.now();
 	execa
-		.command(`next ${isProductionBuild() ? 'start' : 'dev'} -p ${port} --webpack`, {
-			stdio: 'inherit',
-			cwd: PROJECT_ROOT,
-			localDir: GDU_ROOT,
-		})
+		.command(
+			`next ${isProductionBuild() ? 'start' : 'dev'} -p ${port} --webpack`,
+			{
+				stdio: 'inherit',
+				cwd: PROJECT_ROOT,
+				localDir: GDU_ROOT,
+			},
+		)
 		.then(
 			() => {
 				console.log(

@@ -1,4 +1,43 @@
+import { Buffer } from 'node:buffer';
+
 import type { LoaderDefinitionFunction } from 'webpack';
+
+const REFRESH_STUB = `
+;(function() {
+  if (typeof globalThis.$RefreshSig$ === "undefined") {
+    globalThis.$RefreshSig$ = function() { return function(type) { return type; }; };
+  }
+  if (typeof globalThis.$RefreshReg$ === "undefined") {
+    globalThis.$RefreshReg$ = function() {};
+  }
+})();
+`;
+
+const isSkippableLine = (line: string): boolean =>
+	line === '' ||
+	line.startsWith('//') ||
+	line === '"use strict";' ||
+	line === "'use strict';";
+
+const isImportLine = (line: string): boolean =>
+	line.startsWith('import ') ||
+	line.startsWith('import{') ||
+	line.startsWith("} from '") ||
+	line.startsWith('} from "');
+
+const isExportLine = (line: string): boolean =>
+	line.startsWith('export *') || line.startsWith('export {');
+
+const isMultilineCommentStart = (line: string): boolean => {
+	if (!line.startsWith('/*')) return false;
+	return !line.includes('*/') || line.indexOf('/*') > line.indexOf('*/');
+};
+
+const sourceToString = (source: string | Buffer): string => {
+	if (typeof source === 'string') return source;
+	if (Buffer.isBuffer(source)) return source.toString('utf8');
+	return '';
+};
 
 /**
  * Webpack loader that injects React Fast Refresh stubs into vanilla-extract CSS files.
@@ -12,87 +51,39 @@ const vanillaExtractRefreshStubLoader: LoaderDefinitionFunction = function (
 ) {
 	this.cacheable?.();
 
-	let sourceString = '';
-	if (typeof source === 'string') {
-		sourceString = source;
-	} else if (Buffer.isBuffer(source)) {
-		sourceString = source.toString('utf8');
-	}
-
-	const refreshStub = `
-;(function() {
-  if (typeof globalThis.$RefreshSig$ === "undefined") {
-    globalThis.$RefreshSig$ = function() { return function(type) { return type; }; };
-  }
-  if (typeof globalThis.$RefreshReg$ === "undefined") {
-    globalThis.$RefreshReg$ = function() {};
-  }
-})();
-`;
-
-	// Find the position after all import/export statements at the top of the file
-	// This preserves ES module syntax which requires imports at the top
+	const sourceString = sourceToString(source);
 	const lines = sourceString.split('\n');
 	let insertIndex = 0;
 	let inMultilineComment = false;
 
-	for (let i = 0; i < lines.length; i++) {
-		const line = lines[i].trim();
+	for (const [i, line_] of lines.entries()) {
+		const line = line_.trim();
 
-		// Track multiline comment state
 		if (inMultilineComment) {
 			insertIndex = i + 1;
-			if (line.includes('*/')) {
-				inMultilineComment = false;
-			}
+			if (line.includes('*/')) inMultilineComment = false;
 			continue;
 		}
 
-		// Check for multiline comment start
 		if (line.startsWith('/*')) {
 			insertIndex = i + 1;
-			// Check if comment ends on same line
-			if (!line.includes('*/') || line.indexOf('/*') > line.indexOf('*/')) {
-				inMultilineComment = true;
-			}
+			inMultilineComment = isMultilineCommentStart(line);
 			continue;
 		}
 
-		// Skip empty lines, single-line comments, and 'use strict'
 		if (
-			line === '' ||
-			line.startsWith('//') ||
-			line === '"use strict";' ||
-			line === "'use strict';"
+			isSkippableLine(line) ||
+			isImportLine(line) ||
+			isExportLine(line)
 		) {
 			insertIndex = i + 1;
 			continue;
 		}
 
-		// Continue past import statements
-		if (line.startsWith('import ') || line.startsWith('import{')) {
-			insertIndex = i + 1;
-			continue;
-		}
-
-		// Continue past multiline imports (lines that are part of an import block)
-		if (line.startsWith("} from '") || line.startsWith('} from "')) {
-			insertIndex = i + 1;
-			continue;
-		}
-
-		// Continue past export * statements
-		if (line.startsWith('export *') || line.startsWith('export {')) {
-			insertIndex = i + 1;
-			continue;
-		}
-
-		// Found first non-import line
 		break;
 	}
 
-	// Insert the stub after all imports
-	lines.splice(insertIndex, 0, refreshStub);
+	lines.splice(insertIndex, 0, REFRESH_STUB);
 	return lines.join('\n');
 };
 
