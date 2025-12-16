@@ -25,11 +25,10 @@ export default async () => {
 
 	const tokensContent: string = `/// <reference types="node" />
 
-const TOKENS = ${JSON.stringify(
-		TOKENS,
-		null,
-		2,
-	).replace(/"process\.env\.(\w+)"/g, 'process.env.$1')};
+const TOKENS = ${JSON.stringify(TOKENS, null, 2).replace(
+		/"process\.env\.(\w+)"/g,
+		'process.env.$1',
+	)};
 
 module.exports = { TOKENS };
 `;
