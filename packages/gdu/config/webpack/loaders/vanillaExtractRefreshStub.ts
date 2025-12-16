@@ -34,17 +34,34 @@ const vanillaExtractRefreshStubLoader: LoaderDefinitionFunction = function (
 	// This preserves ES module syntax which requires imports at the top
 	const lines = sourceString.split('\n');
 	let insertIndex = 0;
+	let inMultilineComment = false;
 
 	for (let i = 0; i < lines.length; i++) {
 		const line = lines[i].trim();
 
-		// Skip empty lines, comments, and 'use strict'
+		// Track multiline comment state
+		if (inMultilineComment) {
+			insertIndex = i + 1;
+			if (line.includes('*/')) {
+				inMultilineComment = false;
+			}
+			continue;
+		}
+
+		// Check for multiline comment start
+		if (line.startsWith('/*')) {
+			insertIndex = i + 1;
+			// Check if comment ends on same line
+			if (!line.includes('*/') || line.indexOf('/*') > line.indexOf('*/')) {
+				inMultilineComment = true;
+			}
+			continue;
+		}
+
+		// Skip empty lines, single-line comments, and 'use strict'
 		if (
 			line === '' ||
 			line.startsWith('//') ||
-			line.startsWith('/*') ||
-			line.startsWith('*') ||
-			line === '*/' ||
 			line === '"use strict";' ||
 			line === "'use strict';"
 		) {
