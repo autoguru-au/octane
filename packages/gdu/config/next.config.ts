@@ -317,7 +317,9 @@ export const createNextJSConfig = (
 
 			// Configure webpack parser to ignore import attributes (Next.js 13+ compatibility)
 			defaultConfig.module.parser = {
+				...defaultConfig.module.parser,
 				javascript: {
+					...(defaultConfig.module.parser as any)?.javascript,
 					importAttributes: false,
 				},
 			};

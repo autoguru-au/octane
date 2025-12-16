@@ -19,11 +19,11 @@ const isSkippableLine = (line: string): boolean =>
 	line === '"use strict";' ||
 	line === "'use strict';";
 
-const isImportLine = (line: string): boolean =>
-	line.startsWith('import ') ||
-	line.startsWith('import{') ||
-	line.startsWith("} from '") ||
-	line.startsWith('} from "');
+const isImportStart = (line: string): boolean =>
+	line.startsWith('import ') || line.startsWith('import{');
+
+const isImportEnd = (line: string): boolean =>
+	line.endsWith(';') || line.endsWith("';") || line.endsWith('";');
 
 const isExportLine = (line: string): boolean =>
 	line.startsWith('export *') || line.startsWith('export {');
@@ -55,10 +55,12 @@ const vanillaExtractRefreshStubLoader: LoaderDefinitionFunction = function (
 	const lines = sourceString.split('\n');
 	let insertIndex = 0;
 	let inMultilineComment = false;
+	let inMultilineImport = false;
 
-	for (const [i, line_] of lines.entries()) {
-		const line = line_.trim();
+	for (let i = 0; i < lines.length; i++) {
+		const line = lines[i].trim();
 
+		// Handle multiline comments
 		if (inMultilineComment) {
 			insertIndex = i + 1;
 			if (line.includes('*/')) inMultilineComment = false;
@@ -71,15 +73,33 @@ const vanillaExtractRefreshStubLoader: LoaderDefinitionFunction = function (
 			continue;
 		}
 
-		if (
-			isSkippableLine(line) ||
-			isImportLine(line) ||
-			isExportLine(line)
-		) {
+		// Handle multiline imports
+		if (inMultilineImport) {
+			insertIndex = i + 1;
+			// Check if this line ends the import (has semicolon or } from '...')
+			if (isImportEnd(line) || line.startsWith("} from '") || line.startsWith('} from "')) {
+				inMultilineImport = false;
+			}
+			continue;
+		}
+
+		// Check for import start
+		if (isImportStart(line)) {
+			insertIndex = i + 1;
+			// Check if it's a single-line import (ends with semicolon)
+			if (!isImportEnd(line)) {
+				inMultilineImport = true;
+			}
+			continue;
+		}
+
+		// Handle skippable lines and exports
+		if (isSkippableLine(line) || isExportLine(line)) {
 			insertIndex = i + 1;
 			continue;
 		}
 
+		// Non-import, non-comment, non-skippable line found - stop here
 		break;
 	}
 
