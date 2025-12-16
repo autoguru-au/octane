@@ -77,7 +77,11 @@ const vanillaExtractRefreshStubLoader: LoaderDefinitionFunction = function (
 		if (inMultilineImport) {
 			insertIndex = i + 1;
 			// Check if this line ends the import (has semicolon or } from '...')
-			if (isImportEnd(line) || line.startsWith("} from '") || line.startsWith('} from "')) {
+			if (
+				isImportEnd(line) ||
+				line.startsWith("} from '") ||
+				line.startsWith('} from "')
+			) {
 				inMultilineImport = false;
 			}
 			continue;
