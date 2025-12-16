@@ -46,6 +46,7 @@ const sourceToString = (source: string | Buffer): string => {
  *
  * The stubs are inserted AFTER all import statements to preserve ES module syntax validity.
  */
+// eslint-disable-next-line sonarjs/cognitive-complexity
 const vanillaExtractRefreshStubLoader: LoaderDefinitionFunction = function (
 	source: string | Buffer,
 ) {
@@ -57,8 +58,8 @@ const vanillaExtractRefreshStubLoader: LoaderDefinitionFunction = function (
 	let inMultilineComment = false;
 	let inMultilineImport = false;
 
-	for (let i = 0; i < lines.length; i++) {
-		const line = lines[i].trim();
+	for (const [i, line_] of lines.entries()) {
+		const line = line_.trim();
 
 		// Handle multiline comments
 		if (inMultilineComment) {
