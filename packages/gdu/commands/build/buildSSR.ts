@@ -11,7 +11,7 @@ const logger = createLogger('build');
 export const buildSSR = async (guruConfig: GuruConfig) => {
 	const start = Date.now();
 	execa
-		.command(`next build --profile`, {
+		.command(`next build --profile --webpack`, {
 			stdio: 'inherit',
 			cwd: PROJECT_ROOT,
 			localDir: GDU_ROOT,

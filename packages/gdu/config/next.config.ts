@@ -314,6 +314,28 @@ export const createNextJSConfig = (
 				'node_modules/next/',
 			);
 			defaultConfig.resolve.preferRelative = true;
+
+			// Configure webpack parser to ignore import attributes (Next.js 13+ compatibility)
+			defaultConfig.module.parser = {
+				javascript: {
+					importAttributes: false,
+				},
+			};
+
+			// Add refresh stubs for .css.ts and .css.js files BEFORE any transforms
+			// This ensures $RefreshSig$ and $RefreshReg$ are defined when
+			// Vanilla Extract's child compiler evaluates the code
+			// Note: .css.js files come from pre-built packages like @autoguru/overdrive
+			defaultConfig.module.rules.unshift({
+				test: /\.css\.(ts|js)$/,
+				enforce: 'pre',
+				use: [
+					{
+						loader: require.resolve('./webpack/loaders/vanillaExtractRefreshStub'),
+					},
+				],
+			});
+
 			defaultConfig.optimization.splitChunks = {
 				// eslint-disable-next-line unicorn/no-useless-fallback-in-spread
 				...(defaultConfig.optimization?.splitChunks || {}),
