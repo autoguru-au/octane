@@ -108,7 +108,7 @@ const getDataDogVersion = () => {
 		const packagePath = path.join(PROJECT_ROOT, 'package.json');
 		const pkg = require(packagePath);
 		return (pkg.dependencies?.['@datadog/browser-rum'] || '6.23.0').replace(
-			'^',
+			/^[\^~>=<]+/,
 			'',
 		);
 	} catch {
