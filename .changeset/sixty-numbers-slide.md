@@ -2,4 +2,4 @@
 'gdu': patch
 ---
 
-gud enabled Ngrok in webpack server
+Externalize DataDog SDK in webpack configuration to reduce MFE bundle sizes

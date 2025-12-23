@@ -28,7 +28,7 @@ const getConsumerHtmlTemplate = (
 };
 
 const localhost = '0.0.0.0';
-const hosts = ['localhost', localhost, 'mfe.ngrok.io'];
+const hosts = ['localhost', localhost];
 
 export const runSPA = async (guruConfig: GuruConfig, isDebug) => {
 	const hooks = getHooks();
