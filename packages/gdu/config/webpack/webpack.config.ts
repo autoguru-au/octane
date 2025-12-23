@@ -102,6 +102,19 @@ const getReactVersion = () => {
 		return '19';
 	}
 };
+
+const getDataDogVersion = () => {
+	try {
+		const packagePath = path.join(PROJECT_ROOT, 'package.json');
+		const pkg = require(packagePath);
+		return (pkg.dependencies?.['@datadog/browser-rum'] || '6.23.0').replace(
+			'^',
+			'',
+		);
+	} catch {
+		return '6.23.0';
+	}
+};
 const gduEntryPath = join(GDU_ROOT, 'entry');
 
 const ourCodePaths = [
@@ -115,6 +128,7 @@ const fileMask = '[name]-[contenthash:8]';
 const getExternals = (standalone?: boolean) => {
 	//const relayVersion = getRelayVersion();
 	const reactVersion = getReactVersion();
+	const datadogVersion = getDataDogVersion();
 	return standalone
 		? {}
 		: {
@@ -124,6 +138,10 @@ const getExternals = (standalone?: boolean) => {
 				'react/jsx-runtime': `https://esm.sh/react@${reactVersion}/jsx-runtime`,
 				/*'react-relay': `https://esm.sh/react-relay@${relayVersion}`,
 				'relay-runtime': `https://esm.sh/relay-runtime@${relayVersion}`,*/
+
+				// DataDog externals
+				'@datadog/browser-rum': `https://esm.sh/@datadog/browser-rum@${datadogVersion}`,
+				'@datadog/browser-rum-react': `https://esm.sh/@datadog/browser-rum-react@${datadogVersion}`,
 			};
 };
 
