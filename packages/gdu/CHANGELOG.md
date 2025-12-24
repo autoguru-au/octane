@@ -1,5 +1,12 @@
 # gdu
 
+## 13.10.1
+
+### Patch Changes
+
+- 0bea8c7: Externalize DataDog SDK in webpack configuration to reduce MFE bundle
+  sizes
+
 ## 13.10.0
 
 ### Minor Changes
