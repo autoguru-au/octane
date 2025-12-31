@@ -142,6 +142,7 @@ const getExternals = (standalone?: boolean) => {
 				// DataDog externals
 				'@datadog/browser-rum': `https://esm.sh/@datadog/browser-rum@${datadogVersion}`,
 				'@datadog/browser-rum-react': `https://esm.sh/@datadog/browser-rum-react@${datadogVersion}`,
+				'@datadog/browser-logs': `https://esm.sh/@datadog/browser-logs@${datadogVersion}`,
 			};
 };
 
