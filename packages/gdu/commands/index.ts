@@ -151,6 +151,12 @@ export default (app: Sade) => {
 		.action(
 			deferredAction(async () => import('./global-configs'), IS_NOT_ROOT),
 		);
+
+	// === CODEGEN
+	app.command('codegen')
+		.describe('Generate TypeScript from .gdu_app_config files')
+		.option('-l, --list', 'List available generators', false)
+		.action(deferredAction(async () => import('./codegen'), IS_NOT_ROOT));
 };
 
 const NOT_READY = wrapAction(() => {
