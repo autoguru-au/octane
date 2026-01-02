@@ -1,5 +1,43 @@
 # gdu
 
+## 13.11.0
+
+### Minor Changes
+
+- bf6b0e4: Add `gdu codegen` command for generating TypeScript from
+  `.gdu_app_config` files
+    - New `codegen` property in `guru.config.js` for configuring code generators
+    - `stage-map` generator: creates domain → stage mapping from env files
+    - Skips Octopus deploy placeholders (`#{...}`) and `.env.tokens` files
+    - Generates TypeScript with optional helper functions
+
+    Usage:
+
+    ```bash
+    gdu codegen        # Run all configured generators
+    gdu codegen --list # List available generators
+    ```
+
+    Configuration in `guru.config.js`:
+
+    ```javascript
+    module.exports = {
+    	codegen: {
+    		generators: [
+    			{
+    				type: 'stage-map',
+    				outputPath: './src/generated/stage-map.ts',
+    				options: {
+    					keyField: 'appDomain',
+    					defaultValue: 'dev',
+    					helperName: 'extractStageFromHost',
+    				},
+    			},
+    		],
+    	},
+    };
+    ```
+
 ## 13.10.1
 
 ### Patch Changes
