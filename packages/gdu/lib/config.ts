@@ -9,6 +9,21 @@ const { debug } = diary('gdu:config');
 
 const readCache = new Map();
 
+export interface CodegenGeneratorConfig {
+	type: 'stage-map';
+	outputPath: string;
+	options?: {
+		keyField?: string;
+		defaultValue?: string;
+		helperName?: string;
+	};
+}
+
+export interface CodegenConfig {
+	configDir?: string;
+	generators: CodegenGeneratorConfig[];
+}
+
 export interface GuruConfig {
 	type:
 		| 'ssr'
@@ -34,6 +49,7 @@ export interface GuruConfig {
 	__legacy_mode?: boolean;
 	standalone?: boolean;
 	frameless?: boolean;
+	codegen?: CodegenConfig;
 
 	tap?(hooks: Record<string, any>): void;
 }
