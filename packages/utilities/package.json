@@ -24,6 +24,46 @@
 				"default": "./dist/index.cjs"
 			}
 		},
+		"./logger": {
+			"import": {
+				"types": "./dist/logger/index.d.ts",
+				"default": "./dist/logger/index.js"
+			},
+			"require": {
+				"types": "./dist/logger/index.d.cts",
+				"default": "./dist/logger/index.cjs"
+			}
+		},
+		"./assert": {
+			"import": {
+				"types": "./dist/assert/index.d.ts",
+				"default": "./dist/assert/index.js"
+			},
+			"require": {
+				"types": "./dist/assert/index.d.cts",
+				"default": "./dist/assert/index.cjs"
+			}
+		},
+		"./number": {
+			"import": {
+				"types": "./dist/number/index.d.ts",
+				"default": "./dist/number/index.js"
+			},
+			"require": {
+				"types": "./dist/number/index.d.cts",
+				"default": "./dist/number/index.cjs"
+			}
+		},
+		"./events": {
+			"import": {
+				"types": "./dist/events/index.d.ts",
+				"default": "./dist/events/index.js"
+			},
+			"require": {
+				"types": "./dist/events/index.d.cts",
+				"default": "./dist/events/index.cjs"
+			}
+		},
 		"./package.json": "./package.json"
 	},
 	"scripts": {
