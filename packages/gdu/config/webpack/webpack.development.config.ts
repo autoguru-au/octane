@@ -257,11 +257,6 @@ export const baseDevelopmentOptions = ({
 						{
 							include: ourCodePaths,
 							exclude(path) {
-								// TODO: Temp, remove this
-								if (path.includes('@autoguru/utilities')) {
-									return true;
-								}
-
 								const ourCode = ourCodePaths.some((item) => {
 									if (item instanceof RegExp) {
 										return item.test(path);
@@ -282,6 +277,7 @@ export const baseDevelopmentOptions = ({
 										cacheDirectory: true,
 										babelrc: false,
 										envName: 'development',
+										sourceType: 'unambiguous',
 										...hooks.babelConfig.call(
 											require('../babel-config/development')(
 												getGuruConfig(),
@@ -303,6 +299,7 @@ export const baseDevelopmentOptions = ({
 										cacheDirectory: true,
 										babelrc: false,
 										envName: 'development',
+										sourceType: 'unambiguous',
 										presets: [
 											[
 												require.resolve(
