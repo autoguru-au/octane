@@ -1,5 +1,12 @@
 # gdu
 
+## 13.12.1
+
+### Patch Changes
+
+- 70243d9: Remove temporary @autoguru/utilities exclusion and add sourceType
+  'unambiguous' to babel-loader config
+
 ## 13.12.0
 
 ### Minor Changes
