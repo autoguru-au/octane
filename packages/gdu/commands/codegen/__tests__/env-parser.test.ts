@@ -2,10 +2,7 @@ import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
 
-import {
-	extractStageFromFilename,
-	parseEnvFile,
-} from '../utils/env-parser';
+import { extractStageFromFilename, parseEnvFile } from '../utils/env-parser';
 
 describe('env file parsing', () => {
 	let tempDir: string;
