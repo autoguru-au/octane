@@ -1,5 +1,11 @@
 # gdu
 
+## 13.12.2
+
+### Patch Changes
+
+- 8b893e5: Pass baseUrl explicitly to TsconfigPathsPlugin for tsgo compatibility
+
 ## 13.12.1
 
 ### Patch Changes
