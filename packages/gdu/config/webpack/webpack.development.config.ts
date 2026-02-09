@@ -133,9 +133,11 @@ export const baseDevelopmentOptions = ({
 				// @ts-ignore
 				new TsconfigPathsPlugin({
 					configFile: join(PROJECT_ROOT, 'tsconfig.json'),
+					baseUrl: PROJECT_ROOT,
 				}),
 			],
 			alias: {
+				'~': PROJECT_ROOT,
 				__GDU_CONSUMER_CLIENT__: join(PROJECT_ROOT, 'src/client.tsx'),
 			},
 		},
