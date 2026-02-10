@@ -17,9 +17,7 @@ module.exports = function autoGuruReactDevelopmentPreset(api, options = {}) {
 		],
 		plugins: [
 			experimental &&
-				require.resolve(
-					'@autoguru/babel-preset/react/plugins/named-memo.js',
-				),
+				require.resolve('@autoguru/babel-preset/react/plugins/named-memo.js'),
 		].filter(Boolean),
 	};
 };

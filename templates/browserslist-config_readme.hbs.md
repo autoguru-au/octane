@@ -3,7 +3,7 @@
 ## Usage
 
 ```sh
-yarn add --dev browserslist-config-autoguru
+bun add --dev browserslist-config-autoguru
 ```
 
 then in your `package.json` or `.browserslistrc` file:

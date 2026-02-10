@@ -13,7 +13,7 @@
 	"types": "./dist/index.d.ts",
 	"scripts": {
 		"build": "tsc",
-		"prepublish": "yarn run build"
+		"prepublish": "bun run build"
 	},
 	"dependencies": {
 		"tiny-invariant": "^1.0.6",
@@ -22,6 +22,7 @@
 	"devDependencies": {
 		"@autoguru/eslint-plugin": "*",
 		"@autoguru/jest-preset": "*",
+		"@autoguru/tsconfig": "*",
 		"@babel/core": "^7.15.0",
 		"@babel/preset-env": "^7.24.5",
 		"@babel/preset-react": "^7.26.3",
@@ -29,7 +30,6 @@
 		"@types/glob": "^7.1.4",
 		"@types/node": "^16.4.13",
 		"@types/node-fetch": "^2.5.12",
-		"@types/sade": "^1.7.3",
 		"@types/webpack": "^5.28.5",
 		"babel-plugin-macros": "^3.1.0",
 		"browserslist-config-autoguru": "*",

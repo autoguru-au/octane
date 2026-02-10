@@ -333,9 +333,7 @@ export const createNextJSConfig = (
 				enforce: 'pre',
 				use: [
 					{
-						loader: require.resolve(
-							'./webpack/loaders/vanillaExtractRefreshStub',
-						),
+						loader: require.resolve('./webpack/loaders/vanillaExtractRefreshStub'),
 					},
 				],
 			});

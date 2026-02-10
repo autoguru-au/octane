@@ -22,9 +22,7 @@ module.exports = function autoGuruSharedPlugins() {
 			{ loose: false },
 		],
 		[
-			require.resolve(
-				'@babel/plugin-proposal-nullish-coalescing-operator',
-			),
+			require.resolve('@babel/plugin-proposal-nullish-coalescing-operator'),
 			{ loose: false },
 		],
 		[require.resolve('@babel/plugin-transform-spread'), { loose: false }],
