@@ -3,7 +3,7 @@
 ## Usage
 
 ```sh
-yarn add --dev browserslist-config-autoguru
+bun add --dev browserslist-config-autoguru
 ```
 
 then in your `package.json` or `.browserslistrc` file:
@@ -21,10 +21,10 @@ To keep us up to date:
 1. From the browserlist-config directory:
     1. Update package.json with latest
        [browserslist](https://www.npmjs.com/package/browserslist) version
-    1. Run `yarn`
-    1. Run tests `yarn run jest -u`
+    1. Run `bun install`
+    1. Run tests `bun run jest -u`
 
-1. Add changeset using `yarn changeset` and follow steps
+1. Add changeset using `bun changeset` and follow steps
 1. Push changes and release
 1. Bump consumers to use the new release (like Retail)
 1. Bump versions in Retail's old-browser.js file (which configures the out of

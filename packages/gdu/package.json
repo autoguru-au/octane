@@ -18,7 +18,7 @@
 	"main": "./dist/main.js",
 	"scripts": {
 		"build": "tsc",
-		"prepublishOnly": "yarn run build",
+		"prepublishOnly": "bun run build",
 		"watch": "tsc --watch"
 	},
 	"dependencies": {
@@ -55,7 +55,6 @@
 		"env-ci": "^5.0.2",
 		"execa": "^5.0.0",
 		"find-up": "^5.0.0",
-		"find-yarn-workspace-root": "^2.0.0",
 		"glob": "^11.0.1",
 		"graphql": "^15.5.0",
 		"graphql-config": "^3.2.0",

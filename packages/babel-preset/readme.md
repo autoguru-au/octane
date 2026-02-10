@@ -6,7 +6,7 @@ plugins.
 ## Usage
 
 ```sh
-yarn add --dev @autoguru/babel-preset \
+bun add --dev @autoguru/babel-preset \
 	@babel/core
 ```
 

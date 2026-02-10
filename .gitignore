@@ -3,10 +3,8 @@
 .idea/
 /*.iml
 
-# yarn cache
-.yarn/cache
-.yarn/ci-cache
-.yarn/install-state.gz
+# bun
+.bun/
 # Node things
 node_modules/
 *.log*

@@ -1,0 +1,16 @@
+# Bun package manager configuration for octane monorepo
+
+[install]
+# Use text lockfile for better git diffs and review
+saveTextLockfile = true
+
+# Peer dependencies installed by default (matches yarn behavior)
+peer = true
+
+[install.lockfile]
+# Generate human-readable bun.lock
+save = true
+
+[run]
+# Use system shell for script execution (matches yarn behavior)
+shell = "system"
