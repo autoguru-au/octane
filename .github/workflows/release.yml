@@ -2,27 +2,29 @@ name: Release
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@main
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      -   name: 📥 Install Monorepo Dependencies
-          uses: ./.github/actions/yarn-nm-install
-          with:
-              cwd: '.'
-              enable-corepack: false
-              cache-node-modules: true
-              cache-install-state: true
-      - name: Create Release or Publish
-        uses: changesets/action@master
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          publish: yarn release
+          node-version-file: 'package.json'
+
+      - name: 📥 Install Monorepo Dependencies
+        uses: ./.github/actions/bun-install
+
+      - name: Create Release or Publish
+        uses: changesets/action@v1
+        with:
+          publish: bun run release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

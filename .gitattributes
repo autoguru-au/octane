@@ -7,7 +7,7 @@
 ## Source Code ##
 # .sh files is a linux thing, so force line endings to lf
 *.sh		text eol=lf
-yarn.lock	text
+bun.lock	text
 
 # Setting the below, as they are pre-built patterns within git.
 *.html		text diff=html

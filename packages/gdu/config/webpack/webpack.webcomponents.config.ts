@@ -259,9 +259,7 @@ export const makeWebComponentsWebpackConfig = (
 											: 'production',
 										presets: [
 											[
-												require.resolve(
-													'@babel/preset-env',
-												),
+												require.resolve('@babel/preset-env'),
 												{
 													useBuiltIns: false,
 													modules: false,

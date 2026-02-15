@@ -19,7 +19,7 @@ This tool has been heavily inspired by:
 Creating a new MFE:
 
 ```sh
-yarn create guru <spa|ssr> <app_name>
+bun create guru <spa|ssr> <app_name>
 # or
 volta install gdu
 gdu scaffold <spa|ssr> <app_name>
