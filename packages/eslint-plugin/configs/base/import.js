@@ -34,6 +34,7 @@ module.exports = {
 				graphql: 'always',
 				treat: 'always',
 				scss: 'always',
+				macro: 'always',
 			},
 		],
 		'import/no-duplicates': 'error',
