@@ -5,6 +5,7 @@ import { blue, bold, cyan, green, magenta } from 'kleur';
 import dedent from 'ts-dedent';
 
 import { baseViteOptions } from '../../config/vite/vite.config';
+import { guruConfigCjsPlugin } from '../../config/vite/plugins/guruConfigCjs';
 import { relayPlugin } from '../../config/vite/plugins/relay';
 import { getProjectName, GuruConfig } from '../../lib/config';
 import {
@@ -23,6 +24,7 @@ interface ViteServerOptions {
 	cors?: boolean;
 	headers?: Record<string, string>;
 	fs?: { allow?: string[] };
+	hmr?: boolean | { overlay?: boolean };
 }
 
 interface VitePlugin {
@@ -39,9 +41,14 @@ interface ViteInlineConfig {
 	resolve?: Record<string, unknown>;
 	define?: Record<string, string>;
 	esbuild?: Record<string, unknown>;
+	css?: { devSourcemap?: boolean };
 	server?: ViteServerOptions;
 	plugins?: unknown[];
 	appType?: string;
+	optimizeDeps?: {
+		include?: string[];
+		exclude?: string[];
+	};
 }
 
 interface ViteDevServer {
@@ -56,41 +63,60 @@ interface ViteDevServer {
 const getConsumerHtmlTemplate = (
 	guruConfig: GuruConfig,
 ): string | undefined => {
-	try {
-		const filePath = join(guruConfig.__configPath, '/template.html');
-		if (existsSync(filePath)) {
-			return filePath;
-		}
-	} finally {
-		// empty
+	const filePath = join(guruConfig.__configPath, '/template.html');
+	if (existsSync(filePath)) {
+		return filePath;
 	}
-	return void 0;
+	return undefined;
 };
 
 const gduEntryPath = join(GDU_ROOT, 'entry');
 
-function guruConfigCjsPlugin(): VitePlugin {
+function relayCjsToEsmPlugin(): VitePlugin {
 	return {
-		name: 'gdu-guru-config-cjs',
+		name: 'gdu-relay-cjs-to-esm',
 		transform(code, id) {
-			if (!id.endsWith('guru.config.js')) return null;
+			if (!id.includes('__generated__') || !id.endsWith('.graphql.ts'))
+				return null;
 
-			// eslint-disable-next-line @typescript-eslint/no-require-imports
-			const config = require(id);
-			const keys = Object.keys(config);
+			const requireRegex = /require\(['"]([^'"]+)['"]\)/g;
+			let match: RegExpExecArray | null;
+			const imports: Array<{ placeholder: string; specifier: string }> = [];
+			let idx = 0;
 
-			const lines = [
-				'const __cjs = {};',
-				'const module = { get exports() { return __cjs; }, set exports(v) { Object.assign(__cjs, v); } };',
-				code,
-				'export default __cjs;',
-				...keys.map((k) => `export const ${k} = __cjs[${JSON.stringify(k)}];`),
-			];
+			while ((match = requireRegex.exec(code)) !== null) {
+				const placeholder = `__relay_require_${idx++}__`;
+				imports.push({ placeholder, specifier: match[1] });
+			}
 
-			return { code: lines.join('\n'), map: null };
+			if (imports.length === 0) return null;
+
+			let transformed = code;
+			for (const { placeholder, specifier } of imports) {
+				transformed = transformed.replace(
+					`require('${specifier}')`,
+					placeholder,
+				);
+				transformed = transformed.replace(
+					`require("${specifier}")`,
+					placeholder,
+				);
+			}
+
+			const importStatements = imports
+				.map(
+					({ placeholder, specifier }) =>
+						`import ${placeholder} from '${specifier}';`,
+				)
+				.join('\n');
+
+			transformed = importStatements + '\n' + transformed;
+
+			return { code: transformed, map: null };
 		},
 	};
 }
+
 
 function spaHtmlPlugin(guruConfig: GuruConfig): VitePlugin {
 	const entryPath = join(gduEntryPath, 'spa', 'client.js');
@@ -149,14 +175,17 @@ function spaHtmlPlugin(guruConfig: GuruConfig): VitePlugin {
 							res.statusCode = 200;
 							res.end(html);
 						})
-						.catch(() => next());
+						.catch((err) => {
+							console.error('HTML transform error:', err);
+							next(err);
+						});
 				});
 			};
 		},
 	};
 }
 
-export const runSPAVite = async (guruConfig: GuruConfig, isDebug) => {
+export const runSPAVite = async (guruConfig: GuruConfig, isDebug: boolean) => {
 	console.log(
 		`${cyan('Starting Vite dev server...')}${
 			isDebug ? magenta(' DEBUG MODE') : ''
@@ -225,6 +254,10 @@ export const runSPAVite = async (guruConfig: GuruConfig, isDebug) => {
 			__DEBUG__: JSON.stringify(!!isDebug),
 		},
 
+		css: {
+			devSourcemap: true,
+		},
+
 		// Use esbuild's automatic JSX runtime (lighter than @vitejs/plugin-react
 		// which uses Babel and causes OOM in large monorepos).
 		esbuild: {
@@ -238,6 +271,9 @@ export const runSPAVite = async (guruConfig: GuruConfig, isDebug) => {
 			strictPort: true,
 			host: '0.0.0.0',
 			cors: true,
+			hmr: {
+				overlay: true,
+			},
 			headers: {
 				'Access-Control-Allow-Origin': '*',
 				'Access-Control-Allow-Methods':
@@ -256,6 +292,24 @@ export const runSPAVite = async (guruConfig: GuruConfig, isDebug) => {
 			},
 		},
 
+		optimizeDeps: {
+			include: [
+				'relay-runtime',
+				'react-relay',
+				'react-relay/hooks',
+				'@datadog/browser-rum',
+				'xstate',
+				'@xstate/react',
+				'cssesc',
+				'css-what',
+				'dedent',
+				'media-query-parser',
+				'deepmerge',
+				'picocolors',
+			],
+			exclude: ['@vanilla-extract/css'],
+		},
+
 		// 'custom' prevents Vite from looking for a physical index.html;
 		// our plugin handles HTML serving with SPA fallback instead.
 		appType: 'custom',
@@ -263,6 +317,7 @@ export const runSPAVite = async (guruConfig: GuruConfig, isDebug) => {
 		plugins: [
 			...(vanillaExtractPlugin ? [vanillaExtractPlugin()] : []),
 			...(relayTransformPlugin ? [relayTransformPlugin] : []),
+			relayCjsToEsmPlugin(),
 			guruConfigCjsPlugin(),
 			spaHtmlPlugin(guruConfig),
 		],
@@ -270,7 +325,12 @@ export const runSPAVite = async (guruConfig: GuruConfig, isDebug) => {
 
 	await server.listen();
 
-	const networkAddress = require('ip').address();
+	let networkAddress = '<network-address>';
+	try {
+		networkAddress = require('ip').address();
+	} catch {
+		// ip package not available
+	}
 	const resolvedUrls = server.resolvedUrls;
 	const localUrl =
 		resolvedUrls?.local?.[0] ?? `http://localhost:${guruConfig.port}/`;

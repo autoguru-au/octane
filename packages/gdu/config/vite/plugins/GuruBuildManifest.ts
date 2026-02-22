@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { join, resolve } from 'path';
+import { resolve } from 'path';
 
 // Inline Rollup/Vite types so tsc compiles without a vite dependency.
 // At runtime, the actual Vite/Rollup types are structurally compatible.
@@ -62,26 +62,16 @@ const defaultOptions: Required<GuruBuildManifestOptions> = {
 
 function extractHashFromFilename(filename: string): string {
 	const match = /[.-]([a-zA-Z\d_-]{8,})\.js$/.exec(filename);
+	if (!match) {
+		console.warn(
+			`Warning: Could not extract hash from entry filename: ${filename}`,
+		);
+	}
 	return match?.[1] ?? '';
 }
 
 function ensureDirectoryExists(dir: string): void {
-	const isAbsolutePathWithProjectRoot = dir.includes(process.cwd());
-	const isPathWithinProjectRoot = !dir.startsWith('/');
-
-	if (isAbsolutePathWithProjectRoot || isPathWithinProjectRoot) {
-		let pathStep = process.cwd();
-		const normalised = dir.replace(/^\.\//, '').replace(process.cwd(), '');
-
-		for (const folder of normalised.split('/')) {
-			pathStep = join(pathStep, folder);
-			try {
-				fs.mkdirSync(pathStep);
-			} catch {
-				// Directory already exists, continue
-			}
-		}
-	}
+	fs.mkdirSync(dir, { recursive: true });
 }
 
 export function guruBuildManifest(

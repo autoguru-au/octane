@@ -42,6 +42,8 @@ interface InlineConfig {
 		emptyOutDir?: boolean;
 		sourcemap?: boolean;
 		minify?: string;
+		reportCompressedSize?: boolean;
+		chunkSizeWarningLimit?: number;
 		rollupOptions?: RollupInputOptions & {
 			output?: RollupOutputOptions;
 		};
@@ -85,7 +87,13 @@ function loadEnvDefines(buildEnv: string): Record<string, string> {
 				if (eqIndex === -1) continue;
 
 				const key = trimmed.slice(0, eqIndex).trim();
-				const value = trimmed.slice(eqIndex + 1).trim();
+				let value = trimmed.slice(eqIndex + 1).trim();
+				if (
+					(value.startsWith('"') && value.endsWith('"')) ||
+					(value.startsWith("'") && value.endsWith("'"))
+				) {
+					value = value.slice(1, -1);
+				}
 				defines[`process.env.${key}`] = JSON.stringify(value);
 			}
 		}
@@ -139,6 +147,8 @@ export const baseViteOptions = ({
 			emptyOutDir: true,
 			sourcemap: true,
 			minify: 'esbuild',
+			reportCompressedSize: false,
+			chunkSizeWarningLimit: 1000,
 			rollupOptions: {
 				input: { main: join(gduEntryPath, 'spa', 'client.js') },
 				external: externalKeys.length > 0 ? externalKeys : undefined,
