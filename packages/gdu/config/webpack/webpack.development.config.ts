@@ -27,6 +27,7 @@ import {
 import { getBuildEnvs, getConfigsDirs } from '../../utils/configs';
 import { getHooks } from '../../utils/hooks';
 
+import { getPublicPath } from '../shared/externals';
 import { TranslationHashingPlugin } from './plugins/TranslationHashingPlugin';
 
 // React Compiler configuration
@@ -391,27 +392,6 @@ export const baseDevelopmentOptions = ({
 };
 
 type BuildEnv = ReturnType<typeof getBuildEnvs>[number];
-
-const getPublicPath = ({
-	buildEnv,
-	isDev,
-	projectFolderName,
-}: {
-	buildEnv: BuildEnv;
-	isTenanted: boolean;
-	isDev: boolean;
-	projectFolderName: string;
-}): string => {
-	if (isDev) return '/';
-
-	if (buildEnv === 'prod') {
-		return `#{PUBLIC_PATH_BASE}/${projectFolderName}/`;
-	}
-
-	const [agEnv, tenant] = buildEnv.split('-');
-
-	return `https://mfe.${tenant}-${agEnv}.autoguru.com/${projectFolderName}/`;
-};
 
 export const makeWebpackDevelopmentConfig = (
 	buildEnv: BuildEnv,
