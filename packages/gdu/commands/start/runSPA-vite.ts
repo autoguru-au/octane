@@ -4,16 +4,20 @@ import { join } from 'path';
 import { blue, bold, cyan, green, magenta } from 'kleur';
 import dedent from 'ts-dedent';
 
-import { baseViteOptions } from '../../config/vite/vite.config';
 import { guruConfigCjsPlugin } from '../../config/vite/plugins/guruConfigCjs';
 import { relayPlugin } from '../../config/vite/plugins/relay';
+import type {
+	InlineConfig,
+	ViteDevServer,
+	VitePlugin,
+} from '../../config/vite/types';
+import { baseViteOptions } from '../../config/vite/vite.config';
 import { getProjectName, GuruConfig } from '../../lib/config';
 import {
 	CALLING_WORKSPACE_ROOT,
 	GDU_ROOT,
 	PROJECT_ROOT,
 } from '../../lib/roots';
-import type { InlineConfig, ViteDevServer, VitePlugin } from '../../config/vite/types';
 
 const getConsumerHtmlTemplate = (
 	guruConfig: GuruConfig,
@@ -36,7 +40,8 @@ function relayCjsToEsmPlugin(): VitePlugin {
 
 			const requireRegex = /require\(['"]([^'"]+)['"]\)/g;
 			let match: RegExpExecArray | null;
-			const imports: Array<{ placeholder: string; specifier: string }> = [];
+			const imports: Array<{ placeholder: string; specifier: string }> =
+				[];
 			let idx = 0;
 
 			while ((match = requireRegex.exec(code)) !== null) {
@@ -72,7 +77,6 @@ function relayCjsToEsmPlugin(): VitePlugin {
 	};
 }
 
-
 function spaHtmlPlugin(guruConfig: GuruConfig): VitePlugin {
 	const entryPath = join(gduEntryPath, 'spa', 'client.js');
 	const templatePath = getConsumerHtmlTemplate(guruConfig);
@@ -88,7 +92,10 @@ function spaHtmlPlugin(guruConfig: GuruConfig): VitePlugin {
 			);
 		}
 		if (!baseHtml.includes("id='app'") && !baseHtml.includes('id="app"')) {
-			baseHtml = baseHtml.replace('<body>', '<body>\n<div id="app"></div>');
+			baseHtml = baseHtml.replace(
+				'<body>',
+				'<body>\n<div id="app"></div>',
+			);
 		}
 	} else {
 		baseHtml = [
@@ -130,9 +137,9 @@ function spaHtmlPlugin(guruConfig: GuruConfig): VitePlugin {
 							res.statusCode = 200;
 							res.end(html);
 						})
-						.catch((err) => {
-							console.error('HTML transform error:', err);
-							next(err);
+						.catch((error) => {
+							console.error('HTML transform error:', error);
+							next(error);
 						});
 				});
 			};
@@ -181,8 +188,8 @@ export const runSPAVite = async (guruConfig: GuruConfig, isDebug: boolean) => {
 	// Load Vite-dependent plugins at runtime to avoid tsc compilation errors.
 	let vanillaExtractPlugin: (() => unknown) | undefined;
 	try {
-		vanillaExtractPlugin = require('@vanilla-extract/vite-plugin')
-			.vanillaExtractPlugin;
+		vanillaExtractPlugin =
+			require('@vanilla-extract/vite-plugin').vanillaExtractPlugin;
 	} catch {
 		// Vanilla Extract plugin not available — .css.ts files will fail at runtime.
 	}
@@ -250,9 +257,7 @@ export const runSPAVite = async (guruConfig: GuruConfig, isDebug: boolean) => {
 				allow: [
 					PROJECT_ROOT,
 					GDU_ROOT,
-					...(CALLING_WORKSPACE_ROOT
-						? [CALLING_WORKSPACE_ROOT]
-						: []),
+					...(CALLING_WORKSPACE_ROOT ? [CALLING_WORKSPACE_ROOT] : []),
 				],
 			},
 		},

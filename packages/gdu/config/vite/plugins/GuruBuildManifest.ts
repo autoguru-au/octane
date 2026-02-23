@@ -117,7 +117,10 @@ export function guruBuildManifest(
 					} else if (opts.includeChunks) {
 						result.chunks!.js.push(jsPath);
 					}
-				} else if (chunk.type === 'asset' && fileName.endsWith('.css')) {
+				} else if (
+					chunk.type === 'asset' &&
+					fileName.endsWith('.css')
+				) {
 					const cssPath = `${opts.publicPath}${fileName}`;
 
 					if (entryCssFiles.has(fileName)) {

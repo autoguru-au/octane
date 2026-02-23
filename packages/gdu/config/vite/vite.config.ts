@@ -11,6 +11,7 @@ import {
 import { GDU_ROOT, PROJECT_ROOT } from '../../lib/roots';
 import { getBuildEnvs, getConfigsDirs } from '../../utils/configs';
 import { getExternals, getPublicPath } from '../shared/externals';
+
 import { guruBuildManifest } from './plugins/GuruBuildManifest';
 import type { InlineConfig } from './types';
 
@@ -33,7 +34,7 @@ function loadEnvDefines(buildEnv: string): Record<string, string> {
 		for (const filePath of [defaultsPath, envPath]) {
 			if (!fs.existsSync(filePath)) continue;
 
-			const content = fs.readFileSync(filePath, 'utf-8');
+			const content = fs.readFileSync(filePath, 'utf8');
 			for (const line of content.split('\n')) {
 				const trimmed = line.trim();
 				if (!trimmed || trimmed.startsWith('#')) continue;
@@ -112,9 +113,7 @@ export const baseViteOptions = ({
 					entryFileNames: '[name]-[hash:8].js',
 					chunkFileNames: 'chunks/[name]-[hash:8].js',
 					assetFileNames: '[name]-[hash:8][extname]',
-					...(externalKeys.length > 0
-						? { paths: externalsMap }
-						: {}),
+					...(externalKeys.length > 0 ? { paths: externalsMap } : {}),
 				},
 			},
 		},
@@ -185,6 +184,6 @@ export const makeViteConfig = (
 		},
 		// Vite uses `base` to prefix asset URLs in the output HTML/manifest.
 		// This mirrors webpack's output.publicPath.
-		...(publicPath !== '/' ? { base: publicPath } : {}),
+		...(publicPath === '/' ? {} : { base: publicPath }),
 	};
 };

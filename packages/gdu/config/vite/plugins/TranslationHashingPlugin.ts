@@ -97,10 +97,7 @@ async function loadMfeTranslations(
 	return translations;
 }
 
-function getEffectiveNamespace(
-	namespace: string,
-	packageName: string,
-): string {
+function getEffectiveNamespace(namespace: string, packageName: string): string {
 	if (namespace.startsWith('pkg-')) {
 		return namespace;
 	}
@@ -207,9 +204,7 @@ async function loadPackageLocales(
 			try {
 				localeTranslations[namespace] = JSON.parse(content);
 			} catch {
-				console.error(
-					`[${PLUGIN_NAME}] Failed to parse ${filePath}`,
-				);
+				console.error(`[${PLUGIN_NAME}] Failed to parse ${filePath}`);
 			}
 		}
 
@@ -438,8 +433,9 @@ export function translationHashingPlugin(
 			>();
 
 			if (opts.autoIncludePackageTranslations) {
-				packageTranslations =
-					await discoverPackageTranslations(opts.workspaceRoot);
+				packageTranslations = await discoverPackageTranslations(
+					opts.workspaceRoot,
+				);
 
 				// Add package locales to the set
 				for (const [, localeMap] of packageTranslations) {
@@ -451,9 +447,7 @@ export function translationHashingPlugin(
 				}
 			}
 
-			const discoveredPackages = Array.from(
-				packageTranslations.keys(),
-			);
+			const discoveredPackages = Array.from(packageTranslations.keys());
 
 			// 3. Handle empty translations case
 			if (allLocales.size === 0) {
@@ -512,10 +506,7 @@ export function translationHashingPlugin(
 					merged,
 				)) {
 					const content = JSON.stringify(translations);
-					const hash = generateContentHash(
-						content,
-						opts.hashLength,
-					);
+					const hash = generateContentHash(content, opts.hashLength);
 					const hashedFilename = `${namespace}.${hash}.json`;
 
 					this.emitFile({
@@ -535,10 +526,7 @@ export function translationHashingPlugin(
 			}
 
 			// 5. Generate per-locale manifest modules
-			for (const [
-				locale,
-				manifest,
-			] of translationManifests.entries()) {
+			for (const [locale, manifest] of translationManifests.entries()) {
 				const moduleContent = createManifestModule(
 					manifest,
 					discoveredPackages,
@@ -638,10 +626,7 @@ export function translationHashingPlugin(
 
 			const totalNamespaces = Array.from(
 				translationManifests.values(),
-			).reduce(
-				(sum, manifest) => sum + Object.keys(manifest).length,
-				0,
-			);
+			).reduce((sum, manifest) => sum + Object.keys(manifest).length, 0);
 			console.log(
 				`[${PLUGIN_NAME}] Emitted ${totalNamespaces} hashed translation files across ${allLocales.size} locales` +
 					(discoveredPackages.length > 0
