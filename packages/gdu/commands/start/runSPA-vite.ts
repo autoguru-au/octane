@@ -43,7 +43,6 @@ function relayCjsToEsmPlugin(): VitePlugin {
 			const imports: Array<{ placeholder: string; specifier: string }> =
 				[];
 			let idx = 0;
-
 			while ((match = requireRegex.exec(code)) !== null) {
 				const placeholder = `__relay_require_${idx++}__`;
 				imports.push({ placeholder, specifier: match[1] });
