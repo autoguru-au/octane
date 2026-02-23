@@ -27,8 +27,7 @@ export function guruConfigCjsPlugin(): VitePlugin {
 				code,
 				'export default __cjs;',
 				...keys.map(
-					(k) =>
-						`export const ${k} = __cjs[${JSON.stringify(k)}];`,
+					(k) => `export const ${k} = __cjs[${JSON.stringify(k)}];`,
 				),
 			];
 

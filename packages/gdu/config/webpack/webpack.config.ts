@@ -31,8 +31,8 @@ import {
 } from '../../lib/roots';
 import { getBuildEnvs, getConfigsDirs } from '../../utils/configs';
 import { getHooks } from '../../utils/hooks';
-
 import { getExternals, getPublicPath } from '../shared/externals';
+
 import { GuruBuildManifest } from './plugins/GuruBuildManifest';
 import { TranslationHashingPlugin } from './plugins/TranslationHashingPlugin';
 

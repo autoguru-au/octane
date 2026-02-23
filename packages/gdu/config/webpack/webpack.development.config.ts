@@ -26,8 +26,8 @@ import {
 } from '../../lib/roots';
 import { getBuildEnvs, getConfigsDirs } from '../../utils/configs';
 import { getHooks } from '../../utils/hooks';
-
 import { getPublicPath } from '../shared/externals';
+
 import { TranslationHashingPlugin } from './plugins/TranslationHashingPlugin';
 
 // React Compiler configuration

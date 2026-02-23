@@ -1,8 +1,8 @@
 import { isProductionBuild } from '../../lib/misc';
 import { getBuildEnvs } from '../../utils/configs';
 
-import { baseViteOptions, makeViteConfig } from './vite.config';
 import type { InlineConfig } from './types';
+import { baseViteOptions, makeViteConfig } from './vite.config';
 
 export interface ViteConfigOpts {
 	env: string;
