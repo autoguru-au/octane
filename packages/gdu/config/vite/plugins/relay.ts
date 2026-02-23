@@ -1,13 +1,4 @@
-// Inline Vite types so tsc compiles without a vite dependency.
-// At runtime, the actual Vite types are structurally compatible.
-
-interface VitePlugin {
-	name: string;
-	transform?: (
-		code: string,
-		id: string,
-	) => { code: string; map: null } | null;
-}
+import type { VitePlugin } from '../types';
 
 export function relayPlugin(artifactDirectory: string): VitePlugin {
 	const graphqlTagRegex = /graphql\s*`\s*([\s\S]*?)`/g;

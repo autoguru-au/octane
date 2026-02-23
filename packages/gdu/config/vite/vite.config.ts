@@ -12,52 +12,7 @@ import { GDU_ROOT, PROJECT_ROOT } from '../../lib/roots';
 import { getBuildEnvs, getConfigsDirs } from '../../utils/configs';
 import { getExternals, getPublicPath } from '../shared/externals';
 import { guruBuildManifest } from './plugins/GuruBuildManifest';
-
-// Inline Vite types so tsc compiles without a vite dependency.
-// At runtime, the actual Vite types are structurally compatible.
-
-interface RollupInputOptions {
-	input?: string | string[] | Record<string, string>;
-	external?: string[];
-	plugins?: unknown[];
-}
-
-interface RollupOutputOptions {
-	format?: string;
-	entryFileNames?: string;
-	chunkFileNames?: string;
-	assetFileNames?: string;
-	paths?: Record<string, string>;
-}
-
-interface InlineConfig {
-	resolve?: {
-		alias?: Record<string, string>;
-		extensions?: string[];
-	};
-	define?: Record<string, string>;
-	build?: {
-		target?: string;
-		outDir?: string;
-		emptyOutDir?: boolean;
-		sourcemap?: boolean;
-		minify?: string;
-		reportCompressedSize?: boolean;
-		chunkSizeWarningLimit?: number;
-		rollupOptions?: RollupInputOptions & {
-			output?: RollupOutputOptions;
-		};
-	};
-	esbuild?: {
-		target?: string;
-		legalComments?: string;
-		pure?: string[];
-		jsx?: string;
-		jsxImportSource?: string;
-		jsxDev?: boolean;
-	};
-	plugins?: unknown[];
-}
+import type { InlineConfig } from './types';
 
 const { branch = 'null', commit = 'null' } = envCI();
 
@@ -142,10 +97,10 @@ export const baseViteOptions = ({
 		},
 
 		build: {
-			target: 'es2020',
+			target: 'es2022',
 			outDir: guruConfig.outputPath,
 			emptyOutDir: true,
-			sourcemap: true,
+			sourcemap: 'hidden',
 			minify: 'esbuild',
 			reportCompressedSize: false,
 			chunkSizeWarningLimit: 1000,
@@ -165,7 +120,7 @@ export const baseViteOptions = ({
 		},
 
 		esbuild: {
-			target: 'es2020',
+			target: 'es2022',
 			jsx: 'automatic',
 			jsxImportSource: 'react',
 			jsxDev: false,

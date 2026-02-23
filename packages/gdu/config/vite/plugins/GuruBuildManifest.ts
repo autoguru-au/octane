@@ -1,36 +1,22 @@
 import fs from 'fs';
 import { resolve } from 'path';
 
-// Inline Rollup/Vite types so tsc compiles without a vite dependency.
-// At runtime, the actual Vite/Rollup types are structurally compatible.
-
-interface RollupOutputChunk {
-	type: 'chunk';
-	fileName: string;
-	isEntry: boolean;
-	isDynamicEntry: boolean;
-	viteMetadata?: { importedCss?: Set<string> };
-}
-
-interface RollupOutputAsset {
-	type: 'asset';
-	fileName: string;
-}
-
-type RollupOutputItem = RollupOutputChunk | RollupOutputAsset;
-
-interface VitePlugin {
-	name: string;
-	apply?: 'build' | 'serve';
-	generateBundle?: (
-		options: unknown,
-		bundle: Record<string, RollupOutputItem>,
-	) => void;
-}
+import type { VitePlugin } from '../types';
 
 interface Asset {
 	js: string[];
 	css: string[];
+}
+
+interface I18nManifestModule {
+	name: string;
+	hash: string;
+}
+
+interface I18nMetadata {
+	masterManifest: string;
+	manifestModules: Record<string, I18nManifestModule>;
+	supportedLocales: string[];
 }
 
 export interface Manifest {
@@ -40,6 +26,7 @@ export interface Manifest {
 	frameless?: boolean;
 	assets: Asset;
 	chunks?: Asset;
+	i18n?: I18nMetadata;
 }
 
 interface GuruBuildManifestOptions {
@@ -88,7 +75,7 @@ export function guruBuildManifest(
 		name: 'guru-build-manifest',
 		apply: 'build',
 
-		generateBundle(_outputOptions, bundle) {
+		writeBundle(_outputOptions, bundle) {
 			const result: Manifest = {
 				hash: '',
 				mountDOMId: opts.mountDOMId,
@@ -143,6 +130,30 @@ export function guruBuildManifest(
 
 			if (!opts.includeChunks) {
 				result.chunks = undefined;
+			}
+
+			// Merge i18n metadata from TranslationHashingPlugin if present
+			const i18nMetaEntry = bundle['i18n-master-manifest.json'];
+			if (
+				i18nMetaEntry &&
+				i18nMetaEntry.type === 'asset' &&
+				i18nMetaEntry.source
+			) {
+				try {
+					const i18nMeta = JSON.parse(String(i18nMetaEntry.source));
+					if (!i18nMeta.empty) {
+						result.i18n = {
+							masterManifest: i18nMeta.masterManifest,
+							manifestModules: i18nMeta.manifestModules,
+							supportedLocales: i18nMeta.locales,
+						};
+					}
+				} catch (error) {
+					console.warn(
+						'[guru-build-manifest] Failed to parse i18n-master-manifest.json:',
+						error,
+					);
+				}
 			}
 
 			ensureDirectoryExists(opts.outputDir);

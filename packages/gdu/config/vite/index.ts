@@ -2,18 +2,7 @@ import { isProductionBuild } from '../../lib/misc';
 import { getBuildEnvs } from '../../utils/configs';
 
 import { baseViteOptions, makeViteConfig } from './vite.config';
-
-// Inline the InlineConfig shape so tsc compiles without a vite dependency.
-// At runtime, the actual Vite types are structurally compatible.
-interface InlineConfig {
-	resolve?: Record<string, unknown>;
-	define?: Record<string, string>;
-	build?: Record<string, unknown>;
-	esbuild?: Record<string, unknown>;
-	plugins?: unknown[];
-	base?: string;
-	[key: string]: unknown;
-}
+import type { InlineConfig } from './types';
 
 export interface ViteConfigOpts {
 	env: string;

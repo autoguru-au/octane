@@ -13,52 +13,7 @@ import {
 	GDU_ROOT,
 	PROJECT_ROOT,
 } from '../../lib/roots';
-
-// Inline Vite types so tsc compiles without a vite dependency.
-// At runtime, the actual Vite types are structurally compatible.
-
-interface ViteServerOptions {
-	port?: number;
-	strictPort?: boolean;
-	host?: string | boolean;
-	cors?: boolean;
-	headers?: Record<string, string>;
-	fs?: { allow?: string[] };
-	hmr?: boolean | { overlay?: boolean };
-}
-
-interface VitePlugin {
-	name: string;
-	configureServer?: (server: any) => void | (() => void);
-	transform?: (
-		code: string,
-		id: string,
-	) => { code: string; map: null } | null;
-}
-
-interface ViteInlineConfig {
-	root?: string;
-	resolve?: Record<string, unknown>;
-	define?: Record<string, string>;
-	esbuild?: Record<string, unknown>;
-	css?: { devSourcemap?: boolean };
-	server?: ViteServerOptions;
-	plugins?: unknown[];
-	appType?: string;
-	optimizeDeps?: {
-		include?: string[];
-		exclude?: string[];
-	};
-}
-
-interface ViteDevServer {
-	listen: () => Promise<void>;
-	resolvedUrls: { local: string[]; network: string[] } | null;
-	transformIndexHtml: (url: string, html: string) => Promise<string>;
-	middlewares: {
-		use: (handler: (...args: any[]) => void) => void;
-	};
-}
+import type { InlineConfig, ViteDevServer, VitePlugin } from '../../config/vite/types';
 
 const getConsumerHtmlTemplate = (
 	guruConfig: GuruConfig,
@@ -192,6 +147,13 @@ export const runSPAVite = async (guruConfig: GuruConfig, isDebug: boolean) => {
 		}`,
 	);
 
+	if (typeof guruConfig.tap === 'function') {
+		console.warn(
+			'Warning: tap() hooks are not supported with Vite bundler. ' +
+				'Custom webpack configuration in guru.config.js will not be applied.',
+		);
+	}
+
 	const v8 = require('v8');
 	const heapStats = v8.getHeapStatistics();
 	const heapLimitMB = Math.round(heapStats.heap_size_limit / 1024 / 1024);
@@ -213,7 +175,7 @@ export const runSPAVite = async (guruConfig: GuruConfig, isDebug: boolean) => {
 	}) as Record<string, any>;
 
 	const { createServer } = require('vite') as {
-		createServer: (config: ViteInlineConfig) => Promise<ViteDevServer>;
+		createServer: (config: InlineConfig) => Promise<ViteDevServer>;
 	};
 
 	// Load Vite-dependent plugins at runtime to avoid tsc compilation errors.
@@ -274,6 +236,9 @@ export const runSPAVite = async (guruConfig: GuruConfig, isDebug: boolean) => {
 			hmr: {
 				overlay: true,
 			},
+			warmup: {
+				clientFiles: ['src/client.tsx'],
+			},
 			headers: {
 				'Access-Control-Allow-Origin': '*',
 				'Access-Control-Allow-Methods':
@@ -298,6 +263,8 @@ export const runSPAVite = async (guruConfig: GuruConfig, isDebug: boolean) => {
 				'react-relay',
 				'react-relay/hooks',
 				'@datadog/browser-rum',
+				'@datadog/browser-logs',
+				'@datadog/browser-rum-react',
 				'xstate',
 				'@xstate/react',
 				'cssesc',

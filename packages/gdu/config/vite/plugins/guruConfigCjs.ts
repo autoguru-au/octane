@@ -1,10 +1,4 @@
-interface VitePlugin {
-	name: string;
-	transform?: (
-		code: string,
-		id: string,
-	) => { code: string; map: null } | null;
-}
+import type { VitePlugin } from '../types';
 
 /**
  * Transforms CJS guru.config.js files into ESM-compatible modules.
