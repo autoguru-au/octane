@@ -19,6 +19,36 @@ const { branch = 'null', commit = 'null' } = envCI();
 
 const gduEntryPath = join(GDU_ROOT, 'entry');
 
+function stripQuotes(value: string): string {
+	if (
+		(value.startsWith('"') && value.endsWith('"')) ||
+		(value.startsWith("'") && value.endsWith("'"))
+	) {
+		return value.slice(1, -1);
+	}
+	return value;
+}
+
+function parseEnvFile(filePath: string): Record<string, string> {
+	const defines: Record<string, string> = {};
+	if (!fs.existsSync(filePath)) return defines;
+
+	const content = fs.readFileSync(filePath, 'utf8');
+	for (const line of content.split('\n')) {
+		const trimmed = line.trim();
+		if (!trimmed || trimmed.startsWith('#')) continue;
+
+		const eqIndex = trimmed.indexOf('=');
+		if (eqIndex === -1) continue;
+
+		const key = trimmed.slice(0, eqIndex).trim();
+		const value = stripQuotes(trimmed.slice(eqIndex + 1).trim());
+		defines[`process.env.${key}`] = JSON.stringify(value);
+	}
+
+	return defines;
+}
+
 /**
  * Load environment variables from .gdu_config/ and .gdu_app_config/ directories,
  * replicating dotenv-webpack behaviour.
@@ -28,31 +58,14 @@ function loadEnvDefines(buildEnv: string): Record<string, string> {
 	const appEnv = process.env.APP_ENV || buildEnv;
 
 	for (const configsDir of getConfigsDirs()) {
-		const defaultsPath = path.resolve(configsDir, '.env.defaults');
-		const envPath = path.resolve(configsDir, `.env.${appEnv}`);
-
-		for (const filePath of [defaultsPath, envPath]) {
-			if (!fs.existsSync(filePath)) continue;
-
-			const content = fs.readFileSync(filePath, 'utf8');
-			for (const line of content.split('\n')) {
-				const trimmed = line.trim();
-				if (!trimmed || trimmed.startsWith('#')) continue;
-
-				const eqIndex = trimmed.indexOf('=');
-				if (eqIndex === -1) continue;
-
-				const key = trimmed.slice(0, eqIndex).trim();
-				let value = trimmed.slice(eqIndex + 1).trim();
-				if (
-					(value.startsWith('"') && value.endsWith('"')) ||
-					(value.startsWith("'") && value.endsWith("'"))
-				) {
-					value = value.slice(1, -1);
-				}
-				defines[`process.env.${key}`] = JSON.stringify(value);
-			}
-		}
+		Object.assign(
+			defines,
+			parseEnvFile(path.resolve(configsDir, '.env.defaults')),
+		);
+		Object.assign(
+			defines,
+			parseEnvFile(path.resolve(configsDir, `.env.${appEnv}`)),
+		);
 	}
 
 	return defines;

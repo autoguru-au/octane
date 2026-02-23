@@ -61,6 +61,88 @@ function ensureDirectoryExists(dir: string): void {
 	fs.mkdirSync(dir, { recursive: true });
 }
 
+function collectEntryCssFiles(
+	bundle: Record<
+		string,
+		{
+			type: string;
+			isEntry?: boolean;
+			viteMetadata?: { importedCss?: Set<string> };
+		}
+	>,
+): Set<string> {
+	const entryCssFiles = new Set<string>();
+	for (const chunk of Object.values(bundle)) {
+		if (chunk.type !== 'chunk' || !chunk.isEntry) continue;
+		const referencedCss = chunk.viteMetadata?.importedCss;
+		if (!referencedCss) continue;
+		for (const cssFile of referencedCss) {
+			entryCssFiles.add(cssFile);
+		}
+	}
+	return entryCssFiles;
+}
+
+function classifyChunk(
+	fileName: string,
+	chunk: { type: string; isEntry?: boolean },
+	result: Manifest,
+	opts: Required<GuruBuildManifestOptions>,
+): void {
+	const jsPath = `${opts.publicPath}${fileName}`;
+	if (chunk.isEntry) {
+		result.assets.js.push(jsPath);
+		if (!result.hash) {
+			result.hash = extractHashFromFilename(fileName);
+		}
+	} else if (opts.includeChunks) {
+		result.chunks!.js.push(jsPath);
+	}
+}
+
+function classifyCssAsset(
+	fileName: string,
+	entryCssFiles: Set<string>,
+	result: Manifest,
+	opts: Required<GuruBuildManifestOptions>,
+): void {
+	const cssPath = `${opts.publicPath}${fileName}`;
+	if (entryCssFiles.has(fileName)) {
+		result.assets.css.push(cssPath);
+	} else if (opts.includeChunks) {
+		result.chunks!.css.push(cssPath);
+	}
+}
+
+function mergeI18nMetadata(
+	result: Manifest,
+	bundle: Record<string, { type: string; source?: string | Uint8Array }>,
+): void {
+	const i18nMetaEntry = bundle['i18n-master-manifest.json'];
+	if (
+		!i18nMetaEntry ||
+		i18nMetaEntry.type !== 'asset' ||
+		!i18nMetaEntry.source
+	) {
+		return;
+	}
+	try {
+		const i18nMeta = JSON.parse(String(i18nMetaEntry.source));
+		if (!i18nMeta.empty) {
+			result.i18n = {
+				masterManifest: i18nMeta.masterManifest,
+				manifestModules: i18nMeta.manifestModules,
+				supportedLocales: i18nMeta.locales,
+			};
+		}
+	} catch (error) {
+		console.warn(
+			'[guru-build-manifest] Failed to parse i18n-master-manifest.json:',
+			error,
+		);
+	}
+}
+
 export function guruBuildManifest(
 	options?: GuruBuildManifestOptions,
 ): VitePlugin {
@@ -85,49 +167,18 @@ export function guruBuildManifest(
 				chunks: { js: [], css: [] },
 			};
 
-			const entryCssFiles = new Set<string>();
+			const entryCssFiles = collectEntryCssFiles(bundle as any);
 
-			// First pass: identify CSS files referenced by entry chunks
-			for (const chunk of Object.values(bundle)) {
-				if (chunk.type === 'chunk') {
-					const referencedCss = chunk.viteMetadata?.importedCss;
-					if (referencedCss) {
-						for (const cssFile of referencedCss) {
-							if (chunk.isEntry) {
-								entryCssFiles.add(cssFile);
-							}
-						}
-					}
-				}
-			}
-
-			// Second pass: classify all bundle items
 			for (const [fileName, chunk] of Object.entries(bundle)) {
 				if (fileName.endsWith('.map')) continue;
 
 				if (chunk.type === 'chunk') {
-					const jsPath = `${opts.publicPath}${fileName}`;
-
-					if (chunk.isEntry) {
-						result.assets.js.push(jsPath);
-
-						if (!result.hash) {
-							result.hash = extractHashFromFilename(fileName);
-						}
-					} else if (opts.includeChunks) {
-						result.chunks!.js.push(jsPath);
-					}
+					classifyChunk(fileName, chunk, result, opts);
 				} else if (
 					chunk.type === 'asset' &&
 					fileName.endsWith('.css')
 				) {
-					const cssPath = `${opts.publicPath}${fileName}`;
-
-					if (entryCssFiles.has(fileName)) {
-						result.assets.css.push(cssPath);
-					} else if (opts.includeChunks) {
-						result.chunks!.css.push(cssPath);
-					}
+					classifyCssAsset(fileName, entryCssFiles, result, opts);
 				}
 			}
 
@@ -135,29 +186,7 @@ export function guruBuildManifest(
 				result.chunks = undefined;
 			}
 
-			// Merge i18n metadata from TranslationHashingPlugin if present
-			const i18nMetaEntry = bundle['i18n-master-manifest.json'];
-			if (
-				i18nMetaEntry &&
-				i18nMetaEntry.type === 'asset' &&
-				i18nMetaEntry.source
-			) {
-				try {
-					const i18nMeta = JSON.parse(String(i18nMetaEntry.source));
-					if (!i18nMeta.empty) {
-						result.i18n = {
-							masterManifest: i18nMeta.masterManifest,
-							manifestModules: i18nMeta.manifestModules,
-							supportedLocales: i18nMeta.locales,
-						};
-					}
-				} catch (error) {
-					console.warn(
-						'[guru-build-manifest] Failed to parse i18n-master-manifest.json:',
-						error,
-					);
-				}
-			}
+			mergeI18nMetadata(result, bundle as any);
 
 			ensureDirectoryExists(opts.outputDir);
 			const file = resolve(opts.outputDir, 'build-manifest.json');

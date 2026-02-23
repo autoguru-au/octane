@@ -84,7 +84,7 @@ function spaHtmlPlugin(guruConfig: GuruConfig): VitePlugin {
 	let baseHtml: string;
 
 	if (templatePath) {
-		baseHtml = readFileSync(templatePath, 'utf-8');
+		baseHtml = readFileSync(templatePath, 'utf8');
 		if (!baseHtml.includes(entryPath)) {
 			baseHtml = baseHtml.replace(
 				'</body>',

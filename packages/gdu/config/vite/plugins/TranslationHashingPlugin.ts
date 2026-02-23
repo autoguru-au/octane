@@ -38,6 +38,7 @@ interface TranslationHashingOptions {
 const PLUGIN_NAME = 'gdu-translation-hashing';
 
 function generateContentHash(content: string, length: number): string {
+	// eslint-disable-next-line sonarjs/hashing -- MD5 is used for cache-busting content hashes, not for security
 	return crypto
 		.createHash('md5')
 		.update(content)
@@ -106,6 +107,39 @@ function getEffectiveNamespace(namespace: string, packageName: string): string {
 	return `pkg-${simplifiedPackageName}`;
 }
 
+interface ResolvedPackageLocales {
+	localesPath: string;
+	namespaceFilter?: string[];
+}
+
+function resolvePackageLocalesPath(
+	packagePath: string,
+): ResolvedPackageLocales | null {
+	const packageJsonPath = path.join(packagePath, 'package.json');
+	if (!existsSync(packageJsonPath)) return null;
+
+	try {
+		const raw = require(packageJsonPath) as { i18n?: PackageI18nConfig };
+
+		if (raw.i18n) {
+			const candidatePath = path.join(
+				packagePath,
+				raw.i18n.localesPath || 'locales',
+			);
+			if (!existsSync(candidatePath)) return null;
+			return {
+				localesPath: candidatePath,
+				namespaceFilter: raw.i18n.namespaces,
+			};
+		}
+
+		const defaultPath = path.join(packagePath, 'locales');
+		return existsSync(defaultPath) ? { localesPath: defaultPath } : null;
+	} catch {
+		return null;
+	}
+}
+
 async function discoverPackageTranslations(
 	workspaceRoot: string,
 ): Promise<Map<string, Map<string, Record<string, unknown>>>> {
@@ -124,54 +158,48 @@ async function discoverPackageTranslations(
 	for (const packageDir of packageDirs) {
 		const packagePath = path.join(packagesDir, packageDir);
 		const stat = await fs.stat(packagePath);
-
 		if (!stat.isDirectory()) continue;
 
-		const packageJsonPath = path.join(packagePath, 'package.json');
-		if (!existsSync(packageJsonPath)) continue;
+		const resolved = resolvePackageLocalesPath(packagePath);
+		if (!resolved) continue;
 
-		let localesPath: string | null = null;
-		let namespaceFilter: string[] | undefined;
-
-		try {
-			const packageJson = JSON.parse(
-				await fs.readFile(packageJsonPath, 'utf8'),
-			);
-
-			if (packageJson.i18n) {
-				const i18nConfig = packageJson.i18n as PackageI18nConfig;
-				const candidatePath = path.join(
-					packagePath,
-					i18nConfig.localesPath || 'locales',
-				);
-				if (existsSync(candidatePath)) {
-					localesPath = candidatePath;
-					namespaceFilter = i18nConfig.namespaces;
-				}
-			} else {
-				const defaultPath = path.join(packagePath, 'locales');
-				if (existsSync(defaultPath)) {
-					localesPath = defaultPath;
-				}
-			}
-		} catch {
-			continue;
-		}
-
-		if (!localesPath) continue;
-
-		const packageName = `@autoguru/${packageDir}`;
 		const translations = await loadPackageLocales(
-			localesPath,
-			namespaceFilter,
+			resolved.localesPath,
+			resolved.namespaceFilter,
 		);
 
 		if (translations.size > 0) {
-			packageTranslations.set(packageName, translations);
+			packageTranslations.set(`@autoguru/${packageDir}`, translations);
 		}
 	}
 
 	return packageTranslations;
+}
+
+async function loadLocaleDirectory(
+	localePath: string,
+	namespaceFilter?: string[],
+): Promise<Record<string, unknown>> {
+	const files = await fs.readdir(localePath);
+	const translations: Record<string, unknown> = {};
+
+	for (const file of files) {
+		if (!file.endsWith('.json')) continue;
+
+		const namespace = file.replace('.json', '');
+		if (namespaceFilter && !namespaceFilter.includes(namespace)) continue;
+
+		const filePath = path.join(localePath, file);
+		const content = await fs.readFile(filePath, 'utf8');
+
+		try {
+			translations[namespace] = JSON.parse(content);
+		} catch {
+			console.error(`[${PLUGIN_NAME}] Failed to parse ${filePath}`);
+		}
+	}
+
+	return translations;
 }
 
 async function loadPackageLocales(
@@ -184,32 +212,14 @@ async function loadPackageLocales(
 	for (const locale of locales) {
 		const localePath = path.join(localesPath, locale);
 		const stat = await fs.stat(localePath);
-
 		if (!stat.isDirectory()) continue;
 
-		const files = await fs.readdir(localePath);
-		const localeTranslations: Record<string, unknown> = {};
-
-		for (const file of files) {
-			if (!file.endsWith('.json')) continue;
-
-			const namespace = file.replace('.json', '');
-			if (namespaceFilter && !namespaceFilter.includes(namespace)) {
-				continue;
-			}
-
-			const filePath = path.join(localePath, file);
-			const content = await fs.readFile(filePath, 'utf8');
-
-			try {
-				localeTranslations[namespace] = JSON.parse(content);
-			} catch {
-				console.error(`[${PLUGIN_NAME}] Failed to parse ${filePath}`);
-			}
-		}
-
-		if (Object.keys(localeTranslations).length > 0) {
-			localeMap.set(locale, localeTranslations);
+		const translations = await loadLocaleDirectory(
+			localePath,
+			namespaceFilter,
+		);
+		if (Object.keys(translations).length > 0) {
+			localeMap.set(locale, translations);
 		}
 	}
 
@@ -398,6 +408,121 @@ export default translationManifests;
 `;
 }
 
+function addPackageLocalesToSet(
+	allLocales: Set<string>,
+	packageTranslations: Map<string, Map<string, Record<string, unknown>>>,
+	excludeLocales: string[],
+): void {
+	for (const [, localeMap] of packageTranslations) {
+		for (const locale of localeMap.keys()) {
+			if (!excludeLocales.includes(locale)) {
+				allLocales.add(locale);
+			}
+		}
+	}
+}
+
+function emitEmptyManifest(ctx: PluginContext, hashLength: number): void {
+	const emptyContent = createEmptyMasterContent();
+	const emptyHash = generateContentHash(emptyContent, hashLength);
+	const masterJsName = `i18n-master-manifest.${emptyHash}.js`;
+
+	ctx.emitFile({
+		type: 'asset',
+		fileName: masterJsName,
+		source: emptyContent,
+	});
+	ctx.emitFile({
+		type: 'asset',
+		fileName: 'i18n-master-manifest.json',
+		source: JSON.stringify(
+			{
+				masterManifest: masterJsName,
+				manifestModules: {},
+				locales: [],
+				generated: new Date().toISOString(),
+				empty: true,
+			},
+			null,
+			2,
+		),
+	});
+
+	console.log(
+		`[${PLUGIN_NAME}] No translations found — emitted empty manifest`,
+	);
+}
+
+function emitLocaleTranslations(
+	ctx: PluginContext,
+	merged: Record<string, unknown>,
+	locale: string,
+	opts: { outputPath: string; hashLength: number },
+): LocaleManifest {
+	const manifest: LocaleManifest = {};
+
+	for (const [namespace, translations] of Object.entries(merged)) {
+		const content = JSON.stringify(translations);
+		const hash = generateContentHash(content, opts.hashLength);
+		const hashedFilename = `${namespace}.${hash}.json`;
+
+		ctx.emitFile({
+			type: 'asset',
+			fileName: `${opts.outputPath}${locale}/${hashedFilename}`,
+			source: content,
+		});
+
+		manifest[namespace] = {
+			path: `/locales/${locale}/${hashedFilename}`,
+			hash,
+			size: content.length,
+		};
+	}
+
+	return manifest;
+}
+
+function updateBuildManifest(
+	bundle: Record<string, { type: string; source?: string | Uint8Array }>,
+	metaInfo: Record<string, unknown>,
+	discoveredPackages: string[],
+	translationManifests: Map<string, LocaleManifest>,
+): void {
+	const entry = bundle['build-manifest.json'];
+	if (!entry || entry.type !== 'asset' || !('source' in entry)) return;
+
+	try {
+		const buildManifest = JSON.parse(String(entry.source));
+
+		buildManifest.i18n = {
+			masterManifest: metaInfo.masterManifest,
+			manifestModules: metaInfo.manifestModules,
+			supportedLocales: metaInfo.locales,
+			includedPackages: discoveredPackages,
+			translationAssets: {} as Record<string, Record<string, string>>,
+		};
+
+		for (const [locale, localeManifest] of translationManifests.entries()) {
+			buildManifest.i18n.translationAssets[locale] = {};
+			for (const [namespace, info] of Object.entries(localeManifest)) {
+				buildManifest.i18n.translationAssets[locale][namespace] =
+					info.path;
+			}
+		}
+
+		(entry as { source: string }).source = JSON.stringify(
+			buildManifest,
+			null,
+			2,
+		);
+	} catch (error) {
+		console.error(
+			`[${PLUGIN_NAME}] Failed to update build manifest:`,
+			error,
+		);
+	}
+}
+
 export function translationHashingPlugin(
 	options: TranslationHashingOptions,
 ): VitePlugin {
@@ -419,14 +544,11 @@ export function translationHashingPlugin(
 
 		async generateBundle(this: PluginContext, _outputOptions, _bundle) {
 			const localesPath = path.join(opts.appDir, opts.localesDir);
-
-			// 1. Collect all locale directories from MFE
 			const allLocales = await collectMfeLocales(
 				localesPath,
 				opts.excludeLocales,
 			);
 
-			// 2. Discover package translations from workspace
 			let packageTranslations = new Map<
 				string,
 				Map<string, Record<string, unknown>>
@@ -436,96 +558,40 @@ export function translationHashingPlugin(
 				packageTranslations = await discoverPackageTranslations(
 					opts.workspaceRoot,
 				);
-
-				// Add package locales to the set
-				for (const [, localeMap] of packageTranslations) {
-					for (const locale of localeMap.keys()) {
-						if (!opts.excludeLocales.includes(locale)) {
-							allLocales.add(locale);
-						}
-					}
-				}
+				addPackageLocalesToSet(
+					allLocales,
+					packageTranslations,
+					opts.excludeLocales,
+				);
 			}
 
 			const discoveredPackages = Array.from(packageTranslations.keys());
 
-			// 3. Handle empty translations case
 			if (allLocales.size === 0) {
-				const emptyContent = createEmptyMasterContent();
-				const emptyHash = generateContentHash(
-					emptyContent,
-					opts.hashLength,
-				);
-				const masterJsName = `i18n-master-manifest.${emptyHash}.js`;
-
-				const metaInfo = {
-					masterManifest: masterJsName,
-					manifestModules: {},
-					locales: [],
-					generated: new Date().toISOString(),
-					empty: true,
-				};
-
-				this.emitFile({
-					type: 'asset',
-					fileName: masterJsName,
-					source: emptyContent,
-				});
-				this.emitFile({
-					type: 'asset',
-					fileName: 'i18n-master-manifest.json',
-					source: JSON.stringify(metaInfo, null, 2),
-				});
-
-				console.log(
-					`[${PLUGIN_NAME}] No translations found — emitted empty manifest`,
-				);
+				emitEmptyManifest(this, opts.hashLength);
 				return;
 			}
 
-			// 4. Process each locale: load MFE translations, merge package translations, emit hashed files
+			// Process each locale
 			const translationManifests = new Map<string, LocaleManifest>();
-			const manifestModules = new Map<string, ManifestModule>();
-
 			for (const locale of allLocales) {
 				const mfeTranslations = await loadMfeTranslations(
 					localesPath,
 					locale,
 				);
-
 				const merged = mergePackageTranslations(
 					locale,
 					mfeTranslations,
 					packageTranslations,
 				);
-
-				const manifest: LocaleManifest = {};
-
-				// Emit each translation namespace as a hashed JSON file
-				for (const [namespace, translations] of Object.entries(
-					merged,
-				)) {
-					const content = JSON.stringify(translations);
-					const hash = generateContentHash(content, opts.hashLength);
-					const hashedFilename = `${namespace}.${hash}.json`;
-
-					this.emitFile({
-						type: 'asset',
-						fileName: `${opts.outputPath}${locale}/${hashedFilename}`,
-						source: content,
-					});
-
-					manifest[namespace] = {
-						path: `/locales/${locale}/${hashedFilename}`,
-						hash,
-						size: content.length,
-					};
-				}
-
-				translationManifests.set(locale, manifest);
+				translationManifests.set(
+					locale,
+					emitLocaleTranslations(this, merged, locale, opts),
+				);
 			}
 
-			// 5. Generate per-locale manifest modules
+			// Generate per-locale manifest modules
+			const manifestModules = new Map<string, ManifestModule>();
 			for (const [locale, manifest] of translationManifests.entries()) {
 				const moduleContent = createManifestModule(
 					manifest,
@@ -542,14 +608,13 @@ export function translationHashingPlugin(
 					fileName: moduleName,
 					source: moduleContent,
 				});
-
 				manifestModules.set(locale, {
 					name: moduleName,
 					hash: moduleHash,
 				});
 			}
 
-			// 6. Generate master manifest JS module
+			// Generate master manifest
 			const masterContent = createMasterManifest(manifestModules);
 			const masterHash = generateContentHash(
 				masterContent,
@@ -563,7 +628,6 @@ export function translationHashingPlugin(
 				source: masterContent,
 			});
 
-			// 7. Generate master manifest JSON metadata
 			const metaInfo = {
 				masterManifest: masterJsName,
 				manifestModules: Object.fromEntries(manifestModules),
@@ -577,52 +641,12 @@ export function translationHashingPlugin(
 				source: JSON.stringify(metaInfo, null, 2),
 			});
 
-			// 8. Update build-manifest.json if it exists in the bundle
-			const buildManifestEntry = _bundle['build-manifest.json'];
-			if (
-				buildManifestEntry &&
-				buildManifestEntry.type === 'asset' &&
-				'source' in buildManifestEntry
-			) {
-				try {
-					const buildManifest = JSON.parse(
-						String(buildManifestEntry.source),
-					);
-
-					buildManifest.i18n = {
-						masterManifest: metaInfo.masterManifest,
-						manifestModules: metaInfo.manifestModules,
-						supportedLocales: metaInfo.locales,
-						includedPackages: discoveredPackages,
-						translationAssets: {} as Record<
-							string,
-							Record<string, string>
-						>,
-					};
-
-					for (const [
-						locale,
-						localeManifest,
-					] of translationManifests.entries()) {
-						buildManifest.i18n.translationAssets[locale] = {};
-						for (const [namespace, info] of Object.entries(
-							localeManifest,
-						)) {
-							buildManifest.i18n.translationAssets[locale][
-								namespace
-							] = info.path;
-						}
-					}
-
-					(buildManifestEntry as { source: string }).source =
-						JSON.stringify(buildManifest, null, 2);
-				} catch (error) {
-					console.error(
-						`[${PLUGIN_NAME}] Failed to update build manifest:`,
-						error,
-					);
-				}
-			}
+			updateBuildManifest(
+				_bundle as any,
+				metaInfo,
+				discoveredPackages,
+				translationManifests,
+			);
 
 			const totalNamespaces = Array.from(
 				translationManifests.values(),
