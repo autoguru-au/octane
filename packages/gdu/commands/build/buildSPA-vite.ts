@@ -4,9 +4,9 @@ import { join } from 'path';
 import { cyan, magenta } from 'kleur';
 
 import viteConfigs from '../../config/vite';
+import { translationHashingPlugin } from '../../config/vite/plugins/TranslationHashingPlugin';
 import { guruConfigCjsPlugin } from '../../config/vite/plugins/guruConfigCjs';
 import { relayPlugin } from '../../config/vite/plugins/relay';
-import { translationHashingPlugin } from '../../config/vite/plugins/TranslationHashingPlugin';
 import type { InlineConfig } from '../../config/vite/types';
 import { GuruConfig } from '../../lib/config';
 import { CALLING_WORKSPACE_ROOT, PROJECT_ROOT } from '../../lib/roots';
@@ -33,7 +33,9 @@ export const buildSPAVite = async (guruConfig: GuruConfig) => {
 	const runtimePlugins: unknown[] = [];
 
 	try {
-		const { vanillaExtractPlugin } = require('@vanilla-extract/vite-plugin');
+		const {
+			vanillaExtractPlugin,
+		} = require('@vanilla-extract/vite-plugin');
 		runtimePlugins.push(vanillaExtractPlugin());
 	} catch {
 		// Vanilla Extract plugin not available.
