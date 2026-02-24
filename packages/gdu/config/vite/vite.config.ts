@@ -13,6 +13,7 @@ import { getBuildEnvs, getConfigsDirs } from '../../utils/configs';
 import { getExternals, getPublicPath } from '../shared/externals';
 
 import { guruBuildManifest } from './plugins/GuruBuildManifest';
+import { rolldownExternalShim } from './plugins/rolldownExternalShim';
 import type { InlineConfig } from './types';
 
 const { branch = 'null', commit = 'null' } = envCI();
@@ -155,6 +156,7 @@ export const baseViteOptions = ({
 		plugins: [
 			// Runtime plugins (vanillaExtractPlugin, tsconfigPaths, relayPlugin) are
 			// injected by buildSPA-vite.ts and runSPA-vite.ts to avoid tsc dependency on vite.
+			rolldownExternalShim(externalsMap),
 			guruBuildManifest({
 				mountDOMId: guruConfig.mountDOMId,
 				mountDOMClass: guruConfig.mountDOMClass,

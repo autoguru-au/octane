@@ -50,7 +50,7 @@ export interface VitePlugin {
 	) => { code: string; map: null } | null;
 	renderChunk?: (
 		code: string,
-		chunk: { fileName: string },
+		chunk: { fileName: string; isEntry?: boolean },
 	) => { code: string; map: null; moduleType?: string } | null;
 	configureServer?: (server: any) => void | (() => void);
 	generateBundle?: (
