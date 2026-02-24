@@ -1,9 +1,12 @@
 ---
-'gdu': patch
+'gdu': minor
 ---
 
-Replace require() with native dynamic import and add Rolldown ESM external plugin
+Upgrade from Vite 7 to Vite 8 (Rolldown + OXC)
 
-- Switch Vite and Vanilla Extract imports from synchronous `require()` to native dynamic `import()` to prevent TypeScript CJS output from rewriting them
-- Integrate Rolldown's `esmExternalRequirePlugin` to properly convert CJS `require()` calls for externalised modules into ESM imports
-- Extend VitePlugin type with `renderChunk` hook support
+- Bump `vite` dependency from `^7.0.0` to `^8.0.0-beta.0` — replaces Rollup + esbuild with Rolldown + OXC for 10-30x faster bundling
+- Rename `rollupOptions` to `rolldownOptions` and `esbuild` config to `oxc` across all Vite configuration
+- Change `minify: 'esbuild'` to `minify: true` (OXC minifier is the new default)
+- Import `esmExternalRequirePlugin` from `'vite'` instead of `'rolldown/plugins'` (now a first-class Vite 8 re-export)
+- Fix bug where `external: undefined` was set when esmExternalRequirePlugin loaded, which would have caused all externals to be bundled
+- Add `peerDependencyMeta` override for `@vanilla-extract/vite-plugin` to suppress Vite 8 peer dep warning

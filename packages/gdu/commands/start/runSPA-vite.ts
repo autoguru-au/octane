@@ -232,11 +232,13 @@ export const runSPAVite = async (guruConfig: GuruConfig, isDebug: boolean) => {
 			devSourcemap: true,
 		},
 
-		// Use esbuild's automatic JSX runtime (lighter than @vitejs/plugin-react
+		// Use OXC's automatic JSX runtime (lighter than @vitejs/plugin-react
 		// which uses Babel and causes OOM in large monorepos).
+		oxc: base.oxc,
+
+		// Remove production-only console stripping for dev mode.
 		esbuild: {
 			...base.esbuild,
-			// Remove production-only console stripping for dev mode.
 			pure: undefined,
 		},
 

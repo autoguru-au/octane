@@ -115,10 +115,10 @@ export const baseViteOptions = ({
 			outDir: guruConfig.outputPath,
 			emptyOutDir: true,
 			sourcemap: 'hidden',
-			minify: 'esbuild',
+			minify: true,
 			reportCompressedSize: false,
 			chunkSizeWarningLimit: 1000,
-			rollupOptions: {
+			rolldownOptions: {
 				input: { main: join(gduEntryPath, 'spa', 'client.js') },
 				external: externalKeys.length > 0 ? externalKeys : undefined,
 				output: {
@@ -131,11 +131,18 @@ export const baseViteOptions = ({
 			},
 		},
 
-		esbuild: {
+		oxc: {
 			target: 'es2022',
-			jsx: 'automatic',
-			jsxImportSource: 'react',
-			jsxDev: false,
+			jsx: {
+				runtime: 'automatic',
+				importSource: 'react',
+				development: false,
+			},
+		},
+
+		// esbuild is deprecated in Vite 8 (OXC handles transforms via `oxc` above)
+		// but the renderChunk pass still applies pure + legalComments settings.
+		esbuild: {
 			legalComments: 'none',
 			pure: [
 				'console.log',
@@ -186,11 +193,11 @@ export const makeViteConfig = (
 		build: {
 			...base.build,
 			outDir,
-			rollupOptions: {
-				...base.build?.rollupOptions,
+			rolldownOptions: {
+				...base.build?.rolldownOptions,
 				output: {
-					...base.build?.rollupOptions?.output,
-					// Rollup uses output.paths for external module URL rewriting;
+					...base.build?.rolldownOptions?.output,
+					// Rolldown uses output.paths for external module URL rewriting;
 					// Vite's `base` config handles asset publicPath prefixing.
 				},
 			},
