@@ -3,8 +3,8 @@ import { join } from 'path';
 
 import { cyan, magenta } from 'kleur';
 
-import viteConfigs from '../../config/vite';
 import { getExternals } from '../../config/shared/externals';
+import viteConfigs from '../../config/vite';
 import { translationHashingPlugin } from '../../config/vite/plugins/TranslationHashingPlugin';
 import { guruConfigCjsPlugin } from '../../config/vite/plugins/guruConfigCjs';
 import { relayPlugin } from '../../config/vite/plugins/relay';
@@ -17,6 +17,35 @@ const dynamicImport = new Function(
 	'specifier',
 	'return import(specifier)',
 ) as (specifier: string) => Promise<any>;
+
+async function loadEsmExternalPlugin(
+	externalKeys: string[],
+	plugins: unknown[],
+): Promise<boolean> {
+	if (externalKeys.length === 0) return false;
+
+	try {
+		const { esmExternalRequirePlugin } = (await dynamicImport(
+			'rolldown/plugins',
+		)) as {
+			esmExternalRequirePlugin: (config: {
+				external: Array<string | RegExp>;
+			}) => unknown;
+		};
+		plugins.push(
+			esmExternalRequirePlugin({ external: externalKeys }),
+		);
+		return true;
+	} catch {
+		console.warn(
+			magenta(
+				'Warning: esmExternalRequirePlugin could not be loaded from rolldown/plugins. ' +
+					'CJS require() shims for externalised modules may not be resolved correctly.',
+			),
+		);
+		return false;
+	}
+}
 
 export const buildSPAVite = async (guruConfig: GuruConfig) => {
 	console.log(cyan('Building SPA with Vite...'));
@@ -61,35 +90,13 @@ export const buildSPAVite = async (guruConfig: GuruConfig) => {
 	}
 
 	runtimePlugins.push(guruConfigCjsPlugin());
-	// Load Rolldown's built-in plugin to convert CJS require() calls
-	// for externalised modules into proper ESM imports.
-	// When loaded, this plugin takes sole ownership of externalization —
-	// the top-level build.rollupOptions.external must be removed to avoid
-	// duplicate handling that leaves require shim calls in output.
+
 	const externalKeys = Object.keys(getExternals(guruConfig?.standalone));
-	let hasEsmExternalPlugin = false;
-	if (externalKeys.length > 0) {
-		try {
-			const { esmExternalRequirePlugin } = (await dynamicImport(
-				'rolldown/plugins',
-			)) as {
-				esmExternalRequirePlugin: (config: {
-					external: Array<string | RegExp>;
-				}) => unknown;
-			};
-			runtimePlugins.push(
-				esmExternalRequirePlugin({ external: externalKeys }),
-			);
-			hasEsmExternalPlugin = true;
-		} catch (err) {
-			console.warn(
-				magenta(
-					'Warning: esmExternalRequirePlugin could not be loaded from rolldown/plugins. ' +
-						'CJS require() shims for externalised modules may not be resolved correctly.',
-				),
-			);
-		}
-	}
+	const hasEsmExternalPlugin = await loadEsmExternalPlugin(
+		externalKeys,
+		runtimePlugins,
+	);
+
 	runtimePlugins.push(
 		translationHashingPlugin({
 			appDir: PROJECT_ROOT,

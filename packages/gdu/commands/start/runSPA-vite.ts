@@ -193,9 +193,8 @@ export const runSPAVite = async (guruConfig: GuruConfig, isDebug: boolean) => {
 	// Load Vite-dependent plugins at runtime to avoid tsc compilation errors.
 	let vanillaExtractPlugin: (() => unknown) | undefined;
 	try {
-		vanillaExtractPlugin = (
-			await dynamicImport('@vanilla-extract/vite-plugin')
-		).vanillaExtractPlugin;
+		const veModule = await dynamicImport('@vanilla-extract/vite-plugin');
+		vanillaExtractPlugin = veModule.vanillaExtractPlugin;
 	} catch {
 		// Vanilla Extract plugin not available — .css.ts files will fail at runtime.
 	}
