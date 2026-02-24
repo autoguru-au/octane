@@ -13,10 +13,9 @@ import { GuruConfig } from '../../lib/config';
 import { CALLING_WORKSPACE_ROOT, PROJECT_ROOT } from '../../lib/roots';
 
 // Native dynamic import that TypeScript CJS output won't rewrite to require()
-const dynamicImport = new Function(
-	'specifier',
-	'return import(specifier)',
-) as (specifier: string) => Promise<any>;
+const dynamicImport = new Function('specifier', 'return import(specifier)') as (
+	specifier: string,
+) => Promise<any>;
 
 async function loadEsmExternalPlugin(
 	externalKeys: string[],
@@ -25,16 +24,12 @@ async function loadEsmExternalPlugin(
 	if (externalKeys.length === 0) return false;
 
 	try {
-		const { esmExternalRequirePlugin } = (await dynamicImport(
-			'vite',
-		)) as {
+		const { esmExternalRequirePlugin } = (await dynamicImport('vite')) as {
 			esmExternalRequirePlugin: (config: {
 				external: Array<string | RegExp>;
 			}) => unknown;
 		};
-		plugins.push(
-			esmExternalRequirePlugin({ external: externalKeys }),
-		);
+		plugins.push(esmExternalRequirePlugin({ external: externalKeys }));
 		return true;
 	} catch {
 		console.warn(

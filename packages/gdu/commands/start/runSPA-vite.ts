@@ -20,10 +20,9 @@ import {
 } from '../../lib/roots';
 
 // Native dynamic import that TypeScript CJS output won't rewrite to require()
-const dynamicImport = new Function(
-	'specifier',
-	'return import(specifier)',
-) as (specifier: string) => Promise<any>;
+const dynamicImport = new Function('specifier', 'return import(specifier)') as (
+	specifier: string,
+) => Promise<any>;
 
 const getConsumerHtmlTemplate = (
 	guruConfig: GuruConfig,
