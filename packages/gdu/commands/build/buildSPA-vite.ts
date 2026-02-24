@@ -3,6 +3,7 @@ import { join } from 'path';
 
 import { cyan, magenta } from 'kleur';
 
+import { getExternals } from '../../config/shared/externals';
 import viteConfigs from '../../config/vite';
 import { translationHashingPlugin } from '../../config/vite/plugins/TranslationHashingPlugin';
 import { guruConfigCjsPlugin } from '../../config/vite/plugins/guruConfigCjs';
@@ -10,6 +11,36 @@ import { relayPlugin } from '../../config/vite/plugins/relay';
 import type { InlineConfig } from '../../config/vite/types';
 import { GuruConfig } from '../../lib/config';
 import { CALLING_WORKSPACE_ROOT, PROJECT_ROOT } from '../../lib/roots';
+
+// Native dynamic import that TypeScript CJS output won't rewrite to require()
+const dynamicImport = new Function('specifier', 'return import(specifier)') as (
+	specifier: string,
+) => Promise<any>;
+
+async function loadEsmExternalPlugin(
+	externalKeys: string[],
+	plugins: unknown[],
+): Promise<boolean> {
+	if (externalKeys.length === 0) return false;
+
+	try {
+		const { esmExternalRequirePlugin } = (await dynamicImport('vite')) as {
+			esmExternalRequirePlugin: (config: {
+				external: Array<string | RegExp>;
+			}) => unknown;
+		};
+		plugins.push(esmExternalRequirePlugin({ external: externalKeys }));
+		return true;
+	} catch {
+		console.warn(
+			magenta(
+				'Warning: esmExternalRequirePlugin could not be loaded from vite. ' +
+					'CJS require() shims for externalised modules may not be resolved correctly.',
+			),
+		);
+		return false;
+	}
+}
 
 export const buildSPAVite = async (guruConfig: GuruConfig) => {
 	console.log(cyan('Building SPA with Vite...'));
@@ -33,9 +64,9 @@ export const buildSPAVite = async (guruConfig: GuruConfig) => {
 	const runtimePlugins: unknown[] = [];
 
 	try {
-		const {
-			vanillaExtractPlugin,
-		} = require('@vanilla-extract/vite-plugin');
+		const { vanillaExtractPlugin } = await dynamicImport(
+			'@vanilla-extract/vite-plugin',
+		);
 		runtimePlugins.push(vanillaExtractPlugin());
 	} catch {
 		// Vanilla Extract plugin not available.
@@ -54,6 +85,10 @@ export const buildSPAVite = async (guruConfig: GuruConfig) => {
 	}
 
 	runtimePlugins.push(guruConfigCjsPlugin());
+
+	const externalKeys = Object.keys(getExternals(guruConfig?.standalone));
+	await loadEsmExternalPlugin(externalKeys, runtimePlugins);
+
 	runtimePlugins.push(
 		translationHashingPlugin({
 			appDir: PROJECT_ROOT,
@@ -61,13 +96,14 @@ export const buildSPAVite = async (guruConfig: GuruConfig) => {
 		}),
 	);
 
-	const { build } = require('vite') as {
+	const { build } = (await dynamicImport('vite')) as {
 		build: (config: InlineConfig) => Promise<unknown>;
 	};
 
 	for (const config of configs) {
 		const mergedConfig: InlineConfig = {
 			...config,
+			build: config.build ? { ...config.build } : undefined,
 			plugins: [...runtimePlugins, ...(config.plugins || [])],
 		};
 

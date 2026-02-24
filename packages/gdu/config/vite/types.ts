@@ -1,13 +1,13 @@
-// Inline Vite/Rollup types so tsc compiles without a vite dependency.
-// At runtime, the actual Vite/Rollup types are structurally compatible.
+// Inline Vite/Rolldown types so tsc compiles without a vite dependency.
+// At runtime, the actual Vite/Rolldown types are structurally compatible.
 
-export interface RollupInputOptions {
+export interface RolldownInputOptions {
 	input?: string | string[] | Record<string, string>;
 	external?: string[];
 	plugins?: unknown[];
 }
 
-export interface RollupOutputOptions {
+export interface RolldownOutputOptions {
 	format?: string;
 	entryFileNames?: string;
 	chunkFileNames?: string;
@@ -15,7 +15,7 @@ export interface RollupOutputOptions {
 	paths?: Record<string, string>;
 }
 
-export interface RollupOutputChunk {
+export interface RolldownOutputChunk {
 	type: 'chunk';
 	fileName: string;
 	isEntry: boolean;
@@ -23,13 +23,13 @@ export interface RollupOutputChunk {
 	viteMetadata?: { importedCss?: Set<string> };
 }
 
-export interface RollupOutputAsset {
+export interface RolldownOutputAsset {
 	type: 'asset';
 	fileName: string;
 	source?: string;
 }
 
-export type RollupOutputItem = RollupOutputChunk | RollupOutputAsset;
+export type RolldownOutputItem = RolldownOutputChunk | RolldownOutputAsset;
 
 export interface EmittedAsset {
 	type: 'asset';
@@ -48,15 +48,19 @@ export interface VitePlugin {
 		code: string,
 		id: string,
 	) => { code: string; map: null } | null;
+	renderChunk?: (
+		code: string,
+		chunk: { fileName: string },
+	) => { code: string; map: null; moduleType?: string } | null;
 	configureServer?: (server: any) => void | (() => void);
 	generateBundle?: (
 		this: PluginContext,
 		options: unknown,
-		bundle: Record<string, RollupOutputItem>,
+		bundle: Record<string, RolldownOutputItem>,
 	) => void | Promise<void>;
 	writeBundle?: (
 		options: unknown,
-		bundle: Record<string, RollupOutputItem>,
+		bundle: Record<string, RolldownOutputItem>,
 	) => void;
 }
 
@@ -93,11 +97,19 @@ export interface InlineConfig {
 		outDir?: string;
 		emptyOutDir?: boolean;
 		sourcemap?: boolean | 'hidden';
-		minify?: string;
+		minify?: boolean | string;
 		reportCompressedSize?: boolean;
 		chunkSizeWarningLimit?: number;
-		rollupOptions?: RollupInputOptions & {
-			output?: RollupOutputOptions;
+		rolldownOptions?: RolldownInputOptions & {
+			output?: RolldownOutputOptions;
+		};
+	};
+	oxc?: {
+		target?: string;
+		jsx?: {
+			runtime?: string;
+			importSource?: string;
+			development?: boolean;
 		};
 	};
 	esbuild?: {
