@@ -132,7 +132,7 @@ export const baseViteOptions = ({
 						if (id.includes('packages/global-configs')) {
 							return 'mfe-configs';
 						}
-						return undefined;
+						return null;
 					},
 				},
 			},
