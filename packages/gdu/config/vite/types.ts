@@ -16,7 +16,7 @@ export interface RolldownOutputOptions {
 	manualChunks?: (
 		id: string,
 		meta: { getModuleInfo: (id: string) => unknown },
-	) => string | null | undefined | void;
+	) => string | void;
 }
 
 export interface RolldownOutputChunk {
