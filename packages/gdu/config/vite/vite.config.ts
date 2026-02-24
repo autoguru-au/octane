@@ -129,7 +129,8 @@ export const baseViteOptions = ({
 					assetFileNames: '[name]-[hash:8][extname]',
 					...(externalKeys.length > 0 ? { paths: externalsMap } : {}),
 					manualChunks(id) {
-						if (id.includes('packages/global-configs')) {
+						const normalizedId = id.replace(/\\/g, '/');
+						if (normalizedId.includes('packages/global-configs')) {
 							return 'mfe-configs';
 						}
 						return null;
