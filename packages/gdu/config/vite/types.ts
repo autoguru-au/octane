@@ -13,6 +13,10 @@ export interface RolldownOutputOptions {
 	chunkFileNames?: string;
 	assetFileNames?: string;
 	paths?: Record<string, string>;
+	manualChunks?: (
+		id: string,
+		meta: { getModuleInfo: (id: string) => unknown },
+	) => string | null | undefined | void;
 }
 
 export interface RolldownOutputChunk {

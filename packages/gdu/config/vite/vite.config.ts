@@ -128,6 +128,12 @@ export const baseViteOptions = ({
 					chunkFileNames: 'chunks/[name]-[hash:8].js',
 					assetFileNames: '[name]-[hash:8][extname]',
 					...(externalKeys.length > 0 ? { paths: externalsMap } : {}),
+					manualChunks(id) {
+						if (id.includes('packages/global-configs')) {
+							return 'mfe-configs';
+						}
+						return undefined;
+					},
 				},
 			},
 		},
