@@ -19,6 +19,12 @@ import {
 	PROJECT_ROOT,
 } from '../../lib/roots';
 
+// Native dynamic import that TypeScript CJS output won't rewrite to require()
+const dynamicImport = new Function(
+	'specifier',
+	'return import(specifier)',
+) as (specifier: string) => Promise<any>;
+
 const getConsumerHtmlTemplate = (
 	guruConfig: GuruConfig,
 ): string | undefined => {
@@ -180,15 +186,16 @@ export const runSPAVite = async (guruConfig: GuruConfig, isDebug: boolean) => {
 		standalone: guruConfig?.standalone,
 	}) as Record<string, any>;
 
-	const { createServer } = require('vite') as {
+	const { createServer } = (await dynamicImport('vite')) as {
 		createServer: (config: InlineConfig) => Promise<ViteDevServer>;
 	};
 
 	// Load Vite-dependent plugins at runtime to avoid tsc compilation errors.
 	let vanillaExtractPlugin: (() => unknown) | undefined;
 	try {
-		vanillaExtractPlugin =
-			require('@vanilla-extract/vite-plugin').vanillaExtractPlugin;
+		vanillaExtractPlugin = (
+			await dynamicImport('@vanilla-extract/vite-plugin')
+		).vanillaExtractPlugin;
 	} catch {
 		// Vanilla Extract plugin not available — .css.ts files will fail at runtime.
 	}

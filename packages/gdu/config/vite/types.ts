@@ -48,6 +48,12 @@ export interface VitePlugin {
 		code: string,
 		id: string,
 	) => { code: string; map: null } | null;
+	renderChunk?: (
+		code: string,
+		chunk: { fileName: string },
+	) =>
+		| { code: string; map: null; moduleType?: string }
+		| null;
 	configureServer?: (server: any) => void | (() => void);
 	generateBundle?: (
 		this: PluginContext,

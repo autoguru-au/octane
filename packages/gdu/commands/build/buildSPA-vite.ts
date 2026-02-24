@@ -4,12 +4,19 @@ import { join } from 'path';
 import { cyan, magenta } from 'kleur';
 
 import viteConfigs from '../../config/vite';
+import { getExternals } from '../../config/shared/externals';
 import { translationHashingPlugin } from '../../config/vite/plugins/TranslationHashingPlugin';
 import { guruConfigCjsPlugin } from '../../config/vite/plugins/guruConfigCjs';
 import { relayPlugin } from '../../config/vite/plugins/relay';
 import type { InlineConfig } from '../../config/vite/types';
 import { GuruConfig } from '../../lib/config';
 import { CALLING_WORKSPACE_ROOT, PROJECT_ROOT } from '../../lib/roots';
+
+// Native dynamic import that TypeScript CJS output won't rewrite to require()
+const dynamicImport = new Function(
+	'specifier',
+	'return import(specifier)',
+) as (specifier: string) => Promise<any>;
 
 export const buildSPAVite = async (guruConfig: GuruConfig) => {
 	console.log(cyan('Building SPA with Vite...'));
@@ -33,9 +40,9 @@ export const buildSPAVite = async (guruConfig: GuruConfig) => {
 	const runtimePlugins: unknown[] = [];
 
 	try {
-		const {
-			vanillaExtractPlugin,
-		} = require('@vanilla-extract/vite-plugin');
+		const { vanillaExtractPlugin } = await dynamicImport(
+			'@vanilla-extract/vite-plugin',
+		);
 		runtimePlugins.push(vanillaExtractPlugin());
 	} catch {
 		// Vanilla Extract plugin not available.
@@ -54,6 +61,35 @@ export const buildSPAVite = async (guruConfig: GuruConfig) => {
 	}
 
 	runtimePlugins.push(guruConfigCjsPlugin());
+	// Load Rolldown's built-in plugin to convert CJS require() calls
+	// for externalised modules into proper ESM imports.
+	// When loaded, this plugin takes sole ownership of externalization —
+	// the top-level build.rollupOptions.external must be removed to avoid
+	// duplicate handling that leaves require shim calls in output.
+	const externalKeys = Object.keys(getExternals(guruConfig?.standalone));
+	let hasEsmExternalPlugin = false;
+	if (externalKeys.length > 0) {
+		try {
+			const { esmExternalRequirePlugin } = (await dynamicImport(
+				'rolldown/plugins',
+			)) as {
+				esmExternalRequirePlugin: (config: {
+					external: Array<string | RegExp>;
+				}) => unknown;
+			};
+			runtimePlugins.push(
+				esmExternalRequirePlugin({ external: externalKeys }),
+			);
+			hasEsmExternalPlugin = true;
+		} catch (err) {
+			console.warn(
+				magenta(
+					'Warning: esmExternalRequirePlugin could not be loaded from rolldown/plugins. ' +
+						'CJS require() shims for externalised modules may not be resolved correctly.',
+				),
+			);
+		}
+	}
 	runtimePlugins.push(
 		translationHashingPlugin({
 			appDir: PROJECT_ROOT,
@@ -61,13 +97,26 @@ export const buildSPAVite = async (guruConfig: GuruConfig) => {
 		}),
 	);
 
-	const { build } = require('vite') as {
+	const { build } = (await dynamicImport('vite')) as {
 		build: (config: InlineConfig) => Promise<unknown>;
 	};
 
 	for (const config of configs) {
 		const mergedConfig: InlineConfig = {
 			...config,
+			build: config.build
+				? {
+						...config.build,
+						rollupOptions: config.build.rollupOptions
+							? {
+									...config.build.rollupOptions,
+									...(hasEsmExternalPlugin
+										? { external: undefined }
+										: {}),
+								}
+							: undefined,
+					}
+				: undefined,
 			plugins: [...runtimePlugins, ...(config.plugins || [])],
 		};
 
