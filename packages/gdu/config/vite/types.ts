@@ -10,7 +10,7 @@ export interface RolldownInputOptions {
 export interface RolldownOutputOptions {
 	format?: string;
 	entryFileNames?: string;
-	chunkFileNames?: string;
+	chunkFileNames?: string | ((chunkInfo: { name: string }) => string);
 	assetFileNames?: string;
 	paths?: Record<string, string>;
 	manualChunks?: (
@@ -48,6 +48,7 @@ export interface PluginContext {
 export interface VitePlugin {
 	name: string;
 	apply?: 'build' | 'serve';
+	enforce?: 'pre' | 'post';
 	transform?: (
 		code: string,
 		id: string,
