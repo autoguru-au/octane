@@ -10,6 +10,7 @@ import { getExternals } from '../shared/externals';
 
 import { guruBuildManifest } from './plugins/GuruBuildManifest';
 import { mfeEnvTokens } from './plugins/mfeEnvTokens';
+import { overdriveBarrelSplit } from './plugins/overdriveBarrelSplit';
 import { rolldownExternalShim } from './plugins/rolldownExternalShim';
 import { runtimePublicPath } from './plugins/runtimePublicPath';
 import type { InlineConfig } from './types';
@@ -197,6 +198,7 @@ export const baseViteOptions = ({
 		plugins: [
 			// Runtime plugins (vanillaExtractPlugin, tsconfigPaths, relayPlugin) are
 			// injected by buildSPA-vite.ts and runSPA-vite.ts to avoid tsc dependency on vite.
+			overdriveBarrelSplit(),
 			mfeEnvTokens(envTokenMap),
 			rolldownExternalShim(externalsMap),
 			guruBuildManifest({
