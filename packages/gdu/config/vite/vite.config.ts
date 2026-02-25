@@ -9,6 +9,7 @@ import { getBuildEnvs, getConfigsDirs } from '../../utils/configs';
 import { getExternals } from '../shared/externals';
 
 import { guruBuildManifest } from './plugins/GuruBuildManifest';
+import { mfeEnvTokens } from './plugins/mfeEnvTokens';
 import { rolldownExternalShim } from './plugins/rolldownExternalShim';
 import { runtimePublicPath } from './plugins/runtimePublicPath';
 import type { InlineConfig } from './types';
@@ -69,6 +70,34 @@ function loadEnvDefines(buildEnv: string): Record<string, string> {
 	return defines;
 }
 
+/**
+ * Extract process.env token entries from the define map so the mfeEnvTokens
+ * plugin can handle them instead of Vite's `define` (which would allow
+ * Rolldown to constant-fold the values across chunks).
+ *
+ * Returns `{ envTokenMap, remainingDefines }`:
+ * - `envTokenMap`: `{ isProduction: '"#{IS_PRODUCTION}"', ... }` for the plugin
+ * - `remainingDefines`: env defines with token entries removed
+ */
+function buildEnvTokenMap(envDefines: Record<string, string>): {
+	envTokenMap: Record<string, string>;
+	remainingDefines: Record<string, string>;
+} {
+	const envTokenMap: Record<string, string> = {};
+	const remainingDefines: Record<string, string> = {};
+
+	for (const [key, value] of Object.entries(envDefines)) {
+		const match = /^process\.env\.(.+)$/.exec(key);
+		if (match) {
+			envTokenMap[match[1]] = value;
+		} else {
+			remainingDefines[key] = value;
+		}
+	}
+
+	return { envTokenMap, remainingDefines };
+}
+
 export const baseViteOptions = ({
 	buildEnv,
 	isMultiEnv,
@@ -83,6 +112,7 @@ export const baseViteOptions = ({
 	const externalKeys = Object.keys(externalsMap);
 
 	const envDefines = loadEnvDefines(buildEnv);
+	const { envTokenMap, remainingDefines } = buildEnvTokenMap(envDefines);
 
 	return {
 		resolve: {
@@ -105,7 +135,9 @@ export const baseViteOptions = ({
 			__DEBUG__: JSON.stringify(false),
 			__GDU_APP_NAME__: JSON.stringify(getProjectName()),
 			__GDU_BUILD_INFO__: JSON.stringify({ commit, branch }),
-			...envDefines,
+			// Env token defines are handled by mfeEnvTokens plugin to prevent
+			// Rolldown from constant-folding Octopus tokens across chunks.
+			...remainingDefines,
 		},
 
 		build: {
@@ -122,7 +154,12 @@ export const baseViteOptions = ({
 				output: {
 					format: 'es',
 					entryFileNames: '[name]-[hash:8].js',
-					chunkFileNames: 'chunks/[name]-[hash:8].js',
+					chunkFileNames: (chunkInfo: { name: string }) => {
+						if (chunkInfo.name === 'mfe-configs') {
+							return 'mfe-configs-[hash:8].js';
+						}
+						return 'chunks/[name]-[hash:8].js';
+					},
 					assetFileNames: '[name]-[hash:8][extname]',
 					...(externalKeys.length > 0 ? { paths: externalsMap } : {}),
 					manualChunks(id) {
@@ -160,6 +197,7 @@ export const baseViteOptions = ({
 		plugins: [
 			// Runtime plugins (vanillaExtractPlugin, tsconfigPaths, relayPlugin) are
 			// injected by buildSPA-vite.ts and runSPA-vite.ts to avoid tsc dependency on vite.
+			mfeEnvTokens(envTokenMap),
 			rolldownExternalShim(externalsMap),
 			guruBuildManifest({
 				mountDOMId: guruConfig.mountDOMId,
