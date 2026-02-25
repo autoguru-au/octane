@@ -14,6 +14,7 @@ Added `runtimePublicPath` plugin that derives the CDN base URL at runtime from
 `import.meta.url` of the entry chunk — mirroring how webpack's
 `__webpack_require__.p` mechanism works via `set-public-path.js`.
 
-Also passes `publicPath` to `guruBuildManifest` in production Vite builds so
-`build-manifest.json` contains correctly prefixed asset paths for the app shell
-Lambda to inject.
+The build manifest keeps bare filenames (matching the webpack convention) so the
+app shell Lambda can add the CDN prefix as before. The `#{PUBLIC_PATH_BASE}`
+tokens are not used in the manifest because the deployment pipeline does not
+substitute them in JSON files served from the CDN.

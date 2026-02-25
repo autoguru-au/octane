@@ -3,14 +3,10 @@ import path, { join, resolve } from 'path';
 
 import envCI from 'env-ci';
 
-import {
-	getGuruConfig,
-	getProjectFolderName,
-	getProjectName,
-} from '../../lib/config';
+import { getGuruConfig, getProjectName } from '../../lib/config';
 import { GDU_ROOT, PROJECT_ROOT } from '../../lib/roots';
 import { getBuildEnvs, getConfigsDirs } from '../../utils/configs';
-import { getExternals, getPublicPath } from '../shared/externals';
+import { getExternals } from '../shared/externals';
 
 import { guruBuildManifest } from './plugins/GuruBuildManifest';
 import { rolldownExternalShim } from './plugins/rolldownExternalShim';
@@ -187,38 +183,15 @@ export const makeViteConfig = (
 	standalone?: boolean,
 ): InlineConfig => {
 	const guruConfig = getGuruConfig();
-	const { outputPath, isTenanted } = guruConfig;
+	const { outputPath } = guruConfig;
 
 	const outDir = `${outputPath}/${!isMultiEnv && buildEnv === 'prod' ? '' : buildEnv}`;
-	const publicPath = getPublicPath({
-		buildEnv,
-		isDev: false,
-		projectFolderName: getProjectFolderName(),
-		isTenanted,
-	});
-
-	const manifestOutputDir =
-		!isMultiEnv && buildEnv === 'prod'
-			? resolve(PROJECT_ROOT, 'dist')
-			: resolve(PROJECT_ROOT, 'dist', buildEnv);
 
 	const base = baseViteOptions({ buildEnv, isMultiEnv, standalone });
 
-	// Replace the guruBuildManifest plugin with one that has publicPath,
-	// and add the runtimePublicPath plugin for dynamic chunk resolution.
-	const plugins = (base.plugins || []).map((p: any) =>
-		p?.name === 'guru-build-manifest'
-			? guruBuildManifest({
-					mountDOMId: guruConfig.mountDOMId,
-					mountDOMClass: guruConfig.mountDOMClass,
-					frameless: guruConfig.frameless,
-					outputDir: manifestOutputDir,
-					includeChunks: true,
-					publicPath,
-				})
-			: p,
-	);
-	plugins.push(runtimePublicPath());
+	// Add the runtimePublicPath plugin for dynamic chunk resolution.
+	// The manifest keeps bare filenames — the Lambda adds the CDN prefix.
+	const plugins = [...(base.plugins || []), runtimePublicPath()];
 
 	return {
 		...base,
@@ -234,8 +207,8 @@ export const makeViteConfig = (
 			},
 		},
 		// Don't set Vite's base to the Octopus token — the #{...} syntax
-		// cannot survive inside minified JS bundles. Instead:
-		//  - build-manifest.json gets publicPath via guruBuildManifest plugin
-		//  - runtime chunk resolution uses runtimePublicPath plugin
+		// cannot survive inside minified JS bundles or build-manifest.json
+		// (Octopus doesn't substitute tokens in JSON served from CDN).
+		// Runtime chunk resolution is handled by the runtimePublicPath plugin.
 	};
 };
