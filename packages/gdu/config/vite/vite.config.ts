@@ -14,6 +14,7 @@ import { getExternals, getPublicPath } from '../shared/externals';
 
 import { guruBuildManifest } from './plugins/GuruBuildManifest';
 import { rolldownExternalShim } from './plugins/rolldownExternalShim';
+import { runtimePublicPath } from './plugins/runtimePublicPath';
 import type { InlineConfig } from './types';
 
 const { branch = 'null', commit = 'null' } = envCI();
@@ -185,7 +186,8 @@ export const makeViteConfig = (
 	isMultiEnv: boolean,
 	standalone?: boolean,
 ): InlineConfig => {
-	const { outputPath, isTenanted } = getGuruConfig();
+	const guruConfig = getGuruConfig();
+	const { outputPath, isTenanted } = guruConfig;
 
 	const outDir = `${outputPath}/${!isMultiEnv && buildEnv === 'prod' ? '' : buildEnv}`;
 	const publicPath = getPublicPath({
@@ -195,10 +197,32 @@ export const makeViteConfig = (
 		isTenanted,
 	});
 
+	const manifestOutputDir =
+		!isMultiEnv && buildEnv === 'prod'
+			? resolve(PROJECT_ROOT, 'dist')
+			: resolve(PROJECT_ROOT, 'dist', buildEnv);
+
 	const base = baseViteOptions({ buildEnv, isMultiEnv, standalone });
+
+	// Replace the guruBuildManifest plugin with one that has publicPath,
+	// and add the runtimePublicPath plugin for dynamic chunk resolution.
+	const plugins = (base.plugins || []).map((p: any) =>
+		p?.name === 'guru-build-manifest'
+			? guruBuildManifest({
+					mountDOMId: guruConfig.mountDOMId,
+					mountDOMClass: guruConfig.mountDOMClass,
+					frameless: guruConfig.frameless,
+					outputDir: manifestOutputDir,
+					includeChunks: true,
+					publicPath,
+				})
+			: p,
+	);
+	plugins.push(runtimePublicPath());
 
 	return {
 		...base,
+		plugins,
 		build: {
 			...base.build,
 			outDir,
@@ -206,13 +230,12 @@ export const makeViteConfig = (
 				...base.build?.rolldownOptions,
 				output: {
 					...base.build?.rolldownOptions?.output,
-					// Rolldown uses output.paths for external module URL rewriting;
-					// Vite's `base` config handles asset publicPath prefixing.
 				},
 			},
 		},
-		// Vite uses `base` to prefix asset URLs in the output HTML/manifest.
-		// This mirrors webpack's output.publicPath.
-		...(publicPath === '/' ? {} : { base: publicPath }),
+		// Don't set Vite's base to the Octopus token — the #{...} syntax
+		// cannot survive inside minified JS bundles. Instead:
+		//  - build-manifest.json gets publicPath via guruBuildManifest plugin
+		//  - runtime chunk resolution uses runtimePublicPath plugin
 	};
 };

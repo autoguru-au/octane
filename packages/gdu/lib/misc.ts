@@ -20,10 +20,10 @@ export const setEnvProd = (which) => {
 	if (which === true) {
 		// @ts-ignore
 		process.env.NODE_ENV = 'production';
+	} else {
+		// @ts-ignore
+		process.env.NODE_ENV = 'development';
 	}
-
-	// @ts-ignore
-	process.env.NODE_ENV = 'development';
 
 	prodEnv = true;
 };
