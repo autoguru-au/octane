@@ -1,5 +1,34 @@
 # gdu
 
+## 13.16.2
+
+### Patch Changes
+
+- 01fbd46: fix(gdu): centralise Octopus deploy tokens in mfe-configs chunk for
+  Vite builds
+
+    Rolldown constant-folds string literals from Vite's `define` across consumer
+    chunks, scattering `#{...}` Octopus tokens into dozens of files. The
+    deployment pipeline's `tokenReplacement.sh` only processes `mfe-configs`, so
+    scattered tokens were left un-replaced at runtime.
+
+    Added `mfeEnvTokens` plugin (`enforce: 'pre'`) that rewrites
+    `process.env.XXX` to `globalThis.__MFE_ENV__["XXX"]` before `define` runs.
+    Dynamic property access cannot be constant-folded, keeping all tokens inside
+    the `mfe-configs` chunk. The chunk is also routed to the dist root (not
+    `chunks/`) so Octopus TokenReplacement can find it.
+
+- 01fbd46: fix(gdu): remove publicPath from Vite build manifest
+
+    The deployment pipeline does not substitute `#{PUBLIC_PATH_BASE}` tokens in
+    `build-manifest.json` served from the CDN. This caused the app shell Lambda
+    to produce double-prefixed URLs where the literal `#` acted as a URL
+    fragment identifier, breaking all asset loading for Vite-built MFEs.
+
+    The manifest now keeps bare filenames (matching the webpack convention) so
+    the Lambda can add the CDN prefix as before. The `runtimePublicPath` plugin
+    independently handles chunk URL resolution at runtime.
+
 ## 13.16.1
 
 ### Patch Changes
