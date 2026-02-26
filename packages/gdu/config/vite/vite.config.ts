@@ -10,6 +10,7 @@ import { getExternals } from '../shared/externals';
 
 import { guruBuildManifest } from './plugins/GuruBuildManifest';
 import { mfeEnvTokens } from './plugins/mfeEnvTokens';
+import { overdriveBarrelSplit } from './plugins/overdriveBarrelSplit';
 import { rolldownExternalShim } from './plugins/rolldownExternalShim';
 import { runtimePublicPath } from './plugins/runtimePublicPath';
 import type { InlineConfig } from './types';
@@ -112,7 +113,7 @@ export const baseViteOptions = ({
 	const externalKeys = Object.keys(externalsMap);
 
 	const envDefines = loadEnvDefines(buildEnv);
-	const { envTokenMap, remainingDefines } = buildEnvTokenMap(envDefines);
+	const { envTokenMap } = buildEnvTokenMap(envDefines);
 
 	return {
 		resolve: {
@@ -135,9 +136,11 @@ export const baseViteOptions = ({
 			__DEBUG__: JSON.stringify(false),
 			__GDU_APP_NAME__: JSON.stringify(getProjectName()),
 			__GDU_BUILD_INFO__: JSON.stringify({ commit, branch }),
-			// Env token defines are handled by mfeEnvTokens plugin to prevent
-			// Rolldown from constant-folding Octopus tokens across chunks.
-			...remainingDefines,
+			// In production builds, mfeEnvTokens (enforce: 'pre') rewrites
+			// process.env.X to globalThis.__MFE_ENV__[X] before `define` runs,
+			// so these entries only take effect in dev mode where the plugin
+			// is disabled (apply: 'build').
+			...envDefines,
 		},
 
 		build: {
@@ -197,6 +200,7 @@ export const baseViteOptions = ({
 		plugins: [
 			// Runtime plugins (vanillaExtractPlugin, tsconfigPaths, relayPlugin) are
 			// injected by buildSPA-vite.ts and runSPA-vite.ts to avoid tsc dependency on vite.
+			overdriveBarrelSplit(),
 			mfeEnvTokens(envTokenMap),
 			rolldownExternalShim(externalsMap),
 			guruBuildManifest({
