@@ -1,5 +1,11 @@
 # gdu
 
+## 13.18.0
+
+### Minor Changes
+
+- 6031c15: Add bundle analyser support for Vite builds via `gdu build -a` flag
+
 ## 13.17.2
 
 ### Patch Changes
