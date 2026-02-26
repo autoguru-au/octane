@@ -96,6 +96,31 @@ export const buildSPAVite = async (guruConfig: GuruConfig) => {
 		}),
 	);
 
+	if (process.env.ANALYZE === 'true') {
+		try {
+			const { visualizer } = await dynamicImport(
+				'rollup-plugin-visualizer',
+			);
+			runtimePlugins.push(
+				visualizer({
+					filename: join(guruConfig.outputPath, 'bundle-report.html'),
+					open: false,
+					gzipSize: true,
+					brotliSize: true,
+					template: 'treemap',
+				}),
+			);
+		} catch {
+			console.warn(
+				magenta(
+					'Warning: rollup-plugin-visualizer is not installed. ' +
+						'Install it to enable bundle analysis for Vite builds: ' +
+						'yarn add -D rollup-plugin-visualizer',
+				),
+			);
+		}
+	}
+
 	const { build } = (await dynamicImport('vite')) as {
 		build: (config: InlineConfig) => Promise<unknown>;
 	};

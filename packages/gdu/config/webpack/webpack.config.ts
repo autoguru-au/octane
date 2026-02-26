@@ -8,7 +8,6 @@ import envCI from 'env-ci';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import { MinifyOptions } from 'terser';
 import TerserPlugin, { MinimizerOptions } from 'terser-webpack-plugin';
-import { TreatPlugin } from 'treat/webpack-plugin';
 import { TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
 import {
 	Configuration,
@@ -23,7 +22,6 @@ import {
 	getProjectFolderName,
 	getProjectName,
 } from '../../lib/config';
-import { isProductionBuild } from '../../lib/misc';
 import {
 	CALLING_WORKSPACE_ROOT,
 	GDU_ROOT,
@@ -387,17 +385,6 @@ export const baseOptions = ({
 					commit,
 					branch,
 				}),
-			}),
-			new TreatPlugin({
-				outputLoaders: [
-					{
-						loader: isProductionBuild()
-							? MiniCssExtractPlugin.loader
-							: require.resolve('style-loader'),
-					},
-				],
-				minify: true,
-				browsers,
 			}),
 			new VanillaExtractPlugin(),
 			new MiniCssExtractPlugin({

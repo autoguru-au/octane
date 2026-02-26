@@ -5,7 +5,6 @@ import browsers from 'browserslist-config-autoguru';
 import Dotenv from 'dotenv-webpack';
 import envCI from 'env-ci';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import { TreatPlugin } from 'treat/webpack-plugin';
 import { TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
 import {
 	Configuration,
@@ -353,15 +352,6 @@ export const baseDevelopmentOptions = ({
 					commit,
 					branch,
 				}),
-			}),
-			new TreatPlugin({
-				outputLoaders: [
-					{
-						loader: require.resolve('style-loader'),
-					},
-				],
-				minify: false,
-				browsers,
 			}),
 			new VanillaExtractPlugin(),
 			new MiniCssExtractPlugin({
