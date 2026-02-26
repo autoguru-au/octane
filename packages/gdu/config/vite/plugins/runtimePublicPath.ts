@@ -43,7 +43,7 @@ export function runtimePublicPath(projectName: string): VitePlugin {
 			//    We replace the hardcoded "/" with the per-MFE runtime path.
 			if (modified.includes('modulepreload')) {
 				const patched = modified.replace(
-					/return\s*["'`]\/["'`]\s*\+\s*(\w)/,
+					/return\s*["'`]\/["'`]\s*\+\s*(\w+)/,
 					`return((globalThis.__GDU_PUBLIC_PATHS__||{})[${key}]||"/")+$1`,
 				);
 				if (patched !== modified) {
