@@ -61,25 +61,41 @@ function ensureDirectoryExists(dir: string): void {
 	fs.mkdirSync(dir, { recursive: true });
 }
 
-function collectEntryCssFiles(
+export function collectEntryCssFiles(
 	bundle: Record<
 		string,
 		{
 			type: string;
 			isEntry?: boolean;
+			imports?: string[];
 			viteMetadata?: { importedCss?: Set<string> };
 		}
 	>,
 ): Set<string> {
 	const entryCssFiles = new Set<string>();
-	for (const chunk of Object.values(bundle)) {
-		if (chunk.type !== 'chunk' || !chunk.isEntry) continue;
-		const referencedCss = chunk.viteMetadata?.importedCss;
-		if (!referencedCss) continue;
-		for (const cssFile of referencedCss) {
-			entryCssFiles.add(cssFile);
+	const visited = new Set<string>();
+
+	function walk(fileName: string) {
+		if (visited.has(fileName)) return;
+		visited.add(fileName);
+
+		const chunk = bundle[fileName];
+		if (!chunk || chunk.type !== 'chunk') return;
+
+		const css = chunk.viteMetadata?.importedCss;
+		if (css) {
+			for (const file of css) entryCssFiles.add(file);
+		}
+
+		if (chunk.imports) {
+			for (const dep of chunk.imports) walk(dep);
 		}
 	}
+
+	for (const [fileName, chunk] of Object.entries(bundle)) {
+		if (chunk.type === 'chunk' && chunk.isEntry) walk(fileName);
+	}
+
 	return entryCssFiles;
 }
 
