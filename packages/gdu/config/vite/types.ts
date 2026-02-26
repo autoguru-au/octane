@@ -24,6 +24,7 @@ export interface RolldownOutputChunk {
 	fileName: string;
 	isEntry: boolean;
 	isDynamicEntry: boolean;
+	imports?: string[];
 	viteMetadata?: { importedCss?: Set<string> };
 }
 
