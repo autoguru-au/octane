@@ -32,6 +32,7 @@ export function overdriveBarrelSplit(): VitePlugin {
 	return {
 		name: 'gdu-overdrive-barrel-split',
 		enforce: 'pre',
+		apply: 'build',
 
 		transform(code, id) {
 			if (!/\.[jt]sx?$/.test(id)) return null;

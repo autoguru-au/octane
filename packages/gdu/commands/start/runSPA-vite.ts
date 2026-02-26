@@ -81,6 +81,46 @@ function relayCjsToEsmPlugin(): VitePlugin {
 	};
 }
 
+/**
+ * Vite 8 with OXC does not replace custom `process.env.X` dotted member
+ * expressions via the `define` config — only simple identifiers and the
+ * special-cased `NODE_ENV` work.  In production the `mfeEnvTokens` plugin
+ * (apply: 'build') handles this; for dev mode we need an equivalent
+ * pre-transform that inlines the literal values.
+ */
+function devEnvReplace(define: Record<string, any>): VitePlugin {
+	const envMap: Record<string, string> = {};
+	for (const [key, value] of Object.entries(define)) {
+		const match = /^process\.env\.(.+)$/.exec(key);
+		if (match) {
+			envMap[match[1]] = String(value);
+		}
+	}
+
+	const keys = Object.keys(envMap);
+	if (keys.length === 0) {
+		return { name: 'gdu-dev-env-replace' };
+	}
+
+	const escapedKeys = keys.map((k) =>
+		k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'),
+	);
+	const pattern = new RegExp(
+		`\\bprocess\\.env\\.(${escapedKeys.join('|')})\\b`,
+		'g',
+	);
+
+	return {
+		name: 'gdu-dev-env-replace',
+		enforce: 'pre',
+		transform(code) {
+			if (!code.includes('process.env.')) return null;
+			const result = code.replace(pattern, (_, key) => envMap[key]);
+			return result !== code ? { code: result, map: null } : null;
+		},
+	};
+}
+
 function spaHtmlPlugin(guruConfig: GuruConfig): VitePlugin {
 	const entryPath = join(gduEntryPath, 'spa', 'client.js');
 	const templatePath = getConsumerHtmlTemplate(guruConfig);
@@ -215,17 +255,21 @@ export const runSPAVite = async (guruConfig: GuruConfig, isDebug: boolean) => {
 		}
 	}
 
+	// Build the full define map so devEnvReplace sees the dev overrides
+	// (e.g. NODE_ENV = 'development') rather than the production defaults.
+	const devDefine = {
+		...base.define,
+		'process.env.NODE_ENV': JSON.stringify('development'),
+		__DEV__: JSON.stringify(true),
+		__DEBUG__: JSON.stringify(!!isDebug),
+	};
+
 	const server = await createServer({
 		root: PROJECT_ROOT,
 
 		resolve: base.resolve,
 
-		define: {
-			...base.define,
-			'process.env.NODE_ENV': JSON.stringify('development'),
-			__DEV__: JSON.stringify(true),
-			__DEBUG__: JSON.stringify(!!isDebug),
-		},
+		define: devDefine,
 
 		css: {
 			devSourcemap: true,
@@ -293,6 +337,7 @@ export const runSPAVite = async (guruConfig: GuruConfig, isDebug: boolean) => {
 		appType: 'custom',
 
 		plugins: [
+			devEnvReplace(devDefine),
 			...(vanillaExtractPlugin ? [vanillaExtractPlugin()] : []),
 			...(relayTransformPlugin ? [relayTransformPlugin] : []),
 			relayCjsToEsmPlugin(),

@@ -113,7 +113,7 @@ export const baseViteOptions = ({
 	const externalKeys = Object.keys(externalsMap);
 
 	const envDefines = loadEnvDefines(buildEnv);
-	const { envTokenMap, remainingDefines } = buildEnvTokenMap(envDefines);
+	const { envTokenMap } = buildEnvTokenMap(envDefines);
 
 	return {
 		resolve: {
@@ -136,9 +136,11 @@ export const baseViteOptions = ({
 			__DEBUG__: JSON.stringify(false),
 			__GDU_APP_NAME__: JSON.stringify(getProjectName()),
 			__GDU_BUILD_INFO__: JSON.stringify({ commit, branch }),
-			// Env token defines are handled by mfeEnvTokens plugin to prevent
-			// Rolldown from constant-folding Octopus tokens across chunks.
-			...remainingDefines,
+			// In production builds, mfeEnvTokens (enforce: 'pre') rewrites
+			// process.env.X to globalThis.__MFE_ENV__[X] before `define` runs,
+			// so these entries only take effect in dev mode where the plugin
+			// is disabled (apply: 'build').
+			...envDefines,
 		},
 
 		build: {
