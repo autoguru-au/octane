@@ -8,12 +8,17 @@ import type { VitePlugin } from '../types';
  * #{PUBLIC_PATH_BASE} Octopus token cannot survive inside minified JS.
  *
  * This plugin:
- *   1. Prepends entry chunks with a global that captures the CDN base from
- *      import.meta.url (e.g. https://mfe.au-dev.autoguru.com/fmo-booking/)
- *   2. Patches the Vite preload helper so it reads the global instead of
- *      using the hardcoded "/" base value.
+ *   1. Prepends entry chunks with a namespaced global that captures the CDN
+ *      base from import.meta.url (e.g. https://mfe.au-dev.autoguru.com/fmo-booking/)
+ *   2. Patches the Vite preload helper so it reads the namespaced global
+ *      instead of using the hardcoded "/" base value.
+ *
+ * Each MFE gets its own key inside `globalThis.__GDU_PUBLIC_PATHS__` so that
+ * multiple MFEs on the same page don't clobber each other's public path.
  */
-export function runtimePublicPath(): VitePlugin {
+export function runtimePublicPath(projectName: string): VitePlugin {
+	const key = JSON.stringify(projectName);
+
 	return {
 		name: 'gdu-runtime-public-path',
 		apply: 'build',
@@ -22,11 +27,12 @@ export function runtimePublicPath(): VitePlugin {
 			let modified = code;
 			let changed = false;
 
-			// 1. Entry chunks: derive the public path from import.meta.url.
+			// 1. Entry chunks: derive the public path from import.meta.url
+			//    and store it in a per-MFE slot on a shared global object.
 			//    e.g. "https://cdn/fmo-booking/main-abc.js" → "https://cdn/fmo-booking/"
 			if (chunk.isEntry) {
 				modified =
-					'globalThis.__GDU_PUBLIC_PATH__=new URL(".",import.meta.url).href;' +
+					`(globalThis.__GDU_PUBLIC_PATHS__=globalThis.__GDU_PUBLIC_PATHS__||{})[${key}]=new URL(".",import.meta.url).href;` +
 					modified;
 				changed = true;
 			}
@@ -34,11 +40,11 @@ export function runtimePublicPath(): VitePlugin {
 			// 2. Patch the Vite preload helper's URL resolver function.
 			//    At renderChunk time (before final minification), the code is:
 			//      assetsURL = function(dep) { return "/" + dep; };
-			//    We replace the hardcoded "/" with the runtime global.
+			//    We replace the hardcoded "/" with the per-MFE runtime path.
 			if (modified.includes('modulepreload')) {
 				const patched = modified.replace(
 					/return\s*["'`]\/["'`]\s*\+\s*(\w)/,
-					'return(globalThis.__GDU_PUBLIC_PATH__||"/")+$1',
+					`return((globalThis.__GDU_PUBLIC_PATHS__||{})[${key}]||"/")+$1`,
 				);
 				if (patched !== modified) {
 					modified = patched;
