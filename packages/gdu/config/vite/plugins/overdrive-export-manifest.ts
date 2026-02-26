@@ -3,7 +3,7 @@
  * to its deep import path. Used by the Vite barrel-splitting plugin to rewrite
  * barrel imports into granular deep imports for optimal tree-shaking.
  *
- * Regenerate with: npx tsx overdrive-manifest-generator.ts
+ * Regenerate with: npx tsx packages/gdu/config/vite/plugins/overdrive-manifest-generator.ts
  *
  * Source: @autoguru/overdrive@4.53.1
  */

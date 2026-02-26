@@ -1,10 +1,9 @@
-#!/usr/bin/env -S npx tsx
 /**
  * Generates overdrive-export-manifest.ts by parsing the barrel export structure
  * of @autoguru/overdrive. Run this script whenever Overdrive is updated to
  * regenerate the manifest.
  *
- * Usage: npx tsx overdrive-manifest-generator.ts [--overdrive-path <path>]
+ * Usage: npx tsx packages/gdu/config/vite/plugins/overdrive-manifest-generator.ts [--overdrive-path <path>]
  *
  * Defaults to resolving @autoguru/overdrive from node_modules.
  */
@@ -18,6 +17,8 @@ interface ManifestEntry {
 }
 
 type Manifest = Record<string, ManifestEntry>;
+
+type OverdriveCategory = 'components' | 'hooks' | 'styles' | 'themes' | 'utils';
 
 const RE_EXPORT_NAMED =
 	/export\s*\{([^}]+)\}\s*from\s*["']([^"']+)["']/g;
@@ -36,7 +37,7 @@ function parseReExports(
 
 		const names = namesStr.split(',').map((part) => {
 			const trimmed = part.trim();
-			const asMatch = /^(\w+)\s+as\s+(\w+)$/.exec(trimmed);
+			const asMatch = /^([a-zA-Z_$][\w$]*)\s+as\s+([a-zA-Z_$][\w$]*)$/.exec(trimmed);
 			if (asMatch) {
 				return { local: asMatch[1], exported: asMatch[2] };
 			}
@@ -51,7 +52,7 @@ function parseReExports(
 
 function resolveDeepPath(
 	relativePath: string,
-	category: 'components' | 'hooks' | 'styles' | 'themes' | 'utils',
+	category: OverdriveCategory,
 ): string {
 	const base = `@autoguru/overdrive/${category}`;
 
@@ -82,7 +83,7 @@ function resolveDeepPath(
 
 function processBarrelFile(
 	filePath: string,
-	category: 'components' | 'hooks' | 'styles' | 'themes' | 'utils',
+	category: OverdriveCategory,
 ): Manifest {
 	const manifest: Manifest = {};
 	const source = fs.readFileSync(filePath, 'utf8');
@@ -101,69 +102,49 @@ function processBarrelFile(
 	return manifest;
 }
 
+const CATEGORY_PREFIXES: Array<[string, OverdriveCategory]> = [
+	['./components/', 'components'],
+	['./hooks/', 'hooks'],
+	['./styles/', 'styles'],
+	['./themes/', 'themes'],
+	['./utils/', 'utils'],
+];
+
+const BARREL_RE_EXPORTS = new Set([
+	'./components/index.js',
+	'./hooks/index.js',
+	'./styles/index.js',
+]);
+
+function detectCategory(fromPath: string): OverdriveCategory | undefined {
+	for (const [prefix, category] of CATEGORY_PREFIXES) {
+		if (fromPath.startsWith(prefix)) return category;
+	}
+	return undefined;
+}
+
 function processTopLevelBarrel(filePath: string): {
 	manifest: Manifest;
-	stats: {
-		componentExports: number;
-		hookExports: number;
-		styleExports: number;
-		aliasExports: number;
-		utilExports: number;
-	};
 } {
 	const manifest: Manifest = {};
 	const source = fs.readFileSync(filePath, 'utf8');
 	const reExports = parseReExports(source);
 
-	const stats = {
-		componentExports: 0,
-		hookExports: 0,
-		styleExports: 0,
-		aliasExports: 0,
-		utilExports: 0,
-	};
-
 	for (const { names, from: fromPath } of reExports) {
-		let category: 'components' | 'hooks' | 'styles' | 'themes' | 'utils';
-
-		if (fromPath.startsWith('./components/')) {
-			category = 'components';
-		} else if (fromPath.startsWith('./hooks/')) {
-			category = 'hooks';
-		} else if (fromPath.startsWith('./styles/')) {
-			category = 'styles';
-		} else if (fromPath.startsWith('./themes/')) {
-			category = 'themes';
-		} else if (fromPath.startsWith('./utils/')) {
-			category = 'utils';
-		} else {
-			continue;
-		}
+		const category = detectCategory(fromPath);
+		if (!category) continue;
+		if (BARREL_RE_EXPORTS.has(fromPath)) continue;
 
 		for (const { exported, local } of names) {
-			if (
-				fromPath === './components/index.js' ||
-				fromPath === './hooks/index.js' ||
-				fromPath === './styles/index.js'
-			) {
-				// These are barrel re-exports; we resolve them separately
-				// from the sub-barrel files for accurate deep paths
-				continue;
-			}
-
 			const deepPath = resolveDeepPath(fromPath, category);
 			manifest[exported] = { path: deepPath };
 			if (local !== exported) {
 				manifest[exported].originalName = local;
 			}
-
-			if (category === 'themes') stats.aliasExports++;
-			else if (category === 'styles') stats.aliasExports++;
-			else if (category === 'utils') stats.utilExports++;
 		}
 	}
 
-	return { manifest, stats };
+	return { manifest };
 }
 
 function generateManifestSource(manifest: Manifest): string {
@@ -175,7 +156,7 @@ function generateManifestSource(manifest: Manifest): string {
 	lines.push(` * to its deep import path. Used by the Vite barrel-splitting plugin to rewrite`);
 	lines.push(` * barrel imports into granular deep imports for optimal tree-shaking.`);
 	lines.push(` *`);
-	lines.push(` * Regenerate with: npx tsx overdrive-manifest-generator.ts`);
+	lines.push(` * Regenerate with: npx tsx packages/gdu/config/vite/plugins/overdrive-manifest-generator.ts`);
 	lines.push(` *`);
 	lines.push(` * Total exports: ${entries.length}`);
 	lines.push(` */`);
@@ -191,12 +172,16 @@ function generateManifestSource(manifest: Manifest): string {
 	lines.push('> = {');
 
 	for (const [name, entry] of entries) {
+		const key = JSON.stringify(name);
+		const pathLiteral = JSON.stringify(entry.path);
+
 		if (entry.originalName) {
+			const originalNameLiteral = JSON.stringify(entry.originalName);
 			lines.push(
-				`\t${name}: { path: '${entry.path}', originalName: '${entry.originalName}' },`,
+				`\t${key}: { path: ${pathLiteral}, originalName: ${originalNameLiteral} },`,
 			);
 		} else {
-			lines.push(`\t${name}: { path: '${entry.path}' },`);
+			lines.push(`\t${key}: { path: ${pathLiteral} },`);
 		}
 	}
 
@@ -274,7 +259,8 @@ function main() {
 	// 4. Parse top-level barrel for aliases and utils
 	const topBarrel = path.join(distPath, 'index.js');
 	if (fs.existsSync(topBarrel)) {
-		const { manifest: topManifest } = processTopLevelBarrel(topBarrel);
+		const { manifest: topManifest } =
+			processTopLevelBarrel(topBarrel);
 		Object.assign(manifest, topManifest);
 		console.log(
 			`  Aliases & utils: ${Object.keys(topManifest).length} exports`,

@@ -103,7 +103,7 @@ function devEnvReplace(define: Record<string, any>): VitePlugin {
 	}
 
 	const escapedKeys = keys.map((k) =>
-		k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'),
+		k.replace(/[.*+?^${}()|[\]\\]/g, String.raw`\$&`),
 	);
 	const pattern = new RegExp(
 		`\\bprocess\\.env\\.(${escapedKeys.join('|')})\\b`,
@@ -116,7 +116,7 @@ function devEnvReplace(define: Record<string, any>): VitePlugin {
 		transform(code) {
 			if (!code.includes('process.env.')) return null;
 			const result = code.replace(pattern, (_, key) => envMap[key]);
-			return result !== code ? { code: result, map: null } : null;
+			return result === code ? null : { code: result, map: null };
 		},
 	};
 }
