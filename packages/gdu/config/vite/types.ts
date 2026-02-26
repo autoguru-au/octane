@@ -103,6 +103,7 @@ export interface InlineConfig {
 		emptyOutDir?: boolean;
 		sourcemap?: boolean | 'hidden';
 		minify?: boolean | string;
+		cssMinify?: boolean | 'esbuild' | 'lightningcss';
 		reportCompressedSize?: boolean;
 		chunkSizeWarningLimit?: number;
 		rolldownOptions?: RolldownInputOptions & {

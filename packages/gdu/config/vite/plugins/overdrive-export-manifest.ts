@@ -13,10 +13,7 @@ interface OverdriveExportEntry {
 	originalName?: string;
 }
 
-export const OVERDRIVE_EXPORT_MANIFEST: Record<
-	string,
-	OverdriveExportEntry
-> = {
+export const OVERDRIVE_EXPORT_MANIFEST: Record<string, OverdriveExportEntry> = {
 	// ─── Components (73 directories, 110 exports) ────────────────────────
 
 	// Actions

@@ -14,16 +14,14 @@ import type { VitePlugin } from '../types';
  * cannot be constant-folded, so all tokens stay inside the `mfe-configs` chunk
  * where `tokenReplacement.sh` can find them.
  */
-export function mfeEnvTokens(
-	envTokens: Record<string, string>,
-): VitePlugin {
+export function mfeEnvTokens(envTokens: Record<string, string>): VitePlugin {
 	const keys = Object.keys(envTokens);
 	if (keys.length === 0) {
 		return { name: 'gdu-mfe-env-tokens' };
 	}
 
 	const escapedKeys = keys.map((k) =>
-		k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'),
+		k.replace(/[.*+?^${}()|[\]\\]/g, String.raw`\$&`),
 	);
 	const pattern = new RegExp(
 		`\\bprocess\\.env\\.(${escapedKeys.join('|')})\\b`,
@@ -48,7 +46,7 @@ export function mfeEnvTokens(
 				(_, key) => `globalThis.__MFE_ENV__[${JSON.stringify(key)}]`,
 			);
 
-			return result !== code ? { code: result, map: null } : null;
+			return result === code ? null : { code: result, map: null };
 		},
 
 		renderChunk(code, chunk) {

@@ -149,6 +149,9 @@ export const baseViteOptions = ({
 			emptyOutDir: true,
 			sourcemap: 'hidden',
 			minify: true,
+			// LightningCSS cannot parse ::view-transition-* pseudo-elements,
+			// causing minification failures. Use esbuild for CSS minification.
+			cssMinify: 'esbuild',
 			reportCompressedSize: false,
 			chunkSizeWarningLimit: 1000,
 			rolldownOptions: {
@@ -233,7 +236,10 @@ export const makeViteConfig = (
 
 	// Add the runtimePublicPath plugin for dynamic chunk resolution.
 	// The manifest keeps bare filenames — the Lambda adds the CDN prefix.
-	const plugins = [...(base.plugins || []), runtimePublicPath()];
+	const plugins = [
+		...(base.plugins || []),
+		runtimePublicPath(getProjectName()),
+	];
 
 	return {
 		...base,

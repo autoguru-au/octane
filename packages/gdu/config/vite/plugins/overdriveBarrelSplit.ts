@@ -44,7 +44,12 @@ export function overdriveBarrelSplit(): VitePlugin {
 
 			const result = code.replace(
 				importRegex,
-				(match, typeModifier: string | undefined, specifiersStr: string, quote: string) => {
+				(
+					match,
+					typeModifier: string | undefined,
+					specifiersStr: string,
+					quote: string,
+				) => {
 					const isTypeOnly = Boolean(typeModifier);
 					const specifiers = parseSpecifiers(specifiersStr);
 
@@ -53,7 +58,11 @@ export function overdriveBarrelSplit(): VitePlugin {
 					// Group resolved specifiers by deep path; collect unresolved as residual
 					const grouped = new Map<
 						string,
-						Array<{ local: string; imported: string; isType: boolean }>
+						Array<{
+							local: string;
+							imported: string;
+							isType: boolean;
+						}>
 					>();
 					const residual: typeof specifiers = [];
 
