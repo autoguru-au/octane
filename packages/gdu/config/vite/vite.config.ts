@@ -149,6 +149,9 @@ export const baseViteOptions = ({
 			emptyOutDir: true,
 			sourcemap: 'hidden',
 			minify: true,
+			// LightningCSS cannot parse ::view-transition-* pseudo-elements,
+			// causing minification failures. Use esbuild for CSS minification.
+			cssMinify: 'esbuild',
 			reportCompressedSize: false,
 			chunkSizeWarningLimit: 1000,
 			rolldownOptions: {
