@@ -48,10 +48,7 @@ describe('collectEntryCssFiles', () => {
 		const result = collectEntryCssFiles(bundle);
 
 		expect(result).toEqual(
-			new Set([
-				'assets/main-abc123.css',
-				'assets/vendor-def456.css',
-			]),
+			new Set(['assets/main-abc123.css', 'assets/vendor-def456.css']),
 		);
 	});
 
@@ -128,11 +125,7 @@ describe('collectEntryCssFiles', () => {
 		const result = collectEntryCssFiles(bundle);
 
 		expect(result).toEqual(
-			new Set([
-				'assets/entry.css',
-				'assets/a.css',
-				'assets/b.css',
-			]),
+			new Set(['assets/entry.css', 'assets/a.css', 'assets/b.css']),
 		);
 	});
 
