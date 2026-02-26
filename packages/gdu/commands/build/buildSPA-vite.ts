@@ -103,10 +103,7 @@ export const buildSPAVite = async (guruConfig: GuruConfig) => {
 			);
 			runtimePlugins.push(
 				visualizer({
-					filename: join(
-						guruConfig.outputPath,
-						'bundle-report.html',
-					),
+					filename: join(guruConfig.outputPath, 'bundle-report.html'),
 					open: false,
 					gzipSize: true,
 					brotliSize: true,
