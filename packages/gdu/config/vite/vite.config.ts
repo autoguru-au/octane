@@ -233,7 +233,10 @@ export const makeViteConfig = (
 
 	// Add the runtimePublicPath plugin for dynamic chunk resolution.
 	// The manifest keeps bare filenames — the Lambda adds the CDN prefix.
-	const plugins = [...(base.plugins || []), runtimePublicPath(getProjectName())];
+	const plugins = [
+		...(base.plugins || []),
+		runtimePublicPath(getProjectName()),
+	];
 
 	return {
 		...base,

@@ -20,8 +20,7 @@ type Manifest = Record<string, ManifestEntry>;
 
 type OverdriveCategory = 'components' | 'hooks' | 'styles' | 'themes' | 'utils';
 
-const RE_EXPORT_NAMED =
-	/export\s*\{([^}]+)\}\s*from\s*["']([^"']+)["']/g;
+const RE_EXPORT_NAMED = /export\s*\{([^}]+)\}\s*from\s*["']([^"']+)["']/g;
 
 function parseReExports(
 	source: string,
@@ -37,7 +36,8 @@ function parseReExports(
 
 		const names = namesStr.split(',').map((part) => {
 			const trimmed = part.trim();
-			const asMatch = /^([a-zA-Z_$][\w$]*)\s+as\s+([a-zA-Z_$][\w$]*)$/.exec(trimmed);
+			const asMatch =
+				/^([a-zA-Z_$][\w$]*)\s+as\s+([a-zA-Z_$][\w$]*)$/.exec(trimmed);
 			if (asMatch) {
 				return { local: asMatch[1], exported: asMatch[2] };
 			}
@@ -152,11 +152,19 @@ function generateManifestSource(manifest: Manifest): string {
 	const lines: string[] = [];
 
 	lines.push(`/**`);
-	lines.push(` * Auto-generated manifest mapping every named export from \`@autoguru/overdrive\``);
-	lines.push(` * to its deep import path. Used by the Vite barrel-splitting plugin to rewrite`);
-	lines.push(` * barrel imports into granular deep imports for optimal tree-shaking.`);
+	lines.push(
+		` * Auto-generated manifest mapping every named export from \`@autoguru/overdrive\``,
+	);
+	lines.push(
+		` * to its deep import path. Used by the Vite barrel-splitting plugin to rewrite`,
+	);
+	lines.push(
+		` * barrel imports into granular deep imports for optimal tree-shaking.`,
+	);
 	lines.push(` *`);
-	lines.push(` * Regenerate with: npx tsx packages/gdu/config/vite/plugins/overdrive-manifest-generator.ts`);
+	lines.push(
+		` * Regenerate with: npx tsx packages/gdu/config/vite/plugins/overdrive-manifest-generator.ts`,
+	);
 	lines.push(` *`);
 	lines.push(` * Total exports: ${entries.length}`);
 	lines.push(` */`);
@@ -187,7 +195,9 @@ function generateManifestSource(manifest: Manifest): string {
 
 	lines.push('} as const;');
 	lines.push('');
-	lines.push("export const OVERDRIVE_PACKAGE = '@autoguru/overdrive' as const;");
+	lines.push(
+		"export const OVERDRIVE_PACKAGE = '@autoguru/overdrive' as const;",
+	);
 	lines.push('');
 	lines.push('export const OVERDRIVE_EXPORT_COUNT = Object.keys(');
 	lines.push('\tOVERDRIVE_EXPORT_MANIFEST,');
@@ -259,8 +269,7 @@ function main() {
 	// 4. Parse top-level barrel for aliases and utils
 	const topBarrel = path.join(distPath, 'index.js');
 	if (fs.existsSync(topBarrel)) {
-		const { manifest: topManifest } =
-			processTopLevelBarrel(topBarrel);
+		const { manifest: topManifest } = processTopLevelBarrel(topBarrel);
 		Object.assign(manifest, topManifest);
 		console.log(
 			`  Aliases & utils: ${Object.keys(topManifest).length} exports`,
