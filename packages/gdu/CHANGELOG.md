@@ -1,5 +1,12 @@
 # gdu
 
+## 13.18.1
+
+### Patch Changes
+
+- d80cd6b: Normalise backslashes in relay plugin artifact directory path to fix
+  Windows compatibility
+
 ## 13.18.0
 
 ### Minor Changes
