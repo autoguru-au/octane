@@ -2,4 +2,4 @@
 "gdu": patch
 ---
 
-Remove temporary @autoguru/utilities exclusion and add sourceType 'unambiguous' to babel-loader config
+Normalise backslashes in relay plugin artifact directory path to fix Windows compatibility
