@@ -18,7 +18,12 @@ export default async ({ tenant }) => {
 	let stats;
 	switch (guruConfig?.type) {
 		case 'spa':
-			stats = await buildSPA(guruConfig);
+			if (guruConfig.bundler === 'vite') {
+				const { buildSPAVite } = await import('./buildSPA-vite');
+				stats = await buildSPAVite(guruConfig);
+			} else {
+				stats = await buildSPA(guruConfig);
+			}
 			break;
 		case 'ssr':
 			stats = await buildSSR(guruConfig);

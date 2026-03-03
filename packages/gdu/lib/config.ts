@@ -33,6 +33,7 @@ export interface GuruConfig {
 		| 'serverless-resource'
 		// @deprecated migrate serverless-resource SAM CLI stacks to AWS cdk
 		| 'web-component';
+	bundler?: 'vite' | 'webpack';
 	mountDOMId?: string;
 	mountDOMClass?: string;
 	octopusPackageId: string;

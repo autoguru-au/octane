@@ -5,7 +5,6 @@ import browsers from 'browserslist-config-autoguru';
 import Dotenv from 'dotenv-webpack';
 import envCI from 'env-ci';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import { TreatPlugin } from 'treat/webpack-plugin';
 import { TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
 import {
 	Configuration,
@@ -26,6 +25,7 @@ import {
 } from '../../lib/roots';
 import { getBuildEnvs, getConfigsDirs } from '../../utils/configs';
 import { getHooks } from '../../utils/hooks';
+import { getPublicPath } from '../shared/externals';
 
 import { TranslationHashingPlugin } from './plugins/TranslationHashingPlugin';
 
@@ -133,9 +133,11 @@ export const baseDevelopmentOptions = ({
 				// @ts-ignore
 				new TsconfigPathsPlugin({
 					configFile: join(PROJECT_ROOT, 'tsconfig.json'),
+					baseUrl: PROJECT_ROOT,
 				}),
 			],
 			alias: {
+				'~': PROJECT_ROOT,
 				__GDU_CONSUMER_CLIENT__: join(PROJECT_ROOT, 'src/client.tsx'),
 			},
 		},
@@ -351,15 +353,6 @@ export const baseDevelopmentOptions = ({
 					branch,
 				}),
 			}),
-			new TreatPlugin({
-				outputLoaders: [
-					{
-						loader: require.resolve('style-loader'),
-					},
-				],
-				minify: false,
-				browsers,
-			}),
 			new VanillaExtractPlugin(),
 			new MiniCssExtractPlugin({
 				filename: `${fileMask}.css`,
@@ -389,27 +382,6 @@ export const baseDevelopmentOptions = ({
 };
 
 type BuildEnv = ReturnType<typeof getBuildEnvs>[number];
-
-const getPublicPath = ({
-	buildEnv,
-	isDev,
-	projectFolderName,
-}: {
-	buildEnv: BuildEnv;
-	isTenanted: boolean;
-	isDev: boolean;
-	projectFolderName: string;
-}): string => {
-	if (isDev) return '/';
-
-	if (buildEnv === 'prod') {
-		return `#{PUBLIC_PATH_BASE}/${projectFolderName}/`;
-	}
-
-	const [agEnv, tenant] = buildEnv.split('-');
-
-	return `https://mfe.${tenant}-${agEnv}.autoguru.com/${projectFolderName}/`;
-};
 
 export const makeWebpackDevelopmentConfig = (
 	buildEnv: BuildEnv,

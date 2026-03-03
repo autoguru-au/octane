@@ -8,7 +8,6 @@ import envCI from 'env-ci';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import { MinifyOptions } from 'terser';
 import TerserPlugin, { MinimizerOptions } from 'terser-webpack-plugin';
-import { TreatPlugin } from 'treat/webpack-plugin';
 import { TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
 import {
 	Configuration,
@@ -23,7 +22,6 @@ import {
 	getProjectFolderName,
 	getProjectName,
 } from '../../lib/config';
-import { isProductionBuild } from '../../lib/misc';
 import {
 	CALLING_WORKSPACE_ROOT,
 	GDU_ROOT,
@@ -31,6 +29,7 @@ import {
 } from '../../lib/roots';
 import { getBuildEnvs, getConfigsDirs } from '../../utils/configs';
 import { getHooks } from '../../utils/hooks';
+import { getExternals, getPublicPath } from '../shared/externals';
 
 import { GuruBuildManifest } from './plugins/GuruBuildManifest';
 import { TranslationHashingPlugin } from './plugins/TranslationHashingPlugin';
@@ -80,41 +79,6 @@ const frameworkRegex =
 
 const hooks = getHooks();
 
-// Add package.json parsing to get relay version
-/*const getRelayVersion = () => {
-	try {
-		const packagePath = path.join(PROJECT_ROOT, 'package.json');
-		const pkg = require(packagePath);
-		return (pkg.devDependencies?.['react-relay'] || '18.2.0').replace(
-			'^',
-			'',
-		);
-	} catch {
-		return '18.2.0';
-	}
-};*/
-const getReactVersion = () => {
-	try {
-		const packagePath = path.join(PROJECT_ROOT, 'package.json');
-		const pkg = require(packagePath);
-		return (pkg.dependencies?.react || '19').replace('^', '');
-	} catch {
-		return '19';
-	}
-};
-
-const getDataDogVersion = () => {
-	try {
-		const packagePath = path.join(PROJECT_ROOT, 'package.json');
-		const pkg = require(packagePath);
-		return (pkg.dependencies?.['@datadog/browser-rum'] || '6.23.0').replace(
-			/^[\^~>=<]+/,
-			'',
-		);
-	} catch {
-		return '6.23.0';
-	}
-};
 const gduEntryPath = join(GDU_ROOT, 'entry');
 
 const ourCodePaths = [
@@ -125,26 +89,6 @@ const ourCodePaths = [
 ].filter(Boolean);
 
 const fileMask = '[name]-[contenthash:8]';
-const getExternals = (standalone?: boolean) => {
-	//const relayVersion = getRelayVersion();
-	const reactVersion = getReactVersion();
-	const datadogVersion = getDataDogVersion();
-	return standalone
-		? {}
-		: {
-				react: `https://esm.sh/react@${reactVersion}`,
-				'react-dom': `https://esm.sh/react-dom@${reactVersion}`,
-				'react-dom/client': `https://esm.sh/react-dom@${reactVersion}/client`,
-				'react/jsx-runtime': `https://esm.sh/react@${reactVersion}/jsx-runtime`,
-				/*'react-relay': `https://esm.sh/react-relay@${relayVersion}`,
-				'relay-runtime': `https://esm.sh/relay-runtime@${relayVersion}`,*/
-
-				// DataDog externals
-				'@datadog/browser-rum': `https://esm.sh/@datadog/browser-rum@${datadogVersion}`,
-				'@datadog/browser-rum-react': `https://esm.sh/@datadog/browser-rum-react@${datadogVersion}`,
-				'@datadog/browser-logs': `https://esm.sh/@datadog/browser-logs@${datadogVersion}`,
-			};
-};
 
 export const baseOptions = ({
 	buildEnv,
@@ -189,9 +133,11 @@ export const baseOptions = ({
 				// @ts-ignore
 				new TsconfigPathsPlugin({
 					configFile: join(PROJECT_ROOT, 'tsconfig.json'),
+					baseUrl: PROJECT_ROOT,
 				}),
 			],
 			alias: {
+				'~': PROJECT_ROOT,
 				__GDU_CONSUMER_CLIENT__: join(PROJECT_ROOT, 'src/client.tsx'),
 			},
 		},
@@ -440,17 +386,6 @@ export const baseOptions = ({
 					branch,
 				}),
 			}),
-			new TreatPlugin({
-				outputLoaders: [
-					{
-						loader: isProductionBuild()
-							? MiniCssExtractPlugin.loader
-							: require.resolve('style-loader'),
-					},
-				],
-				minify: true,
-				browsers,
-			}),
 			new VanillaExtractPlugin(),
 			new MiniCssExtractPlugin({
 				filename: `${fileMask}.css`,
@@ -534,27 +469,6 @@ export const baseOptions = ({
 };
 
 type BuildEnv = ReturnType<typeof getBuildEnvs>[number];
-
-const getPublicPath = ({
-	buildEnv,
-	isDev,
-	projectFolderName,
-}: {
-	buildEnv: BuildEnv;
-	isTenanted: boolean;
-	isDev: boolean;
-	projectFolderName: string;
-}): string => {
-	if (isDev) return '/';
-
-	if (buildEnv === 'prod') {
-		return `#{PUBLIC_PATH_BASE}/${projectFolderName}/`;
-	}
-
-	const [agEnv, tenant] = buildEnv.split('-');
-
-	return `https://mfe.${tenant}-${agEnv}.autoguru.com/${projectFolderName}/`;
-};
 
 export const makeWebpackConfig = (
 	buildEnv: BuildEnv,
