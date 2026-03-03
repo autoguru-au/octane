@@ -1,6 +1,7 @@
 import type { VitePlugin } from '../types';
 
-export function relayPlugin(artifactDirectory: string): VitePlugin {
+export function relayPlugin(rawArtifactDirectory: string): VitePlugin {
+	const artifactDirectory = rawArtifactDirectory.replaceAll('\\', '/');
 	const graphqlTagRegex = /graphql\s*`\s*([\s\S]*?)`/g;
 	const operationNameRegex =
 		/(?:query|mutation|subscription|fragment)\s+(\w+)/;
