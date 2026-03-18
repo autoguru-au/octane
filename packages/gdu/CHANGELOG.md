@@ -1,5 +1,195 @@
 # gdu
 
+## 13.18.1
+
+### Patch Changes
+
+- d80cd6b: Normalise backslashes in relay plugin artifact directory path to fix
+  Windows compatibility
+
+## 13.18.0
+
+### Minor Changes
+
+- 6031c15: Add bundle analyser support for Vite builds via `gdu build -a` flag
+
+## 13.17.2
+
+### Patch Changes
+
+- 3dcb7db: Collect CSS from statically imported chunks in build manifest
+
+    The `collectEntryCssFiles` function now traverses the entry chunk's static
+    import tree (via `chunk.imports`) to gather CSS from all
+    transitively-imported chunks. Previously, only CSS from the entry chunk
+    itself was included in `assets.css`, causing missing styles for MFEs that
+    render statically-imported Overdrive components before any lazy route loads.
+
+## 13.17.1
+
+### Patch Changes
+
+- e39f3bf: fix(gdu): namespace runtime public path per MFE to prevent collisions
+
+    When multiple Vite-built MFEs load on the same page, they each set
+    `globalThis.__GDU_PUBLIC_PATH__` from their entry chunk. The last MFE to
+    load overwrites the global, causing earlier MFEs to resolve lazy-loaded CSS
+    chunks from the wrong CDN path (e.g. fmo-app-shell CSS fetched from
+    fmo-booking/, returning 403).
+
+    Replaced the single global with a per-MFE map
+    `globalThis.__GDU_PUBLIC_PATHS__[projectName]` so each MFE reads only its
+    own slot and concurrent MFEs no longer clobber each other's chunk
+    resolution.
+
+## 13.17.0
+
+### Minor Changes
+
+- 817122b: feat(gdu): add Overdrive barrel-splitting Vite plugin
+
+    Adds a Vite transform plugin that rewrites barrel imports from
+    `@autoguru/overdrive` into deep component imports using a static 136-entry
+    export manifest. This enables granular tree-shaking and prevents Vanilla
+    Extract CSS side-effect leakage from unused components.
+
+    Also fixes dev mode env token replacement for Vite 8/OXC — custom
+    `process.env.X` dotted member expressions are now correctly inlined via a
+    `devEnvReplace` pre-transform plugin, resolving broken routing in dev mode.
+
+## 13.16.2
+
+### Patch Changes
+
+- 01fbd46: fix(gdu): centralise Octopus deploy tokens in mfe-configs chunk for
+  Vite builds
+
+    Rolldown constant-folds string literals from Vite's `define` across consumer
+    chunks, scattering `#{...}` Octopus tokens into dozens of files. The
+    deployment pipeline's `tokenReplacement.sh` only processes `mfe-configs`, so
+    scattered tokens were left un-replaced at runtime.
+
+    Added `mfeEnvTokens` plugin (`enforce: 'pre'`) that rewrites
+    `process.env.XXX` to `globalThis.__MFE_ENV__["XXX"]` before `define` runs.
+    Dynamic property access cannot be constant-folded, keeping all tokens inside
+    the `mfe-configs` chunk. The chunk is also routed to the dist root (not
+    `chunks/`) so Octopus TokenReplacement can find it.
+
+- 01fbd46: fix(gdu): remove publicPath from Vite build manifest
+
+    The deployment pipeline does not substitute `#{PUBLIC_PATH_BASE}` tokens in
+    `build-manifest.json` served from the CDN. This caused the app shell Lambda
+    to produce double-prefixed URLs where the literal `#` acted as a URL
+    fragment identifier, breaking all asset loading for Vite-built MFEs.
+
+    The manifest now keeps bare filenames (matching the webpack convention) so
+    the Lambda can add the CDN prefix as before. The `runtimePublicPath` plugin
+    independently handles chunk URL resolution at runtime.
+
+## 13.16.1
+
+### Patch Changes
+
+- d313b1c: fix(gdu): remove publicPath from Vite build manifest
+
+    The deployment pipeline does not substitute `#{PUBLIC_PATH_BASE}` tokens in
+    `build-manifest.json` served from the CDN. This caused the app shell Lambda
+    to produce double-prefixed URLs where the literal `#` acted as a URL
+    fragment identifier, breaking all asset loading for Vite-built MFEs.
+
+    The manifest now keeps bare filenames (matching the webpack convention) so
+    the Lambda can add the CDN prefix as before. The `runtimePublicPath` plugin
+    independently handles chunk URL resolution at runtime.
+
+## 13.16.0
+
+### Minor Changes
+
+- dd59183: feat(gdu): add runtime public path resolution for Vite builds
+
+    Vite builds could not use Octopus Deploy `#{PUBLIC_PATH_BASE}` tokens
+    because the `base` config gets baked into minified JS where token
+    substitution fails. This caused CSS and JS chunks to load from incorrect
+    paths (`/chunks/...` instead of the CDN URL), resulting in `text/html` MIME
+    type errors in deployed environments.
+
+    Added `runtimePublicPath` plugin that derives the CDN base URL at runtime
+    from `import.meta.url` of the entry chunk — mirroring how webpack's
+    `__webpack_require__.p` mechanism works via `set-public-path.js`.
+
+    Also passes `publicPath` to `guruBuildManifest` in production Vite builds so
+    `build-manifest.json` contains correctly prefixed asset paths for the app
+    shell Lambda to inject.
+
+## 13.15.0
+
+### Minor Changes
+
+- dcb50b3: feat(gdu): add manualChunks to Vite config for mfe-configs chunk
+  naming
+
+    Routes all `packages/global-configs` modules into a `mfe-configs` named
+    chunk, mirroring webpack's `splitChunks.cacheGroups.mfeConfigs` convention.
+    This ensures CI token replacement (`tokenReplacement.sh`) can find and
+    replace `#{...}` config tokens in Vite/Rolldown builds, fixing WebSocket
+    subscription failures caused by unreplaced tokens in arbitrarily-named
+    chunks.
+
+## 13.14.1
+
+### Patch Changes
+
+- a6194f9: Harden rolldownExternalShim plugin for production resilience
+    - Use `chunk.isEntry` instead of filename pattern matching for entry chunk
+      detection — decoupled from `chunkFileNames` config
+    - Remove fragile `code.includes()` content heuristic — shim is harmless if
+      `require()` is never called at runtime
+    - Switch `Promise.all()` to `Promise.allSettled()` with per-import
+      `.catch()` — single CDN failure no longer blanks the page
+    - Chain to existing `globalThis.require` when present — multiple Vite MFEs
+      on the same page no longer overwrite each other's module caches
+    - Widen `renderChunk` chunk type to include `isEntry` property
+
+## 13.14.0
+
+### Minor Changes
+
+- 8f084ef: Upgrade from Vite 7 to Vite 8 (Rolldown + OXC)
+    - Bump `vite` dependency from `^7.0.0` to `^8.0.0-beta.0` — replaces
+      Rollup + esbuild with Rolldown + OXC for 10-30x faster bundling
+    - Rename `rollupOptions` to `rolldownOptions` and `esbuild` config to `oxc`
+      across all Vite configuration
+    - Change `minify: 'esbuild'` to `minify: true` (OXC minifier is the new
+      default)
+    - Import `esmExternalRequirePlugin` from `'vite'` instead of
+      `'rolldown/plugins'` (now a first-class Vite 8 re-export)
+    - Fix bug where `external: undefined` was set when esmExternalRequirePlugin
+      loaded, which would have caused all externals to be bundled
+    - Add `peerDependencyMeta` override for `@vanilla-extract/vite-plugin` to
+      suppress Vite 8 peer dep warning
+
+## 13.13.0
+
+### Minor Changes
+
+- b626509: Add Vite build support with translation hashing, centralised types,
+  and upgraded build configuration
+    - Integrate Vite support for SPA and SSR builds with shared externals
+      configuration
+    - Add `TranslationHashingPlugin` for content-hashed i18n translation files
+      with auto-discovery of workspace package translations and manifest
+      generation
+    - Consolidate inline Vite/Rollup type definitions into a shared `types.ts`
+      module
+    - Upgrade build targets from `es2020` to `es2022` and use hidden sourcemaps
+      in production
+    - Bump Vite from `^6.2.0` to `^7.0.0` and Node.js engine minimum to
+      `>=20.19.0`
+    - Improve dev server with warmup for `src/client.tsx` and additional Datadog
+      packages in `optimizeDeps`
+    - Add `rollup-plugin-visualizer` for bundle analysis
+    - Add console warning when `tap()` hooks are used with the Vite bundler
+
 ## 13.12.2
 
 ### Patch Changes

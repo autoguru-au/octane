@@ -25,8 +25,13 @@ export default async ({ port: incomingPort, component, debug: debugTool }) => {
 			break;
 		}
 		case 'spa': {
-			const runSPA = await import('./runSPA');
-			await runSPA.runSPA(resolvedConfig, debugTool);
+			if (resolvedConfig.bundler === 'vite') {
+				const runSPAVite = await import('./runSPA-vite');
+				await runSPAVite.runSPAVite(resolvedConfig, debugTool);
+			} else {
+				const runSPA = await import('./runSPA');
+				await runSPA.runSPA(resolvedConfig, debugTool);
+			}
 
 			break;
 		}
