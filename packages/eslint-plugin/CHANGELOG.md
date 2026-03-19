@@ -1,5 +1,16 @@
 # @autoguru/eslint-plugin
 
+## 2.0.1
+
+### Patch Changes
+
+- 31133ad: Migrate monorepo tooling from Yarn to Bun
+    - Replace `find-yarn-workspace-root` with a built-in workspace root resolver
+      in gdu
+    - Update Yarn CLI references to Bun across documentation and build scripts
+    - Add `.macro` extension to ESLint import resolution config
+    - Update browserslist browser version snapshot
+
 ## 2.0.0
 
 ### Major Changes
