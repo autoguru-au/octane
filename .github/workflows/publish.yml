@@ -95,7 +95,7 @@ jobs:
               if [ "$PKG_JSON_NAME" = "$PKG_NAME" ]; then
                 changelog="$(dirname "$pkg_json")/CHANGELOG.md"
                 if [ -f "$changelog" ]; then
-                  BODY=$(awk "/^## ${VERSION}$/{found=1; next} /^## /{found=0} found" "$changelog")
+                  BODY=$(awk "/^## ${VERSION}$/{found=1; next} found && /^## /{exit} found" "$changelog")
                 fi
                 break
               fi
