@@ -25,7 +25,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-          registry-url: 'https://registry.npmjs.org'
 
       - name: Install Monorepo Dependencies
         uses: ./.github/actions/bun-install
@@ -33,10 +32,10 @@ jobs:
       - name: Verify npm version
         run: npm --version
 
+      - name: Build all packages
+        run: bun run build:all
+
       - name: Publish to npm
-        uses: changesets/action@v1
-        with:
-          publish: bun run release
-          createGithubReleases: true
+        run: changeset publish
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
