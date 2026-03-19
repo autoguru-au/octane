@@ -38,6 +38,7 @@
 		"@babel/core": "^7.24.5"
 	},
 	"publishConfig": {
-		"access": "public"
+		"access": "public",
+		"provenance": true
 	}
 }

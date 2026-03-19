@@ -1,13 +1,21 @@
-name: Release
+name: Publish
 
 on:
+  workflow_dispatch:
   push:
     branches: [main]
+    paths:
+      - '**/CHANGELOG.md'
+
+permissions:
+  id-token: write
+  contents: write
 
 jobs:
-  release:
-    name: Release
+  publish:
+    name: Publish to npm
     runs-on: ubuntu-latest
+    environment: npm-publish
     steps:
       - uses: actions/checkout@v4
         with:
@@ -17,11 +25,15 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version-file: 'package.json'
+          registry-url: 'https://registry.npmjs.org'
 
       - name: Install Monorepo Dependencies
         uses: ./.github/actions/bun-install
 
-      - name: Create Release Pull Request
+      - name: Publish to npm
         uses: changesets/action@v1
+        with:
+          publish: bun run release
+          createGithubReleases: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
