@@ -255,9 +255,7 @@ export const baseOptions = ({
 					exclude: /node_modules/,
 					use: [
 						{
-							loader: require.resolve(
-								'./loaders/react-compiler-loader',
-							),
+							loader: require.resolve('./loaders/react-compiler-loader'),
 							options: ReactCompilerConfig,
 						},
 					],
@@ -335,9 +333,7 @@ export const baseOptions = ({
 										sourceType: 'unambiguous',
 										presets: [
 											[
-												require.resolve(
-													'@babel/preset-env',
-												),
+												require.resolve('@babel/preset-env'),
 												{
 													debug: withBabelDebug,
 													useBuiltIns: false,

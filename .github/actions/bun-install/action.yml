@@ -1,0 +1,38 @@
+name: 'Monorepo install (bun)'
+description: 'Run bun install with caching for CI'
+inputs:
+  bun-version:
+    description: 'Bun version to install'
+    required: false
+    default: 'latest'
+  cwd:
+    description: 'Working directory'
+    required: false
+    default: '.'
+  cache-prefix:
+    description: 'Cache key prefix'
+    required: false
+    default: 'default'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: ⚙️ Setup Bun
+      uses: oven-sh/setup-bun@v2
+      with:
+        bun-version: ${{ inputs.bun-version }}
+
+    - name: ♻️ Restore Bun cache
+      uses: actions/cache@v4
+      with:
+        path: ~/.bun/install/cache
+        key: bun-cache-${{ inputs.cache-prefix }}-${{ runner.os }}-${{ hashFiles(format('{0}/bun.lock', inputs.cwd)) }}
+        restore-keys: |
+          bun-cache-${{ inputs.cache-prefix }}-${{ runner.os }}-
+
+    - name: 📥 Install Dependencies
+      shell: bash
+      working-directory: ${{ inputs.cwd }}
+      run: bun install --frozen-lockfile
+      env:
+        HUSKY: '0'

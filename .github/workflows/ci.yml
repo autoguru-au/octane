@@ -7,40 +7,29 @@ jobs:
     name: Lint & Test
     runs-on: ubuntu-latest
     if: |
-        !contains(github.ref, 'changeset')
+      !contains(github.ref, 'changeset')
     env:
       TZ: Australia/Brisbane
       CI: true
     steps:
-      - uses: actions/checkout@main
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Setup environment
-        id: setups
-        run: |-
-          echo "::set-output name=yarn_cache::$(yarn cache dir)"
-          echo "::set-output name=node_version::$(jq -r '.volta.node' package.json)"
-
-      - name: Setup Node ${{ steps.setups.outputs.node_version }}
-        uses: actions/setup-node@master
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          node-version: ${{ steps.setups.outputs.node_version }}
+          node-version-file: 'package.json'
 
-      -   name: 📥 Install Monorepo Dependencies
-          uses: ./.github/actions/yarn-nm-install
-          with:
-              cwd: '.'
-              enable-corepack: false
-              cache-node-modules: true
-              cache-install-state: true
+      - name: 📥 Install Monorepo Dependencies
+        uses: ./.github/actions/bun-install
 
       - name: Lint
-        run: yarn lint
+        run: bun run lint
 
       - name: Test
-        run: yarn test:ci
+        run: bun run test:ci
 
-      - uses: codecov/codecov-action@v1
+      - uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV }}

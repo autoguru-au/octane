@@ -25,7 +25,7 @@
 			"ignoreNpmrcFile": true,
 			"lazyGrouping": false,
 			"postUpdateOptions": [
-				"yarnDedupeHighest"
+				"bundedupe"
 			],
 			"schedule": [
 				"after 4pm and before 8am every weekday",

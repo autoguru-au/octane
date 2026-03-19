@@ -41,7 +41,7 @@ module.exports = (guruConfig) => {
 				require.resolve('@autoguru/babel-preset/react'),
 			],
 			[
-				'@babel/preset-typescript',
+				require.resolve('@babel/preset-typescript'),
 				{
 					isTSX: true,
 					allExtensions: true,
@@ -50,7 +50,7 @@ module.exports = (guruConfig) => {
 		].filter(Boolean),
 		plugins: [
 			hasRelay && [
-				'babel-plugin-relay',
+				require.resolve('babel-plugin-relay'),
 				{
 					haste: false,
 					isDevVariable: '__DEV__',

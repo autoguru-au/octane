@@ -129,7 +129,7 @@ export const runSPA = async (guruConfig: GuruConfig, isDebug) => {
 				)}
 
 			Note that the development build is not optimized.
-			To create a production build, use ${cyan('yarn build')}.
+			To create a production build, use ${cyan('gdu build')}.
 
 			`);
 

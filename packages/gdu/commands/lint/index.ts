@@ -19,11 +19,12 @@ export default async () => {
 	const start = Date.now();
 	execa
 		.command(
-			`yarn tsc --project tsconfig.json --noEmit --skipLibCheck --skipDefaultLibCheck --noImplicitReturns`,
+			`tsc --project tsconfig.json --noEmit --skipLibCheck --skipDefaultLibCheck --noImplicitReturns`,
 			{
 				stdio: 'inherit',
 				cwd: PROJECT_ROOT,
 				localDir: GDU_ROOT,
+				preferLocal: true,
 				extendEnv: true,
 				// @ts-ignore
 				env: {

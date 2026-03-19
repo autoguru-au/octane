@@ -6,7 +6,7 @@
 ## Usage
 
 ```sh
-yarn add @autoguru/utilities
+bun add @autoguru/utilities
 ```
 
 ## Index

@@ -5,7 +5,7 @@
 ## Usage
 
 ```sh
-yarn add --dev @autoguru/tsconfig
+bun add --dev @autoguru/tsconfig
 ```
 
 ```json

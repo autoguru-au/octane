@@ -1,7 +1,7 @@
-import { join } from 'path';
+import { existsSync, readFileSync } from 'fs';
+import { dirname, join, normalize } from 'path';
 
 import { diary } from 'diary';
-import getYarnWorkspaceRoot from 'find-yarn-workspace-root';
 
 const { debug } = diary('gdu:roots');
 
@@ -9,11 +9,35 @@ export const GDU_ROOT = join(__dirname, '../../');
 
 export const PROJECT_ROOT = join(process.cwd(), '/');
 
-const maybeYarnWorkspacesRoot: null | string =
-	getYarnWorkspaceRoot(PROJECT_ROOT);
+function findWorkspaceRoot(initial: string): string | null {
+	let previous: string | null = null;
+	let current = normalize(initial);
+	do {
+		const pkgPath = join(current, 'package.json');
+		if (existsSync(pkgPath)) {
+			try {
+				const manifest = JSON.parse(readFileSync(pkgPath, 'utf8'));
+				const workspaces = manifest.workspaces;
+				if (
+					Array.isArray(workspaces) ||
+					(workspaces && Array.isArray(workspaces.packages))
+				) {
+					return current;
+				}
+			} catch {
+				// Ignore malformed package.json
+			}
+		}
+		previous = current;
+		current = dirname(current);
+	} while (current !== previous);
+	return null;
+}
 
-export const CALLING_WORKSPACE_ROOT: string | null = maybeYarnWorkspacesRoot
-	? join(maybeYarnWorkspacesRoot, '/')
+const maybeWorkspaceRoot: string | null = findWorkspaceRoot(PROJECT_ROOT);
+
+export const CALLING_WORKSPACE_ROOT: string | null = maybeWorkspaceRoot
+	? join(maybeWorkspaceRoot, '/')
 	: null;
 
 debug('%O', {

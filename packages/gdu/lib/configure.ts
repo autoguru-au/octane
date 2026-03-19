@@ -29,6 +29,7 @@ export const configure = async (app_location) => {
 		'.nx/',
 		'.next/',
 		'.yarn/',
+		'.bun/',
 		'node_modules/',
 		'coverage/',
 		'/*.xml',

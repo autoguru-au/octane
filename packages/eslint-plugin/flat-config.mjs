@@ -56,6 +56,7 @@ export const imports = [
 				'never',
 				{
 					graphql: 'always',
+					macro: 'always',
 				},
 			],
 			'import/no-duplicates': 'error',

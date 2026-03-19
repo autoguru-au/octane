@@ -3,7 +3,7 @@
 ## Usage
 
 ```sh
-yarn add --dev @autoguru/eslint-plugin \
+bun add --dev @autoguru/eslint-plugin \
 	eslint
 ```
 
