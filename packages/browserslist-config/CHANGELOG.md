@@ -1,5 +1,16 @@
 # browserslist-config-autoguru
 
+## 2.5.3
+
+### Patch Changes
+
+- 31133ad: Migrate monorepo tooling from Yarn to Bun
+    - Replace `find-yarn-workspace-root` with a built-in workspace root resolver
+      in gdu
+    - Update Yarn CLI references to Bun across documentation and build scripts
+    - Add `.macro` extension to ESLint import resolution config
+    - Update browserslist browser version snapshot
+
 ## 2.5.2
 
 ### Patch Changes
