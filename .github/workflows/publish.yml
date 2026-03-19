@@ -36,6 +36,6 @@ jobs:
         run: bun run build:all
 
       - name: Publish to npm
-        run: changeset publish
+        run: bun run changeset publish
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
