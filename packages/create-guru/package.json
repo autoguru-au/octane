@@ -12,5 +12,9 @@
 	},
 	"scripts": {
 		"build": "echo \"no op\""
+	},
+	"publishConfig": {
+		"access": "public",
+		"provenance": true
 	}
 }

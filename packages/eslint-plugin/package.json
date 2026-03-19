@@ -36,7 +36,8 @@
 		"eslint": ">=7"
 	},
 	"publishConfig": {
-		"access": "public"
+		"access": "public",
+		"provenance": true
 	},
 	"devDependencies": {
 		"@types/eslint": "^9.6.1",

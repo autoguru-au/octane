@@ -9,7 +9,8 @@
 		"build": "echo \"no op\""
 	},
 	"publishConfig": {
-		"access": "public"
+		"access": "public",
+		"provenance": true
 	},
 	"renovate-config": {
 		"default": {
