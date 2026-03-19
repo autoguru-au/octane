@@ -79,13 +79,20 @@ jobs:
           git push origin $NEW_TAGS
 
           for tag in $NEW_TAGS; do
+            # Skip if a release already exists (idempotent on re-runs)
+            if gh release view "$tag" > /dev/null 2>&1; then
+              echo "Release already exists: $tag — skipping"
+              continue
+            fi
+
             VERSION="${tag##*@}"
             PKG_NAME="${tag%@${VERSION}}"
 
             # Find the package directory by matching the name in package.json
             BODY=""
             for pkg_json in $(find packages -name package.json -not -path '*/node_modules/*'); do
-              if grep -q "\"name\": \"${PKG_NAME}\"" "$pkg_json" 2>/dev/null; then
+              PKG_JSON_NAME=$(jq -r '.name // empty' "$pkg_json" 2>/dev/null)
+              if [ "$PKG_JSON_NAME" = "$PKG_NAME" ]; then
                 changelog="$(dirname "$pkg_json")/CHANGELOG.md"
                 if [ -f "$changelog" ]; then
                   BODY=$(awk "/^## ${VERSION}$/{found=1; next} /^## /{found=0} found" "$changelog")
