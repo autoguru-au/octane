@@ -1,5 +1,14 @@
 # gdu
 
+## 13.19.1
+
+### Patch Changes
+
+- 5f7a121: Replace remaining yarn references with bun equivalents in build
+  commands, dev server output, and documentation
+- 5f7a121: Replace remaining yarn references with bun equivalents in build
+  commands, dev server output, and documentation
+
 ## 13.19.0
 
 ### Minor Changes
