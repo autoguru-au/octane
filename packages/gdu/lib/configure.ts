@@ -28,7 +28,6 @@ export const configure = async (app_location) => {
 		'.cache/',
 		'.nx/',
 		'.next/',
-		'.yarn/',
 		'.bun/',
 		'node_modules/',
 		'coverage/',
