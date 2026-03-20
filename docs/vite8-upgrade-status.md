@@ -55,23 +55,23 @@ This would set `external` to `undefined` when `esmExternalRequirePlugin` loaded 
 
 ```bash
 cd ~/Documents/GitHub/octane
-yarn workspace gdu build
+bun run --filter gdu build
 ```
 
 ### Step 2: Copy gdu build to MFE
 
 ```bash
 cd ~/Documents/GitHub/mfe
-yarn gdu:local
+bun run gdu:local
 ```
 
 This runs `.scripts/copy-gdu.js` which:
-1. Builds gdu in the sibling `octane` repo (`yarn workspace gdu build`)
+1. Builds gdu in the sibling `octane` repo (`bun run --filter gdu build`)
 2. Copies `octane/packages/gdu/dist/` to `mfe/node_modules/gdu/dist/`
 3. Copies `octane/packages/gdu/entry/` to `mfe/node_modules/gdu/entry/`
 4. Copies `octane/packages/babel-preset/` to `mfe/node_modules/@autoguru/babel-preset/`
 
-**Important:** The `copy-gdu.js` script runs its own `yarn workspace gdu build` internally, so you don't strictly need Step 1 separately. However, running it first lets you catch TypeScript errors before copying.
+**Important:** The `copy-gdu.js` script runs its own `bun run --filter gdu build` internally, so you don't strictly need Step 1 separately. However, running it first lets you catch TypeScript errors before copying.
 
 ### Step 3: Ensure Vite 8 is installed in MFE
 
@@ -89,14 +89,14 @@ node -e "console.log(require('vite/package.json').version)"
 # in the MFE root package.json:
 #   "resolutions": { "vite": "8.0.0-beta.15" }
 # Then run:
-yarn install
+bun install
 ```
 
 ### Step 4: Build fmo-booking
 
 ```bash
 cd ~/Documents/GitHub/mfe
-APP_ENV=dev_au yarn workspace @autoguru/fmo-booking build:mfe
+APP_ENV=dev_au bun run --filter @autoguru/fmo-booking build:mfe
 ```
 
 ### Step 5: Verify the build output
@@ -154,9 +154,9 @@ Navigated to `http://localhost:8080/au/custom-fleet/booking?status=COMPLETED&...
 ### Verification completed
 
 - `tsc --noEmit` — passes (no type errors)
-- `yarn lint` — passes
-- `yarn test` — all 71 tests pass (11 suites)
-- `yarn install` — resolved Vite 8.0.0-beta.15 + Rolldown 1.0.0-rc.5 successfully
+- `bun run lint` — passes
+- `bun run test` — all 71 tests pass (11 suites)
+- `bun install` — resolved Vite 8.0.0-beta.15 + Rolldown 1.0.0-rc.5 successfully
 - `esmExternalRequirePlugin` — confirmed exported from `vite` in v8 (`typeof vite.esmExternalRequirePlugin === 'function'`)
 - Rolldown `OutputOptions.paths` — confirmed supported (for external URL rewriting)
 

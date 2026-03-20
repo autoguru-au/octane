@@ -115,7 +115,7 @@ export const buildSPAVite = async (guruConfig: GuruConfig) => {
 				magenta(
 					'Warning: rollup-plugin-visualizer is not installed. ' +
 						'Install it to enable bundle analysis for Vite builds: ' +
-						'yarn add -D rollup-plugin-visualizer',
+						'bun add -D rollup-plugin-visualizer',
 				),
 			);
 		}

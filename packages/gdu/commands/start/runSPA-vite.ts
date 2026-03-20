@@ -369,7 +369,7 @@ export const runSPAVite = async (guruConfig: GuruConfig, isDebug: boolean) => {
 		  On Your Network:  ${blue(networkUrl)}
 
 		Note that the development build is not optimised.
-		To create a production build, use ${cyan('yarn build')}.
+		To create a production build, use ${cyan('bun run build')}.
 
 	`);
 };
