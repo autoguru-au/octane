@@ -313,15 +313,51 @@ export const runSPAVite = async (guruConfig: GuruConfig, isDebug: boolean) => {
 		},
 
 		optimizeDeps: {
+			// With appType: 'custom' Vite has no HTML to crawl for deps.
+			// Point it at the app entry so it can statically discover the
+			// full import tree and pre-bundle everything at startup instead
+			// of discovering deps at runtime (which causes reload waterfalls).
+			entries: ['src/client.tsx'],
+
+			// Force Vite to wait for the full crawl to finish before serving.
+			// Without this, Vite serves eagerly and re-optimises mid-load
+			// whenever it discovers a new dep, causing full-page reloads.
+			holdUntilCrawlEnd: true,
+
 			include: [
+				// Relay (CJS internals — always present)
 				'relay-runtime',
 				'react-relay',
 				'react-relay/hooks',
+
+				// Observability
 				'@datadog/browser-rum',
 				'@datadog/browser-logs',
 				'@datadog/browser-rum-react',
+
+				// State management
 				'xstate',
 				'@xstate/react',
+
+				// Routing
+				'react-router',
+				'react-router-dom',
+
+				// i18n (deeply nested CJS that the crawler misses)
+				'i18next',
+				'react-i18next',
+				'intl-messageformat',
+
+				// Date utilities
+				'date-fns',
+
+				// Vanilla Extract runtime deps (discovered at runtime otherwise)
+				'@vanilla-extract/dynamic',
+				'@vanilla-extract/recipes',
+
+				// General utilities (CJS or missed by crawler)
+				'clsx',
+				'es-toolkit',
 				'cssesc',
 				'css-what',
 				'dedent',

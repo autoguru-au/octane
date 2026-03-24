@@ -132,8 +132,10 @@ export interface InlineConfig {
 	plugins?: unknown[];
 	appType?: string;
 	optimizeDeps?: {
+		entries?: string[];
 		include?: string[];
 		exclude?: string[];
+		holdUntilCrawlEnd?: boolean;
 	};
 	[key: string]: unknown;
 }
