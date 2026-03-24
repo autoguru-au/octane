@@ -1,5 +1,13 @@
 # gdu
 
+## 13.19.2
+
+### Patch Changes
+
+- a9f0755: Improve Vite dev server startup by configuring optimizeDeps entries
+  and holdUntilCrawlEnd to eliminate reload waterfalls caused by runtime
+  dependency discovery
+
 ## 13.19.1
 
 ### Patch Changes
