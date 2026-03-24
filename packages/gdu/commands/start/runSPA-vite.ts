@@ -264,6 +264,10 @@ export const runSPAVite = async (guruConfig: GuruConfig, isDebug: boolean) => {
 		__DEBUG__: JSON.stringify(!!isDebug),
 	};
 
+	// Shared entry path used by both server.warmup and optimizeDeps.entries
+	// so the two stay in sync if the consumer entry ever changes.
+	const APP_ENTRY = 'src/client.tsx';
+
 	const server = await createServer({
 		root: PROJECT_ROOT,
 
@@ -294,7 +298,7 @@ export const runSPAVite = async (guruConfig: GuruConfig, isDebug: boolean) => {
 				overlay: true,
 			},
 			warmup: {
-				clientFiles: ['src/client.tsx'],
+				clientFiles: [APP_ENTRY],
 			},
 			headers: {
 				'Access-Control-Allow-Origin': '*',
@@ -317,7 +321,7 @@ export const runSPAVite = async (guruConfig: GuruConfig, isDebug: boolean) => {
 			// Point it at the app entry so it can statically discover the
 			// full import tree and pre-bundle everything at startup instead
 			// of discovering deps at runtime (which causes reload waterfalls).
-			entries: ['src/client.tsx'],
+			entries: [APP_ENTRY],
 
 			// Force Vite to wait for the full crawl to finish before serving.
 			// Without this, Vite serves eagerly and re-optimises mid-load
