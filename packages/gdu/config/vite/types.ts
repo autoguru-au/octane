@@ -65,7 +65,7 @@ export interface VitePlugin {
 		bundle: Record<string, RolldownOutputItem>,
 	) => void | Promise<void>;
 	writeBundle?: (
-		options: unknown,
+		options: { dir?: string; [key: string]: unknown },
 		bundle: Record<string, RolldownOutputItem>,
 	) => void;
 }

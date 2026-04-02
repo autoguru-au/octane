@@ -1,3 +1,6 @@
+import fs from 'node:fs';
+import path from 'node:path';
+
 import type { VitePlugin } from '../types';
 
 /**
@@ -8,9 +11,17 @@ import type { VitePlugin } from '../types';
  * The built-in `esmExternalRequirePlugin` handles module-boundary conversion but
  * does not transform require calls inside Rolldown's own CJS wrapper functions.
  *
- * This plugin injects a `globalThis.require` shim into entry chunks that
- * pre-loads all external modules via dynamic `import()` and provides synchronous
- * `require()` resolution from cache. Uses top-level await (valid in ES2022 modules).
+ * This plugin creates a thin wrapper entry that pre-loads all external modules
+ * via dynamic `import()` and defines a synchronous `globalThis.require()` from
+ * cache, then dynamically imports the real entry. Uses top-level await (ES2022).
+ *
+ * Why writeBundle instead of renderChunk:
+ * ES module static `import` declarations are always hoisted and evaluated before
+ * the module body runs. The previous renderChunk approach prepended the shim to
+ * the entry chunk, but the entry's static imports (hooks, i18n, helpers, etc.)
+ * would evaluate first — triggering `require()` calls before the shim was set up.
+ * By emitting a separate wrapper with NO static imports, we guarantee the shim
+ * executes before any chunk evaluation.
  *
  * Safety: The shim is harmless if `require()` is never called — it defines globals
  * that simply go unused. The early return when `externals` is empty prevents any
@@ -38,35 +49,53 @@ export function rolldownExternalShim(
 		name: 'rolldown-external-shim',
 		apply: 'build',
 
-		renderChunk(code, chunk) {
-			// [H1] Use chunk.isEntry — config-agnostic, set by Rolldown itself.
-			if (!chunk.isEntry) return null;
+		writeBundle(options, bundle) {
+			const outputDir = options.dir;
+			if (!outputDir) return;
 
-			// [H2] No content heuristic needed. The shim is harmless if require()
-			// is never called at runtime. The externals guard above already gates
-			// injection for standalone builds.
+			for (const [fileName, chunk] of Object.entries(bundle)) {
+				if (chunk.type !== 'chunk' || !chunk.isEntry) continue;
 
-			const preloads = externalUrls
-				.map(
-					(url) =>
-						`import(${JSON.stringify(url)}).then(function(m){__xrc[${JSON.stringify(url)}]=m}).catch(function(e){console.error("[rolldown-shim] Failed:",${JSON.stringify(url)},e)})`,
-				)
-				.join(',');
+				const preloads = externalUrls
+					.map(
+						(url) =>
+							`import(${JSON.stringify(url)}).then(function(m){__xrc[${JSON.stringify(url)}]=m}).catch(function(e){console.error("[rolldown-shim] Failed:",${JSON.stringify(url)},e)})`,
+					)
+					.join(',');
 
-			const shim = [
-				`var __xrc={};`,
-				// [H3] Promise.allSettled — partial CDN failure caches what succeeded.
-				`await Promise.allSettled([${preloads}]);`,
-				// [H4] Chain to existing require (multi-Vite-MFE safety).
-				`var __prev=typeof globalThis.require==="function"?globalThis.require:null;`,
-				`globalThis.require=function(id){`,
-				`if(__xrc[id])return __xrc[id];`,
-				`if(__prev)return __prev(id);`,
-				`console.error("[rolldown-shim] Unknown module:",id);`,
-				`return{}};`,
-			].join('');
+				const shim = [
+					`var __xrc={};`,
+					`await Promise.allSettled([${preloads}]);`,
+					`var __prev=typeof globalThis.require==="function"?globalThis.require:null;`,
+					`globalThis.require=function(id){`,
+					`if(__xrc[id])return __xrc[id];`,
+					`if(__prev)return __prev(id);`,
+					`console.error("[rolldown-shim] Unknown module:",id);`,
+					`return{}};`,
+				].join('');
 
-			return { code: shim + code, map: null };
+				// Move the original entry to an inner file, replace with shim wrapper.
+				// The wrapper has zero static imports so the shim executes first.
+				const innerFileName = fileName.replace(
+					/(-[a-zA-Z0-9_-]+)?\.js$/,
+					'-inner$1.js',
+				);
+				const entryPath = path.join(outputDir, fileName);
+				const innerPath = path.join(outputDir, innerFileName);
+
+				const originalCode = fs.readFileSync(entryPath, 'utf8');
+				fs.writeFileSync(innerPath, originalCode);
+
+				const mapPath = `${entryPath}.map`;
+				if (fs.existsSync(mapPath)) {
+					fs.copyFileSync(mapPath, `${innerPath}.map`);
+				}
+
+				fs.writeFileSync(
+					entryPath,
+					`${shim}\nawait import("./${innerFileName}");`,
+				);
+			}
 		},
 	};
 }
