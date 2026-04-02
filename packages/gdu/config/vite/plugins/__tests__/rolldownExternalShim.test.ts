@@ -178,5 +178,72 @@ describe('rolldownExternalShim', () => {
 				(plugin as any).writeBundle({}, bundle);
 			}).not.toThrow();
 		});
+
+		it('rewrites chunks that import from the entry to import from the inner file', () => {
+			fs.writeFileSync(
+				path.join(tmpDir, 'main-AbCd1234.js'),
+				'var x=1;export{x as t}',
+			);
+			fs.mkdirSync(path.join(tmpDir, 'chunks'), { recursive: true });
+			fs.writeFileSync(
+				path.join(tmpDir, 'chunks/FMOUsersList-xyz.js'),
+				'import{t as P}from"../main-AbCd1234.js";console.log(P);',
+			);
+
+			const plugin = rolldownExternalShim(externals);
+			const bundle = {
+				...makeBundle('main-AbCd1234.js', true),
+				'chunks/FMOUsersList-xyz.js': {
+					type: 'chunk' as const,
+					fileName: 'chunks/FMOUsersList-xyz.js',
+					isEntry: false,
+					isDynamicEntry: false,
+				},
+			};
+
+			(plugin as any).writeBundle({ dir: tmpDir }, bundle);
+
+			const chunkCode = fs.readFileSync(
+				path.join(tmpDir, 'chunks/FMOUsersList-xyz.js'),
+				'utf8',
+			);
+
+			expect(chunkCode).toContain('../main-inner-AbCd1234.js');
+			expect(chunkCode).not.toContain('../main-AbCd1234.js');
+		});
+
+		it('does not rewrite chunks that do not reference the entry', () => {
+			fs.writeFileSync(
+				path.join(tmpDir, 'main-AbCd1234.js'),
+				'var x=1;export{x as t}',
+			);
+			fs.mkdirSync(path.join(tmpDir, 'chunks'), { recursive: true });
+			const originalChunk =
+				'import{n}from"./rolldown-runtime.js";console.log(n);';
+			fs.writeFileSync(
+				path.join(tmpDir, 'chunks/helpers-abc.js'),
+				originalChunk,
+			);
+
+			const plugin = rolldownExternalShim(externals);
+			const bundle = {
+				...makeBundle('main-AbCd1234.js', true),
+				'chunks/helpers-abc.js': {
+					type: 'chunk' as const,
+					fileName: 'chunks/helpers-abc.js',
+					isEntry: false,
+					isDynamicEntry: false,
+				},
+			};
+
+			(plugin as any).writeBundle({ dir: tmpDir }, bundle);
+
+			expect(
+				fs.readFileSync(
+					path.join(tmpDir, 'chunks/helpers-abc.js'),
+					'utf8',
+				),
+			).toBe(originalChunk);
+		});
 	});
 });

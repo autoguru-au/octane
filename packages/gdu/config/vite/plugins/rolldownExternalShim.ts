@@ -100,6 +100,36 @@ export function rolldownExternalShim(
 					entryPath,
 					`${shim}\nawait import("./${innerFileName}");`,
 				);
+
+				// Rewrite chunks that import from the original entry to import
+				// from the inner file instead. The wrapper has no exports, so
+				// any chunk doing `import {x} from "../main.js"` would break.
+				for (const [chunkFile, chunkItem] of Object.entries(bundle)) {
+					if (chunkItem.type !== 'chunk' || chunkItem.isEntry)
+						continue;
+					const chunkPath = path.join(outputDir, chunkFile);
+					if (!fs.existsSync(chunkPath)) continue;
+
+					const chunkCode = fs.readFileSync(chunkPath, 'utf8');
+					if (!chunkCode.includes(fileName)) continue;
+
+					// Compute the relative path from this chunk to the inner file.
+					// The chunk may be in a subdirectory (e.g. chunks/).
+					const chunkDir = path.dirname(chunkFile);
+					const relToEntry = path.posix.relative(
+						chunkDir,
+						fileName,
+					);
+					const relToInner = path.posix.relative(
+						chunkDir,
+						innerFileName,
+					);
+
+					const updated = chunkCode.split(relToEntry).join(relToInner);
+					if (updated !== chunkCode) {
+						fs.writeFileSync(chunkPath, updated);
+					}
+				}
 			}
 		},
 	};
