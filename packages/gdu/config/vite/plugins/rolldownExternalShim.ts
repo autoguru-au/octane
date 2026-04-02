@@ -1,5 +1,5 @@
-import fs from 'node:fs';
-import path from 'node:path';
+import fs from 'fs';
+import path from 'path';
 
 import type { VitePlugin } from '../types';
 
@@ -88,7 +88,12 @@ export function rolldownExternalShim(
 
 				const mapPath = `${entryPath}.map`;
 				if (fs.existsSync(mapPath)) {
-					fs.copyFileSync(mapPath, `${innerPath}.map`);
+					try {
+						fs.renameSync(mapPath, `${innerPath}.map`);
+					} catch {
+						fs.copyFileSync(mapPath, `${innerPath}.map`);
+						fs.unlinkSync(mapPath);
+					}
 				}
 
 				fs.writeFileSync(
