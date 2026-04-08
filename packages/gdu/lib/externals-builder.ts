@@ -1,42 +1,16 @@
-import { existsSync } from 'fs';
+import { existsSync, renameSync, rmSync } from 'fs';
 import { copyFile, mkdir } from 'fs/promises';
 import { join } from 'path';
 
+import { cyan } from 'kleur';
+
+import {
+	EXTERNALS_BASE,
+	getDataDogVersion,
+	getReactVersion,
+} from '../config/shared/externals';
+
 import { PROJECT_ROOT } from './roots';
-
-/**
- * Reads the actual installed version of a package from node_modules,
- * rather than the semver range from package.json. This ensures the
- * version in the external URL matches the bundled code exactly.
- */
-function getInstalledVersion(packageName: string): string | null {
-	try {
-		const pkgPath = join(
-			PROJECT_ROOT,
-			'node_modules',
-			packageName,
-			'package.json',
-		);
-		const pkg = JSON.parse(
-			require('fs').readFileSync(pkgPath, 'utf8'),
-		);
-		return pkg.version || null;
-	} catch {
-		return null;
-	}
-}
-
-export function getExternalsVersions(): {
-	reactVersion: string;
-	datadogVersion: string;
-} {
-	const reactVersion = getInstalledVersion('react') || '19';
-	const datadogVersion =
-		getInstalledVersion('@datadog/browser-rum') || '6.23.0';
-	return { reactVersion, datadogVersion };
-}
-
-const EXTERNALS_BASE = '/_shared/externals';
 
 interface ExternalDef {
 	/** npm package name or sub-path (e.g. 'react-dom/client') */
@@ -45,18 +19,35 @@ interface ExternalDef {
 	outFile: string;
 	/**
 	 * Cross-dependencies to mark as external and rewrite to self-hosted
-	 * root-relative URLs. Keys are bare specifiers, values are the output
-	 * filenames they should resolve to.
+	 * root-relative URLs. Keys are bare specifiers (or sub-path specifiers),
+	 * values are the output filenames they should resolve to.
 	 */
 	externalRewrites: Record<string, string>;
 }
 
+/**
+ * Bump this when the esbuild config or rewrite logic changes,
+ * so stale cached bundles are invalidated.
+ */
+const CACHE_SCHEMA_VERSION = 1;
+
 export function getExternalDefs(): ExternalDef[] {
-	const { reactVersion, datadogVersion } = getExternalsVersions();
+	const reactVersion = getReactVersion();
+	const datadogVersion = getDataDogVersion();
 
 	const reactFile = `react@${reactVersion}.mjs`;
 	const reactDomFile = `react-dom@${reactVersion}.mjs`;
+	const jsxRuntimeFile = `jsx-runtime@${reactVersion}.mjs`;
 	const browserRumFile = `browser-rum@${datadogVersion}.mjs`;
+
+	// Shared React sub-path rewrites — prevents deep imports from bundling
+	// a second React copy (dual-instance). Covers known sub-paths that
+	// dependent packages may import internally.
+	const reactRewrites: Record<string, string> = {
+		react: reactFile,
+		'react/jsx-runtime': jsxRuntimeFile,
+		'react/jsx-dev-runtime': jsxRuntimeFile,
+	};
 
 	return [
 		{
@@ -67,21 +58,19 @@ export function getExternalDefs(): ExternalDef[] {
 		{
 			entryPoint: 'react-dom',
 			outFile: reactDomFile,
-			externalRewrites: {
-				react: reactFile,
-			},
+			externalRewrites: reactRewrites,
 		},
 		{
 			entryPoint: 'react-dom/client',
 			outFile: `react-dom-client@${reactVersion}.mjs`,
 			externalRewrites: {
-				react: reactFile,
+				...reactRewrites,
 				'react-dom': reactDomFile,
 			},
 		},
 		{
 			entryPoint: 'react/jsx-runtime',
-			outFile: `jsx-runtime@${reactVersion}.mjs`,
+			outFile: jsxRuntimeFile,
 			externalRewrites: {
 				react: reactFile,
 			},
@@ -95,7 +84,7 @@ export function getExternalDefs(): ExternalDef[] {
 			entryPoint: '@datadog/browser-rum-react',
 			outFile: `browser-rum-react@${datadogVersion}.mjs`,
 			externalRewrites: {
-				react: reactFile,
+				...reactRewrites,
 				'@datadog/browser-rum': browserRumFile,
 			},
 		},
@@ -108,8 +97,9 @@ export function getExternalDefs(): ExternalDef[] {
 }
 
 function getCacheDir(): string {
-	const { reactVersion, datadogVersion } = getExternalsVersions();
-	const hash = `react${reactVersion}_dd${datadogVersion}`;
+	const reactVersion = getReactVersion();
+	const datadogVersion = getDataDogVersion();
+	const hash = `v${CACHE_SCHEMA_VERSION}_react${reactVersion}_dd${datadogVersion}`;
 	return join(PROJECT_ROOT, 'node_modules', '.cache', 'gdu-externals', hash);
 }
 
@@ -130,57 +120,75 @@ export async function buildExternalsIfNeeded(): Promise<string> {
 		return cacheDir;
 	}
 
+	console.log(cyan('Building shared externals...'));
+
 	// eslint-disable-next-line @typescript-eslint/no-var-requires
 	const esbuild = require('esbuild');
 
-	await mkdir(cacheDir, { recursive: true });
+	// Build to a temp directory, then atomically rename on success.
+	// This prevents a partial cache from being left behind if a build fails.
+	const tmpDir = `${cacheDir}_tmp_${Date.now()}`;
+	await mkdir(tmpDir, { recursive: true });
 
-	for (const def of defs) {
-		const rewriteEntries = Object.entries(def.externalRewrites);
+	try {
+		await Promise.all(
+			defs.map((def) => {
+				const rewriteEntries = Object.entries(def.externalRewrites);
 
-		await esbuild.build({
-			entryPoints: [def.entryPoint],
-			outfile: join(cacheDir, def.outFile),
-			bundle: true,
-			format: 'esm',
-			platform: 'browser',
-			target: 'es2022',
-			minify: true,
-			sourcemap: true,
-			// Resolve modules from the MFE project's node_modules
-			nodePaths: [join(PROJECT_ROOT, 'node_modules')],
-			plugins:
-				rewriteEntries.length > 0
-					? [
-							{
-								name: 'rewrite-cross-deps',
-								setup(build) {
-									for (const [
-										bare,
-										outFile,
-									] of rewriteEntries) {
-										// Match the bare specifier exactly and any sub-paths
-										const escaped = bare.replace(
-											/[.*+?^${}()|[\]\\]/g,
-											'\\$&',
-										);
-										build.onResolve(
-											{
-												filter: new RegExp(
-													`^${escaped}$`,
-												),
-											},
-											() => ({
-												path: `${EXTERNALS_BASE}/${outFile}`,
-												external: true,
-											}),
-										);
-									}
-								},
-							},
-						]
-					: [],
-		});
+				return esbuild.build({
+					entryPoints: [def.entryPoint],
+					outfile: join(tmpDir, def.outFile),
+					bundle: true,
+					format: 'esm',
+					platform: 'browser',
+					target: 'es2022',
+					minify: true,
+					sourcemap: true,
+					// Resolve modules from the MFE project's node_modules
+					nodePaths: [join(PROJECT_ROOT, 'node_modules')],
+					plugins:
+						rewriteEntries.length > 0
+							? [
+									{
+										name: 'rewrite-cross-deps',
+										setup(build: any) {
+											for (const [
+												bare,
+												outFile,
+											] of rewriteEntries) {
+												const escaped = bare.replace(
+													/[.*+?^${}()|[\]\\]/g,
+													'\\$&',
+												);
+												build.onResolve(
+													{
+														filter: new RegExp(
+															`^${escaped}$`,
+														),
+													},
+													() => ({
+														path: `${EXTERNALS_BASE}/${outFile}`,
+														external: true,
+													}),
+												);
+											}
+										},
+									},
+								]
+							: [],
+				});
+			}),
+		);
+
+		// Atomic swap — remove stale cache (if any), rename tmp → cache
+		if (existsSync(cacheDir)) {
+			rmSync(cacheDir, { recursive: true });
+		}
+		renameSync(tmpDir, cacheDir);
+	} catch (err) {
+		// Clean up temp directory on failure
+		rmSync(tmpDir, { recursive: true, force: true });
+		throw err;
 	}
 
 	return cacheDir;
@@ -199,15 +207,17 @@ export async function copyExternalsToOutput(
 
 	await mkdir(destDir, { recursive: true });
 
-	for (const def of defs) {
-		const src = join(cacheDir, def.outFile);
-		const dest = join(destDir, def.outFile);
-		await copyFile(src, dest);
+	await Promise.all(
+		defs.map(async (def) => {
+			const src = join(cacheDir, def.outFile);
+			const dest = join(destDir, def.outFile);
+			await copyFile(src, dest);
 
-		// Copy sourcemap too if it exists
-		const srcMap = `${src}.map`;
-		if (existsSync(srcMap)) {
-			await copyFile(srcMap, `${dest}.map`);
-		}
-	}
+			// Copy sourcemap too if it exists
+			const srcMap = `${src}.map`;
+			if (existsSync(srcMap)) {
+				await copyFile(srcMap, `${dest}.map`);
+			}
+		}),
+	);
 }

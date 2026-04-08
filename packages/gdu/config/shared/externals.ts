@@ -32,7 +32,7 @@ export const getReactVersion = () => getInstalledVersion('react', '19');
 export const getDataDogVersion = () =>
 	getInstalledVersion('@datadog/browser-rum', '6.23.0');
 
-const EXTERNALS_BASE = '/_shared/externals';
+export const EXTERNALS_BASE = '/_shared/externals';
 
 export const getExternals = (standalone?: boolean) => {
 	const reactVersion = getReactVersion();
