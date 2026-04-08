@@ -1,29 +1,38 @@
+import { readFileSync } from 'fs';
 import path from 'path';
 
 import { PROJECT_ROOT } from '../../lib/roots';
 
-export const getReactVersion = () => {
+/**
+ * Reads the actual installed version from node_modules/<pkg>/package.json.
+ * This ensures the version in external URLs matches the bundled code exactly,
+ * avoiding dual-instance issues when different MFEs have different semver
+ * ranges in their package.json.
+ */
+function getInstalledVersion(
+	packageName: string,
+	fallback: string,
+): string {
 	try {
-		const packagePath = path.join(PROJECT_ROOT, 'package.json');
-		const pkg = require(packagePath);
-		return (pkg.dependencies?.react || '19').replace('^', '');
-	} catch {
-		return '19';
-	}
-};
-
-export const getDataDogVersion = () => {
-	try {
-		const packagePath = path.join(PROJECT_ROOT, 'package.json');
-		const pkg = require(packagePath);
-		return (pkg.dependencies?.['@datadog/browser-rum'] || '6.23.0').replace(
-			/^[\^~>=<]+/,
-			'',
+		const pkgPath = path.join(
+			PROJECT_ROOT,
+			'node_modules',
+			packageName,
+			'package.json',
 		);
+		const pkg = JSON.parse(readFileSync(pkgPath, 'utf8'));
+		return pkg.version || fallback;
 	} catch {
-		return '6.23.0';
+		return fallback;
 	}
-};
+}
+
+export const getReactVersion = () => getInstalledVersion('react', '19');
+
+export const getDataDogVersion = () =>
+	getInstalledVersion('@datadog/browser-rum', '6.23.0');
+
+const EXTERNALS_BASE = '/_shared/externals';
 
 export const getExternals = (standalone?: boolean) => {
 	const reactVersion = getReactVersion();
@@ -31,16 +40,16 @@ export const getExternals = (standalone?: boolean) => {
 	return standalone
 		? {}
 		: {
-				react: `https://esm.sh/react@${reactVersion}`,
-				'react-dom': `https://esm.sh/react-dom@${reactVersion}`,
-				'react-dom/client': `https://esm.sh/react-dom@${reactVersion}/client`,
-				'react/jsx-runtime': `https://esm.sh/react@${reactVersion}/jsx-runtime`,
-				'react/jsx-dev-runtime': `https://esm.sh/react@${reactVersion}/jsx-runtime`,
+				react: `${EXTERNALS_BASE}/react@${reactVersion}.mjs`,
+				'react-dom': `${EXTERNALS_BASE}/react-dom@${reactVersion}.mjs`,
+				'react-dom/client': `${EXTERNALS_BASE}/react-dom-client@${reactVersion}.mjs`,
+				'react/jsx-runtime': `${EXTERNALS_BASE}/jsx-runtime@${reactVersion}.mjs`,
+				'react/jsx-dev-runtime': `${EXTERNALS_BASE}/jsx-runtime@${reactVersion}.mjs`,
 
 				// DataDog externals
-				'@datadog/browser-rum': `https://esm.sh/@datadog/browser-rum@${datadogVersion}`,
-				'@datadog/browser-rum-react': `https://esm.sh/@datadog/browser-rum-react@${datadogVersion}`,
-				'@datadog/browser-logs': `https://esm.sh/@datadog/browser-logs@${datadogVersion}`,
+				'@datadog/browser-rum': `${EXTERNALS_BASE}/browser-rum@${datadogVersion}.mjs`,
+				'@datadog/browser-rum-react': `${EXTERNALS_BASE}/browser-rum-react@${datadogVersion}.mjs`,
+				'@datadog/browser-logs': `${EXTERNALS_BASE}/browser-logs@${datadogVersion}.mjs`,
 			};
 };
 
