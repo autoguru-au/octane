@@ -5,6 +5,7 @@ import { cyan, magenta } from 'kleur';
 
 import { getExternals } from '../../config/shared/externals';
 import viteConfigs from '../../config/vite';
+import { copyExternalsToOutput } from '../../lib/externals-builder';
 import { translationHashingPlugin } from '../../config/vite/plugins/TranslationHashingPlugin';
 import { guruConfigCjsPlugin } from '../../config/vite/plugins/guruConfigCjs';
 import { relayPlugin } from '../../config/vite/plugins/relay';
@@ -133,6 +134,12 @@ export const buildSPAVite = async (guruConfig: GuruConfig) => {
 		};
 
 		await build(mergedConfig);
+	}
+
+	// Build and copy self-hosted externals into the output directory
+	// so they deploy alongside MFE assets on S3/CloudFront.
+	if (!guruConfig?.standalone) {
+		await copyExternalsToOutput(guruConfig.outputPath);
 	}
 
 	return {

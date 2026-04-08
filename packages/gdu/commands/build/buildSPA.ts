@@ -7,6 +7,7 @@ import webpack, { Configuration } from 'webpack';
 
 import buildConfigs from '../../config/webpack';
 import { GuruConfig } from '../../lib/config';
+import { copyExternalsToOutput } from '../../lib/externals-builder';
 import { run } from '../../lib/runWebpack';
 import { getHooks } from '../../utils/hooks';
 
@@ -51,6 +52,12 @@ export const buildSPA = async (guruConfig: GuruConfig) => {
 
 	const deletedFilesCount = await deleteLicenseFiles(guruConfig.outputPath);
 	console.log(cyan(`Deleted ${deletedFilesCount} license files`));
+
+	// Build and copy self-hosted externals into the output directory
+	// so they deploy alongside MFE assets on S3/CloudFront.
+	if (!guruConfig?.standalone) {
+		await copyExternalsToOutput(guruConfig.outputPath);
+	}
 
 	return {
 		artifactPath: guruConfig.outputPath,
