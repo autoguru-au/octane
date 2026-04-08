@@ -28,9 +28,9 @@ import type { VitePlugin } from '../types';
 export function rolldownExternalShim(
 	externals: Record<string, string>,
 ): VitePlugin {
-	const externalUrls = Object.values(externals);
+	const externalEntries = Object.entries(externals);
 
-	if (externalUrls.length === 0) {
+	if (externalEntries.length === 0) {
 		return { name: 'rolldown-external-shim' };
 	}
 
@@ -46,18 +46,22 @@ export function rolldownExternalShim(
 			// is never called at runtime. The externals guard above already gates
 			// injection for standalone builds.
 
-			const preloads = externalUrls
+			// [H3] Pre-load each external and cache by BOTH its URL (for ESM
+			// import() resolution) AND its bare specifier (for Rolldown's CJS
+			// require() wrappers, which may pass bare specifiers instead of
+			// the paths-rewritten URL).
+			const preloads = externalEntries
 				.map(
-					(url) =>
-						`import(${JSON.stringify(url)}).then(function(m){__xrc[${JSON.stringify(url)}]=m}).catch(function(e){console.error("[rolldown-shim] Failed:",${JSON.stringify(url)},e)})`,
+					([bare, url]) =>
+						`import(${JSON.stringify(url)}).then(function(m){__xrc[${JSON.stringify(url)}]=m;__xrc[${JSON.stringify(bare)}]=m}).catch(function(e){console.error("[rolldown-shim] Failed:",${JSON.stringify(url)},e)})`,
 				)
 				.join(',');
 
 			const shim = [
 				`var __xrc={};`,
-				// [H3] Promise.allSettled — partial CDN failure caches what succeeded.
+				// [H4] Promise.allSettled — partial CDN failure caches what succeeded.
 				`await Promise.allSettled([${preloads}]);`,
-				// [H4] Chain to existing require (multi-Vite-MFE safety).
+				// [H5] Chain to existing require (multi-Vite-MFE safety).
 				`var __prev=typeof globalThis.require==="function"?globalThis.require:null;`,
 				`globalThis.require=function(id){`,
 				`if(__xrc[id])return __xrc[id];`,

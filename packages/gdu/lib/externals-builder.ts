@@ -96,10 +96,19 @@ export function getExternalDefs(): ExternalDef[] {
 	];
 }
 
+function getEsbuildVersion(): string {
+	try {
+		return require('esbuild/package.json').version;
+	} catch {
+		return 'unknown';
+	}
+}
+
 function getCacheDir(): string {
 	const reactVersion = getReactVersion();
 	const datadogVersion = getDataDogVersion();
-	const hash = `v${CACHE_SCHEMA_VERSION}_react${reactVersion}_dd${datadogVersion}`;
+	const esbuildVersion = getEsbuildVersion();
+	const hash = `v${CACHE_SCHEMA_VERSION}_es${esbuildVersion}_react${reactVersion}_dd${datadogVersion}`;
 	return join(PROJECT_ROOT, 'node_modules', '.cache', 'gdu-externals', hash);
 }
 
