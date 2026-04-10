@@ -22,6 +22,72 @@ interface FileToUpload {
 	contentType: string;
 }
 
+async function isUnchangedOnS3(
+	client: any,
+	HeadObjectCommand: any,
+	bucket: string,
+	key: string,
+	localETag: string,
+): Promise<boolean> {
+	try {
+		const head = await client.send(
+			new HeadObjectCommand({ Bucket: bucket, Key: key }),
+		);
+		return head.ETag === localETag;
+	} catch (err: any) {
+		if (err.name === 'NotFound' || err.$metadata?.httpStatusCode === 404) {
+			return false;
+		}
+		throw err;
+	}
+}
+
+async function uploadFiles(
+	files: FileToUpload[],
+	bucket: string,
+	region: string,
+): Promise<{ uploaded: number; skipped: number; failures: string[] }> {
+	// eslint-disable-next-line @typescript-eslint/no-var-requires
+	const { S3Client, PutObjectCommand, HeadObjectCommand } =
+		require('@aws-sdk/client-s3');
+
+	const client = new S3Client({ region });
+	let uploaded = 0;
+	let skipped = 0;
+	const failures: string[] = [];
+
+	for (const file of files) {
+		const body = readFileSync(file.localPath);
+		const md5 = createHash('md5').update(body).digest('hex');
+		const localETag = `"${md5}"`;
+
+		if (await isUnchangedOnS3(client, HeadObjectCommand, bucket, file.s3Key, localETag)) {
+			console.log(dim(`  skip  ${file.s3Key} (unchanged)`));
+			skipped++;
+			continue;
+		}
+
+		try {
+			await client.send(
+				new PutObjectCommand({
+					Bucket: bucket,
+					Key: file.s3Key,
+					Body: body,
+					ContentType: file.contentType,
+					CacheControl: 'public, max-age=31536000, immutable',
+				}),
+			);
+			console.log(green(`  put   ${file.s3Key}`));
+			uploaded++;
+		} catch (err: any) {
+			console.error(red(`  FAIL  ${file.s3Key}: ${err.message}`));
+			failures.push(file.s3Key);
+		}
+	}
+
+	return { uploaded, skipped, failures };
+}
+
 export default async (options: DeployExternalsOptions) => {
 	const bucket = options.bucket;
 	if (!bucket) {
@@ -40,12 +106,10 @@ export default async (options: DeployExternalsOptions) => {
 	console.log(dim(`  Prefix: ${prefix}`));
 	if (dryRun) console.log(yellow('  DRY RUN — no files will be uploaded'));
 
-	// Step 1: Build externals if not cached
 	const cacheDir = await buildExternalsIfNeeded();
 	const defs = getExternalDefs();
-
-	// Step 2: Collect files to upload (.mjs + .mjs.map)
 	const files: FileToUpload[] = [];
+
 	for (const def of defs) {
 		files.push({
 			localPath: join(cacheDir, def.outFile),
@@ -53,7 +117,6 @@ export default async (options: DeployExternalsOptions) => {
 			contentType: 'application/javascript',
 		});
 
-		// Include sourcemap if it exists
 		const mapFile = `${def.outFile}.map`;
 		const mapPath = join(cacheDir, mapFile);
 		if (existsSync(mapPath)) {
@@ -73,65 +136,12 @@ export default async (options: DeployExternalsOptions) => {
 		return;
 	}
 
-	// Step 3: Lazily load AWS SDK (not loaded at CLI startup)
-	// eslint-disable-next-line @typescript-eslint/no-var-requires
-	const { S3Client, PutObjectCommand, HeadObjectCommand } =
-		require('@aws-sdk/client-s3');
+	const { uploaded, skipped, failures } = await uploadFiles(
+		files,
+		bucket,
+		region,
+	);
 
-	const client = new S3Client({ region });
-
-	// Step 4: Upload with idempotency check
-	let uploaded = 0;
-	let skipped = 0;
-	const failures: { key: string; error: Error }[] = [];
-
-	const CACHE_CONTROL = 'public, max-age=31536000, immutable';
-
-	for (const file of files) {
-		const body = readFileSync(file.localPath);
-		const localMd5 = createHash('md5').update(body).digest('hex');
-		const localETag = `"${localMd5}"`;
-
-		// Check if already exists with same content
-		try {
-			const head = await client.send(
-				new HeadObjectCommand({ Bucket: bucket, Key: file.s3Key }),
-			);
-			if (head.ETag === localETag) {
-				console.log(dim(`  skip  ${file.s3Key} (unchanged)`));
-				skipped++;
-				continue;
-			}
-		} catch (err: any) {
-			// 404 = file doesn't exist yet, proceed to upload
-			if (
-				err.name !== 'NotFound' &&
-				err.$metadata?.httpStatusCode !== 404
-			) {
-				throw err;
-			}
-		}
-
-		// Upload
-		try {
-			await client.send(
-				new PutObjectCommand({
-					Bucket: bucket,
-					Key: file.s3Key,
-					Body: body,
-					ContentType: file.contentType,
-					CacheControl: CACHE_CONTROL,
-				}),
-			);
-			console.log(green(`  put   ${file.s3Key}`));
-			uploaded++;
-		} catch (err: any) {
-			console.error(red(`  FAIL  ${file.s3Key}: ${err.message}`));
-			failures.push({ key: file.s3Key, error: err });
-		}
-	}
-
-	// Summary
 	console.log('');
 	console.log(cyan('Summary:'));
 	console.log(`  Uploaded: ${uploaded}`);
@@ -139,7 +149,7 @@ export default async (options: DeployExternalsOptions) => {
 	if (failures.length > 0) {
 		console.log(red(`  Failed:   ${failures.length}`));
 		throw new Error(
-			`Failed to upload ${failures.length} file(s): ${failures.map((f) => f.key).join(', ')}`,
+			`Failed to upload ${failures.length} file(s): ${failures.join(', ')}`,
 		);
 	}
 
