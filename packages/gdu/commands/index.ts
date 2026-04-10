@@ -157,6 +157,15 @@ export default (app: Sade) => {
 		.describe('Generate TypeScript from .gdu_app_config files')
 		.option('-l, --list', 'List available generators', false)
 		.action(deferredAction(async () => import('./codegen'), IS_NOT_ROOT));
+
+	// === DEPLOY EXTERNALS
+	app.command('deploy-externals')
+		.describe('Upload self-hosted externals to S3 bucket')
+		.option('-b, --bucket', 'S3 bucket name (required)')
+		.option('-r, --region', 'AWS region', 'ap-southeast-2')
+		.option('--prefix', 'S3 key prefix', '_shared/externals')
+		.option('--dry-run', 'Show what would be uploaded without uploading', false)
+		.action(deferredAction(async () => import('./deploy-externals')));
 };
 
 const NOT_READY = wrapAction(() => {

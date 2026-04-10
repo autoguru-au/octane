@@ -5,7 +5,6 @@ import { join } from 'path';
 import { cyan } from 'kleur';
 
 import {
-	EXTERNALS_BASE,
 	getDataDogVersion,
 	getReactVersion,
 } from '../config/shared/externals';
@@ -18,8 +17,8 @@ interface ExternalDef {
 	/** Output filename without path (e.g. 'react-dom-client@19.mjs') */
 	outFile: string;
 	/**
-	 * Cross-dependencies to mark as external and rewrite to self-hosted
-	 * root-relative URLs. Keys are bare specifiers (or sub-path specifiers),
+	 * Cross-dependencies to mark as external and rewrite to relative URLs
+	 * (e.g. ./react@19.mjs). Keys are bare specifiers (or sub-path specifiers),
 	 * values are the output filenames they should resolve to.
 	 */
 	externalRewrites: Record<string, string>;
@@ -29,7 +28,7 @@ interface ExternalDef {
  * Bump this when the esbuild config or rewrite logic changes,
  * so stale cached bundles are invalidated.
  */
-const CACHE_SCHEMA_VERSION = 1;
+const CACHE_SCHEMA_VERSION = 2;
 
 export function getExternalDefs(): ExternalDef[] {
 	const reactVersion = getReactVersion();
@@ -176,7 +175,7 @@ export async function buildExternalsIfNeeded(): Promise<string> {
 														),
 													},
 													() => ({
-														path: `${EXTERNALS_BASE}/${outFile}`,
+														path: `./${outFile}`,
 														external: true,
 													}),
 												);

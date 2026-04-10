@@ -42,23 +42,24 @@ export const getDataDogVersion = () =>
 	getInstalledVersion('@datadog/browser-rum', '6.23.0');
 
 /**
- * Root-relative base path for self-hosted external bundles.
+ * Base URL for self-hosted external bundles.
  *
- * DEPLOYMENT REQUIREMENT: These files must be accessible at the CDN root
- * (e.g., https://mfe.{tenant}.autoguru.com/_shared/externals/react@19.mjs).
- * Root-relative URLs in ES modules resolve against the importing module's
- * origin. Since MFE bundles load from the same CloudFront distribution,
- * /_shared/externals/ must exist at the S3 bucket root — not under a
- * per-MFE subdirectory.
+ * Configurable via the EXTERNALS_CDN_URL environment variable. In CI/CD,
+ * set this to the CloudFront URL of the dedicated shared-deps bucket
+ * (e.g., EXTERNALS_CDN_URL=https://shared-deps.autoguru.com).
  *
- * The deployment pipeline must either:
- * 1. Upload externals to the bucket root (s3://bucket/_shared/externals/), or
- * 2. Configure a CloudFront behaviour to route /_shared/externals/* correctly
+ * When unset, falls back to the root-relative path /_shared/externals
+ * which works for local development and the webpack/vite dev servers.
  *
- * Additionally, .mjs files must be served with Content-Type: application/javascript.
- * S3 may not set this automatically — verify or set explicitly on upload.
+ * Cross-dependency imports within externals bundles use relative URLs
+ * (./react@19.mjs) so they resolve correctly regardless of the origin.
+ *
+ * DEPLOYMENT: Use `gdu deploy-externals --bucket <name>` to upload
+ * built externals to the dedicated S3 bucket. The command sets
+ * Content-Type: application/javascript for .mjs files automatically.
  */
-export const EXTERNALS_BASE = '/_shared/externals';
+export const EXTERNALS_BASE =
+	process.env.EXTERNALS_CDN_URL || '/_shared/externals';
 
 export const getExternals = (standalone?: boolean) => {
 	const reactVersion = getReactVersion();
