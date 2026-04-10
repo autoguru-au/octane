@@ -34,11 +34,11 @@ async function isUnchangedOnS3(
 			new HeadObjectCommand({ Bucket: bucket, Key: key }),
 		);
 		return head.ETag === localETag;
-	} catch (err: any) {
-		if (err.name === 'NotFound' || err.$metadata?.httpStatusCode === 404) {
+	} catch (error: any) {
+		if (error.name === 'NotFound' || error.$metadata?.httpStatusCode === 404) {
 			return false;
 		}
-		throw err;
+		throw error;
 	}
 }
 
@@ -48,8 +48,11 @@ async function uploadFiles(
 	region: string,
 ): Promise<{ uploaded: number; skipped: number; failures: string[] }> {
 	// eslint-disable-next-line @typescript-eslint/no-var-requires
-	const { S3Client, PutObjectCommand, HeadObjectCommand } =
-		require('@aws-sdk/client-s3');
+	const {
+		S3Client,
+		PutObjectCommand,
+		HeadObjectCommand,
+	} = require('@aws-sdk/client-s3');
 
 	const client = new S3Client({ region });
 	let uploaded = 0;
@@ -58,10 +61,20 @@ async function uploadFiles(
 
 	for (const file of files) {
 		const body = readFileSync(file.localPath);
+		// S3 ETags for single-part uploads are MD5 — must match their algorithm.
+		// eslint-disable-next-line sonarjs/hashing
 		const md5 = createHash('md5').update(body).digest('hex');
 		const localETag = `"${md5}"`;
 
-		if (await isUnchangedOnS3(client, HeadObjectCommand, bucket, file.s3Key, localETag)) {
+		if (
+			await isUnchangedOnS3(
+				client,
+				HeadObjectCommand,
+				bucket,
+				file.s3Key,
+				localETag,
+			)
+		) {
 			console.log(dim(`  skip  ${file.s3Key} (unchanged)`));
 			skipped++;
 			continue;
@@ -79,8 +92,8 @@ async function uploadFiles(
 			);
 			console.log(green(`  put   ${file.s3Key}`));
 			uploaded++;
-		} catch (err: any) {
-			console.error(red(`  FAIL  ${file.s3Key}: ${err.message}`));
+		} catch (error: any) {
+			console.error(red(`  FAIL  ${file.s3Key}: ${error.message}`));
 			failures.push(file.s3Key);
 		}
 	}

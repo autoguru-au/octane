@@ -4,10 +4,7 @@ import { join } from 'path';
 
 import { cyan } from 'kleur';
 
-import {
-	getDataDogVersion,
-	getReactVersion,
-} from '../config/shared/externals';
+import { getDataDogVersion, getReactVersion } from '../config/shared/externals';
 
 import { PROJECT_ROOT } from './roots';
 
@@ -166,7 +163,7 @@ export async function buildExternalsIfNeeded(): Promise<string> {
 											] of rewriteEntries) {
 												const escaped = bare.replace(
 													/[.*+?^${}()|[\]\\]/g,
-													'\\$&',
+													String.raw`\$&`,
 												);
 												build.onResolve(
 													{
@@ -193,10 +190,10 @@ export async function buildExternalsIfNeeded(): Promise<string> {
 			rmSync(cacheDir, { recursive: true });
 		}
 		renameSync(tmpDir, cacheDir);
-	} catch (err) {
+	} catch (error) {
 		// Clean up temp directory on failure
 		rmSync(tmpDir, { recursive: true, force: true });
-		throw err;
+		throw error;
 	}
 
 	return cacheDir;
@@ -206,9 +203,7 @@ export async function buildExternalsIfNeeded(): Promise<string> {
  * Copy the built external bundles into the MFE output directory
  * under _shared/externals/.
  */
-export async function copyExternalsToOutput(
-	outputPath: string,
-): Promise<void> {
+export async function copyExternalsToOutput(outputPath: string): Promise<void> {
 	const cacheDir = await buildExternalsIfNeeded();
 	const defs = getExternalDefs();
 	const destDir = join(outputPath, '_shared', 'externals');

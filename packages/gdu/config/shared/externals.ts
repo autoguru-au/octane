@@ -9,10 +9,7 @@ import { PROJECT_ROOT } from '../../lib/roots';
  * avoiding dual-instance issues when different MFEs have different semver
  * ranges in their package.json.
  */
-function getInstalledVersion(
-	packageName: string,
-	fallback: string,
-): string {
+function getInstalledVersion(packageName: string, fallback: string): string {
 	try {
 		const pkgPath = path.join(
 			PROJECT_ROOT,

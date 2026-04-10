@@ -5,12 +5,12 @@ import { cyan, magenta } from 'kleur';
 
 import { getExternals } from '../../config/shared/externals';
 import viteConfigs from '../../config/vite';
-import { copyExternalsToOutput } from '../../lib/externals-builder';
 import { translationHashingPlugin } from '../../config/vite/plugins/TranslationHashingPlugin';
 import { guruConfigCjsPlugin } from '../../config/vite/plugins/guruConfigCjs';
 import { relayPlugin } from '../../config/vite/plugins/relay';
 import type { InlineConfig } from '../../config/vite/types';
 import { GuruConfig } from '../../lib/config';
+import { copyExternalsToOutput } from '../../lib/externals-builder';
 import { CALLING_WORKSPACE_ROOT, PROJECT_ROOT } from '../../lib/roots';
 
 // Native dynamic import that TypeScript CJS output won't rewrite to require()
