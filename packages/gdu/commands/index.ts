@@ -164,7 +164,11 @@ export default (app: Sade) => {
 		.option('-b, --bucket', 'S3 bucket name (required)')
 		.option('-r, --region', 'AWS region', 'ap-southeast-2')
 		.option('--prefix', 'S3 key prefix', '_shared/externals')
-		.option('--dry-run', 'Show what would be uploaded without uploading', false)
+		.option(
+			'--dry-run',
+			'Show what would be uploaded without uploading',
+			false,
+		)
 		.action(deferredAction(async () => import('./deploy-externals')));
 };
 
