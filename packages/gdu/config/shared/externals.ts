@@ -26,37 +26,29 @@ export const getDataDogVersion = () => {
 };
 
 export interface GetExternalsOptions {
-	isDev?: boolean;
 	standalone?: boolean;
 }
 
-// Self-hosted esm CDN — single hostname, no env/tenant variation, drop-in URL
-// shape mirroring esm.sh (so the only difference between dev and prod is the
-// origin).
-const SELF_HOSTED_BASE = 'https://esm.autoguru.com';
-const ESM_SH_BASE = 'https://esm.sh';
+// Self-hosted esm CDN — single global hostname, drop-in replacement for esm.sh.
+const ESM_CDN_BASE = 'https://esm.autoguru.com';
 
-export const getExternals = ({
-	isDev = false,
-	standalone,
-}: GetExternalsOptions = {}) => {
+export const getExternals = ({ standalone }: GetExternalsOptions = {}) => {
 	if (standalone) return {};
 
 	const reactVersion = getReactVersion();
 	const datadogVersion = getDataDogVersion();
-	const base = isDev ? ESM_SH_BASE : SELF_HOSTED_BASE;
 
 	return {
-		react: `${base}/react@${reactVersion}`,
-		'react-dom': `${base}/react-dom@${reactVersion}`,
-		'react-dom/client': `${base}/react-dom@${reactVersion}/client`,
-		'react/jsx-runtime': `${base}/react@${reactVersion}/jsx-runtime`,
-		// jsx-dev-runtime aliases to jsx-runtime on both origins.
-		'react/jsx-dev-runtime': `${base}/react@${reactVersion}/jsx-runtime`,
+		react: `${ESM_CDN_BASE}/react@${reactVersion}`,
+		'react-dom': `${ESM_CDN_BASE}/react-dom@${reactVersion}`,
+		'react-dom/client': `${ESM_CDN_BASE}/react-dom@${reactVersion}/client`,
+		'react/jsx-runtime': `${ESM_CDN_BASE}/react@${reactVersion}/jsx-runtime`,
+		// jsx-dev-runtime aliases to jsx-runtime upstream.
+		'react/jsx-dev-runtime': `${ESM_CDN_BASE}/react@${reactVersion}/jsx-runtime`,
 
-		'@datadog/browser-rum': `${base}/@datadog/browser-rum@${datadogVersion}`,
-		'@datadog/browser-rum-react': `${base}/@datadog/browser-rum-react@${datadogVersion}`,
-		'@datadog/browser-logs': `${base}/@datadog/browser-logs@${datadogVersion}`,
+		'@datadog/browser-rum': `${ESM_CDN_BASE}/@datadog/browser-rum@${datadogVersion}`,
+		'@datadog/browser-rum-react': `${ESM_CDN_BASE}/@datadog/browser-rum-react@${datadogVersion}`,
+		'@datadog/browser-logs': `${ESM_CDN_BASE}/@datadog/browser-logs@${datadogVersion}`,
 	};
 };
 
