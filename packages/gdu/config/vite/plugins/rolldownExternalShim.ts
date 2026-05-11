@@ -45,6 +45,8 @@ export function rolldownExternalShim(
 		return { name: 'rolldown-external-shim' };
 	}
 
+	const shim = buildShimSource(externalUrls);
+
 	return {
 		name: 'rolldown-external-shim',
 		apply: 'build',
@@ -56,81 +58,126 @@ export function rolldownExternalShim(
 			for (const [fileName, chunk] of Object.entries(bundle)) {
 				if (chunk.type !== 'chunk' || !chunk.isEntry) continue;
 
-				const preloads = externalUrls
-					.map(
-						(url) =>
-							`import(${JSON.stringify(url)}).then(function(m){__xrc[${JSON.stringify(url)}]=m}).catch(function(e){console.error("[rolldown-shim] Failed:",${JSON.stringify(url)},e)})`,
-					)
-					.join(',');
-
-				const shim = [
-					`var __xrc={};`,
-					`await Promise.allSettled([${preloads}]);`,
-					`var __prev=typeof globalThis.require==="function"?globalThis.require:null;`,
-					`globalThis.require=function(id){`,
-					`if(__xrc[id])return __xrc[id];`,
-					`if(__prev)return __prev(id);`,
-					`console.error("[rolldown-shim] Unknown module:",id);`,
-					`return{}};`,
-				].join('');
-
-				// Move the original entry to an inner file, replace with shim wrapper.
-				// The wrapper has zero static imports so the shim executes first.
-				const innerFileName = fileName.replace(
-					/(-[a-zA-Z0-9_-]+)?\.js$/,
-					'-inner$1.js',
+				const innerFileName = deriveInnerFileName(fileName);
+				relocateEntryToInner(outputDir, fileName, innerFileName, shim);
+				rewriteChunkImports(
+					outputDir,
+					bundle,
+					fileName,
+					innerFileName,
 				);
-				const entryPath = path.join(outputDir, fileName);
-				const innerPath = path.join(outputDir, innerFileName);
-
-				const originalCode = fs.readFileSync(entryPath, 'utf8');
-				fs.writeFileSync(innerPath, originalCode);
-
-				const mapPath = `${entryPath}.map`;
-				if (fs.existsSync(mapPath)) {
-					try {
-						fs.renameSync(mapPath, `${innerPath}.map`);
-					} catch {
-						fs.copyFileSync(mapPath, `${innerPath}.map`);
-						fs.unlinkSync(mapPath);
-					}
-				}
-
-				fs.writeFileSync(
-					entryPath,
-					`${shim}\nawait import("./${innerFileName}");`,
-				);
-
-				// Rewrite chunks that import from the original entry to import
-				// from the inner file instead. The wrapper has no exports, so
-				// any chunk doing `import {x} from "../main.js"` would break.
-				for (const [chunkFile, chunkItem] of Object.entries(bundle)) {
-					if (chunkItem.type !== 'chunk' || chunkItem.isEntry)
-						continue;
-					const chunkPath = path.join(outputDir, chunkFile);
-					if (!fs.existsSync(chunkPath)) continue;
-
-					const chunkCode = fs.readFileSync(chunkPath, 'utf8');
-					if (!chunkCode.includes(fileName)) continue;
-
-					// Compute the relative path from this chunk to the inner file.
-					// The chunk may be in a subdirectory (e.g. chunks/).
-					const chunkDir = path.dirname(chunkFile);
-					const relToEntry = path.posix.relative(
-						chunkDir,
-						fileName,
-					);
-					const relToInner = path.posix.relative(
-						chunkDir,
-						innerFileName,
-					);
-
-					const updated = chunkCode.split(relToEntry).join(relToInner);
-					if (updated !== chunkCode) {
-						fs.writeFileSync(chunkPath, updated);
-					}
-				}
 			}
 		},
 	};
+}
+
+function buildShimSource(externalUrls: string[]): string {
+	const preloads = externalUrls
+		.map(
+			(url) =>
+				`import(${JSON.stringify(url)}).then(function(m){__xrc[${JSON.stringify(url)}]=m}).catch(function(e){console.error("[rolldown-shim] Failed:",${JSON.stringify(url)},e)})`,
+		)
+		.join(',');
+
+	return [
+		`var __xrc={};`,
+		`await Promise.allSettled([${preloads}]);`,
+		`var __prev=typeof globalThis.require==="function"?globalThis.require:null;`,
+		`globalThis.require=function(id){`,
+		`if(__xrc[id])return __xrc[id];`,
+		`if(__prev)return __prev(id);`,
+		`console.error("[rolldown-shim] Unknown module:",id);`,
+		`return{}};`,
+	].join('');
+}
+
+function deriveInnerFileName(fileName: string): string {
+	return fileName.replace(/(-[a-zA-Z0-9_-]+)?\.js$/, '-inner$1.js');
+}
+
+// The wrapper has zero static imports so the shim executes before any chunk
+// evaluation. The original entry code is moved verbatim to an `-inner` sibling
+// and dynamically imported from the wrapper.
+function relocateEntryToInner(
+	outputDir: string,
+	fileName: string,
+	innerFileName: string,
+	shim: string,
+): void {
+	const entryPath = path.join(outputDir, fileName);
+	const innerPath = path.join(outputDir, innerFileName);
+
+	const originalCode = fs.readFileSync(entryPath, 'utf8');
+	fs.writeFileSync(innerPath, originalCode);
+
+	moveSourceMapIfPresent(entryPath, innerPath);
+
+	fs.writeFileSync(
+		entryPath,
+		`${shim}\nawait import("./${innerFileName}");`,
+	);
+}
+
+function moveSourceMapIfPresent(entryPath: string, innerPath: string): void {
+	const mapPath = `${entryPath}.map`;
+	if (!fs.existsSync(mapPath)) return;
+
+	try {
+		fs.renameSync(mapPath, `${innerPath}.map`);
+	} catch {
+		fs.copyFileSync(mapPath, `${innerPath}.map`);
+		fs.unlinkSync(mapPath);
+	}
+}
+
+// Rewrite chunks that import from the original entry to import from the inner
+// file instead. The wrapper has no exports, so any chunk doing
+// `import {x} from "../main.js"` would otherwise break.
+function rewriteChunkImports(
+	outputDir: string,
+	bundle: Record<string, unknown>,
+	fileName: string,
+	innerFileName: string,
+): void {
+	for (const [chunkFile, chunkItem] of Object.entries(bundle)) {
+		if (!isNonEntryChunk(chunkItem)) continue;
+
+		const chunkPath = path.join(outputDir, chunkFile);
+		if (!fs.existsSync(chunkPath)) continue;
+
+		const chunkCode = fs.readFileSync(chunkPath, 'utf8');
+		if (!chunkCode.includes(fileName)) continue;
+
+		const updated = rewriteEntryReference(
+			chunkCode,
+			chunkFile,
+			fileName,
+			innerFileName,
+		);
+
+		if (updated !== chunkCode) {
+			fs.writeFileSync(chunkPath, updated);
+		}
+	}
+}
+
+function isNonEntryChunk(
+	chunkItem: unknown,
+): chunkItem is { type: 'chunk'; isEntry: boolean } {
+	if (typeof chunkItem !== 'object' || chunkItem === null) return false;
+	const candidate = chunkItem as { type?: unknown; isEntry?: unknown };
+	return candidate.type === 'chunk' && candidate.isEntry === false;
+}
+
+function rewriteEntryReference(
+	chunkCode: string,
+	chunkFile: string,
+	fileName: string,
+	innerFileName: string,
+): string {
+	const chunkDir = path.dirname(chunkFile);
+	const relToEntry = path.posix.relative(chunkDir, fileName);
+	const relToInner = path.posix.relative(chunkDir, innerFileName);
+
+	return chunkCode.split(relToEntry).join(relToInner);
 }
