@@ -30,9 +30,10 @@ export interface GetExternalsOptions {
 	standalone?: boolean;
 }
 
-// #{PUBLIC_PATH_BASE} is replaced at deploy time by Octopus Deploy with the
-// per-environment / per-tenant CDN base URL (same token used by getPublicPath).
-const SELF_HOSTED_BASE = '#{PUBLIC_PATH_BASE}/_shared/externals';
+// Self-hosted esm CDN — single hostname, no env/tenant variation, drop-in URL
+// shape mirroring esm.sh (so the only difference between dev and prod is the
+// origin).
+const SELF_HOSTED_BASE = 'https://esm.autoguru.com';
 const ESM_SH_BASE = 'https://esm.sh';
 
 export const getExternals = ({
@@ -43,33 +44,19 @@ export const getExternals = ({
 
 	const reactVersion = getReactVersion();
 	const datadogVersion = getDataDogVersion();
-
-	if (isDev) {
-		return {
-			react: `${ESM_SH_BASE}/react@${reactVersion}`,
-			'react-dom': `${ESM_SH_BASE}/react-dom@${reactVersion}`,
-			'react-dom/client': `${ESM_SH_BASE}/react-dom@${reactVersion}/client`,
-			'react/jsx-runtime': `${ESM_SH_BASE}/react@${reactVersion}/jsx-runtime`,
-			'react/jsx-dev-runtime': `${ESM_SH_BASE}/react@${reactVersion}/jsx-runtime`,
-
-			'@datadog/browser-rum': `${ESM_SH_BASE}/@datadog/browser-rum@${datadogVersion}`,
-			'@datadog/browser-rum-react': `${ESM_SH_BASE}/@datadog/browser-rum-react@${datadogVersion}`,
-			'@datadog/browser-logs': `${ESM_SH_BASE}/@datadog/browser-logs@${datadogVersion}`,
-		};
-	}
+	const base = isDev ? ESM_SH_BASE : SELF_HOSTED_BASE;
 
 	return {
-		react: `${SELF_HOSTED_BASE}/react@${reactVersion}/react.js`,
-		'react-dom': `${SELF_HOSTED_BASE}/react-dom@${reactVersion}/react-dom.js`,
-		'react-dom/client': `${SELF_HOSTED_BASE}/react-dom@${reactVersion}/client.js`,
-		'react/jsx-runtime': `${SELF_HOSTED_BASE}/react@${reactVersion}/jsx-runtime.js`,
-		// esm.sh aliases jsx-dev-runtime to jsx-runtime; self-hosted bundles
-		// follow the same convention (single file serves both specifiers).
-		'react/jsx-dev-runtime': `${SELF_HOSTED_BASE}/react@${reactVersion}/jsx-runtime.js`,
+		react: `${base}/react@${reactVersion}`,
+		'react-dom': `${base}/react-dom@${reactVersion}`,
+		'react-dom/client': `${base}/react-dom@${reactVersion}/client`,
+		'react/jsx-runtime': `${base}/react@${reactVersion}/jsx-runtime`,
+		// jsx-dev-runtime aliases to jsx-runtime on both origins.
+		'react/jsx-dev-runtime': `${base}/react@${reactVersion}/jsx-runtime`,
 
-		'@datadog/browser-rum': `${SELF_HOSTED_BASE}/@datadog/browser-rum@${datadogVersion}/index.js`,
-		'@datadog/browser-rum-react': `${SELF_HOSTED_BASE}/@datadog/browser-rum-react@${datadogVersion}/index.js`,
-		'@datadog/browser-logs': `${SELF_HOSTED_BASE}/@datadog/browser-logs@${datadogVersion}/index.js`,
+		'@datadog/browser-rum': `${base}/@datadog/browser-rum@${datadogVersion}`,
+		'@datadog/browser-rum-react': `${base}/@datadog/browser-rum-react@${datadogVersion}`,
+		'@datadog/browser-logs': `${base}/@datadog/browser-logs@${datadogVersion}`,
 	};
 };
 
