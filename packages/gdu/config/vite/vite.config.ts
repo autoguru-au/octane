@@ -109,7 +109,7 @@ export const baseViteOptions = ({
 	standalone?: boolean;
 }): InlineConfig => {
 	const guruConfig = getGuruConfig();
-	const externalsMap = getExternals(standalone);
+	const externalsMap = getExternals({ standalone });
 	const externalKeys = Object.keys(externalsMap);
 
 	const envDefines = loadEnvDefines(buildEnv);

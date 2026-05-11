@@ -2,6 +2,8 @@ import path from 'path';
 
 import { PROJECT_ROOT } from '../../lib/roots';
 
+import { ESM_CDN_BASE } from './cdn';
+
 export const getReactVersion = () => {
 	try {
 		const packagePath = path.join(PROJECT_ROOT, 'package.json');
@@ -25,23 +27,32 @@ export const getDataDogVersion = () => {
 	}
 };
 
-export const getExternals = (standalone?: boolean) => {
+export interface GetExternalsOptions {
+	standalone?: boolean;
+}
+
+export type ExternalsMap = Record<string, string>;
+
+export const getExternals = ({
+	standalone,
+}: GetExternalsOptions = {}): ExternalsMap => {
+	if (standalone) return {};
+
 	const reactVersion = getReactVersion();
 	const datadogVersion = getDataDogVersion();
-	return standalone
-		? {}
-		: {
-				react: `https://esm.sh/react@${reactVersion}`,
-				'react-dom': `https://esm.sh/react-dom@${reactVersion}`,
-				'react-dom/client': `https://esm.sh/react-dom@${reactVersion}/client`,
-				'react/jsx-runtime': `https://esm.sh/react@${reactVersion}/jsx-runtime`,
-				'react/jsx-dev-runtime': `https://esm.sh/react@${reactVersion}/jsx-runtime`,
 
-				// DataDog externals
-				'@datadog/browser-rum': `https://esm.sh/@datadog/browser-rum@${datadogVersion}`,
-				'@datadog/browser-rum-react': `https://esm.sh/@datadog/browser-rum-react@${datadogVersion}`,
-				'@datadog/browser-logs': `https://esm.sh/@datadog/browser-logs@${datadogVersion}`,
-			};
+	return {
+		react: `${ESM_CDN_BASE}/react@${reactVersion}`,
+		'react-dom': `${ESM_CDN_BASE}/react-dom@${reactVersion}`,
+		'react-dom/client': `${ESM_CDN_BASE}/react-dom@${reactVersion}/client`,
+		'react/jsx-runtime': `${ESM_CDN_BASE}/react@${reactVersion}/jsx-runtime`,
+		// jsx-dev-runtime aliases to jsx-runtime upstream.
+		'react/jsx-dev-runtime': `${ESM_CDN_BASE}/react@${reactVersion}/jsx-runtime`,
+
+		'@datadog/browser-rum': `${ESM_CDN_BASE}/@datadog/browser-rum@${datadogVersion}`,
+		'@datadog/browser-rum-react': `${ESM_CDN_BASE}/@datadog/browser-rum-react@${datadogVersion}`,
+		'@datadog/browser-logs': `${ESM_CDN_BASE}/@datadog/browser-logs@${datadogVersion}`,
+	};
 };
 
 export const getPublicPath = ({
