@@ -27,7 +27,7 @@ jobs:
           node-version: '22'
 
       - name: Upgrade npm for OIDC Trusted Publishing
-        run: npm install -g npm@11 --force
+        run: npm install -g npm@11.6.2
 
       - name: Install Monorepo Dependencies
         uses: ./.github/actions/bun-install
