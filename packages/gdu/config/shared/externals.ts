@@ -31,7 +31,11 @@ export interface GetExternalsOptions {
 	standalone?: boolean;
 }
 
-export const getExternals = ({ standalone }: GetExternalsOptions = {}) => {
+export type ExternalsMap = Record<string, string>;
+
+export const getExternals = ({
+	standalone,
+}: GetExternalsOptions = {}): ExternalsMap => {
 	if (standalone) return {};
 
 	const reactVersion = getReactVersion();
