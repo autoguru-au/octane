@@ -2,6 +2,8 @@ import path from 'path';
 
 import { PROJECT_ROOT } from '../../lib/roots';
 
+import { ESM_CDN_BASE } from './cdn';
+
 export const getReactVersion = () => {
 	try {
 		const packagePath = path.join(PROJECT_ROOT, 'package.json');
@@ -28,9 +30,6 @@ export const getDataDogVersion = () => {
 export interface GetExternalsOptions {
 	standalone?: boolean;
 }
-
-// Self-hosted esm CDN — single global hostname, drop-in replacement for esm.sh.
-const ESM_CDN_BASE = 'https://esm.autoguru.com';
 
 export const getExternals = ({ standalone }: GetExternalsOptions = {}) => {
 	if (standalone) return {};
