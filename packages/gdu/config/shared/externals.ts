@@ -25,23 +25,52 @@ export const getDataDogVersion = () => {
 	}
 };
 
-export const getExternals = (standalone?: boolean) => {
+export interface GetExternalsOptions {
+	isDev?: boolean;
+	standalone?: boolean;
+}
+
+// #{PUBLIC_PATH_BASE} is replaced at deploy time by Octopus Deploy with the
+// per-environment / per-tenant CDN base URL (same token used by getPublicPath).
+const SELF_HOSTED_BASE = '#{PUBLIC_PATH_BASE}/_shared/externals';
+const ESM_SH_BASE = 'https://esm.sh';
+
+export const getExternals = ({
+	isDev = false,
+	standalone,
+}: GetExternalsOptions = {}) => {
+	if (standalone) return {};
+
 	const reactVersion = getReactVersion();
 	const datadogVersion = getDataDogVersion();
-	return standalone
-		? {}
-		: {
-				react: `https://esm.sh/react@${reactVersion}`,
-				'react-dom': `https://esm.sh/react-dom@${reactVersion}`,
-				'react-dom/client': `https://esm.sh/react-dom@${reactVersion}/client`,
-				'react/jsx-runtime': `https://esm.sh/react@${reactVersion}/jsx-runtime`,
-				'react/jsx-dev-runtime': `https://esm.sh/react@${reactVersion}/jsx-runtime`,
 
-				// DataDog externals
-				'@datadog/browser-rum': `https://esm.sh/@datadog/browser-rum@${datadogVersion}`,
-				'@datadog/browser-rum-react': `https://esm.sh/@datadog/browser-rum-react@${datadogVersion}`,
-				'@datadog/browser-logs': `https://esm.sh/@datadog/browser-logs@${datadogVersion}`,
-			};
+	if (isDev) {
+		return {
+			react: `${ESM_SH_BASE}/react@${reactVersion}`,
+			'react-dom': `${ESM_SH_BASE}/react-dom@${reactVersion}`,
+			'react-dom/client': `${ESM_SH_BASE}/react-dom@${reactVersion}/client`,
+			'react/jsx-runtime': `${ESM_SH_BASE}/react@${reactVersion}/jsx-runtime`,
+			'react/jsx-dev-runtime': `${ESM_SH_BASE}/react@${reactVersion}/jsx-runtime`,
+
+			'@datadog/browser-rum': `${ESM_SH_BASE}/@datadog/browser-rum@${datadogVersion}`,
+			'@datadog/browser-rum-react': `${ESM_SH_BASE}/@datadog/browser-rum-react@${datadogVersion}`,
+			'@datadog/browser-logs': `${ESM_SH_BASE}/@datadog/browser-logs@${datadogVersion}`,
+		};
+	}
+
+	return {
+		react: `${SELF_HOSTED_BASE}/react@${reactVersion}/react.js`,
+		'react-dom': `${SELF_HOSTED_BASE}/react-dom@${reactVersion}/react-dom.js`,
+		'react-dom/client': `${SELF_HOSTED_BASE}/react-dom@${reactVersion}/client.js`,
+		'react/jsx-runtime': `${SELF_HOSTED_BASE}/react@${reactVersion}/jsx-runtime.js`,
+		// esm.sh aliases jsx-dev-runtime to jsx-runtime; self-hosted bundles
+		// follow the same convention (single file serves both specifiers).
+		'react/jsx-dev-runtime': `${SELF_HOSTED_BASE}/react@${reactVersion}/jsx-runtime.js`,
+
+		'@datadog/browser-rum': `${SELF_HOSTED_BASE}/@datadog/browser-rum@${datadogVersion}/index.js`,
+		'@datadog/browser-rum-react': `${SELF_HOSTED_BASE}/@datadog/browser-rum-react@${datadogVersion}/index.js`,
+		'@datadog/browser-logs': `${SELF_HOSTED_BASE}/@datadog/browser-logs@${datadogVersion}/index.js`,
+	};
 };
 
 export const getPublicPath = ({

@@ -86,7 +86,9 @@ export const buildSPAVite = async (guruConfig: GuruConfig) => {
 
 	runtimePlugins.push(guruConfigCjsPlugin());
 
-	const externalKeys = Object.keys(getExternals(guruConfig?.standalone));
+	const externalKeys = Object.keys(
+		getExternals({ standalone: guruConfig?.standalone }),
+	);
 	await loadEsmExternalPlugin(externalKeys, runtimePlugins);
 
 	runtimePlugins.push(

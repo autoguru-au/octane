@@ -103,13 +103,15 @@ export const baseViteOptions = ({
 	buildEnv,
 	isMultiEnv,
 	standalone,
+	isDev = false,
 }: {
 	buildEnv: string;
 	isMultiEnv: boolean;
 	standalone?: boolean;
+	isDev?: boolean;
 }): InlineConfig => {
 	const guruConfig = getGuruConfig();
-	const externalsMap = getExternals(standalone);
+	const externalsMap = getExternals({ isDev, standalone });
 	const externalKeys = Object.keys(externalsMap);
 
 	const envDefines = loadEnvDefines(buildEnv);

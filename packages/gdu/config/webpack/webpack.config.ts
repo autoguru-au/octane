@@ -460,7 +460,7 @@ export const baseOptions = ({
 			},
 		},
 		externalsType: 'module',
-		externals: getExternals(standalone),
+		externals: getExternals({ standalone }),
 	};
 };
 
@@ -483,14 +483,7 @@ export const makeWebpackConfig = (
 		pathinfo: boolean;
 	};
 	externalsType: string;
-	externals:
-		| object
-		| { react: string; 'react-dom': string }
-		| {
-				react: string;
-				'react-dom/client': string;
-				'react/jsx-runtime': string;
-		  };
+	externals: ReturnType<typeof getExternals>;
 } => {
 	const { outputPath, isTenanted } = getGuruConfig();
 	return {
@@ -521,6 +514,6 @@ export const makeWebpackConfig = (
 			},
 		},
 		externalsType: 'module',
-		externals: getExternals(standalone),
+		externals: getExternals({ standalone }),
 	};
 };
