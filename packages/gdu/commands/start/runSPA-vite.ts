@@ -5,6 +5,7 @@ import { blue, bold, cyan, green, magenta } from 'kleur';
 import dedent from 'ts-dedent';
 
 import { guruConfigCjsPlugin } from '../../config/vite/plugins/guruConfigCjs';
+import { packageLocalesDevPlugin } from '../../config/vite/plugins/packageLocalesDev';
 import { relayPlugin } from '../../config/vite/plugins/relay';
 import type {
 	InlineConfig,
@@ -378,6 +379,17 @@ export const runSPAVite = async (guruConfig: GuruConfig, isDebug: boolean) => {
 
 		plugins: [
 			devEnvReplace(devDefine),
+			// Copy shared-package (pkg-*) locales into the app's public/locales
+			// before serving. The Vite TranslationHashingPlugin is build-only, so
+			// without this every pkg-* namespace renders as raw keys in dev. AG-19249.
+			...(CALLING_WORKSPACE_ROOT
+				? [
+						packageLocalesDevPlugin({
+							workspaceRoot: CALLING_WORKSPACE_ROOT,
+							appDir: PROJECT_ROOT,
+						}),
+					]
+				: []),
 			...(vanillaExtractPlugin ? [vanillaExtractPlugin()] : []),
 			...(relayTransformPlugin ? [relayTransformPlugin] : []),
 			relayCjsToEsmPlugin(),

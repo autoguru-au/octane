@@ -98,7 +98,10 @@ async function loadMfeTranslations(
 	return translations;
 }
 
-function getEffectiveNamespace(namespace: string, packageName: string): string {
+export function getEffectiveNamespace(
+	namespace: string,
+	packageName: string,
+): string {
 	if (namespace.startsWith('pkg-')) {
 		return namespace;
 	}
@@ -140,7 +143,7 @@ function resolvePackageLocalesPath(
 	}
 }
 
-async function discoverPackageTranslations(
+export async function discoverPackageTranslations(
 	workspaceRoot: string,
 ): Promise<Map<string, Map<string, Record<string, unknown>>>> {
 	const packageTranslations = new Map<
