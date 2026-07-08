@@ -137,9 +137,11 @@ export const baseViteOptions = ({
 			__GDU_APP_NAME__: JSON.stringify(getProjectName()),
 			__GDU_BUILD_INFO__: JSON.stringify({ commit, branch }),
 			// In production builds, mfeEnvTokens (enforce: 'pre') rewrites
-			// process.env.X to globalThis.__MFE_ENV__[X] before `define` runs,
-			// so these entries only take effect in dev mode where the plugin
-			// is disabled (apply: 'build').
+			// process.env.X to globalThis.__MFE_ENV__["X"] before `define` runs
+			// (the __MFE_ENV__ object is emitted as a separate per-env/tenant
+			// config chunk by multiEnvConfigEmitter, PR13 / AG-20099), so these
+			// entries only take effect in dev mode where the plugin is disabled
+			// (apply: 'build').
 			...envDefines,
 		},
 
