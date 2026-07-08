@@ -1,4 +1,7 @@
-import { collectEntryCssFiles } from '../GuruBuildManifest';
+import {
+	collectEntryCssFiles,
+	collectEnvConfigChunks,
+} from '../GuruBuildManifest';
 
 type BundleChunk = {
 	type: string;
@@ -227,6 +230,58 @@ describe('collectEntryCssFiles', () => {
 				'assets/worker.css',
 				'assets/worker-dep.css',
 			]),
+		);
+	});
+});
+
+describe('collectEnvConfigChunks', () => {
+	it('byte-matches the 00-overview §4c env-map shape', () => {
+		const fileNames = [
+			'main-ab12cd34.js',
+			'chunks/Box-1a2b3c4d.js',
+			'mfe-configs-dev_au-1a2b3c4d.js',
+			'mfe-configs-dev_nz-3c4d5e6f.js',
+			'mfe-configs-prod_au-5e6f7a8b.js',
+		];
+
+		const env = collectEnvConfigChunks(fileNames);
+
+		expect(JSON.stringify(env)).toBe(
+			'{"dev_au":{"config":"mfe-configs-dev_au-1a2b3c4d.js"},' +
+				'"dev_nz":{"config":"mfe-configs-dev_nz-3c4d5e6f.js"},' +
+				'"prod_au":{"config":"mfe-configs-prod_au-5e6f7a8b.js"}}',
+		);
+	});
+
+	it('ignores the un-infixed mfe-configs app chunk', () => {
+		const env = collectEnvConfigChunks(['mfe-configs-1a2b3c4d.js']);
+		expect(env).toEqual({});
+	});
+
+	it('ignores confusably named non-config chunks', () => {
+		const env = collectEnvConfigChunks([
+			'mfe-configs-panel-1a2b3c4d.js',
+			'mfe-configs-dev_au-1a2b3c4d.css',
+			'main-1a2b3c4d.js',
+		]);
+		expect(env).toEqual({});
+	});
+
+	it('sorts combo keys for stable manifest bytes regardless of input order', () => {
+		const env = collectEnvConfigChunks([
+			'mfe-configs-prod_au-5e6f7a8b.js',
+			'mfe-configs-dev_au-1a2b3c4d.js',
+		]);
+		expect(Object.keys(env)).toEqual(['dev_au', 'prod_au']);
+	});
+
+	it('prepends the publicPath to each config path', () => {
+		const env = collectEnvConfigChunks(
+			['mfe-configs-dev_au-1a2b3c4d.js'],
+			'https://cdn/app/v1/',
+		);
+		expect(env.dev_au.config).toBe(
+			'https://cdn/app/v1/mfe-configs-dev_au-1a2b3c4d.js',
 		);
 	});
 });
