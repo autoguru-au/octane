@@ -224,6 +224,7 @@ export const runSPAVite = async (guruConfig: GuruConfig, isDebug: boolean) => {
 		buildEnv: appEnv,
 		isMultiEnv: false,
 		standalone: guruConfig?.standalone,
+		multiEnvConfig: false,
 	}) as Record<string, any>;
 
 	const { createServer } = (await dynamicImport('vite')) as {

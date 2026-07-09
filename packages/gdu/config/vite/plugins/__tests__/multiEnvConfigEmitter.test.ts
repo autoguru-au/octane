@@ -57,9 +57,11 @@ function runGenerateBundle(
 	for (const key of bundleKeys) {
 		bundle[key] = { type: 'chunk', fileName: key };
 	}
-	(
-		plugin.generateBundle as unknown as (...a: unknown[]) => void
-	).call(ctx, {}, bundle);
+	(plugin.generateBundle as unknown as (...a: unknown[]) => void).call(
+		ctx,
+		{},
+		bundle,
+	);
 	return emitted;
 }
 
@@ -81,6 +83,19 @@ describe('multiEnvConfigEmitter', () => {
 		root = writeWorkspace();
 		const emitted = runGenerateBundle(makePlugin(root), [
 			CONFIG_CHUNK,
+			'main-abc12345.js',
+		]);
+
+		expect(emitted.map((a) => a.fileName).sort()).toEqual([
+			expect.stringMatching(/^mfe-configs-dev_au-[a-f0-9]{8}\.js$/),
+			expect.stringMatching(/^mfe-configs-dev_nz-[a-f0-9]{8}\.js$/),
+		]);
+	});
+
+	it('detects the config chunk when its base64url hash contains _ or -', () => {
+		root = writeWorkspace();
+		const emitted = runGenerateBundle(makePlugin(root), [
+			'mfe-configs-BRHYz_Ev.js',
 			'main-abc12345.js',
 		]);
 

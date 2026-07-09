@@ -1,5 +1,18 @@
 import type { VitePlugin } from '../types';
 
+export interface MfeEnvTokensOptions {
+	/**
+	 * When true (the safe default), the plugin prepends a
+	 * `globalThis.__MFE_ENV__={...#{TOKEN}...}` init block to the `mfe-configs`
+	 * chunk — the single-env contract the old host + 6 old pipelines expect
+	 * (`tokenReplacement.sh`/`sed` substitute the `#{TOKEN}` placeholders at
+	 * deploy time). When false, no init block is baked and `globalThis.__MFE_ENV__`
+	 * is instead initialised by the per-combo scripts `multiEnvConfigEmitter`
+	 * emits (04-gdu-vite8.md §2.8).
+	 */
+	bakeInitBlock?: boolean;
+}
+
 /**
  * Rewrites `process.env.XXX` reads to `globalThis.__MFE_ENV__["XXX"]` so
  * per-env/tenant config can be injected as a separate chunk rather than
@@ -16,13 +29,18 @@ import type { VitePlugin } from '../types';
  * `globalThis.__MFE_ENV__` object at runtime, keeping application chunk bytes
  * independent of which env's values are in play.
  *
- * The `globalThis.__MFE_ENV__` object itself is initialised by
- * `multiEnvConfigEmitter` (04-gdu-vite8.md §2.3, lands in PR13 / AG-20099),
- * which emits one config chunk per env×tenant combo. This plugin owns only the
- * key-name rewrite; it no longer bakes an init block into the `mfe-configs`
- * chunk.
+ * How `globalThis.__MFE_ENV__` is initialised depends on the build mode
+ * (04-gdu-vite8.md §2.8). In the default single-env contract (`bakeInitBlock`
+ * true) the plugin's `renderChunk` prepends the init block to the `mfe-configs`
+ * chunk. In multi-env mode (`bakeInitBlock` false) `multiEnvConfigEmitter` emits
+ * one init-only script per env×tenant combo and the plugin owns only the
+ * key-name rewrite. The rewrite itself runs in both modes.
  */
-export function mfeEnvTokens(envTokens: Record<string, string>): VitePlugin {
+export function mfeEnvTokens(
+	envTokens: Record<string, string>,
+	options: MfeEnvTokensOptions = {},
+): VitePlugin {
+	const { bakeInitBlock = true } = options;
 	const keys = Object.keys(envTokens);
 	if (keys.length === 0) {
 		return { name: 'gdu-mfe-env-tokens' };
@@ -35,6 +53,11 @@ export function mfeEnvTokens(envTokens: Record<string, string>): VitePlugin {
 		`\\bprocess\\.env\\.(${escapedKeys.join('|')})\\b`,
 		'g',
 	);
+
+	const initEntries = keys
+		.map((key) => `${JSON.stringify(key)}:${envTokens[key]}`)
+		.join(',');
+	const initCode = `globalThis.__MFE_ENV__={${initEntries}};`;
 
 	return {
 		name: 'gdu-mfe-env-tokens',
@@ -51,5 +74,19 @@ export function mfeEnvTokens(envTokens: Record<string, string>): VitePlugin {
 
 			return result === code ? null : { code: result, map: null };
 		},
+
+		...(bakeInitBlock
+			? {
+					renderChunk(code, chunk) {
+						// Only the root-level app config chunk
+						// (`mfe-configs-<hash>.js`); every other chunk is emitted
+						// under `chunks/`, so an anchored match avoids baking into
+						// confusably named chunks (e.g. `chunks/mfe-configs-*`).
+						if (!chunk.fileName.startsWith('mfe-configs'))
+							return null;
+						return { code: initCode + code, map: null };
+					},
+				}
+			: {}),
 	};
 }
