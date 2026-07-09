@@ -19,6 +19,10 @@ interface I18nMetadata {
 	supportedLocales: string[];
 }
 
+export interface EnvConfigEntry {
+	config: string;
+}
+
 export interface Manifest {
 	hash: string;
 	mountDOMId?: string;
@@ -27,7 +31,18 @@ export interface Manifest {
 	assets: Asset;
 	chunks?: Asset;
 	i18n?: I18nMetadata;
+	env?: Record<string, EnvConfigEntry>;
 }
+
+/**
+ * `mfe-configs-<env>_<tenant>-<hash>.js` — a per-env/tenant config chunk emitted
+ * by `multiEnvConfigEmitter`. The `<env>_<tenant>` infix distinguishes it from
+ * the env-agnostic un-infixed `mfe-configs-<hash>.js` app chunk and from any
+ * confusably named component chunk (e.g. `mfe-configs-panel-*`), which do not
+ * match.
+ */
+const ENV_CONFIG_CHUNK_RE =
+	/^mfe-configs-([a-z]+_[a-z]{2})-[a-zA-Z\d]{8}\.js$/;
 
 interface GuruBuildManifestOptions {
 	mountDOMId?: string;
@@ -97,6 +112,26 @@ export function collectEntryCssFiles(
 	}
 
 	return entryCssFiles;
+}
+
+/**
+ * Builds the manifest `env` map from the emitted config-chunk filenames, keyed
+ * by `<env>_<tenant>`. Each filename is prefixed with `publicPath` identically to
+ * `assets`/`chunks` (bare when `publicPath` is empty, the default). Keys are
+ * sorted so the emitted manifest bytes are stable across builds.
+ */
+export function collectEnvConfigChunks(
+	fileNames: string[],
+	publicPath = '',
+): Record<string, EnvConfigEntry> {
+	const env: Record<string, EnvConfigEntry> = {};
+	for (const fileName of [...fileNames].sort()) {
+		const match = ENV_CONFIG_CHUNK_RE.exec(fileName);
+		if (match) {
+			env[match[1]] = { config: `${publicPath}${fileName}` };
+		}
+	}
+	return env;
 }
 
 function classifyChunk(
@@ -200,6 +235,14 @@ export function guruBuildManifest(
 
 			if (!opts.includeChunks) {
 				result.chunks = undefined;
+			}
+
+			const env = collectEnvConfigChunks(
+				Object.keys(bundle),
+				opts.publicPath,
+			);
+			if (Object.keys(env).length > 0) {
+				result.env = env;
 			}
 
 			mergeI18nMetadata(result, bundle as any);

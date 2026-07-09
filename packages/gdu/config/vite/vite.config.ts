@@ -4,12 +4,13 @@ import path, { join, resolve } from 'path';
 import envCI from 'env-ci';
 
 import { getGuruConfig, getProjectName } from '../../lib/config';
-import { GDU_ROOT, PROJECT_ROOT } from '../../lib/roots';
+import { CALLING_WORKSPACE_ROOT, GDU_ROOT, PROJECT_ROOT } from '../../lib/roots';
 import { getBuildEnvs, getConfigsDirs } from '../../utils/configs';
 import { getExternals } from '../shared/externals';
 
 import { guruBuildManifest } from './plugins/GuruBuildManifest';
 import { mfeEnvTokens } from './plugins/mfeEnvTokens';
+import { multiEnvConfigEmitter } from './plugins/multiEnvConfigEmitter';
 import { overdriveBarrelSplit } from './plugins/overdriveBarrelSplit';
 import { rolldownExternalShim } from './plugins/rolldownExternalShim';
 import { runtimePublicPath } from './plugins/runtimePublicPath';
@@ -207,6 +208,11 @@ export const baseViteOptions = ({
 			// injected by buildSPA-vite.ts and runSPA-vite.ts to avoid tsc dependency on vite.
 			overdriveBarrelSplit(),
 			mfeEnvTokens(envTokenMap),
+			multiEnvConfigEmitter({
+				appName: getProjectName(),
+				workspaceRoot: CALLING_WORKSPACE_ROOT ?? PROJECT_ROOT,
+				envTokenMap,
+			}),
 			rolldownExternalShim(externalsMap),
 			guruBuildManifest({
 				mountDOMId: guruConfig.mountDOMId,
