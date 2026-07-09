@@ -4,7 +4,11 @@ import path, { join, resolve } from 'path';
 import envCI from 'env-ci';
 
 import { getGuruConfig, getProjectName } from '../../lib/config';
-import { CALLING_WORKSPACE_ROOT, GDU_ROOT, PROJECT_ROOT } from '../../lib/roots';
+import {
+	CALLING_WORKSPACE_ROOT,
+	GDU_ROOT,
+	PROJECT_ROOT,
+} from '../../lib/roots';
 import { getBuildEnvs, getConfigsDirs } from '../../utils/configs';
 import { getExternals } from '../shared/externals';
 
@@ -104,10 +108,12 @@ export const baseViteOptions = ({
 	buildEnv,
 	isMultiEnv,
 	standalone,
+	multiEnvConfig,
 }: {
 	buildEnv: string;
 	isMultiEnv: boolean;
 	standalone?: boolean;
+	multiEnvConfig: boolean;
 }): InlineConfig => {
 	const guruConfig = getGuruConfig();
 	const externalsMap = getExternals({ standalone });
@@ -139,10 +145,11 @@ export const baseViteOptions = ({
 			__GDU_BUILD_INFO__: JSON.stringify({ commit, branch }),
 			// In production builds, mfeEnvTokens (enforce: 'pre') rewrites
 			// process.env.X to globalThis.__MFE_ENV__["X"] before `define` runs
-			// (the __MFE_ENV__ object is emitted as a separate per-env/tenant
-			// config chunk by multiEnvConfigEmitter, PR13 / AG-20099), so these
-			// entries only take effect in dev mode where the plugin is disabled
-			// (apply: 'build').
+			// (the __MFE_ENV__ object is initialised either by the baked init
+			// block in the single-env default or by multiEnvConfigEmitter's
+			// per-combo scripts when multiEnvConfig is set — 04-gdu-vite8.md
+			// §2.8), so these entries only take effect in dev mode where the
+			// plugin is disabled (apply: 'build').
 			...envDefines,
 		},
 
@@ -207,12 +214,17 @@ export const baseViteOptions = ({
 			// Runtime plugins (vanillaExtractPlugin, tsconfigPaths, relayPlugin) are
 			// injected by buildSPA-vite.ts and runSPA-vite.ts to avoid tsc dependency on vite.
 			overdriveBarrelSplit(),
-			mfeEnvTokens(envTokenMap),
-			multiEnvConfigEmitter({
-				appName: getProjectName(),
-				workspaceRoot: CALLING_WORKSPACE_ROOT ?? PROJECT_ROOT,
-				envTokenMap,
-			}),
+			mfeEnvTokens(envTokenMap, { bakeInitBlock: !multiEnvConfig }),
+			...(multiEnvConfig
+				? [
+						multiEnvConfigEmitter({
+							appName: getProjectName(),
+							workspaceRoot:
+								CALLING_WORKSPACE_ROOT ?? PROJECT_ROOT,
+							envTokenMap,
+						}),
+					]
+				: []),
 			rolldownExternalShim(externalsMap),
 			guruBuildManifest({
 				mountDOMId: guruConfig.mountDOMId,
@@ -233,14 +245,20 @@ type BuildEnv = ReturnType<typeof getBuildEnvs>[number];
 export const makeViteConfig = (
 	buildEnv: BuildEnv,
 	isMultiEnv: boolean,
-	standalone?: boolean,
+	standalone: boolean | undefined,
+	multiEnvConfig: boolean,
 ): InlineConfig => {
 	const guruConfig = getGuruConfig();
 	const { outputPath } = guruConfig;
 
 	const outDir = `${outputPath}/${!isMultiEnv && buildEnv === 'prod' ? '' : buildEnv}`;
 
-	const base = baseViteOptions({ buildEnv, isMultiEnv, standalone });
+	const base = baseViteOptions({
+		buildEnv,
+		isMultiEnv,
+		standalone,
+		multiEnvConfig,
+	});
 
 	// Add the runtimePublicPath plugin for dynamic chunk resolution.
 	// The manifest keeps bare filenames — the Lambda adds the CDN prefix.

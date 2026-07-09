@@ -1,6 +1,11 @@
+import { mkdtempSync, readFileSync, rmSync } from 'fs';
+import { tmpdir } from 'os';
+import { join } from 'path';
+
 import {
 	collectEntryCssFiles,
 	collectEnvConfigChunks,
+	guruBuildManifest,
 } from '../GuruBuildManifest';
 
 type BundleChunk = {
@@ -283,5 +288,59 @@ describe('collectEnvConfigChunks', () => {
 		expect(env.dev_au.config).toBe(
 			'https://cdn/app/v1/mfe-configs-dev_au-1a2b3c4d.js',
 		);
+	});
+});
+
+describe('guruBuildManifest env map', () => {
+	type ManifestChunk = {
+		type: string;
+		isEntry?: boolean;
+		source?: string;
+		viteMetadata?: { importedCss?: Set<string> };
+	};
+
+	const tempDirs: string[] = [];
+	afterAll(() => {
+		for (const dir of tempDirs)
+			rmSync(dir, { recursive: true, force: true });
+	});
+
+	function writeManifest(bundle: Record<string, ManifestChunk>): {
+		env?: Record<string, { config: string }>;
+	} {
+		const outputDir = mkdtempSync(join(tmpdir(), 'gdu-manifest-'));
+		tempDirs.push(outputDir);
+		const plugin = guruBuildManifest({
+			mountDOMId: 'root',
+			mountDOMClass: 'cls',
+			frameless: false,
+			outputDir,
+			includeChunks: true,
+		});
+		plugin.writeBundle?.({ dir: outputDir }, bundle as never);
+		return JSON.parse(
+			readFileSync(join(outputDir, 'build-manifest.json'), 'utf8'),
+		);
+	}
+
+	it('omits the env key when no per-combo config assets are emitted (single-env default)', () => {
+		const manifest = writeManifest({
+			'main-ab12cd34.js': { type: 'chunk', isEntry: true },
+			'mfe-configs-1a2b3c4d.js': { type: 'chunk', isEntry: false },
+		});
+
+		expect(manifest.env).toBeUndefined();
+	});
+
+	it('populates the env map when per-combo config assets are present (multi-env opt-in)', () => {
+		const manifest = writeManifest({
+			'main-ab12cd34.js': { type: 'chunk', isEntry: true },
+			'mfe-configs-1a2b3c4d.js': { type: 'chunk', isEntry: false },
+			'mfe-configs-dev_au-3c4d5e6f.js': { type: 'asset' },
+		});
+
+		expect(manifest.env).toEqual({
+			dev_au: { config: 'mfe-configs-dev_au-3c4d5e6f.js' },
+		});
 	});
 });

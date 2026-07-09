@@ -44,7 +44,9 @@ export function multiEnvConfigEmitter(
 
 		generateBundle(this: PluginContext, _options, bundle) {
 			const hasConfigChunk = Object.keys(bundle).some((fileName) =>
-				/^mfe-configs-[a-zA-Z\d]+\.js$/.test(fileName),
+				// Rolldown's `[hash]` is base64url, so the app config chunk's
+				// hash can contain `_` or `-` (e.g. mfe-configs-BRHYz_Ev.js).
+				/^mfe-configs-[a-zA-Z\d_-]+\.js$/.test(fileName),
 			);
 			if (!hasConfigChunk) return;
 
