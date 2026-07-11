@@ -14,11 +14,22 @@ interface MultiEnvConfigEmitterOptions {
 
 /**
  * Emits one init-only `mfe-configs-<env>_<tenant>-<hash>.js` script per
- * env×tenant combo the app targets, each a standalone
- * `globalThis.__MFE_ENV__={...}` assignment carrying that combo's real, resolved
- * config values. The host injects the combo's script ahead of the app bundle so
- * `globalThis.__MFE_ENV__` is defined before any config read runs (00-overview
- * §4c; 05 host read side).
+ * env×tenant combo the app targets, each an
+ * `globalThis.__MFE_ENV__=Object.assign(globalThis.__MFE_ENV__||{},{...})`
+ * seed carrying that combo's real, resolved config values. The host injects the
+ * combo's script ahead of the app bundle so `globalThis.__MFE_ENV__` is defined
+ * before any config read runs (00-overview §4c; 05 host read side).
+ *
+ * The seed merges into any existing `globalThis.__MFE_ENV__` rather than
+ * replacing it: the first seed on a page behaves identically to a bare assign
+ * (the global starts undefined, so `||{}` seeds a fresh object), while a later
+ * seed from a second co-mounted app ADDS its keys instead of clobbering the
+ * first app's. Overlapping keys are last-wins — global-config keys shared across
+ * apps carry equal values by construction, so a genuine same-key/different-value
+ * clash between two apps' app-configs is a data-layout concern, not one the
+ * emitter can resolve. Ordering caveat: an old bare-assign artefact seeded after
+ * a new merge artefact still clobbers; this resolves as apps rebuild on this gdu
+ * release.
  *
  * The `mfe-configs` chunk itself is left untouched — `mfeEnvTokens` (enforce:
  * 'pre') has already rewritten its `process.env.X` reads to
@@ -72,7 +83,7 @@ export function multiEnvConfigEmitter(
 					tenant,
 					allowKeys,
 				);
-				const source = `globalThis.__MFE_ENV__=${JSON.stringify(values)};`;
+				const source = `globalThis.__MFE_ENV__=Object.assign(globalThis.__MFE_ENV__||{},${JSON.stringify(values)});`;
 				const hash = createHash('sha256')
 					.update(source)
 					.digest('hex')
