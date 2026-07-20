@@ -121,6 +121,9 @@ export const baseViteOptions = ({
 
 	const envDefines = loadEnvDefines(buildEnv);
 	const { envTokenMap } = buildEnvTokenMap(envDefines);
+	// Single source for the __MFE_ENV__ namespace so the read-rewrite
+	// (mfeEnvTokens) and the write (multiEnvConfigEmitter) key on the same app.
+	const appName = getProjectName();
 
 	return {
 		resolve: {
@@ -141,10 +144,11 @@ export const baseViteOptions = ({
 			__MOUNT_DOM_ID__: JSON.stringify(guruConfig.mountDOMId),
 			__MOUNT_DOM_CLASS__: JSON.stringify(guruConfig.mountDOMClass),
 			__DEBUG__: JSON.stringify(false),
-			__GDU_APP_NAME__: JSON.stringify(getProjectName()),
+			__GDU_APP_NAME__: JSON.stringify(appName),
 			__GDU_BUILD_INFO__: JSON.stringify({ commit, branch }),
 			// In production builds, mfeEnvTokens (enforce: 'pre') rewrites
-			// process.env.X to globalThis.__MFE_ENV__["X"] before `define` runs
+			// process.env.X to globalThis.__MFE_ENV__["<app>"]["X"] before
+			// `define` runs
 			// (the __MFE_ENV__ object is initialised either by the baked init
 			// block in the single-env default or by multiEnvConfigEmitter's
 			// per-combo scripts when multiEnvConfig is set — 04-gdu-vite8.md
@@ -214,11 +218,13 @@ export const baseViteOptions = ({
 			// Runtime plugins (vanillaExtractPlugin, tsconfigPaths, relayPlugin) are
 			// injected by buildSPA-vite.ts and runSPA-vite.ts to avoid tsc dependency on vite.
 			overdriveBarrelSplit(),
-			mfeEnvTokens(envTokenMap, { bakeInitBlock: !multiEnvConfig }),
+			mfeEnvTokens(envTokenMap, appName, {
+				bakeInitBlock: !multiEnvConfig,
+			}),
 			...(multiEnvConfig
 				? [
 						multiEnvConfigEmitter({
-							appName: getProjectName(),
+							appName,
 							workspaceRoot:
 								CALLING_WORKSPACE_ROOT ?? PROJECT_ROOT,
 							envTokenMap,

@@ -65,26 +65,28 @@ function runGenerateBundle(
 	return emitted;
 }
 
-const SEED_PREFIX =
-	'globalThis.__MFE_ENV__=Object.assign(globalThis.__MFE_ENV__||{},';
-const SEED_SUFFIX = ');';
+type MfeEnv = Record<string, Record<string, unknown>>;
+
+// The namespaced seed shape the emitter produces:
+// globalThis.__MFE_ENV__=globalThis.__MFE_ENV__||{};globalThis.__MFE_ENV__[<ns>]=Object.assign(globalThis.__MFE_ENV__[<ns>]||{},<json>);
+const SEED_RE =
+	/^globalThis\.__MFE_ENV__=globalThis\.__MFE_ENV__\|\|\{\};globalThis\.__MFE_ENV__\[("(?:[^"\\]|\\.)*")\]=Object\.assign\(globalThis\.__MFE_ENV__\[\1\]\|\|\{\},(\{.*\})\);$/;
 
 /**
- * Mirrors what a browser does when it runs one emitted seed: the seed is
- * `globalThis.__MFE_ENV__=Object.assign(globalThis.__MFE_ENV__||{},{...})`, so
- * parsing the payload out of that exact shape (which fails unless the merge form
- * is intact) and `Object.assign`-ing it onto the running env reproduces the seed
- * without eval. Feeding `undefined` models the first seed on a fresh page.
+ * Reproduces one emitted seed's runtime effect by parsing its known shape
+ * (which fails unless the namespaced merge form is intact) and merging the
+ * payload under the app's namespace — no eval. Passing `undefined` models the
+ * first seed on a fresh page.
  */
-function applySeed(
-	env: Record<string, unknown> | undefined,
-	source: string,
-): Record<string, unknown> {
-	if (!source.startsWith(SEED_PREFIX) || !source.endsWith(SEED_SUFFIX)) {
-		throw new Error(`seed is not in merge form: ${source}`);
-	}
-	const payload = source.slice(SEED_PREFIX.length, -SEED_SUFFIX.length);
-	return Object.assign(env ?? {}, JSON.parse(payload));
+function applySeed(env: MfeEnv | undefined, source: string): MfeEnv {
+	const match = SEED_RE.exec(source);
+	if (!match)
+		throw new Error(`seed is not in namespaced merge form: ${source}`);
+	const ns = JSON.parse(match[1]) as string;
+	const values = JSON.parse(match[2]) as Record<string, unknown>;
+	const next: MfeEnv = { ...env };
+	next[ns] = { ...next[ns], ...values };
+	return next;
 }
 
 describe('multiEnvConfigEmitter', () => {
@@ -127,7 +129,7 @@ describe('multiEnvConfigEmitter', () => {
 		]);
 	});
 
-	it('bakes allowlisted, per-combo values with no chunk body', () => {
+	it('bakes allowlisted, per-combo values under the app namespace with no chunk body', () => {
 		root = writeWorkspace();
 		const emitted = runGenerateBundle(makePlugin(root), [CONFIG_CHUNK]);
 
@@ -135,25 +137,25 @@ describe('multiEnvConfigEmitter', () => {
 		const nz = emitted.find((a) => a.fileName.includes('dev_nz'))!;
 
 		expect(au.source).toBe(
-			'globalThis.__MFE_ENV__=Object.assign(globalThis.__MFE_ENV__||{},{"baseUrl":"https://au"});',
+			'globalThis.__MFE_ENV__=globalThis.__MFE_ENV__||{};globalThis.__MFE_ENV__["@autoguru/fls-booking"]=Object.assign(globalThis.__MFE_ENV__["@autoguru/fls-booking"]||{},{"baseUrl":"https://au"});',
 		);
 		expect(nz.source).toBe(
-			'globalThis.__MFE_ENV__=Object.assign(globalThis.__MFE_ENV__||{},{"baseUrl":"https://nz"});',
+			'globalThis.__MFE_ENV__=globalThis.__MFE_ENV__||{};globalThis.__MFE_ENV__["@autoguru/fls-booking"]=Object.assign(globalThis.__MFE_ENV__["@autoguru/fls-booking"]||{},{"baseUrl":"https://nz"});',
 		);
 		expect(au.source).not.toContain('cdkOnly');
 	});
 
-	it('seeds a fresh object when no earlier app has run (first seed on a page)', () => {
+	it('seeds a fresh object under the app namespace when no earlier app has run', () => {
 		root = writeWorkspace();
 		const emitted = runGenerateBundle(makePlugin(root), [CONFIG_CHUNK]);
 		const au = emitted.find((a) => a.fileName.includes('dev_au'))!;
 
 		expect(applySeed(undefined, au.source)).toEqual({
-			baseUrl: 'https://au',
+			'@autoguru/fls-booking': { baseUrl: 'https://au' },
 		});
 	});
 
-	it('composes two co-mounted apps so both keep their own keys', () => {
+	it('keeps each co-mounted app in its own namespace so neither clobbers the other', () => {
 		root = writeWorkspace();
 		writeFileSync(
 			join(root, '.mfe-data', 'mfe-list.json'),
@@ -190,25 +192,72 @@ describe('multiEnvConfigEmitter', () => {
 		);
 
 		expect(env).toEqual({
-			baseUrl: 'https://au',
-			apiUrl: 'https://api',
+			'@autoguru/fls-booking': { baseUrl: 'https://au' },
+			'@autoguru/other-app': { apiUrl: 'https://api' },
 		});
 	});
 
-	it('applies last-wins on a key an earlier app already seeded', () => {
+	it('does not clobber a co-mounted app that seeds the SAME key with a different value', () => {
+		root = writeWorkspace();
+		writeFileSync(
+			join(root, '.mfe-data', 'mfe-list.json'),
+			JSON.stringify({
+				spa: {
+					'fls-booking': { au: ['dev'], nz: ['dev'] },
+					'other-app': { au: ['dev'], nz: ['dev'] },
+				},
+			}),
+		);
+		// Both apps read `baseUrl`, but the app-config overrides give them
+		// different values — the exact shape that clobbered under the flat layout.
+		mkdirSync(join(root, '.mfe-data', 'app-configs', 'other-app'), {
+			recursive: true,
+		});
+		writeFileSync(
+			join(root, '.mfe-data', 'app-configs', 'other-app', 'dev_au.json'),
+			JSON.stringify({ baseUrl: 'https://other' }),
+		);
+		const first = runGenerateBundle(makePlugin(root), [CONFIG_CHUNK]).find(
+			(a) => a.fileName.includes('dev_au'),
+		)!;
+		const secondPlugin = multiEnvConfigEmitter({
+			appName: '@autoguru/other-app',
+			workspaceRoot: root,
+			envTokenMap: { baseUrl: '"#{BASE_URL}"' },
+		});
+		const second = runGenerateBundle(secondPlugin, [CONFIG_CHUNK]).find(
+			(a) => a.fileName.includes('dev_au'),
+		)!;
+
+		const env = applySeed(
+			applySeed(undefined, first.source),
+			second.source,
+		);
+
+		expect(env['@autoguru/fls-booking'].baseUrl).toBe('https://au');
+		expect(env['@autoguru/other-app'].baseUrl).toBe('https://other');
+	});
+
+	it('applies last-wins within a namespace without touching other namespaces', () => {
 		root = writeWorkspace();
 		const au = runGenerateBundle(makePlugin(root), [CONFIG_CHUNK]).find(
 			(a) => a.fileName.includes('dev_au'),
 		)!;
 
 		const env = applySeed(
-			{ baseUrl: 'https://stale', keep: 'me' },
+			{
+				'@autoguru/fls-booking': {
+					baseUrl: 'https://stale',
+					keep: 'me',
+				},
+				'@autoguru/sp-app-shell': { mfeBasePath: 'https://shell' },
+			},
 			au.source,
 		);
 
 		expect(env).toEqual({
-			baseUrl: 'https://au',
-			keep: 'me',
+			'@autoguru/fls-booking': { baseUrl: 'https://au', keep: 'me' },
+			'@autoguru/sp-app-shell': { mfeBasePath: 'https://shell' },
 		});
 	});
 
