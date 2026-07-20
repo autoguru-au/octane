@@ -3,19 +3,19 @@ import type { VitePlugin } from '../types';
 export interface MfeEnvTokensOptions {
 	/**
 	 * When true (the safe default), the plugin prepends a
-	 * `globalThis.__MFE_ENV__={...#{TOKEN}...}` init block to the `mfe-configs`
-	 * chunk — the single-env contract the old host + 6 old pipelines expect
-	 * (`tokenReplacement.sh`/`sed` substitute the `#{TOKEN}` placeholders at
-	 * deploy time). When false, no init block is baked and `globalThis.__MFE_ENV__`
-	 * is instead initialised by the per-combo scripts `multiEnvConfigEmitter`
-	 * emits (04-gdu-vite8.md §2.8).
+	 * `globalThis.__MFE_ENV__["<app>"]={...#{TOKEN}...}` init block to the
+	 * `mfe-configs` chunk — the single-env contract the old host + 6 old
+	 * pipelines expect (`tokenReplacement.sh`/`sed` substitute the `#{TOKEN}`
+	 * placeholders at deploy time). When false, no init block is baked and
+	 * `globalThis.__MFE_ENV__["<app>"]` is instead initialised by the per-combo
+	 * scripts `multiEnvConfigEmitter` emits (04-gdu-vite8.md §2.8).
 	 */
 	bakeInitBlock?: boolean;
 }
 
 /**
- * Rewrites `process.env.XXX` reads to `globalThis.__MFE_ENV__["XXX"]` so
- * per-env/tenant config can be injected as a separate chunk rather than
+ * Rewrites `process.env.XXX` reads to `globalThis.__MFE_ENV__["<app>"]["XXX"]`
+ * so per-env/tenant config can be injected as a separate chunk rather than
  * constant-folded into application code.
  *
  * Problem: Vite's `define` replaces `process.env.XXX` with a string literal.
@@ -24,12 +24,20 @@ export interface MfeEnvTokensOptions {
  * time.
  *
  * Solution: This plugin runs before `define` (`enforce: 'pre'`) and rewrites
- * `process.env.XXX` → `globalThis.__MFE_ENV__["XXX"]`. Dynamic property access
- * cannot be constant-folded, so every config read resolves through a single
+ * `process.env.XXX` → `globalThis.__MFE_ENV__["<app>"]["XXX"]`. Dynamic property
+ * access cannot be constant-folded, so every config read resolves through the
  * `globalThis.__MFE_ENV__` object at runtime, keeping application chunk bytes
  * independent of which env's values are in play.
  *
- * How `globalThis.__MFE_ENV__` is initialised depends on the build mode
+ * The reads are namespaced under the building app's own name (`appName`). The
+ * `globalThis.__MFE_ENV__` object is shared across every MFE co-mounted on a
+ * page, so a flat `__MFE_ENV__["XXX"]` layout let two apps writing the same key
+ * (e.g. `mfeBasePath`) clobber one another — last script loaded wins, and an
+ * earlier app read the later app's value. Namespacing each app's config under
+ * `__MFE_ENV__["<app>"]` makes every bundle read only its own values, so the
+ * outcome no longer depends on script order (AG-20532).
+ *
+ * How `globalThis.__MFE_ENV__["<app>"]` is initialised depends on the build mode
  * (04-gdu-vite8.md §2.8). In the default single-env contract (`bakeInitBlock`
  * true) the plugin's `renderChunk` prepends the init block to the `mfe-configs`
  * chunk. In multi-env mode (`bakeInitBlock` false) `multiEnvConfigEmitter` emits
@@ -38,6 +46,7 @@ export interface MfeEnvTokensOptions {
  */
 export function mfeEnvTokens(
 	envTokens: Record<string, string>,
+	appName: string,
 	options: MfeEnvTokensOptions = {},
 ): VitePlugin {
 	const { bakeInitBlock = true } = options;
@@ -54,10 +63,16 @@ export function mfeEnvTokens(
 		'g',
 	);
 
+	const ns = JSON.stringify(appName);
 	const initEntries = keys
 		.map((key) => `${JSON.stringify(key)}:${envTokens[key]}`)
 		.join(',');
-	const initCode = `globalThis.__MFE_ENV__={${initEntries}};`;
+	// Namespaced, non-destructive seed: create the shared object if absent
+	// (never replacing an existing one, so a co-mounted app's namespace
+	// survives), then merge this app's values under its own key.
+	const initCode =
+		`globalThis.__MFE_ENV__=globalThis.__MFE_ENV__||{};` +
+		`globalThis.__MFE_ENV__[${ns}]=Object.assign(globalThis.__MFE_ENV__[${ns}]||{},{${initEntries}});`;
 
 	return {
 		name: 'gdu-mfe-env-tokens',
@@ -69,7 +84,8 @@ export function mfeEnvTokens(
 
 			const result = code.replace(
 				pattern,
-				(_, key) => `globalThis.__MFE_ENV__[${JSON.stringify(key)}]`,
+				(_, key) =>
+					`globalThis.__MFE_ENV__[${ns}][${JSON.stringify(key)}]`,
 			);
 
 			return result === code ? null : { code: result, map: null };

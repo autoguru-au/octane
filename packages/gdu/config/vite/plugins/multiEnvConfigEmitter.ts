@@ -14,26 +14,24 @@ interface MultiEnvConfigEmitterOptions {
 
 /**
  * Emits one init-only `mfe-configs-<env>_<tenant>-<hash>.js` script per
- * env×tenant combo the app targets, each an
- * `globalThis.__MFE_ENV__=Object.assign(globalThis.__MFE_ENV__||{},{...})`
- * seed carrying that combo's real, resolved config values. The host injects the
- * combo's script ahead of the app bundle so `globalThis.__MFE_ENV__` is defined
- * before any config read runs (00-overview §4c; 05 host read side).
+ * env×tenant combo the app targets, each a
+ * `globalThis.__MFE_ENV__["<app>"]=Object.assign(...)` seed carrying that
+ * combo's real, resolved config values under the app's own namespace. The host
+ * injects the combo's script ahead of the app bundle so
+ * `globalThis.__MFE_ENV__["<app>"]` is defined before any config read runs
+ * (00-overview §4c; 05 host read side).
  *
- * The seed merges into any existing `globalThis.__MFE_ENV__` rather than
- * replacing it: the first seed on a page behaves identically to a bare assign
- * (the global starts undefined, so `||{}` seeds a fresh object), while a later
- * seed from a second co-mounted app ADDS its keys instead of clobbering the
- * first app's. Overlapping keys are last-wins — global-config keys shared across
- * apps carry equal values by construction, so a genuine same-key/different-value
- * clash between two apps' app-configs is a data-layout concern, not one the
- * emitter can resolve. Ordering caveat: an old bare-assign artefact seeded after
- * a new merge artefact still clobbers; this resolves as apps rebuild on this gdu
- * release.
+ * The seed is namespaced per app and non-destructive on both levels: it creates
+ * the shared `globalThis.__MFE_ENV__` object if absent (never replacing an
+ * existing one, so a co-mounted app's namespace survives) and merges this app's
+ * values under `["<app>"]`. Because each app writes and reads only its own
+ * namespace, two co-mounted apps that share a config key (e.g. `mfeBasePath`)
+ * no longer clobber one another regardless of script order — the AG-20532 fix
+ * for the flat layout, where the last-loaded app's value won for every reader.
  *
  * The `mfe-configs` chunk itself is left untouched — `mfeEnvTokens` (enforce:
  * 'pre') has already rewritten its `process.env.X` reads to
- * `globalThis.__MFE_ENV__.X`, so it is env-agnostic (identical bytes for every
+ * `globalThis.__MFE_ENV__["<app>"].X`, so it is env-agnostic (identical bytes for every
  * combo) and, crucially, still exports the config bindings that the rest of the
  * app graph imports. Only the tiny init scripts differ per combo, so one build
  * pass yields one env-agnostic app bundle plus N small config scripts whose
@@ -83,7 +81,10 @@ export function multiEnvConfigEmitter(
 					tenant,
 					allowKeys,
 				);
-				const source = `globalThis.__MFE_ENV__=Object.assign(globalThis.__MFE_ENV__||{},${JSON.stringify(values)});`;
+				const ns = JSON.stringify(opts.appName);
+				const source =
+					`globalThis.__MFE_ENV__=globalThis.__MFE_ENV__||{};` +
+					`globalThis.__MFE_ENV__[${ns}]=Object.assign(globalThis.__MFE_ENV__[${ns}]||{},${JSON.stringify(values)});`;
 				const hash = createHash('sha256')
 					.update(source)
 					.digest('hex')
