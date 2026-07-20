@@ -144,7 +144,7 @@ export const baseViteOptions = ({
 			__MOUNT_DOM_ID__: JSON.stringify(guruConfig.mountDOMId),
 			__MOUNT_DOM_CLASS__: JSON.stringify(guruConfig.mountDOMClass),
 			__DEBUG__: JSON.stringify(false),
-			__GDU_APP_NAME__: JSON.stringify(getProjectName()),
+			__GDU_APP_NAME__: JSON.stringify(appName),
 			__GDU_BUILD_INFO__: JSON.stringify({ commit, branch }),
 			// In production builds, mfeEnvTokens (enforce: 'pre') rewrites
 			// process.env.X to globalThis.__MFE_ENV__["<app>"]["X"] before

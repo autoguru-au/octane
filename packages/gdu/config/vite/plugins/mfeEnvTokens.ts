@@ -2,11 +2,12 @@ import type { VitePlugin } from '../types';
 
 export interface MfeEnvTokensOptions {
 	/**
-	 * When true (the safe default), the plugin prepends a
-	 * `globalThis.__MFE_ENV__["<app>"]={...#{TOKEN}...}` init block to the
-	 * `mfe-configs` chunk — the single-env contract the old host + 6 old
-	 * pipelines expect (`tokenReplacement.sh`/`sed` substitute the `#{TOKEN}`
-	 * placeholders at deploy time). When false, no init block is baked and
+	 * When true (the safe default), the plugin prepends a namespaced,
+	 * non-destructive init block that merges this app's `#{TOKEN}` placeholders
+	 * into `globalThis.__MFE_ENV__["<app>"]` at the head of the `mfe-configs`
+	 * chunk — the single-env contract the old host + 6 old pipelines expect
+	 * (`tokenReplacement.sh`/`sed` substitute the `#{TOKEN}` placeholders at
+	 * deploy time). When false, no init block is baked and
 	 * `globalThis.__MFE_ENV__["<app>"]` is instead initialised by the per-combo
 	 * scripts `multiEnvConfigEmitter` emits (04-gdu-vite8.md §2.8).
 	 */

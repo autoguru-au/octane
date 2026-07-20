@@ -31,8 +31,8 @@ interface MultiEnvConfigEmitterOptions {
  *
  * The `mfe-configs` chunk itself is left untouched — `mfeEnvTokens` (enforce:
  * 'pre') has already rewritten its `process.env.X` reads to
- * `globalThis.__MFE_ENV__["<app>"].X`, so it is env-agnostic (identical bytes for every
- * combo) and, crucially, still exports the config bindings that the rest of the
+ * `globalThis.__MFE_ENV__["<app>"]["X"]`, so it is env-agnostic (identical bytes for
+ * every combo) and, crucially, still exports the config bindings that the rest of the
  * app graph imports. Only the tiny init scripts differ per combo, so one build
  * pass yields one env-agnostic app bundle plus N small config scripts whose
  * bytes depend solely on that combo's values. `guruBuildManifest` records the
@@ -73,6 +73,7 @@ export function multiEnvConfigEmitter(
 				return;
 			}
 
+			const ns = JSON.stringify(opts.appName);
 			for (const { env, tenant } of combos) {
 				const values = mergeConfigSources(
 					opts.workspaceRoot,
@@ -81,7 +82,6 @@ export function multiEnvConfigEmitter(
 					tenant,
 					allowKeys,
 				);
-				const ns = JSON.stringify(opts.appName);
 				const source =
 					`globalThis.__MFE_ENV__=globalThis.__MFE_ENV__||{};` +
 					`globalThis.__MFE_ENV__[${ns}]=Object.assign(globalThis.__MFE_ENV__[${ns}]||{},${JSON.stringify(values)});`;
