@@ -1,0 +1,23 @@
+name: SonarQube Analysis
+
+# Analyses main only: SonarQube Community Edition keeps one branch per project, so
+# pull-request analyses would overwrite it. The project key is the repository name
+# (`octane`), which reuses the existing SonarQube project (COM-113).
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  sonarqube:
+    uses: ./.github/workflows/sonarqube-typescript.yml
+    with:
+      enable_tests: true
+      package_manager: bun
+    secrets:
+      SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
