@@ -29,18 +29,18 @@
 	"devDependencies": {
 		"@autoguru/eslint-plugin": "*",
 		"@changesets/cli": "^2.28.0",
-		"@manypkg/cli": "^0.23.0",
+		"@manypkg/cli": "^0.25.1",
 		"@types/node": "^16.4.13",
-		"baseline-browser-mapping": "^2.10.42",
+		"baseline-browser-mapping": "^2.11.33",
 		"browserslist-config-autoguru": "*",
-		"caniuse-lite": "^1.0.30001803",
+		"caniuse-lite": "^1.0.30001819",
 		"dotenv": "^16.4.7",
 		"eslint": "^9.20.1",
 		"glob": "^11.0.1",
 		"jest": "^26.6.1",
 		"nx": "^20.4.5",
 		"plop": "^4.0.1",
-		"prettier": "^3.5.1",
+		"prettier": "^3.9.10",
 		"typescript": "5.3.3"
 	}
 }
