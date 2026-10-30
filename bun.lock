@@ -42,7 +42,7 @@
         "@babel/preset-env": "^7.24.5",
         "@babel/preset-react": "^7.26.3",
         "@babel/preset-typescript": "^7.24.1",
-        "@babel/runtime-corejs3": "^7.24.5",
+        "@babel/runtime-corejs3": "^8.0.8",
         "babel-plugin-dev-expression": "^0.2.3",
         "babel-plugin-macros": "^3.1.0",
       },
@@ -101,7 +101,7 @@
     },
     "packages/gdu": {
       "name": "gdu",
-      "version": "13.20.1",
+      "version": "13.23.0",
       "bin": "./bin/gdu.js",
       "dependencies": {
         "@2fd/graphdoc": "^2.4.0",
@@ -112,7 +112,7 @@
         "@babel/preset-env": "^7.24.5",
         "@babel/preset-react": "^7.26.3",
         "@babel/preset-typescript": "^7.24.1",
-        "@babel/runtime-corejs3": "^7.24.5",
+        "@babel/runtime-corejs3": "^8.0.8",
         "@babel/template": "^7.14.5",
         "@graphql-cli/generate": "^4.1.0",
         "@graphql-inspector/diff-command": "^3.3.0",
@@ -498,7 +498,7 @@
 
     "@babel/runtime": ["@babel/runtime@7.28.6", "", {}, "sha512-05WQkdpL9COIMz4LjTxGpPNCdlpyimKppYNoJ5Di5EUObifl8t4tuLuUBBZEpoLYOmfvIWrsp9fCl0HoPRVTdA=="],
 
-    "@babel/runtime-corejs3": ["@babel/runtime-corejs3@7.29.0", "", { "dependencies": { "core-js-pure": "^3.48.0" } }, "sha512-TgUkdp71C9pIbBcHudc+gXZnihEDOjUAmXO1VO4HHGES7QLZcShR0stfKIxLSNIYx2fqhmJChOjm/wkF8wv4gA=="],
+    "@babel/runtime-corejs3": ["@babel/runtime-corejs3@8.0.8", "", { "dependencies": { "core-js-pure": "^3.48.0" } }, "sha512-Yx2GlyxIupSbEXFoaXUgJEA8BpekbbzbXWipUnu+G40AnqD81GUNr8Bswm0D2PMTfkWbRVjfd3UxSW7yNuh/lA=="],
 
     "@babel/template": ["@babel/template@7.28.6", "", { "dependencies": { "@babel/code-frame": "^7.28.6", "@babel/parser": "^7.28.6", "@babel/types": "^7.28.6" } }, "sha512-YA6Ma2KsCdGb+WC6UpBVFJGXL58MDA6oyONbjyF/+5sBgxY/dwkhLogbMT2GXXyU84/IhRw/2D1Os1B/giz+BQ=="],
 
