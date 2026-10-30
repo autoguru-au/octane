@@ -101,7 +101,7 @@
     },
     "packages/gdu": {
       "name": "gdu",
-      "version": "13.20.1",
+      "version": "13.23.0",
       "bin": "./bin/gdu.js",
       "dependencies": {
         "@2fd/graphdoc": "^2.4.0",
@@ -130,7 +130,7 @@
         "core-js": "^3.40.0",
         "css-loader": "^6.7.1",
         "cssnano": "^4.1.10",
-        "date-fns": "^2.29.3",
+        "date-fns": "^4.4.0",
         "debug": "^4.3.1",
         "deepmerge": "^4.2.2",
         "diary": "^0.0.12",
@@ -1606,7 +1606,7 @@
 
     "dataloader": ["dataloader@2.0.0", "", {}, "sha512-YzhyDAwA4TaQIhM5go+vCLmU0UikghC/t9DTQYZR2M/UvZ1MdOhPezSDZcjj9uqQJOMqjLcpWtyW2iNINdlatQ=="],
 
-    "date-fns": ["date-fns@2.30.0", "", { "dependencies": { "@babel/runtime": "^7.21.0" } }, "sha512-fnULvOpxnC5/Vg3NCiWelDsLiUc9bRwAPs/+LfTLNvetFCtCTN+yQz15C/fs4AwX1R9K5GLtLfn8QW+dWisaAw=="],
+    "date-fns": ["date-fns@4.4.0", "", {}, "sha512-+1UMbeh68lH1SegH83CGWwpb6OHHbpSgr3+s5Eww5M4CAgswBpoWS0AjTOfEJ33HiYKz1hdj/KTFprzXHmq/6w=="],
 
     "debounce": ["debounce@1.2.1", "", {}, "sha512-XRRe6Glud4rd/ZGQfiV1ruXSfbvfJedlV9Y6zOlP+2K04vBYiJEte6stfFkCP03aMnY5tsipamumUjL14fofug=="],
 
