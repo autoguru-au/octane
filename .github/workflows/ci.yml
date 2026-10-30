@@ -30,6 +30,6 @@ jobs:
       - name: Test
         run: bun run test:ci
 
-      - uses: codecov/codecov-action@v4
+      - uses: codecov/codecov-action@v7
         with:
           token: ${{ secrets.CODECOV }}
