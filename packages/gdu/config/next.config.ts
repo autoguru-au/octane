@@ -237,6 +237,9 @@ export const createNextJSConfig = (
 			ignoreBuildErrors: true,
 		},
 		images: {
+			// AG-22695: removes the /_next/image route. No app renders next/image;
+			// all images go through the AutoGuru image server. Set false per-app to re-enable.
+			unoptimized: true,
 			minimumCacheTTL: 3_153_600_000,
 			formats: ['image/avif', 'image/webp'],
 			deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
